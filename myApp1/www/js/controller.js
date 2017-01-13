@@ -1,11 +1,11 @@
  angular.module('starter.controller', [])
-     .controller('ProductCtrl', ['$scope', function($scope) {
+     .controller('ProductCtrl', ['$scope', '$ionicModal', '$ionicSlideBoxDelegate', function($scope, $ionicModal, $ionicSlideBoxDelegate) {
          $scope.Products = [{
                  productId: '1',
                  name: 'Coffee',
                  discount: '10%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO1',
                  unit: 'kg',
                  unitPrice: '4500000'
 
@@ -15,7 +15,7 @@
                  name: 'Coffee',
                  discount: '15%',
                  image: '/img/coffee-cup.jpg',
-                 categary: '',
+                 categary: 'DCPTO2',
                  unit: 'ltr',
                  unitPrice: '60'
 
@@ -25,7 +25,7 @@
                  name: 'Coffee',
                  discount: '20%',
                  image: '/img/images.jpg',
-                 categary: '',
+                 categary: 'DCPTO3',
                  unit: 'kg',
                  unitPrice: '70'
 
@@ -35,7 +35,7 @@
                  name: 'Coffee',
                  discount: '18%',
                  image: '/img/download.jpg',
-                 categary: '',
+                 categary: 'DCPTO2',
                  unit: 'ltr',
                  unitPrice: '80'
 
@@ -45,7 +45,7 @@
                  name: 'Coffee',
                  discount: '9%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO1',
                  unit: 'ltr',
                  unitPrice: '50'
 
@@ -55,7 +55,7 @@
                  name: 'Coffee',
                  discount: '10%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO1',
                  unit: 'kg',
                  unitPrice: '60'
 
@@ -65,7 +65,7 @@
                  name: 'Coffee',
                  discount: '14%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO5',
                  unit: 'ltr',
                  unitPrice: '90'
 
@@ -75,7 +75,7 @@
                  name: 'Coffee',
                  discount: '34%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO6',
                  unit: 'ltr',
                  unitPrice: '100000000'
 
@@ -85,7 +85,7 @@
                  name: 'Coffee',
                  discount: '44%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO7',
                  unit: 'ltr',
                  unitPrice: '10'
 
@@ -95,7 +95,7 @@
                  name: 'Coffee',
                  discount: '12%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO8',
                  unit: 'ltr',
                  unitPrice: '20'
 
@@ -113,7 +113,7 @@
                  name: 'Coffee',
                  discount: '12%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO6',
                  unit: 'ltr',
                  unitPrice: '100'
 
@@ -122,7 +122,7 @@
                  name: 'Coffee',
                  discount: '12%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO3',
                  unit: 'ltr',
                  unitPrice: '120'
 
@@ -131,7 +131,7 @@
                  name: 'Coffee',
                  discount: '12%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO9',
                  unit: 'ltr',
                  unitPrice: '233'
 
@@ -140,7 +140,7 @@
                  name: 'Coffee',
                  discount: '12%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO10',
                  unit: 'ltr',
                  unitPrice: '34'
 
@@ -149,7 +149,7 @@
                  name: 'Coffee',
                  discount: '12%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO11',
                  unit: 'ltr',
                  unitPrice: '45'
 
@@ -158,7 +158,7 @@
                  name: 'Coffee',
                  discount: '12%',
                  image: '/img/Iced_Coffee.jpg',
-                 categary: '',
+                 categary: 'DCPTO10',
                  unit: 'ltr',
                  unitPrice: '66'
 
@@ -167,51 +167,222 @@
 
 
          ];
+         $scope.Categary = [{
+                 catName: 'DCPTO1'
+             },
+             {
+                 catName: 'DCPTO2'
+             },
+             {
+                 catName: 'DCPTO3'
+             },
+             {
+                 catName: 'DCPTO4'
+             },
+             {
+                 catName: 'DCPTO5'
+             },
+             {
+                 catName: 'DCPTO6'
+             },
+             {
+                 catName: 'DCPTO7'
+             },
+             {
+                 catName: 'DCPTO8'
+             },
+             {
+                 catName: 'DCPTO9'
+             },{
+                 catName: 'DCPT10'
+             },{
+                 catName: 'DCPT11'
+             },{
+                 catName: 'DCPT12'
+             },{
+                 catName: 'DCPT13'
+             },{
+                 catName: 'DCPT14'
+             }
 
-         $scope.numValue = 0;
+         ]
+         $scope.display = function(catName) {
+             $scope.prodCat = [];
+             console.log($scope.prodCat.length);
+             for (var i = 0; i < $scope.Products.length; i++) {
+                 if ($scope.Products[i].categary == catName) {
+                     $scope.prodCat.push($scope.Products[i]);
+                 }
+
+
+             }
+             console.log($scope.prodCat)
+             console.log($scope.prodCat.length)
+         }
+
+         // $scope.numValue = 0;
+         $scope.prodCat = $scope.Products;
          $scope.productArr = [];
          $scope.totalPrice = null;
-         $scope.index=null;
-         $scope.quantity=0;
-         
+         $scope.index = null;
+         //  $scope.quantity=0;
 
-         $scope.save = function(product,newValue) {
-            var qty =document.getElementById('quantity').value;
+         $scope.newProduct = {};
+         $scope.save = function(qty) {
+             qty = $scope.typedCode;
+             console.log($scope.typedCode.length + 'Type code Length')
+             var product = $scope.newProduct;
+             //  var qty =document.getElementById('quantity').value;
              console.log('I am in Save Function')
-             console.log('Scope quanitity'+$scope.quantity)
-             console.log(product.name + ' ' + product.unitPrice + ' ' + newValue);
-             var productAmount = product.unitPrice * newValue;
+             console.log('Scope quanitity' + qty)
+             console.log(product.name + ' ' + product.unitPrice + ' ' + qty);
+             var productAmount = product.unitPrice * qty;
              console.log('ProductAmount' + productAmount);
              $scope.productArr.push({
                  productName: product.name,
-                 quantity: newValue,
+                 quantity: qty,
                  productAmount: productAmount,
-                 selected:false
+                 selected: false
              })
              console.log($scope.productArr);
              $scope.totalPrice = $scope.totalPrice + productAmount;
-             console.log('This i    s Totla Price' + $scope.totalPrice);
+             console.log('This is Totla Price' + $scope.totalPrice);
+             //  var qty =document.getElementById('quantity').value = 0;
+             //   for(var i=0;i<$scope.productArr.length;i++){
+             //   document.getElementsByClassName("quantity1")[i].value=null;
+             //   }
+             $scope.typedCode = 1;
          }
-        
-          $scope.selectedProduct = function(product){
-              product.selected ?product.selected = false : product.selected=true;
-          }
+
+         $scope.selectedProduct = function(product) {
+             product.selected ? product.selected = false : product.selected = true;
+         }
 
          $scope.cancel = function() {
-             for(var i=0; i<$scope.productArr.length; i++){
+             for (var i = 0; i < $scope.productArr.length; i++) {
                  var bool = $scope.productArr[i].selected;
-                 if(bool){
-                   $scope.totalPrice = $scope.totalPrice - $scope.productArr[i].productAmount; 
-                   $scope.productArr.splice(i, 1);   
-                  
+                 if (bool) {
+                     $scope.totalPrice = $scope.totalPrice - $scope.productArr[i].productAmount;
+                     $scope.productArr.splice(i, 1);
+
                  }
-             }  
-            
+             }
+
          }
          $scope.void = function() {
              $scope.productArr = [];
              $scope.totalPrice = null;
          }
+         //Numeric keypad
+         $scope.typedCode = 1;
 
+         $scope.keyPressed = function(keyCode) {
+
+             tempT = $scope.typedCode;
+
+             switch (keyCode) {
+                 case -4:
+                     $scope.sendTheCode();
+                     break;
+                 case -3:
+                     $scope.remove();
+                     break;
+                 case -2:
+                     $scope.scanCode();
+                     break;
+                 case -1:
+                     $scope.sendEscape();
+                     break;
+                 case 1:
+                 case 2:
+                 case 3:
+                 case 4:
+                 case 5:
+                 case 6:
+                 case 7:
+                 case 8:
+                 case 9:
+                 case 0:
+                     if (!/^\d+$/.test(tempT)) {
+                         $scope.typedCode = keyCode;
+                     } else {
+                         $scope.typedCode += '' + keyCode;
+                     }
+                     break;
+
+             }
+         };
+
+         $scope.sendEscape = function() {
+             $scope.typedCode = 'Enter your code or scan';
+             // TODO : sends the escape code
+         };
+
+         $scope.sendTheCode = function() {
+             if (/^\d+$/.test(tempT)) {
+                 // TODO : sends the entered code
+                 console.log('entered code is ' + $scope.typedCode + " " +
+                     $scope.typedCode.length);
+                 $scope.typedCode = 'Enter your code or scan';
+             }
+         };
+
+         $scope.scanCode = function() {
+             $scope.typedCode = 'Enter your code or scan';
+             // TODO start scaning the code and once it receives send to the socket
+         };
+         $scope.remove = function() {
+             $scope.typedCode = 'Enter your code or scan';
+             // TODO start scaning the code and once it receives send to the socket
+         };
+         //Numeric keypad ending
+         //Modal start
+         $ionicModal.fromTemplateUrl('templates/numericKeypad.html', {
+             scope: $scope,
+             animation: 'slide-in-up'
+         }).then(function(modal) {
+             $scope.modal = modal;
+         });
+
+         $scope.openModal = function(product) {
+             console.log(product.name + 'Product')
+             $scope.newProduct = product;
+             $scope.modal.show();
+         };
+         $scope.closeModal = function() {
+             $scope.modal.hide();
+         };
+         // Cleanup the modal when we're done with it!
+         $scope.$on('$destroy', function() {
+             $scope.modal.remove();
+         });
+         // Execute action on hide modal
+         $scope.$on('modal.hidden', function() {
+             // Execute action
+         });
+         // Execute action on remove modal
+         $scope.$on('modal.removed', function() {
+             // Execute action
+         });
+         //Modal End
+         //Slide Start
+         $scope.previousView = false;
+         $scope.nextView = true;
+
+         $scope.next = function() {
+             console.log('I am in next')
+             $ionicSlideBoxDelegate.next();
+             $scope.previousView = true;
+             $scope.nextView = false;
+         };
+         $scope.previous = function() {
+             $ionicSlideBoxDelegate.previous();
+             $scope.nextView = true;
+             $scope.previousView = false;
+         };
+         $scope.slideChanged = function(index) {
+             $scope.slideIndex = index;
+         };
+         //Slide Ends
 
      }])

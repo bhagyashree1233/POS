@@ -1,5 +1,5 @@
 <ion-view view-title="link" class="has-footer">
-    <ion-content ng-controller="ProductCtrl" class="has-header" scroll="false">
+    <ion-content ng-controller="ProductCtrl" scroll="false">
         <div class="row" id="product">
             <div class="col-30" id="product-billing">
                 <div id="product-billing-col1">
@@ -8,64 +8,79 @@
                             <span>Total Amount</span>:<span style="float:right">{{totalPrice}}</span>
                         </div>
                     </div>
-                    <table id="product-billing-table"  style=" color:black;font-weight:bolder; text-transform: uppercase;">
-                        <tr id="product-billing-totalAmount">
-                            <th>
-                                <span>Item Name</span>
-                            </th>
-                            <th>
-                                <span>Quantity</span>
-                            </th>
-                            <th>
-                                <span>Amount</span>
-                            </th>
-                        </tr>
-                        <tr ng-repeat=" product in productArr" ng-model="selectedItem" ng-class="{'selected':product.selected}"  ng-click="selectedProduct(product)">
-                            <td>
-                             <span>{{product.productName}}</span>
-                            </td>
-                            <td>
-                            <span>{{product.quantity}}</span>
-                            </td>
-                            <td>
-                            <span>{{product.productAmount}}</span>
-                            </td>
-                        </tr>
-                    </table>
+                    <div class="product-billing-tableScroll">
+                        <table id="product-billing-table" style=" color:black;font-weight:bolder; text-transform: uppercase;">
+                            <tr id="product-billing-totalAmount">
+                                <th>
+                                    <span>Item Name</span>
+                                </th>
+                                <th>
+                                    <span>Quantity</span>
+                                </th>
+                                <th>
+                                    <span>Amount</span>
+                                </th>
+                            </tr>
+                            <tr ng-repeat=" product in productArr" ng-model="selectedItem" ng-class="{'selected':product.selected}" ng-click="selectedProduct(product)">
+                                <td>
+                                    <span align=>{{product.productName}}</span>
+                                </td>
+                                <td>
+                                    <span>{{product.quantity}}</span>
+                                </td>
+                                <td>
+                                    <span>{{product.productAmount}}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-70" id="product-display">
-                <div id="product-display-col1" ng-repeat="Product in Products">
-                    <div id="product-name" align="left">
-                        <p style="font-weight:bolder;text-transform: uppercase;padding:auto;margin:auto;position:absolute;">{{Product.name}}</p>
-                        
-                    </div>
-                    <div id="product-image" align="right">
-                        <img ng-src={{Product.image}}  ng-click="inputShow=true" style="padding:auto;margin:auto;height:auto;width:100%;">
-                        </img>
-                        
-                        <div id="product-stock">
+            <div id="productCategory">
+                <div class="col-70" id="product-display">
+
+                    <div id="product-display-col1" ng-repeat="Product in prodCat">
+
+                        <div id="product-name" align="left">
+                            <p style="font-weight:bolder;text-transform: uppercase;padding:auto;margin:auto;position:absolute;">{{Product.name}}{{Product.productId}}</p>
                         </div>
 
-                        <div id="product-price">
-                         <p style="font-weight:bolder;color:lightblue;">{{Product.unitPrice}}</p>
+                        <div id="product-image" align="right">
+                            <img ng-src={{Product.image}} ng-click="openModal(Product)" style="padding:auto;margin:auto;height:100%;width:100%;"></img>
+                            <div id="product-stock"></div>
+                            <div id="product-price">
+                                <p style="font-weight:bolder;color:lightblue;">{{Product.unitPrice}}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div id="quantityBox" ng-show="inputShow">
-                    <form>
-                        <span>quantity:</span>
-                        <input type="number" ng-model="numValue" style="width:100%" name="qty" id="quantity" value="0">
-                        <input type="submit" id='subBtn'  style="right:10vh" value="ok"  ng-click="inputShow=false;save(Product,numValue)" />
-                    </form>
-                    </div>
-
-                    <div id="quatity">
                     </div>
                 </div>
+
+                <div id="product-categary">
+
+                    <div class="catButtons" id="product-categary-previous">
+                        <button class="button button-dark icon ion-chevron-left" id="button-previous" ng-click="previous()"></button>
+                    </div>
+
+                    <div id="product-categary-buttons" >
+                    <ion-slide-box on-slide-changed="slideHasChanged($index)" id="product-cat-slide">
+                      <ion-slide id="product-slide">
+                       <button class=" product-categary-button"ng-repeat="cat in Categary" ng-click="display(cat.catName)">{{cat.catName}}</button>
+                       </ion-slide>
+                      </ion-slide-box>      
+
+                    </div>
+
+                    <div class="catButtons" id="product-categary-next">
+                        <button class="button button-dark icon icon ion-chevron-right" id="button-next" ng-click="next()"></button>
+                    </div>
+
+                </div>
+
             </div>
         </div>
-        <div class="bar bar-footer bar-light " id="footer" >
+
+        <div class="bar bar-footer bar-light " id="footer">
             <button class="button" id="button1" ng-click="cancel(productArr,product)">CANCEL</button>
             <button class="button" id="button1">RECEIPT</button>
             <button class="button" id="button1" ng-click="void()">VOID</button>
