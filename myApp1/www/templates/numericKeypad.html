@@ -1,0 +1,36 @@
+<ion-modal-view>
+    <ion-content>
+    <ion-list>
+     <ion-item class="sam-input-item">
+       <span class="inputview" ng-model="quantity1">{{typedCode}}</span>
+     </ion-item>
+    </ion-list>
+    <div class="button-bar sam-cust-bar">
+        <a ng-click="keyPressed(-1)" class="button button-block button-calm">Esc</a>
+        <a ng-click="keyPressed(-2)" class="button button-block button-energized icon-left ion-qr-scanner">Scan</a>
+        <a ng-click="keyPressed(-3)" class="button button-block button-dark icon-left ion-backspace">Del</a>
+         <a ng-click="closeModal()" class="button button-block button-assertive icon-left ion-backspace">Close</a>
+
+    </div>
+    <div class="button-bar sam-cust-bar">
+        <a ng-click="keyPressed(1)" class="button button-block button-positive">1</a>
+        <a ng-click="keyPressed(2)" class="button button-block button-positive">2</a>
+        <a ng-click="keyPressed(3)" class="button button-block button-positive">3</a>
+    </div>
+    <div class="button-bar sam-cust-bar">
+        <a ng-click="keyPressed(4)" class="button button-block button-positive">4</a>
+        <a ng-click="keyPressed(5)" class="button button-block button-positive">5</a>
+        <a ng-click="keyPressed(6)" class="button button-block button-positive">6</a>
+    </div>
+    <div class="button-bar sam-cust-bar">
+        <a ng-click="keyPressed(7)" class="button button-block button-positive">7</a>
+        <a ng-click="keyPressed(8)" class="button button-block button-positive">8</a>
+        <a ng-click="keyPressed(9)" class="button button-block button-positive">9</a>
+    </div>
+    <div class="button-bar sam-cust-bar">
+        <a class="button button-block button-stable" disabled>&nbsp;</a>
+        <a ng-click="keyPressed(0)" class="button button-block button-positive">0</a>
+        <a ng-click="closeModal();inputShow=false;save(quantity1)" class="button button-block button-assertive icon-left ion-checkmark">Enter</a>
+    </div>
+    </ion-content>
+    </ion-modal-view>
