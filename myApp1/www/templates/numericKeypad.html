@@ -1,13 +1,14 @@
-<ion-modal-view>
+<ion-modal-view id="model-view">
     <ion-content>
     <ion-list>
      <ion-item class="sam-input-item">
-       <span class="inputview" ng-model="quantity1">{{typedCode}}</span>
+       <span class="inputview" ng-model="quantity1">{{typedCode}}
+      <a ng-click="closeModal()"  id="quantity-close"class="icon-right ion-close-circled"></a>
+       </span>
      </ion-item>
     </ion-list>
     <div class="button-bar sam-cust-bar">
-        <a ng-click="keyPressed(-1)" class="button button-block button-calm">Esc</a>
-        <a ng-click="keyPressed(-2)" class="button button-block button-energized icon-left ion-qr-scanner">Scan</a>
+
         <a ng-click="keyPressed(-3)" class="button button-block button-dark icon-left ion-backspace">Del</a>
          <a ng-click="closeModal()" class="button button-block button-assertive icon-left ion-backspace">Close</a>
 
@@ -30,7 +31,7 @@
     <div class="button-bar sam-cust-bar">
         <a class="button button-block button-stable" disabled>&nbsp;</a>
         <a ng-click="keyPressed(0)" class="button button-block button-positive">0</a>
-        <a ng-click="closeModal();inputShow=false;save(quantity1)" class="button button-block button-assertive icon-left ion-checkmark">Enter</a>
+        <a ng-click="inputShow=false;save(quantity1)" class="button button-block button-assertive icon-left ion-checkmark">Enter</a>
     </div>
     </ion-content>
     </ion-modal-view>

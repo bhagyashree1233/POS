@@ -227,11 +227,17 @@
          $scope.index = null;
          //  $scope.quantity=0;
 
-         $scope.newProduct = {};
+         
          $scope.save = function(qty) {
-             qty = $scope.typedCode;
-             console.log($scope.typedCode.length + 'Type code Length')
+             console.log($scope.typedCode);
+             if($scope.typedCode==null){
+                 console.log('Type Code Null')
+                qty = $scope.typedCode=1;
+             }else{
+                qty =$scope.typedCode;
+             }
              var product = $scope.newProduct;
+             console.log($scope.newProduct)
              //  var qty =document.getElementById('quantity').value;
              console.log('I am in Save Function')
              console.log('Scope quanitity' + qty)
@@ -239,11 +245,15 @@
              var productAmount = product.unitPrice * qty;
              console.log('ProductAmount' + productAmount);
              $scope.productArr.push({
-                 productName: product.name,
+                 name: product.name,
                  quantity: qty,
                  productAmount: productAmount,
                  selected: false
              })
+             $scope.modal.hide();
+             $scope.newProduct={};
+             $scope.typedCode=null;
+         
              console.log($scope.productArr);
              $scope.totalPrice = $scope.totalPrice + productAmount;
              console.log('This is Totla Price' + $scope.totalPrice);
@@ -251,7 +261,7 @@
              //   for(var i=0;i<$scope.productArr.length;i++){
              //   document.getElementsByClassName("quantity1")[i].value=null;
              //   }
-             $scope.typedCode = 1;
+            
          }
 
          $scope.selectedProduct = function(product) {
@@ -274,7 +284,7 @@
              $scope.totalPrice = null;
          }
          //Numeric keypad
-         $scope.typedCode = 1;
+         $scope.typedCode = null;
 
          $scope.keyPressed = function(keyCode) {
 
@@ -314,7 +324,7 @@
          };
 
          $scope.sendEscape = function() {
-             $scope.typedCode = 'Enter your code or scan';
+             $scope.typedCode = null;
              // TODO : sends the escape code
          };
 
@@ -323,16 +333,16 @@
                  // TODO : sends the entered code
                  console.log('entered code is ' + $scope.typedCode + " " +
                      $scope.typedCode.length);
-                 $scope.typedCode = 'Enter your code or scan';
+                 $scope.typedCode = null;
              }
          };
 
          $scope.scanCode = function() {
-             $scope.typedCode = 'Enter your code or scan';
+             $scope.typedCode = null;
              // TODO start scaning the code and once it receives send to the socket
          };
          $scope.remove = function() {
-             $scope.typedCode = 'Enter your code or scan';
+             $scope.typedCode = null;
              // TODO start scaning the code and once it receives send to the socket
          };
          //Numeric keypad ending
@@ -345,11 +355,16 @@
          });
 
          $scope.openModal = function(product) {
+             console.log($scope.product);
              console.log(product.name + 'Product')
+
              $scope.newProduct = product;
+             console.log($scope.newProduct)
              $scope.modal.show();
          };
          $scope.closeModal = function() {
+             $scope.newProduct={};
+             $scope.typedCode=null;
              $scope.modal.hide();
          };
          // Cleanup the modal when we're done with it!

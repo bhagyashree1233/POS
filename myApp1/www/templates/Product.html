@@ -21,16 +21,27 @@
                                     <span>Amount</span>
                                 </th>
                             </tr>
-                            <tr ng-repeat=" product in productArr" ng-model="selectedItem" ng-class="{'selected':product.selected}" ng-click="selectedProduct(product)">
+                            <tr ng-repeat=" product in productArr"  ng-model="selectedItem" ng-class="{'selected':product.selected}" ng-click="selectedProduct(product)">
                                 <td>
-                                    <span align=>{{product.productName}}</span>
+                                    <span >{{product.name}}</span>
                                 </td>
                                 <td>
-                                    <span>{{product.quantity}}</span>
+                                    <span style="text-align:right;">{{product.quantity}}</span>
                                 </td>
                                 <td>
-                                    <span>{{product.productAmount}}</span>
+                                    <span style="text-align:right;">{{product.productAmount}}</span>
                                 </td>
+                            </tr>
+                            <tr ng-hide="newProduct.name==undefined">
+                            <td>
+                                    <span align=>{{newProduct.name}}</span>
+                                </td>
+                                <td>
+                                    <span>{{typedCode}}</span>
+                                </td>
+                                <td>
+                                </td>
+                            
                             </tr>
                         </table>
                     </div>
@@ -40,14 +51,14 @@
             <div id="productCategory">
                 <div class="col-70" id="product-display">
 
-                    <div id="product-display-col1" ng-repeat="Product in prodCat">
+                    <div id="product-display-col1" ng-repeat="Product in prodCat" ng-click="openModal(Product)">
 
-                        <div id="product-name" align="left">
+                        <div id="product-name" align="left" >
                             <p style="font-weight:bolder;text-transform: uppercase;padding:auto;margin:auto;position:absolute;">{{Product.name}}{{Product.productId}}</p>
                         </div>
 
                         <div id="product-image" align="right">
-                            <img ng-src={{Product.image}} ng-click="openModal(Product)" style="padding:auto;margin:auto;height:100%;width:100%;"></img>
+                            <img ng-src={{Product.image}}  style="padding:auto;margin:auto;height:auto;width:100%;"></img>
                             <div id="product-stock"></div>
                             <div id="product-price">
                                 <p style="font-weight:bolder;color:lightblue;">{{Product.unitPrice}}</p>

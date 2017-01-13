@@ -92,6 +92,7 @@
 	line-height:0vh;
 }
 .bar-light #button1 {
+	padding:3vh;
     width: 20%;
     background-color: black;
     font-weight: bold;
@@ -235,4 +236,18 @@ body {
 }
 #product-slide{
 	height:20%;
+}
+#model-view{
+     top: 0; */
+     right: 20%; */
+    bottom: 20%;
+    left: 30%;
+    min-height: 300px;
+    width:75%;
+    height:75%;
+}
+#quantity-close{
+
+color:black;
+	
 }
