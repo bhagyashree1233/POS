@@ -228,7 +228,8 @@
          //  $scope.quantity=0;
 
          
-         $scope.save = function(qty) {
+         $scope.save = function(product) {
+
              console.log($scope.typedCode);
              if($scope.typedCode==null){
                  console.log('Type Code Null')
@@ -236,8 +237,7 @@
              }else{
                 qty =$scope.typedCode;
              }
-             var product = $scope.newProduct;
-             console.log($scope.newProduct)
+             
              //  var qty =document.getElementById('quantity').value;
              console.log('I am in Save Function')
              console.log('Scope quanitity' + qty)
@@ -287,7 +287,7 @@
          $scope.typedCode = null;
 
          $scope.keyPressed = function(keyCode) {
-
+         console.log(keyCode)
              tempT = $scope.typedCode;
 
              switch (keyCode) {
@@ -325,6 +325,7 @@
 
          $scope.sendEscape = function() {
              $scope.typedCode = null;
+             console.log('I am in Escape')
              // TODO : sends the escape code
          };
 
@@ -343,6 +344,7 @@
          };
          $scope.remove = function() {
              $scope.typedCode = null;
+             console.log('I am in remove');
              // TODO start scaning the code and once it receives send to the socket
          };
          //Numeric keypad ending
@@ -355,9 +357,7 @@
          });
 
          $scope.openModal = function(product) {
-             console.log($scope.product);
              console.log(product.name + 'Product')
-
              $scope.newProduct = product;
              console.log($scope.newProduct)
              $scope.modal.show();
@@ -365,19 +365,27 @@
          $scope.closeModal = function() {
              $scope.newProduct={};
              $scope.typedCode=null;
+             console.log('I am in close Model')
              $scope.modal.hide();
          };
          // Cleanup the modal when we're done with it!
          $scope.$on('$destroy', function() {
-             $scope.modal.remove();
+             console.log('In am in destroy')
+            
+
          });
          // Execute action on hide modal
          $scope.$on('modal.hidden', function() {
              // Execute action
+             $scope.newProduct={};
+            
+            
          });
          // Execute action on remove modal
          $scope.$on('modal.removed', function() {
              // Execute action
+
+              
          });
          //Modal End
          //Slide Start
