@@ -164,48 +164,35 @@
 
              }
 
-
-
          ];
-         $scope.Categary = [{
-                 catName: 'DCPTO1'
-             },
-             {
-                 catName: 'DCPTO2'
-             },
-             {
-                 catName: 'DCPTO3'
-             },
-             {
-                 catName: 'DCPTO4'
-             },
-             {
-                 catName: 'DCPTO5'
-             },
-             {
-                 catName: 'DCPTO6'
-             },
-             {
-                 catName: 'DCPTO7'
-             },
-             {
-                 catName: 'DCPTO8'
-             },
-             {
-                 catName: 'DCPTO9'
-             },{
-                 catName: 'DCPT10'
-             },{
-                 catName: 'DCPT11'
-             },{
-                 catName: 'DCPT12'
-             },{
-                 catName: 'DCPT13'
-             },{
-                 catName: 'DCPT14'
-             }
-
-         ]
+         $scope.Categary = {
+           slide1: [
+             { catName: 'DCPTO1'},
+             { catName: 'DCPTO2'},
+             { catName: 'DCPTO3'},
+             { catName: 'DCPTO4'},
+             { catName: 'DCPTO5'},
+             { catName: 'DCPTO6'},
+             { catName: 'DCPTO7'},
+             { catName: 'DCPTO8'},
+             { catName: 'DCPTO9'},
+             { catName: 'DCPT10'},
+             { catName: 'DCPT11'},
+             { catName: 'DCPT12'}
+            ],
+          slide2:  [             
+             { catName: 'DCPT13'},
+             { catName: 'DCPT14'},
+             { catName: 'DCPT15'},
+             { catName: 'DCPT16'},
+             { catName: 'DCPT17'},
+             { catName: 'DCPT18'},
+             { catName: 'DCPT19'},
+             { catName: 'DCPT20'},
+             { catName: 'DCPT21'}
+            ]
+         }
+		 
          $scope.display = function(catName) {
              $scope.prodCat = [];
              console.log($scope.prodCat.length);
@@ -263,7 +250,20 @@
              //   }
             
          }
-
+        var holdObj={};
+        $scope.hold=function(){
+          var holdValue = $scope.productArr;
+          console.log($scope.holdValue);
+          var d = new Date();
+          var time=d.getTime();
+          console.log(d)
+          holdObj[time]=$scope.productArr;
+           if($scope.productArr.length>0){
+           window.localStorage.setItem("holdObj",JSON.stringify(holdObj));
+         
+          }
+          console.log(localStorage.getItem("holdObj"));
+        }
          $scope.selectedProduct = function(product) {
              product.selected ? product.selected = false : product.selected = true;
          }
@@ -284,10 +284,10 @@
              $scope.totalPrice = null;
          }
          //Numeric keypad
-         $scope.typedCode = null;
+         $scope.typedCode = 1;
 
          $scope.keyPressed = function(keyCode) {
-         console.log(keyCode)
+         //console.log(keyCode)
              tempT = $scope.typedCode;
 
              switch (keyCode) {
@@ -354,14 +354,17 @@
              animation: 'slide-in-up'
          }).then(function(modal) {
              $scope.modal = modal;
+             console.log( $scope.modal)
          });
-
+ 
          $scope.openModal = function(product) {
-             console.log(product.name + 'Product')
-             $scope.newProduct = product;
-             console.log($scope.newProduct)
              $scope.modal.show();
+             $scope.typedCode=1
+             $scope.newProduct = product;
+           //  $scope.productAmount=$scope.newProduct.unitPrice*$scope.typedCode;
+             // console.log($scope.productAmount);
          };
+        
          $scope.closeModal = function() {
              $scope.newProduct={};
              $scope.typedCode=null;
@@ -389,22 +392,37 @@
          });
          //Modal End
          //Slide Start
-         $scope.previousView = false;
-         $scope.nextView = true;
+         $scope.currentSlide = 0;  
+         $scope.slideHasChanged = function(index){
+             console.log(index);
+             $scope.currentSlide = index;
+         }
 
+         $scope.slidesCount = 0;
+         if(!$scope.slidesCount){
+             document.getElementById('button-next').style.color = '#fff';
+         }
          $scope.next = function() {
              console.log('I am in next')
              $ionicSlideBoxDelegate.next();
-             $scope.previousView = true;
-             $scope.nextView = false;
+             console.log($ionicSlideBoxDelegate.slidesCount());
+             $scope.slidesCount = $ionicSlideBoxDelegate.slidesCount();
+
+             if($scope.currentSlide === $scope.slidesCount-1) {
+               document.getElementById('button-previous').style.color = '#fff';
+               document.getElementById('button-next').style.color = '';
+             }else {
+               document.getElementById('button-previous').style.color = '#fff';
+             }
          };
          $scope.previous = function() {
              $ionicSlideBoxDelegate.previous();
-             $scope.nextView = true;
-             $scope.previousView = false;
-         };
-         $scope.slideChanged = function(index) {
-             $scope.slideIndex = index;
+             if($scope.currentSlide === 0) {
+               document.getElementById('button-previous').style.color = '';   
+               document.getElementById('button-next').style.color = '#fff';
+             } else {
+               document.getElementById('button-next').style.color = '#fff';
+             }
          };
          //Slide Ends
 

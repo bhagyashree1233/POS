@@ -259,4 +259,8 @@ color:black;
 
 .modal-backdrop-bg{
 	background-color:rgba(204, 204, 204, 0.01);
-}}
+}
+ .modal-open .modal-backdrop {
+    /* pointer-events: auto; */
+    pointer-events: none;
+}
