@@ -103,7 +103,7 @@
     padding: 0px;
     marigin: auto;
     bottom:auto;
-    height:70px;
+    height:10%;
     overflow:scroll;
 }
 #product-display-row {
@@ -237,4 +237,22 @@ body {
     min-height: 300px;
     width:75%;
     height:75%;
+}
+#holdModal {
+	width:90%;
+	height:85%;
+	left:5%;
+	top:5%;
+
+}
+
+.holdDiv {
+	display:flex;
+	flex-direction:row;
+	height:100%;
+	width:100%;
+}
+.holdDiv div.card {
+	width:50%;
+	height:96%;
 }

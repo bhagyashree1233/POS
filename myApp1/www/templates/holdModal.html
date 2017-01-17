@@ -1,0 +1,19 @@
+<ion-modal-view id="holdModal">
+ <ion-content scroll='false'>
+  <div class="holdDiv">
+  
+   <div class="card">
+     
+   </div>
+
+   <div class="card">
+    <ion-list>
+     <ion-item ng-repeat="(key, value) in holdItemObj" ng-click="unHold(value)">
+       {{key}} 
+     </ion-item>
+    </ion-list> 
+   </div>
+   
+  </div> 
+ </ion-content>
+</ion-modal-view>

@@ -1,5 +1,5 @@
  angular.module('starter.controller', [])
-     .controller('ProductCtrl', ['$scope', '$ionicModal', '$ionicSlideBoxDelegate', function($scope, $ionicModal, $ionicSlideBoxDelegate) {
+     .controller('ProductCtrl', ['$scope', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', function($scope, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
          $scope.Products = [{
                  productId: '1',
                  name: 'Coffee',
@@ -206,6 +206,32 @@
              console.log($scope.prodCat)
              console.log($scope.prodCat.length)
          }
+       
+         $scope.scrollTopBtn = false; 
+         $scope.scrollBottomBtn = false;
+        
+         $scope.onScroll = function() {
+            var scrollTopCurrent = $ionicScrollDelegate.getScrollPosition().top;
+            var scrollTopMax = $ionicScrollDelegate.getScrollView().__maxScrollTop;
+            var scrollBottom = scrollTopMax - scrollTopCurrent;  
+            console.log(scrollTopCurrent+" "+scrollTopMax);
+
+            if(scrollTopMax){
+               $scope.scrollBottomBtn = true;  
+               $scope.scrollTopBtn = true; 
+            } else {
+               $scope.scrollBottomBtn = false;  
+               $scope.scrollTopBtn = false;
+            }
+         };
+
+         $scope.scrollTop = function(){
+             $ionicScrollDelegate.$getByHandle('scrollSmall').scrollTop(true);
+         }
+         $scope.scrollBottom = function(){
+             $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
+         }
+
 
          // $scope.numValue = 0;
          $scope.prodCat = $scope.Products;
@@ -214,7 +240,6 @@
          $scope.index = null;
          //  $scope.quantity=0;
 
-         
          $scope.save = function(qty) {
              console.log($scope.typedCode);
              if($scope.typedCode==null){
@@ -248,7 +273,6 @@
              //   for(var i=0;i<$scope.productArr.length;i++){
              //   document.getElementsByClassName("quantity1")[i].value=null;
              //   }
-            
          }
 
          $scope.selectedProduct = function(product) {
@@ -332,6 +356,42 @@
              $scope.typedCode = null;
              // TODO start scaning the code and once it receives send to the socket
          };
+/*
+        $scope.numbers = '1';
+        console.log($scope.numbers);
+        $scope.keyboardVisible = false;
+        $scope.showKeyboard = function() {
+          $scope.keyboardVisible = true;
+        }  
+        $scope.keyboardSettings = {
+         action: function(number) {
+            $scope.numbers += number;
+            console.log($scope.numbers);
+         },
+         leftButton: {
+            html: '<i class="icon ion-backspace"></i>',
+            action: function() {
+                $scope.numbers = $scope.numbers.slice(0, -1);
+            }
+         },
+         rightButton: {
+            html: '<i class="icon ion-checkmark-circled"></i>',
+            action: function() {
+                alert($scope.numbers);
+            }
+          },
+          showLetters:false,
+          theme:'assertive',
+          width:'100%',
+          height:'50%',
+            style: {
+                color: '#fff', // Text color
+                bgColor: '#4cda64', // Background color
+                activeBgColor: '#43bf58', // Baackground color when pressed
+                borderColor: '#43bf58' // Only clearly visible on round buttons (until next plugin version)
+            }
+        }
+*/
          //Numeric keypad ending
          //Modal start
          $ionicModal.fromTemplateUrl('templates/numericKeypad.html', {
@@ -348,6 +408,7 @@
              $scope.newProduct = product;
              console.log($scope.newProduct)
              $scope.modal.show();
+             $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
          };
          $scope.closeModal = function() {
              $scope.newProduct={};
@@ -366,8 +427,59 @@
          $scope.$on('modal.removed', function() {
              // Execute action
          });
-         //Modal End
-         //Slide Start
+
+         ionic.Platform.ready(function(){
+            var itemsJsonObj = window.localStorage.getItem('holdEvents', "");
+            if(itemsJsonObj == undefined){
+              window.localStorage.setItem('holdEvents', "");  
+            }
+         })
+
+
+         $ionicModal.fromTemplateUrl('templates/holdModal.html', {
+             scope: $scope,
+             animation: 'slide-in-up'
+         }).then(function(modal) {
+             $scope.holdModal = modal;
+         });
+         $scope.openHoldModal = function(product) {
+            $scope.holdModal.show();
+         }
+         $scope.closeModal = function() {
+             $scope.holdModal.hide();
+         }; 
+
+          $scope.holdItems = function() {
+          if($scope.productArr.length != 0) {  
+            var d = new Date();
+            var id = d.getTime();
+            console.log(id);
+
+            var itemsJsonObj = window.localStorage.getItem('holdEvents');
+            console.log(itemsJsonObj);
+            if(itemsJsonObj != ""){
+               itemsJsonObj = JSON.parse(itemsJsonObj); 
+            }else {
+               itemsJsonObj = {};
+            } 
+
+            itemsJsonObj[id] = $scope.productArr;
+            
+            console.log(itemsJsonObj);
+            window.localStorage.setItem('holdEvents', JSON.stringify(itemsJsonObj));
+            $scope.holdItemObj = itemsJsonObj;
+            $scope.productArr = [];
+          }
+
+           $scope.openHoldModal();
+             
+         } 
+
+         $scope.unHold = function(holdValue){
+             $scope.closeModal();
+             $scope.productArr = holdValue;
+         }
+
          $scope.currentSlide = 0;  
          $scope.slideHasChanged = function(index){
              console.log(index);
@@ -403,3 +515,4 @@
          //Slide Ends
 
      }])
+    
