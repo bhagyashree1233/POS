@@ -105,8 +105,9 @@
     position:fixed;
     padding: 0px;
     marigin: auto;
+    height:10%;
+    overflow:scroll;
     bottom:0;
-    height:70px;
     overflow-x:auto;
     overflow-y:false;
 }
@@ -248,6 +249,25 @@ body {
     min-height: 300px;
     width:75%;
     height:75%;
+
+}
+#holdModal {
+	width:90%;
+	height:85%;
+	left:5%;
+	top:5%;
+
+}
+
+.holdDiv {
+	display:flex;
+	flex-direction:row;
+	height:100%;
+	width:100%;
+}
+.holdDiv div.card {
+	width:50%;
+	height:96%;
   
 }
 #quantity-close{

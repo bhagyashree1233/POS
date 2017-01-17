@@ -1,0 +1,5 @@
+<ion-view>
+    <ion-header-bar></ion-header-bar>
+    <ion-content></ion-content>
+    <ion-digit-keyboard settings="keyboardSettings"></ion-digit-keyboard>
+</ion-view>

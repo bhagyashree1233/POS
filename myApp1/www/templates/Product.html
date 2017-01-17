@@ -8,7 +8,11 @@
                             <span>Total Amount</span>:<span style="float:right">{{totalPrice}}</span>
                         </div>
                     </div>
-                 <div class="card" style="max-height:88%">
+  
+                <button ng-show="scrollTopBtn" ng-click="scrollTop()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:25%;border-radius:50%;width:5vh;height:5vh;"><i style="font-size:3vh;" class="icon ion-chevron-up"></i></button>
+                <button ng-show="scrollBottomBtn" ng-click="scrollBottom()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:58%;border-radius:50%;width:5vh;height:5vh;"><i style="font-size:3vh;" class="icon ion-chevron-down"></i></button>
+                    
+                 <div class="card" style="height:68%">
                       <table style="width:100%;color:black;font-weight:bolder; text-transform: uppercase;">
                             <tr style="text-align:center;">
                                 <th>
@@ -22,11 +26,11 @@
                                 </th>
                             </tr> 
                       </table>
-                     
-                      <ion-scroll delegate-handle="scrollSmall" direction="y" style="height:100%;" class="product-billing-tableScroll">    
+                       
+                      <ion-scroll delegate-handle="scrollSmall" on-scroll="onScroll()" direction="y" style="height:93%;" class="product-billing-tableScroll">    
                         <table id="product-billing-table" style="color:black;text-align:center;font-weight:bolder; text-transform: uppercase;">
                             
-                           <tr ng-repeat=" product in productArr"  ng-model="selectedItem" ng-class="{'selected':product.selected}" ng-click="selectedProduct(product)">
+                           <tr ng-repeat="product in productArr"  ng-model="selectedItem" ng-class="{'selected':product.selected}" ng-click="selectedProduct(product)">
                                 <td>
                                     <span >{{product.name}}</span>
                                 </td>
@@ -52,8 +56,12 @@
                           
                         </table>
 
-                     </ion-scroll>    
-                  </div>  
+                     </ion-scroll>  
+                  </div> 
+                   <div class="card" style="padding:1vh;height:17%">
+                       <p style="font-size:18px;color:black;">Total Amount: {{}}</p>
+                       <p style="font-size:18px;color:black;">Remaining: {{}}</p> 
+                    </div>    
                 </div>
             </div>
 
@@ -108,8 +116,7 @@
             <button class="button" id="button1">RECEIPT</button>
             <button class="button" id="button1" ng-click="void()">VOID</button>
             <button class="button" id="button1">PAYMENT</button>
-            <button class="button" id="button1" ng-click="hold()">HOLD</button>
-         
+            <button class="button" id="button1" ng-click="holdItems()">HOLD</button>
 
         </div>
          
