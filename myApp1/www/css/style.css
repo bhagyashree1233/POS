@@ -58,14 +58,11 @@
 	min-width:0;
 	width:100%;
 	height:100%;
-	background:black;
 }
-
 #button-previous{
 	min-width:0;
 	width:100%;
 	height:100%;
-	background:black;x
 }
 #product-categary-buttons{
 	width:88%;
@@ -84,6 +81,10 @@
 	
 	padding:auto;
 }
+.product-categary-button:hover{
+	background:rgba(0, 0, 0, 0.28);
+	color:black;
+}
 #product-categary-buttons>.button{
 	padding:1vh;
 	height:50%;
@@ -91,21 +92,26 @@
 	line-height:0vh;
 }
 .bar-light #button1 {
-    width: 20%;
+	padding:3vh;
+    width:20%;
     background-color: black;
     font-weight: bold;
     color: white;
-    font-size: smaller;
+    font-size: small;
     
 }
+
 .bar-footer {
     position:fixed;
     padding: 0px;
     marigin: auto;
-    bottom:auto;
     height:10%;
     overflow:scroll;
+    bottom:0;
+    overflow-x:auto;
+    overflow-y:false;
 }
+
 #product-display-row {
     padding: auto;
     width: 100%;
@@ -117,11 +123,13 @@
     font-size: 1.5vh;
     position:relative;
     border: solid;
-    width: 50%;
+    width: 33%;
     height: 33%;
     background: black;
-    color:white;    
+    color:white;
+    
 }
+
 
 #product-display-row>#product-image{
     float: right;
@@ -180,6 +188,11 @@
     border-collapse:initial;
     
 }
+.product-billing-tableScroll{
+	overflow-y:auto;
+	height:80%;
+	
+}
 tbody{
     overflow-y: auto;    /* Trigger vertical scroll    */
     overflow-x: hidden;
@@ -228,7 +241,6 @@ body {
 #product-slide{
 	height:20%;
 }
-
 #model-view{
      top: 0; */
      right: 20%; */
@@ -237,6 +249,7 @@ body {
     min-height: 300px;
     width:75%;
     height:75%;
+
 }
 #holdModal {
 	width:90%;
@@ -255,4 +268,19 @@ body {
 .holdDiv div.card {
 	width:50%;
 	height:96%;
+  
+}
+#quantity-close{
+
+color:black;
+	
+}
+
+
+.modal-backdrop-bg{
+	background-color:rgba(204, 204, 204, 0.01);
+}
+ .modal-open .modal-backdrop {
+    /* pointer-events: auto; */
+    pointer-events: none;
 }

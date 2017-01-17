@@ -49,6 +49,7 @@
                                     <span>{{typedCode}}</span>
                                 </td>
                                 <td>
+                                <span>{{typedCode*newProduct.unitPrice}}</span>
                                 </td>
                             
                             </tr>
@@ -65,12 +66,14 @@
             </div>
 
             <div id="productCategory">
-                <div class="col-70" id="product-display">
+                <div class="col-70" id="product-display" onscroll="myFunction=true">
 
                     <div id="product-display-col1" ng-click="openModal(Product)" ng-repeat="Product in prodCat">
 
-                        <div id="product-name" align="left">
-                            <p style="font-weight:bolder;text-transform: uppercase;padding:auto;margin:auto;position:absolute;">{{Product.name}}{{Product.productId}}</p>
+
+                        <div id="product-name" align="left" >
+                            <p style="font-weight:bolder;text-transform: uppercase;padding:2vh;margin:auto;position:absolute;font-size:small;">{{Product.name}}{{Product.productId}}</p>
+
                         </div>
 
                         <div id="product-image" align="right">
@@ -107,12 +110,15 @@
             </div>
         </div>
 
-        <div class="bar bar-footer bar-light " id="footer">
+        <div class="bar bar-footer bar-light " id="footer" >
+        
             <button class="button" id="button1" ng-click="cancel(productArr,product)">CANCEL</button>
             <button class="button" id="button1">RECEIPT</button>
             <button class="button" id="button1" ng-click="void()">VOID</button>
             <button class="button" id="button1">PAYMENT</button>
             <button class="button" id="button1" ng-click="holdItems()">HOLD</button>
+
         </div>
+         
     </ion-content>
 </ion-view>

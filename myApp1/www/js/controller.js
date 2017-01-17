@@ -240,7 +240,7 @@
          $scope.index = null;
          //  $scope.quantity=0;
 
-         $scope.save = function(qty) {
+         $scope.save = function(product) {
              console.log($scope.typedCode);
              if($scope.typedCode==null){
                  console.log('Type Code Null')
@@ -248,8 +248,7 @@
              }else{
                 qty =$scope.typedCode;
              }
-             var product = $scope.newProduct;
-             console.log($scope.newProduct)
+             
              //  var qty =document.getElementById('quantity').value;
              console.log('I am in Save Function')
              console.log('Scope quanitity' + qty)
@@ -274,7 +273,20 @@
              //   document.getElementsByClassName("quantity1")[i].value=null;
              //   }
          }
-
+        var holdObj={};
+        $scope.hold=function(){
+          var holdValue = $scope.productArr;
+          console.log($scope.holdValue);
+          var d = new Date();
+          var time=d.getTime();
+          console.log(d)
+          holdObj[time]=$scope.productArr;
+           if($scope.productArr.length>0){
+           window.localStorage.setItem("holdObj",JSON.stringify(holdObj));
+         
+          }
+          console.log(localStorage.getItem("holdObj"));
+        }
          $scope.selectedProduct = function(product) {
              product.selected ? product.selected = false : product.selected = true;
          }
@@ -295,10 +307,10 @@
              $scope.totalPrice = null;
          }
          //Numeric keypad
-         $scope.typedCode = null;
+         $scope.typedCode = 1;
 
          $scope.keyPressed = function(keyCode) {
-
+         //console.log(keyCode)
              tempT = $scope.typedCode;
 
              switch (keyCode) {
@@ -336,6 +348,7 @@
 
          $scope.sendEscape = function() {
              $scope.typedCode = null;
+             console.log('I am in Escape')
              // TODO : sends the escape code
          };
 
@@ -354,6 +367,7 @@
          };
          $scope.remove = function() {
              $scope.typedCode = null;
+             console.log('I am in remove');
              // TODO start scaning the code and once it receives send to the socket
          };
 /*
@@ -399,33 +413,42 @@
              animation: 'slide-in-up'
          }).then(function(modal) {
              $scope.modal = modal;
+             console.log( $scope.modal)
          });
-
+ 
          $scope.openModal = function(product) {
-             console.log($scope.product);
-             console.log(product.name + 'Product')
-
-             $scope.newProduct = product;
-             console.log($scope.newProduct)
              $scope.modal.show();
              $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
+             $scope.typedCode=1
+             $scope.newProduct = product;
+           //  $scope.productAmount=$scope.newProduct.unitPrice*$scope.typedCode;
+             // console.log($scope.productAmount);
          };
+        
          $scope.closeModal = function() {
              $scope.newProduct={};
              $scope.typedCode=null;
+             console.log('I am in close Model')
              $scope.modal.hide();
          };
          // Cleanup the modal when we're done with it!
          $scope.$on('$destroy', function() {
-             $scope.modal.remove();
+             console.log('In am in destroy')
+            
+
          });
          // Execute action on hide modal
          $scope.$on('modal.hidden', function() {
              // Execute action
+             $scope.newProduct={};
+            
+            
          });
          // Execute action on remove modal
          $scope.$on('modal.removed', function() {
              // Execute action
+
+               
          });
 
          ionic.Platform.ready(function(){
