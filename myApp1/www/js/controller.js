@@ -200,8 +200,6 @@
                  if ($scope.Products[i].categary == catName) {
                      $scope.prodCat.push($scope.Products[i]);
                  }
-
-
              }
              console.log($scope.prodCat)
              console.log($scope.prodCat.length)
@@ -279,7 +277,7 @@
          }
 
          $scope.cancel = function() {
-             for (var i = 0; i < $scope.productArr.length; i++) {
+             for(var i = 0; i < $scope.productArr.length; i++) {
                  var bool = $scope.productArr[i].selected;
                  if (bool) {
                      $scope.totalPrice = $scope.totalPrice - $scope.productArr[i].productAmount;
