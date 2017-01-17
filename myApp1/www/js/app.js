@@ -22,7 +22,8 @@ angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard'])
     }
   });
 })
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+   $ionicConfigProvider.tabs.position('top');
   $stateProvider
 
   

@@ -10,10 +10,9 @@
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
 }
-#productCategory {
+#productsView {
 	width:70%;
 }
-
 
 #product{
     width: 100%;
@@ -46,23 +45,20 @@
 	display:inline-flex;
 	padding:auto;
 }
-#product-categary-next{
+#product-categary-next, #product-categary-previous{
 	width:6%;
-	background:black;
-}
-#product-categary-previous{
-	width:6%;
-	background:black;
 }
 #button-next{
 	min-width:0;
 	width:100%;
 	height:100%;
+	background:black;
 }
 #button-previous{
 	min-width:0;
 	width:100%;
 	height:100%;
+	background:black;
 }
 #product-categary-buttons{
 	width:88%;
@@ -251,36 +247,40 @@ body {
     height:75%;
 
 }
-#holdModal {
-	width:90%;
-	height:85%;
-	left:5%;
-	top:5%;
-
-}
-
-.holdDiv {
-	display:flex;
-	flex-direction:row;
-	height:100%;
+#recallModal {
 	width:100%;
+	height:90%;
+	top:0vh;
+	left:0vh;
+
 }
-.holdDiv div.card {
-	width:50%;
-	height:96%;
+
+#recallModal button .icon{
   
 }
+
+.recallTabs {
+  	width:85%;
+	height:80%;
+	left:6%;
+	top:10%;
+} 
+
 #quantity-close{
 
 color:black;
 	
 }
 
-
-.modal-backdrop-bg{
+ .modal-backdrop-bg{
 	background-color:rgba(204, 204, 204, 0.01);
-}
+} 
  .modal-open .modal-backdrop {
     /* pointer-events: auto; */
     pointer-events: none;
+}
+
+.button-right {
+	position:absolute;
+	right:1vh;
 }

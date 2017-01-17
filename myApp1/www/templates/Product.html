@@ -12,7 +12,7 @@
                 <button ng-show="scrollTopBtn" ng-click="scrollTop()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:25%;border-radius:50%;width:5vh;height:5vh;"><i style="font-size:3vh;" class="icon ion-chevron-up"></i></button>
                 <button ng-show="scrollBottomBtn" ng-click="scrollBottom()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:58%;border-radius:50%;width:5vh;height:5vh;"><i style="font-size:3vh;" class="icon ion-chevron-down"></i></button>
                     
-                 <div class="card" style="height:68%">
+                 <div class="card" style="height:66%">
                       <table style="width:100%;color:black;font-weight:bolder; text-transform: uppercase;">
                             <tr style="text-align:center;">
                                 <th>
@@ -58,18 +58,24 @@
 
                      </ion-scroll>  
                   </div> 
-                   <div class="card" style="padding:1vh;height:17%">
-                       <p style="font-size:18px;color:black;">Total Amount: {{}}</p>
-                       <p style="font-size:18px;color:black;">Remaining: {{}}</p> 
+                   <div class="card" style="padding:1vh;height:19%">
+                       <p style="color:black;">Cost: {{}}</p>
+                       <p style="color:black;">service Tax: {{}}</p>
+                       <hr/>
+                       <p style="color:black;">Total: {{}}</p>
+                       <p style="color:black;">Paid Amount: {{}}</p>
+                       <p style="color:black;">Returned Change: {{}}</p>
                     </div>    
                 </div>
             </div>
 
-            <div id="productCategory">
-                <div class="col-70" id="product-display" onscroll="myFunction=true">
+            <button ng-show="true" ng-click="scrollSide()" style="background:black;opacity:0.6;border:0px;position:fixed;z-index:2;right:3%;top:33%;border-radius:50%;width:9vh;height:9vh;"><i style="font-size:6vh;color:white;" class="icon ion-chevron-right"></i></button>  
+
+            <div id="productsView">
+              
+                <div class="col-70" id="product-display">
 
                     <div id="product-display-col1" ng-click="openModal(Product)" ng-repeat="Product in prodCat">
-
 
                         <div id="product-name" align="left" >
                             <p style="font-weight:bolder;text-transform: uppercase;padding:2vh;margin:auto;position:absolute;font-size:small;">{{Product.name}}{{Product.productId}}</p>
@@ -84,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> 
 
                 <div id="product-categary">
 
@@ -117,6 +123,7 @@
             <button class="button" id="button1" ng-click="void()">VOID</button>
             <button class="button" id="button1">PAYMENT</button>
             <button class="button" id="button1" ng-click="holdItems()">HOLD</button>
+            <button class="button" id="button1" ng-click="recallItems()">RECALL</button>
 
         </div>
          

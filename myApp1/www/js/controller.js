@@ -273,20 +273,7 @@
              //   document.getElementsByClassName("quantity1")[i].value=null;
              //   }
          }
-        var holdObj={};
-        $scope.hold=function(){
-          var holdValue = $scope.productArr;
-          console.log($scope.holdValue);
-          var d = new Date();
-          var time=d.getTime();
-          console.log(d)
-          holdObj[time]=$scope.productArr;
-           if($scope.productArr.length>0){
-           window.localStorage.setItem("holdObj",JSON.stringify(holdObj));
-         
-          }
-          console.log(localStorage.getItem("holdObj"));
-        }
+      
          $scope.selectedProduct = function(product) {
              product.selected ? product.selected = false : product.selected = true;
          }
@@ -346,11 +333,6 @@
              }
          };
 
-         $scope.sendEscape = function() {
-             $scope.typedCode = null;
-             console.log('I am in Escape')
-             // TODO : sends the escape code
-         };
 
          $scope.sendTheCode = function() {
              if (/^\d+$/.test(tempT)) {
@@ -360,11 +342,7 @@
                  $scope.typedCode = null;
              }
          };
-
-         $scope.scanCode = function() {
-             $scope.typedCode = null;
-             // TODO start scaning the code and once it receives send to the socket
-         };
+ 
          $scope.remove = function() {
              $scope.typedCode = null;
              console.log('I am in remove');
@@ -452,55 +430,80 @@
          });
 
          ionic.Platform.ready(function(){
+        //   window.localStorage.removeItem("holdEvents");
             var itemsJsonObj = window.localStorage.getItem('holdEvents', "");
             if(itemsJsonObj == undefined){
               window.localStorage.setItem('holdEvents', "");  
             }
          })
 
-
-         $ionicModal.fromTemplateUrl('templates/holdModal.html', {
+         $ionicModal.fromTemplateUrl('templates/recallModal.html', {
              scope: $scope,
              animation: 'slide-in-up'
          }).then(function(modal) {
-             $scope.holdModal = modal;
+             $scope.recallModal = modal;
          });
-         $scope.openHoldModal = function(product) {
-            $scope.holdModal.show();
+         $scope.openRecallModal = function(product) {
+            $scope.recallModal.show();
          }
-         $scope.closeModal = function() {
-             $scope.holdModal.hide();
+         $scope.closeRecallModal = function() {
+             $scope.recallModal.hide();
          }; 
 
           $scope.holdItems = function() {
-          if($scope.productArr.length != 0) {  
+          if($scope.productArr.length != 0) {
+            var itemsDetails = {};          
             var d = new Date();
+
+            console.log("--"+d.toString().substring(4, 24)+"--");
             var id = d.getTime();
             console.log(id);
 
             var itemsJsonObj = window.localStorage.getItem('holdEvents');
-            console.log(itemsJsonObj);
+       //     console.log(itemsJsonObj);
             if(itemsJsonObj != ""){
                itemsJsonObj = JSON.parse(itemsJsonObj); 
             }else {
                itemsJsonObj = {};
             } 
 
-            itemsJsonObj[id] = $scope.productArr;
+            itemsDetails.date = d.toString().substring(4, 24); 
+            itemsDetails.products = $scope.productArr;
+            itemsDetails.totalPrice = $scope.totalPrice;
+
+            itemsJsonObj[id] = itemsDetails;
             
             console.log(itemsJsonObj);
             window.localStorage.setItem('holdEvents', JSON.stringify(itemsJsonObj));
-            $scope.holdItemObj = itemsJsonObj;
             $scope.productArr = [];
-          }
-
-           $scope.openHoldModal();
-             
+            $scope.totalPrice = null;
+          }  
          } 
+         
+         $scope.recallItems = function(){
+            var itemsJsonObj = window.localStorage.getItem('holdEvents');
+            console.log(itemsJsonObj);
+            if(itemsJsonObj != ""){
+               itemsJsonObj = JSON.parse(itemsJsonObj); 
+            }else {
+               itemsJsonObj = {};
+            }
+            $scope.holdItemObj = itemsJsonObj;     
+            $scope.openRecallModal();
+         }
 
-         $scope.unHold = function(holdValue){
-             $scope.closeModal();
-             $scope.productArr = holdValue;
+         $scope.unHold = function(holdKey, holdValue){
+             $scope.recallModal.hide();
+             $scope.productArr = holdValue.products;
+             $scope.totalPrice = holdValue.totalPrice;
+
+             var itemsJsonObj = window.localStorage.getItem('holdEvents');
+             console.log(itemsJsonObj);
+             if(itemsJsonObj != ""){
+                itemsJsonObj = JSON.parse(itemsJsonObj);
+                delete itemsJsonObj[holdKey]; 
+                window.localStorage.setItem('holdEvents', JSON.stringify(itemsJsonObj));
+             }
          }
 
          $scope.currentSlide = 0;  
