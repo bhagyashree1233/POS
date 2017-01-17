@@ -262,7 +262,7 @@
            window.localStorage.setItem("holdObj",JSON.stringify(holdObj));
          
           }
-          console.log(localStorage.getItem("holdObj"));
+         var  =localStorage.getItem("holdObj");
         }
          $scope.selectedProduct = function(product) {
              product.selected ? product.selected = false : product.selected = true;
