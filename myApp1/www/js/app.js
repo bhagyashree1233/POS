@@ -29,7 +29,7 @@ angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard'])
   
   .state('Test1', {
     url: '/Test',
-    templateUrl: 'templates/Test.html',
+    templateUrl: 'templates/Keypad.html',
     
   })
     .state('page1', {

@@ -3,14 +3,15 @@
     <ion-list>
      <ion-item class="sam-input-item">
        <span class="inputview" ng-model="quantity1">{{typedCode}}
-      <a ng-click="closeModal()"  id="quantity-close"class="icon-right ion-close-circled"></a>
+      <a ng-click="closeNumericModal()"  id="quantity-close"class="icon-right ion-close-circled"></a>
        </span>
      </ion-item>
     </ion-list>
     <div class="button-bar sam-cust-bar">
 
         <a ng-click="keyPressed(-3)" class="button button-block button-dark icon-left ion-backspace">Del</a>
-         <a ng-click="closeModal()" class="button button-block button-assertive icon-left ion-backspace">Close</a>
+         <a ng-click="closeNumericModal()" class="button button-block button-assertive icon-left ion-backspace">Close</a>
+        <a ng-click="keyPressed(-2)" class="button button-block button-dark icon-left ion-backspace">ClearAll</a>
 
     </div>
     <div class="button-bar sam-cust-bar">

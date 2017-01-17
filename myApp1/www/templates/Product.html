@@ -57,6 +57,7 @@
 
                      </ion-scroll>  
                   </div> 
+
                    <div class="card" style="padding:1vh;color:black;height:19%">
                        <p>Cost: {{}}</p>
                        <p>service Tax: {{}}</p>
@@ -64,17 +65,22 @@
                        <p>Total: {{}}</p>
                        <p>Paid Amount: {{}}</p>
                        <p>Returned Change: {{}}</p>
+
                     </div>    
                 </div>
             </div>
 
             <button ng-show="true" ng-click="scrollSide()" style="background:black;opacity:0.6;border:0px;position:fixed;z-index:2;right:3%;top:33%;border-radius:50%;width:9vh;height:9vh;"><i style="font-size:6vh;color:white;" class="icon ion-chevron-right"></i></button>  
 
+
+                    <div id="product-display-col1" ng-click="openNumericModal(Product)" ng-repeat="Product in prodCat">
+
             <div id="productsView">
               
                 <div class="col-70" id="product-display">
 
-                    <div id="product-display-col1" ng-click="openModal(Product)" ng-repeat="Product in prodCat">
+
+                    
 
                         <div id="product-name" align="left" >
                             <p style="font-weight:bolder;text-transform: uppercase;padding:2vh;margin:auto;position:absolute;font-size:small;">{{Product.name}}{{Product.productId}}</p>
@@ -120,7 +126,7 @@
             <button class="button" id="button1" ng-click="cancel(productArr,product)">CANCEL</button>
             <button class="button" id="button1">RECEIPT</button>
             <button class="button" id="button1" ng-click="void()">VOID</button>
-            <button class="button" id="button1">PAYMENT</button>
+            <button class="button" id="button1" ng-click="openPaymentModal()">PAYMENT</button>
             <button class="button" id="button1" ng-click="holdItems()">HOLD</button>
             <button class="button" id="button1" ng-click="recallItems()">RECALL</button>
 
