@@ -15,7 +15,7 @@
                     <button ng-show="scrollBottomBtn" ng-click="scrollBottom()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:58%;border-radius:50%;width:5vh;height:5vh;">
                         <i style="font-size:3vh;" class="icon ion-chevron-down"></i>
                     </button>
-                    <div class="card" style="height:66%">
+                    <div class="card" style="height:60%">
                         <table style="width:100%;color:black;font-weight:bolder; text-transform: uppercase;">
                             <tr style="text-align:center;">
                                 <th>
@@ -56,7 +56,7 @@
                             </table>
                         </ion-scroll>
                     </div>
-                    <div class="card" style="padding:1vh;height:17%">
+                    <div class="card" style="padding:1vh;height:23%">
                      <p style="font-size:18px;color:black;">Total Amount:{{totalPrice}}</p>
                        <p style="font-size:18px;color:black;">Service Tax(5%):{{serviceTax*totalPrice}}</p>
                        <p style="font-size:18px;color:black;">Payable Amount: {{totalPrice+serviceTax*totalPrice}}</p>
@@ -115,9 +115,8 @@
         <div class="bar bar-footer bar-light " id="footer" >
         
             <button class="button" id="button1" ng-click="cancel(productArr,product)">CANCEL</button>
-            <button class="button" id="button1">RECEIPT</button>
             <button class="button" id="button1" ng-click="void()">VOID</button>
-            <button class="button" id="button1" ng-click="openPaymentModal()">PAYMENT</button>
+            <button class="button" id="buttonPayment" ng-click="openPaymentModal()">PAYMENT</button>
             <button class="button" id="button1" ng-click="holdItems()">HOLD</button>
             <button class="button" id="button1" ng-click="recallItems()">RECALL</button>
 

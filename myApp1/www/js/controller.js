@@ -398,7 +398,7 @@
          //Numeric keypad for Payment Start
              $scope.typedCode = null;
          }
-          $scope.typedAmount=null;
+          $scope.typedAmount="";
          $scope.keyPressedAmount = function(keyCode) {
               
              //console.log(keyCode)
@@ -507,6 +507,7 @@
              console.log('I am in openModel')
              $scope.typedAmount = null;
              $scope.paymentModal.show();
+             $scope.receiptBtnShow=true;
              $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
              //  $scope.productAmount=$scope.newProduct.unitPrice*$scope.typedCode;
              // console.log($scope.productAmount);
@@ -514,21 +515,22 @@
 
          $scope.closePaymentModal = function() {
              console.log('I am in close Model')
+             $scope.typedAmount = "";
              $scope.paymentModal.hide();
-             $scope.typedAmount = null;
+             
          };
 
 
          // Payment model end
          $scope.paidAmount=function(typedAmount){
-             console.log($scope.totalPrice)
-            console.log($scope.serviceTax*$scope.totalPrice)
-           console.log($scope.totalPrice+$scope.serviceTax*$scope.totalPrice)
-            
-            $scope.typedAmount=typedAmount;
-            $scope.Balence=$scope.typedAmount-$scope.totalPrice+$scope.serviceTax*$scope.totalPrice;       
-             
-             $scope.paymentModal.hide();
+            var typedAmount=parseInt($scope.typedAmount);
+            $scope.Balence=typedAmount-($scope.totalPrice+($scope.serviceTax*$scope.totalPrice));       
+            // document.getElementById("buttonPayment").disabled = true;
+            $scope.enterBtn=true;
+             $scope.receiptBtnShow=false;
+         }
+         $scope.receipt=function(){
+           document.getElementById("buttonPayment").disabled = true;          
          }
          // Quantity model start
          $ionicModal.fromTemplateUrl('templates/numericKeypad.html', {
