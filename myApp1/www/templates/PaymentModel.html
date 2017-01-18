@@ -24,14 +24,14 @@
             <a ng-click="keyPressedAmount(9)" class="button button-block button-positive">9</a>
         </div>
         <div class="button-bar sam-cust-bar">
-            <a  ng-click="paidAmount(typedAmount)" class="button button-block button-assertive icon-left ion-checkmark"  ng-disabled="enterBtn" >Enter</a>
+            <a  ng-click="paidAmount(typedAmount)" class="button button-block button-assertive icon-left ion-checkmark" ng-if="typedAmount>=payableAmount" ng-disabled="enterBtn" >Enter</a>
             <a class="button button-block button-stable" disabled>&nbsp;</a>
             <a ng-click="keyPressedAmount(0)" class="button button-block button-positive">0</a>
         </div>
         <div class="button-bar sam-cust-bar">
 
             <a ng-click="keyPressedAmount(-3)" class="button button-block button-dark icon-left ion-backspace">Del</a>
-             <a ng-click="closePaymentModal()" class="button button-block button-assertive " id="receiptBtn" ng-disabled="receiptBtnShow">Reciept</a>
+             <a ng-click="receipt()" class="button button-block button-assertive " id="receiptBtn" ng-disabled="receiptBtnShow">Reciept</a>
             <a ng-click="closePaymentModal()" class="button button-block button-assertive icon-left ion-backspace">Close</a>
             <a ng-click="keyPressedAmount(-2)" class="button button-block button-dark icon-left ion-backspace">ClearAll</a>
 

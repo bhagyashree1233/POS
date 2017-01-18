@@ -506,6 +506,7 @@
          $scope.openPaymentModal = function() {
              console.log('I am in openModel')
              $scope.typedAmount = null;
+             $scope.payableAmount = $scope.totalPrice + ($scope.serviceTax * $scope.totalPrice);
              $scope.paymentModal.show();
              $scope.receiptBtnShow=true;
              $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
@@ -513,24 +514,62 @@
              // console.log($scope.productAmount);
          };
 
+         
          $scope.closePaymentModal = function() {
              console.log('I am in close Model')
              $scope.typedAmount = "";
              $scope.paymentModal.hide();
-             
          };
-
 
          // Payment model end
          $scope.paidAmount=function(typedAmount){
             var typedAmount=parseInt($scope.typedAmount);
-            $scope.Balence=typedAmount-($scope.totalPrice+($scope.serviceTax*$scope.totalPrice));       
+            $scope.paidAmount = typedAmount;
+            $scope.Balence=typedAmount-$scope.payableAmount;
             // document.getElementById("buttonPayment").disabled = true;
             $scope.enterBtn=true;
-             $scope.receiptBtnShow=false;
+            $scope.receiptBtnShow=false;
          }
          $scope.receipt=function(){
-           document.getElementById("buttonPayment").disabled = true;          
+           $scope.paymentModal.hide();          
+         //  document.getElementById("buttonPayment").disabled = true; 
+
+           var transactionJsonObj = window.localStorage.getItem('transactionEvents');
+            console.log(transactionJsonObj);
+            if(transactionJsonObj != ""){
+               transactionJsonObj = JSON.parse(transactionJsonObj); 
+            }else {
+               transactionJsonObj = {};
+            }   
+
+            console.log(transactionJsonObj);
+
+           if(transactionJsonObj.lastRecieptId == undefined){
+              transactionJsonObj.lastRecieptId = "100";           
+           }
+
+           var transactionObj = {};
+   
+           transactionObj.date = (new Date()).toString().substring(4, 24);;     
+           transactionObj.recieptId = parseInt(transactionJsonObj.lastRecieptId) + 1;     
+           transactionObj.products = $scope.productArr;
+           transactionObj.productsAmount = $scope.totalPrice;
+           transactionObj.serviceTax = $scope.serviceTax * $scope.totalPrice;
+           transactionObj.totalAmount = $scope.payableAmount;
+           transactionObj.paidAmount = $scope.typedAmount;
+           transactionObj.balanceAmount = $scope.Balence; 
+                  
+           transactionJsonObj[transactionObj.recieptId] = transactionObj;       
+           transactionJsonObj.lastRecieptId = (transactionObj.recieptId).toString(); 
+
+           window.localStorage.setItem('transactionEvents', JSON.stringify(transactionJsonObj));   
+           console.log(transactionJsonObj);
+
+           $scope.productArr = []; 
+           $scope.totalPrice = null; 
+           $scope.payableAmount = null;
+           $scope.typedAmount = null;
+           $scope.Balence = null;
          }
          // Quantity model start
          $ionicModal.fromTemplateUrl('templates/numericKeypad.html', {
@@ -561,6 +600,12 @@
             var itemsJsonObj = window.localStorage.getItem('holdEvents', "");
             if(itemsJsonObj == undefined){
               window.localStorage.setItem('holdEvents', "");  
+            }
+           //  window.localStorage.setItem('transactionEvents', "");    
+            var transactionsJsonObj = window.localStorage.getItem('transactionEvents', "");
+            console.log(transactionsJsonObj);
+            if(transactionsJsonObj == undefined){
+              window.localStorage.setItem('transactionEvents', "");  
             }
          })
 
@@ -615,7 +660,18 @@
             }else {
                itemsJsonObj = {};
             }
-            $scope.holdItemObj = itemsJsonObj;     
+            $scope.holdItemObj = itemsJsonObj; 
+
+            var transactionJsonObj = window.localStorage.getItem('transactionEvents');
+            console.log(transactionJsonObj);
+            if(transactionJsonObj != ""){
+               transactionJsonObj = JSON.parse(transactionJsonObj); 
+            }else {
+               transactionJsonObj = {};
+            }
+
+            $scope.transactionObj = transactionJsonObj;
+                
             $scope.openRecallModal();
          }
 

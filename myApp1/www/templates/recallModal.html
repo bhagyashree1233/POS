@@ -13,8 +13,9 @@
     <ion-view>
      <ion-content>
       <ion-list>
-       <ion-item>
-        <span style="color:black;">Transactions</span>
+       <ion-item ng-repeat="(key, value) in transactionObj" ng-click="">
+        <span ng-if="key != 'lastRecieptId'">{{key}}</span>
+        <span style="float:right;">{{value.date}}</span>
        </ion-item>
       </ion-list>  
      </ion-content>

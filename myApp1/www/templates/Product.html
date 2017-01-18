@@ -62,8 +62,9 @@
                        <p style="font-size:18px;color:black;">Service Tax(5%):{{serviceTax*totalPrice}}</p>
                        <p style="font-size:18px;color:black;">Payable Amount: {{totalPrice+serviceTax*totalPrice}}</p>
                        <p style="font-size:18px;color:black;">Paid Amount: {{typedAmount}}</p>
-                       <p style="font-size:18px;color:black;"ng-if="typedAmount>0">Balence: {{Balence}}</p> 
+                       <p style="font-size:18px;color:black;"ng-if="typedAmount>0">Balence: {{typedAmount-(totalPrice+serviceTax*totalPrice)}}</p> 
                     </div>   
+                 </div>   
             </div>
             <button ng-show="true" ng-click="scrollSide()" style="background:black;opacity:0.6;border:0px;position:fixed;z-index:2;right:3%;top:33%;border-radius:50%;width:9vh;height:9vh;"><i style="font-size:6vh;color:white;" class="icon ion-chevron-right"></i></button>  
 
@@ -116,7 +117,7 @@
         
             <button class="button" id="button1" ng-click="cancel(productArr,product)">CANCEL</button>
             <button class="button" id="button1" ng-click="void()">VOID</button>
-            <button class="button" id="buttonPayment" ng-click="openPaymentModal()">PAYMENT</button>
+            <button class="button" ng-click="openPaymentModal()">PAYMENT</button>
             <button class="button" id="button1" ng-click="holdItems()">HOLD</button>
             <button class="button" id="button1" ng-click="recallItems()">RECALL</button>
 
