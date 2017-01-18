@@ -396,8 +396,9 @@
          $scope.removeAllQ = function() {
 
          //Numeric keypad for Payment Start
-             $scope.typedAmount = null;
-
+             $scope.typedCode = null;
+         }
+          $scope.typedAmount=null;
          $scope.keyPressedAmount = function(keyCode) {
               
              //console.log(keyCode)
@@ -562,54 +563,14 @@
          })
 
          $ionicModal.fromTemplateUrl('templates/recallModal.html', {
->>>>>>> 0f0d11aaf4439d7b885d15d0666e686ef5fdbd00
              scope: $scope,
              animation: 'slide-in-up'
          }).then(function(modal) {
              $scope.recallModal = modal;
-         });
-<<<<<<< HEAD
-         $scope.openHoldModal = function(product) {
-             $scope.holdModal.show();
-         }
-         $scope.closeModal = function() {
-             $scope.holdModal.hide();
-         };
-
-         //Hold  Modal End
-         $scope.holdItems = function() {
-             if ($scope.productArr.length != 0) {
-                 var d = new Date();
-                 var id = d.getTime();
-                 console.log(id);
-
-                 var itemsJsonObj = window.localStorage.getItem('holdEvents');
-                 console.log(itemsJsonObj);
-                 if (itemsJsonObj != "") {
-                     itemsJsonObj = JSON.parse(itemsJsonObj);
-                 } else {
-                     itemsJsonObj = {};
-                 }
-
-                 itemsJsonObj[id] = $scope.productArr;
-
-                 console.log(itemsJsonObj);
-                 window.localStorage.setItem('holdEvents', JSON.stringify(itemsJsonObj));
-                 $scope.holdItemObj = itemsJsonObj;
-                 $scope.productArr = [];
-             }
-
-             $scope.openHoldModal();
-
-         }
-
-         $scope.unHold = function(holdValue) {
-             $scope.closeModal();
-             $scope.productArr = holdValue;
-=======
-         $scope.openRecallModal = function(product) {
+         });        $scope.openRecallModal = function(product) {
             $scope.recallModal.show();
          }
+
          $scope.closeRecallModal = function() {
              $scope.recallModal.hide();
          }; 
@@ -668,7 +629,7 @@
                 delete itemsJsonObj[holdKey]; 
                 window.localStorage.setItem('holdEvents', JSON.stringify(itemsJsonObj));
              }
->>>>>>> 0f0d11aaf4439d7b885d15d0666e686ef5fdbd00
+
          }
 
          $scope.currentSlide = 0;
@@ -705,4 +666,5 @@
          };
          //Slide Ends
 
+        
      }])
