@@ -77,7 +77,7 @@
     min-height: 0vh;
     line-height: 0vh;
 }
-.bar-light #button1 {
+.bar-light .button {
     padding: 3vh;
     width: 20%;
     background-color: black;

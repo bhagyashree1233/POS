@@ -56,14 +56,14 @@
                             </table>
                         </ion-scroll>
                     </div>
-                    <div class="card" style="padding:1vh;color:black;height:23%">
-                       <p>Total Amount:{{totalPrice}}</p>
-                       <p>Service Tax(5%):{{serviceTax*totalPrice}}</p>
-                       <p>Payable Amount: {{totalPrice+serviceTax*totalPrice}}</p>
-                       <p>Paid Amount: {{typedAmount}}</p>
-                       <p ng-if="typedAmount>0">Balance: {{Balence}}</p> 
+
+                    <div class="card" style="padding:1vh;height:23%">
+                     <p style="font-size:18px;color:black;">Total Amount:{{totalPrice}}</p>
+                       <p style="font-size:18px;color:black;">Service Tax(5%):{{serviceTax*totalPrice}}</p>
+                       <p style="font-size:18px;color:black;">Payable Amount: {{totalPrice+serviceTax*totalPrice}}</p>
+                       <p style="font-size:18px;color:black;">Paid Amount: {{typedAmount}}</p>
+                       <p style="font-size:18px;color:black;"ng-if="typedAmount>0">Balence: {{Balence}}</p> 
                     </div>   
-                </div>
             </div>
             <button ng-show="true" ng-click="scrollSide()" style="background:black;opacity:0.6;border:0px;position:fixed;z-index:2;right:3%;top:33%;border-radius:50%;width:9vh;height:9vh;"><i style="font-size:6vh;color:white;" class="icon ion-chevron-right"></i></button>  
 
@@ -115,9 +115,8 @@
         <div class="bar bar-footer bar-light " id="footer" >
         
             <button class="button" id="button1" ng-click="cancel(productArr,product)">CANCEL</button>
-            <button class="button" id="button1">RECEIPT</button>
             <button class="button" id="button1" ng-click="void()">VOID</button>
-            <button class="button" id="button1" ng-click="openPaymentModal()">PAYMENT</button>
+            <button class="button" id="buttonPayment" ng-click="openPaymentModal()">PAYMENT</button>
             <button class="button" id="button1" ng-click="holdItems()">HOLD</button>
             <button class="button" id="button1" ng-click="recallItems()">RECALL</button>
 
