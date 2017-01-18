@@ -1,0 +1,53 @@
+<ion-view view-title="Inventory" ng-controller="inventoryCtrl">
+ <ion-content id="inventoryContentDiv">
+  <div class="list">
+   <label class="item item-input">
+     <span class="input-label">Item Name :</span>
+     <input type="text">
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Product Unit :</span>
+     <ion-radio ng-model="unitChoice" ng-value="kgs">Kgs</ion-radio>
+     <ion-radio ng-model="unitChoice" ng-value="litres">Litres</ion-radio>
+     <ion-radio ng-model="unitChoice" ng-value="pieces">pieces</ion-radio>
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Sell Unit Price :</span>
+     <input type="number">
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Tax (%):</span>
+     <input type="number">
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Items in-stock :</span>
+     <input type="number">
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Product Id :</span>
+     <input type="text">
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Discount (%):</span>
+     <input type="text">
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Catogory :</span>
+     <input type="text">
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Image :</span>
+     <button class="button" ng-click="openCamera()">Camera</button>
+   </label>
+   
+   <label class="item item-input">
+     <span class="input-label"></span>
+     <button class="button" ng-click="openGallery()">Gallery</button>
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Incoming Price :</span>
+     <input type="number">
+   </label>
+  </div>
+ </ion-content>
+</ion-view>

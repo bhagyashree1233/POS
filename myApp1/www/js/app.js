@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard'])
+angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard', 'ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -32,10 +32,16 @@ angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard'])
     templateUrl: 'templates/Keypad.html',
     
   })
+
+  .state('inventory', {
+    url: '/inventory',
+    templateUrl: 'templates/inventoryPage.html',
+    
+  })
     .state('page1', {
     url: '/page1',
     templateUrl: 'templates/Product.html',    
   })
 
- $urlRouterProvider.otherwise('/page1');
+ $urlRouterProvider.otherwise('/inventory');
 });

@@ -279,3 +279,8 @@ color:black;
 
 
 }
+
+#inventoryContentDiv {
+	width:90%;
+	margin:auto;
+}
