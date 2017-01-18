@@ -398,7 +398,7 @@
          //Numeric keypad for Payment Start
              $scope.typedCode = null;
          }
-          $scope.typedAmount=null;
+          $scope.typedAmount="";
          $scope.keyPressedAmount = function(keyCode) {
               
              //console.log(keyCode)
@@ -439,22 +439,22 @@
                  // TODO : sends the entered code
                  console.log('entered code is ' + $scope.typedCode + " " +
                      $scope.typedAmount.length);
-                 $scope.typedAmount = null;
+                 $scope.typedAmount = "";
              }
          };
 
          $scope.removeA = function() {
              console.log($scope.typedAmount)
-             if ($scope.typedAmount > 0) {
+             if ($scope.typedAmount.length > 0) {
                  $scope.typedAmount = $scope.typedAmount.slice(0, -1);
              } else {
-                 $scope.typedAmount = null;
+                 $scope.typedAmount = "";
              }
              console.log('I am in remove');
              // TODO start scaning the code and once it receives send to the socket
          };
          $scope.removeAllA = function() {
-             $scope.typedAmount = null;
+             $scope.typedAmount = "";
          }
            
          //Numeric keypad for Quantity Start
@@ -495,7 +495,7 @@
           }
 
            //Numeric keypad ending*/
-         // Payment model start
+         
          $ionicModal.fromTemplateUrl('templates/PaymentModel.html', {
              scope: $scope,
              animation: 'slide-in-up'

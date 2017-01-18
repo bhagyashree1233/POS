@@ -15,7 +15,7 @@
                     <button ng-show="scrollBottomBtn" ng-click="scrollBottom()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:58%;border-radius:50%;width:5vh;height:5vh;">
                         <i style="font-size:3vh;" class="icon ion-chevron-down"></i>
                     </button>
-                    <div class="card" style="height:66%">
+                    <div class="card" style="height:60%">
                         <table style="width:100%;color:black;font-weight:bolder; text-transform: uppercase;">
                             <tr style="text-align:center;">
                                 <th>
@@ -56,12 +56,12 @@
                             </table>
                         </ion-scroll>
                     </div>
-                    <div class="card" style="padding:1vh;height:17%">
-                     <p style="font-size:18px;color:black;">Total Amount:{{totalPrice}}</p>
-                       <p style="font-size:18px;color:black;">Service Tax(5%):{{serviceTax*totalPrice}}</p>
-                       <p style="font-size:18px;color:black;">Payable Amount: {{totalPrice+serviceTax*totalPrice}}</p>
-                       <p style="font-size:18px;color:black;">Paid Amount: {{typedAmount}}</p>
-                       <p style="font-size:18px;color:black;"ng-if="typedAmount>0">Balence: {{Balence}}</p> 
+                    <div class="card" style="padding:1vh;color:black;height:23%">
+                       <p>Total Amount:{{totalPrice}}</p>
+                       <p>Service Tax(5%):{{serviceTax*totalPrice}}</p>
+                       <p>Payable Amount: {{totalPrice+serviceTax*totalPrice}}</p>
+                       <p>Paid Amount: {{typedAmount}}</p>
+                       <p ng-if="typedAmount>0">Balance: {{Balence}}</p> 
                     </div>   
                 </div>
             </div>
