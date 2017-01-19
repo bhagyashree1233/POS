@@ -1,0 +1,61 @@
+<ion-view view="Printer Settings">
+<ion-content>
+<ion-list>
+<label class="item item-input">
+ <span class="input-label">Shop Name:</span>
+  <input type="text" class="printerSettingtext">
+</label>
+<label class="item item-input">
+ <span class="input-label">Shop Address:</span>
+  <input type="text" class="printerSettingtext">
+</label>
+<label class="item item-input">
+ <span class="input-label">TIN:</span>
+  <input type="text" class="printerSettingtext">
+</label>
+<label class="item item-input">
+ <span class="input-label">Telephone:</span>
+  <input type="text" class="printerSettingtext">
+</label>
+<label class="item item-input">
+ <span class="input-label">Wifi Password:</span>
+  <input type="text" class="printerSettingtext">
+</label>
+<label class="item item-input">
+ <span class="input-label">Greeting:</span>
+  <input type="text" class="printerSettingtext">
+</label>
+<label class="item item-input">
+ <span class="input-label">Notice:</span>
+  <input type="text" class="printerSettingtext">
+</label>
+<label class="item item-input">
+ <span class="input-label">Start Billing:</span>
+  <input type="text" class="printerSettingtext">
+</label>
+<label class="item item-input">
+ <span class="input-label">Token Number:</span>
+  <label class="toggle">
+   <input type="checkbox" ng-model="tokNum">
+   <div class="track">
+     <div class="handle"></div>
+   </div>
+</label>
+</label>
+<div ng-show="tokNum">
+<label class="item item-input">
+ <span class="input-label">Starting:</span>
+  <input type="text" class="printerSettingtext">
+</label>
+<label class="item item-input">
+ <span class="input-label">Reset After:</span>
+  <input type="text" class="printerSettingtext">
+</label>
+</div>
+<label class="item item-input">
+ <span class="input-label">Copies:</span>
+  <input type="number" class="printerSettingtext">
+</label>
+</ion-list>
+</ion-content>
+</ion-view>
