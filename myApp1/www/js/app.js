@@ -26,22 +26,37 @@ angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard', '
    $ionicConfigProvider.tabs.position('top');
   $stateProvider
 
+  .state('app', {
+    url: '/app',
+    abstract: true,
+    templateUrl: 'templates/menu.html'
+  })
+
+  .state('app.inventory', {
+    url: '/inventory',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/inventoryPage.html'
+      }
+    }
+    
+    
+  })
+    .state('app.product', {
+    url: '/product',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/Product.html'    
+      }
+    }
+    
+  })
   
   .state('Test1', {
     url: '/Test',
-    templateUrl: 'templates/Keypad.html',
-    
+    templateUrl: 'templates/Keypad.html',    
   })
 
-  .state('inventory', {
-    url: '/inventory',
-    templateUrl: 'templates/inventoryPage.html',
-    
-  })
-    .state('page1', {
-    url: '/page1',
-    templateUrl: 'templates/Product.html',    
-  })
-
- $urlRouterProvider.otherwise('/inventory');
+  
+ $urlRouterProvider.otherwise('/app/product');
 });
