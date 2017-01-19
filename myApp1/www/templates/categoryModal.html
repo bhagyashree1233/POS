@@ -1,0 +1,19 @@
+<ion-modal-view id="categaryModal">
+    <ion-content>
+        <div class="list">
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper">
+                    <input type="text" placeholder="Add New Category"></input>
+                </label>
+                <button class="button button-small">Add</button>
+            </div>
+        </div>
+        <div class="card">
+            <ion-list>
+                <ion-item style="color:black;" ng-click="onCategorySelect(categoryName)" ng-repeat="categoryName in categaryArr">
+                    <span>{{categoryName}}</span>
+                </ion-item>
+            </ion-list>
+        </div>
+    </ion-content>
+</ion-modal-view>
