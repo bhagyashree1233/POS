@@ -35,7 +35,8 @@ angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard', '
 
   .state('inventory', {
     url: '/inventory',
-    templateUrl: 'templates/inventoryPage.html',
+    templateUrl: 'templates/PaymentSettings.html',
+    controller:'paymentSettings'
     
   })
     .state('page1', {

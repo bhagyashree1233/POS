@@ -284,3 +284,26 @@ color:black;
 	width:90%;
 	margin:auto;
 }
+input.printerSettingtext{
+	border: 0.1vh solid #b2b2b2;
+	width:200px;
+}
+
+#currency{
+	width:55%;
+}
+#payment{
+    width:55%;
+}
+.pySttg.item-radio .item-content{
+    margin-left:5vh;
+}
+.pySttg.item-radio .ion-checkmark{
+	top:0;
+	left:0;
+	position:absolute;
+	width:10%;
+	border-radius:60%;
+	line-height:1vh;
+	color:black;
+}

@@ -622,7 +622,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
 }
 ]).controller("inventoryCtrl", function($scope, $cordovaCamera, $cordovaFile) {
     $scope.openCamera = function() {
-         console.log('camera opened..');
+        console.log('camera opened..');
         document.addEventListener("deviceready", function() {
             var options = {
                 quality: 50,
@@ -661,7 +661,6 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
                 $scope.galeryFileName = cordova.file.dataDirectory + sourceFileName;
                 console.log(cordova.file.dataDirectory);
                 console.log(sourceFileName);
-
                 console.log($scope.galeryFileName);
             }, function(err) {
                 console.log(err);
@@ -669,3 +668,20 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         }, false);
     }
 })
+.controller('printerSettings',function($scope){
+   $scope.printrSettings={};
+   $scope.savePrinterSettings=function(){
+    console.log($scope.printrSettings);  
+    document.getElementById("prinrSettings").reset();
+
+   }
+})
+.controller('paymentSettings',function($scope){
+    
+    $scope.pamentSetting={};
+      $scope.savePaymentSettings=function(){
+       console.log($scope.pamentSetting);  
+   }
+    
+})
+
