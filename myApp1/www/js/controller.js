@@ -1,4 +1,7 @@
-angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', function($scope, $rootScope, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
+angular.module('starter.controller', [])
+
+
+.controller('ProductCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', function($scope, $rootScope, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
     //    $rootScope.products = [];
     $rootScope.Products = [{
         productId: '1',
@@ -572,7 +575,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             $scope.totalPrice = null;
         }
     }
-    $scope.recallItems = function() {
+    $rootScope.recallItems = function() {
         var itemsJsonObj = window.localStorage.getItem('holdEvents');
         console.log(itemsJsonObj);
         if (itemsJsonObj != "") {
