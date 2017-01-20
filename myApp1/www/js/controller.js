@@ -707,9 +707,51 @@ angular.module('starter.controller', [])
     $scope.openCategoryModal = function() {
         $scope.categoryModal.show();
     }
-    //   $rootScope.categaryArr = ['DCPTO1','DCPTO2','DCPTO3','DCPTO4','DCPTO5','DCPTO6','DCPTO7','DCPTO8','DCPTO9','DCPT10','DCPT11','DCPT12','DCPT13','DCPT14','DCPT15'];
-    //   console.log($rootScope.categaryArr);
-}).controller('printerSettings', function($scope) {
+
+})
+.controller('printerSettings',function($scope){
+   $scope.printrSettings={};
+   $scope.savePrinterSettings=function(){
+    console.log($scope.printrSettings);  
+    document.getElementById("prinrSettings").reset();
+
+   }
+})
+.controller('paymentSettings',function($scope){
+    $scope.pamentSetting={cash:false,
+    master:false,
+    amex:false,
+    payCurncy:'',
+    payTM:false,
+    visa:false
+    };
+      $scope.savePaymentSettings=function(){
+       console.log($scope.pamentSetting); 
+       document.getElementById("payMentSetting").reset();
+   }
+    
+})
+
+.controller('reports',function($scope){
+$scope.reportObj = {
+    storeReportOnCloud: false,
+    sendEmailReport: {
+        value:false,
+        email:""
+    },
+    sendSMS:{
+        value:false,
+        onLowStock:"",
+        dailyCollection:"",
+        phoneNumber:""
+    }
+}
+$scope.saveReports=function(){
+    console.log($scope.reportObj)
+}
+})
+
+.controller('printerSettings', function($scope) {
     $scope.printrSettings = {};
     $scope.savePrinterSettings = function() {
         console.log($scope.printrSettings);
