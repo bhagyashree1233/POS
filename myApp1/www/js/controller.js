@@ -1,12 +1,16 @@
 angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', function($scope, $rootScope, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
-    $scope.Products = [{
+    //    $rootScope.products = [];
+    $rootScope.Products = [{
         productId: '1',
         name: 'Coffee',
-        discount: '10%',
+        discount: '10',
         image: '/img/Iced_Coffee.jpg',
         categary: 'DCPTO1',
         unit: 'kg',
-        unitPrice: '4500000'
+        unitPrice: '20',
+        inStock: 100,
+        tax: 5,
+        actualPrice: '10'
     }, {
         productId: '2',
         name: 'Coffee',
@@ -136,11 +140,9 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         unit: 'ltr',
         unitPrice: '66'
     }];
-
-    $rootScope.categaryArr = ['DCPTO1','DCPTO2','DCPTO3','DCPTO4','DCPTO5','DCPTO6','DCPTO7','DCPTO8','DCPTO9','DCPT10','DCPT11','DCPT12','DCPT13','DCPT14','DCPT15'];
- 
+    $rootScope.categaryArr = ['DCPTO1', 'DCPTO2', 'DCPTO3', 'DCPTO4', 'DCPTO5', 'DCPTO6', 'DCPTO7', 'DCPTO8', 'DCPTO9', 'DCPT10', 'DCPT11', 'DCPT12', 'DCPT13', 'DCPT14', 'DCPT15'];
     console.log($rootScope.categaryArr);
- /*   
+    /*   
     for(var i=0; i<$scope.Categarys; i++){
         
         for(var j=0; j<6;j++){
@@ -195,7 +197,6 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         }]
     }
   */
-
     $scope.display = function(catName) {
         $scope.prodCat = [];
         console.log($scope.prodCat.length);
@@ -229,7 +230,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     }
     $scope.scrollBottom = function() {
         $ionicScrollDelegate.scrollBy(0, 50, true);
-       // $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
+        // $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
     }
     // $scope.numValue = 0;
     $scope.prodCat = $scope.Products;
@@ -602,31 +603,36 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             window.localStorage.setItem('holdEvents', JSON.stringify(itemsJsonObj));
         }
     }
-    
-    
     $scope.next = function() {
         console.log('I am in next')
         $ionicScrollDelegate.scrollBy(0, 68, true);
-    };
+    }
+    ;
     $scope.previous = function() {
-         $ionicScrollDelegate.scrollBy(0, -68, true);
-    };
+        $ionicScrollDelegate.scrollBy(0, -68, true);
+    }
+    ;
     //Slide Ends
 }
 ]).controller("inventoryCtrl", function($scope, $rootScope, $cordovaCamera, $cordovaFile, $ionicModal) {
- 
+    console.log($rootScope.Products);
     $scope.newProduct = {};
-    $scope.addNewProduct = function(){
-        console.log($scope.newProduct);
-        $scope.newProduct = {};      
-    }  
-
-    $scope.onCategorySelect = function(categaryName){
-        $scope.newProduct.itemCategary = categaryName;
+    $scope.addNewProduct = function() {
+        if (!(angular.equals({}, $scope.newProduct))) {
+            console.log('entered if');
+            console.log($scope.newProduct);
+            $rootScope.Products.push($scope.newProduct);
+            $scope.newProduct = {};
+        }
+    }
+    $scope.onCategorySelect = function(categaryName) {
+        $scope.newProduct.categary = categaryName;
         $scope.categoryModal.hide();
     }
-
-
+    $scope.addNewCategary = function(newCategaryName) {
+        $rootScope.categaryArr.push(newCategaryName);
+        document.getElementById('newCategoryAddField').value = null;
+    }
     $scope.openCamera = function() {
         console.log('camera opened..');
         document.addEventListener("deviceready", function() {
@@ -645,15 +651,13 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             $cordovaCamera.getPicture(options).then(function(sourcePath) {
                 var sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
                 var sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
-               // $scope.cameraFileName = cordova.file.dataDirectory + sourceFileName;
-               
+                // $scope.cameraFileName = cordova.file.dataDirectory + sourceFileName;
                 console.log("Copying from : " + sourceDirectory + sourceFileName);
                 console.log("Copying to : " + cordova.file.dataDirectory + sourceFileName);
-               
                 $cordovaFile.copyFile(sourceDirectory, sourceFileName, cordova.file.dataDirectory, sourceFileName).then(function(success) {
                     $scope.cameraFileName = cordova.file.dataDirectory + sourceFileName;
                     console.log($scope.cameraFileName);
-                    $scope.newProduct.imagePath = $scope.cameraFileName;
+                    $scope.newProduct.image = $scope.cameraFileName;
                 }, function(error) {
                     console.dir(error);
                 });
@@ -673,21 +677,16 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             $cordovaCamera.getPicture(options).then(function(sourcePath) {
                 var sourceDirectory = sourcePath.substring(0, sourcePath.lastIndexOf('/') + 1);
                 var sourceFileName = sourcePath.substring(sourcePath.lastIndexOf('/') + 1, sourcePath.length);
-                
                 var destinationTypeFileName = (new Date()).getTime() + '.jpg';
-               // $scope.cameraFileName = cordova.file.dataDirectory + sourceFileName;
-               
+                // $scope.cameraFileName = cordova.file.dataDirectory + sourceFileName;
                 console.log("Copying from : " + sourceDirectory + sourceFileName);
                 console.log("Copying to : " + cordova.file.dataDirectory + destinationTypeFileName);
-               
                 console.log(sourceFileName);
-
                 console.log($scope.galeryFileName);
-
                 $cordovaFile.copyFile(sourceDirectory, sourceFileName, cordova.file.dataDirectory, destinationTypeFileName).then(function(success) {
-                    $scope.galleryFileName = cordova.file.dataDirectory + estinationTypeFileName;
+                    $scope.galleryFileName = cordova.file.dataDirectory + destinationTypeFileName;
                     console.log($scope.galleryFileName);
-                    $scope.newProduct.imagePath = $scope.galleryFileName;
+                    $scope.newProduct.image = $scope.galleryFileName;
                 }, function(error) {
                     console.dir(error);
                 });
@@ -696,20 +695,16 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             });
         }, false);
     }
-
     $ionicModal.fromTemplateUrl('templates/categoryModal.html', {
-        scope:$scope,
-        animation:'slide-in-up'
-    }).then(function(modal){
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
         $scope.categoryModal = modal;
     })
-
-    $scope.openCategoryModal = function(){
+    $scope.openCategoryModal = function() {
         $scope.categoryModal.show();
     }
 
-    $rootScope.categaryArr = ['DCPTO1','DCPTO2','DCPTO3','DCPTO4','DCPTO5','DCPTO6','DCPTO7','DCPTO8','DCPTO9','DCPT10','DCPT11','DCPT12','DCPT13','DCPT14','DCPT15'];
-    console.log($rootScope.categaryArr);
 })
 .controller('printerSettings',function($scope){
    $scope.printrSettings={};
@@ -751,4 +746,17 @@ $scope.reportObj = {
 $scope.saveReports=function(){
     console.log($scope.reportObj)
 }
+})
+
+.controller('printerSettings', function($scope) {
+    $scope.printrSettings = {};
+    $scope.savePrinterSettings = function() {
+        console.log($scope.printrSettings);
+        document.getElementById("prinrSettings").reset();
+    }
+}).controller('paymentSettings', function($scope) {
+    $scope.pamentSetting = {};
+    $scope.savePaymentSettings = function() {
+        console.log($scope.pamentSetting);
+    }
 })
