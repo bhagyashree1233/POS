@@ -35,16 +35,50 @@ angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard', '
 
 .state('app.Payments', {
  
-    controller:'paymentSettings',
-	url: '/Payments',
+   
+	url: '/Settings',
 	views: {
-		
       'menuContent': {
-        templateUrl: 'templates/PaymentSettings.html'
+        templateUrl: 'templates/Settings.html'
+         
       }
 	}
 })
+.state('app.PrinterSetting', {
+ 
+   
+	url: '/printerSettings',
+	views: {
+      'menuContent': {
+        templateUrl: 'templates/PrinterSettings.html'
+         
+      }
+	}
+})
+.state('app.PaymentSetting', {
+ 
+   
+	url: '/paymentSettings',
+	views: {
+      'menuContent': {
+        templateUrl: 'templates/PaymentSettings.html'
+         
+      }
+	}
+})
+.state('app.Reports', {
+ 
+   
+	url: '/Reports',
+	views: {
+      'menuContent': {
+      	controller:'reports',
+        templateUrl: 'templates/Reports.html'
 
+         
+      }
+	}
+})
 	.state('app.inventory', {
     url: '/inventory',
     views: {
@@ -67,6 +101,8 @@ angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard', '
     url: '/Test',
     templateUrl: 'templates/Keypad.html',    
   })
+
+
 
   
  $urlRouterProvider.otherwise('/app/product');

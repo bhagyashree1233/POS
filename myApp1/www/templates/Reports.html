@@ -1,20 +1,19 @@
-<ion-view view="">
-<ion-content>
+<ion-view >
+<ion-content >
 <ion-list>
 
 
-<ion-checkbox >Store Reports On Colud:</ion-checkbox>
-<ion-checkbox ng-model="email">Send Email Report:</ion-checkbox>
-<ion-item ng-show="email">
+<ion-checkbox ng-model="reportObj.storeReportOnCloud">Store Reports On Colud:</ion-checkbox>
+<ion-checkbox ng-model="reportObj.sendEmailReport">Send Email Report:</ion-checkbox>
+<ion-item ng-show="reportObj.sendEmailReport" ng-model="reportObj.sendEmailReport.email">
 <label class="item item-input">
   <span class="input-label">Email:</span>
   <input type="email">
 </label>
 
 </ion-item>
-<ion-checkbox ng-model="sms">Send SMS Alert:</ion-checkbox>
-
-<ion-item ng-show="sms">
+<ion-checkbox ng-model="reportObj.sendSMS">Send SMS Alert:</ion-checkbox>
+<ion-item ng-show="reportObj.sendSMS">
 <ion-checkbox >On Low Stock</ion-checkbox>
 <ion-checkbox >Daily Collection</ion-checkbox>
 <label class="item item-input">
@@ -22,6 +21,9 @@
   <input type="number">
 </label>
 </ion-item>
+<div class="padding">
+  <button type="submit" ng-click="saveReports()" class="button button-block button-dark" style="margin:auto;width:70%">Submit</button>
+  </div>
 </ion-list>
 </ion-content>
 </ion-view>

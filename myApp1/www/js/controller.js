@@ -720,11 +720,35 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
    }
 })
 .controller('paymentSettings',function($scope){
-    
-    $scope.pamentSetting={};
+    $scope.pamentSetting={cash:false,
+    master:false,
+    amex:false,
+    payCurncy:'',
+    payTM:false,
+    visa:false
+    };
       $scope.savePaymentSettings=function(){
-       console.log($scope.pamentSetting);  
+       console.log($scope.pamentSetting); 
+       document.getElementById("payMentSetting").reset();
    }
     
 })
 
+.controller('reports',function($scope){
+$scope.reportObj = {
+    storeReportOnCloud: false,
+    sendEmailReport: {
+        value:false,
+        email:""
+    },
+    sendSMS:{
+        value:false,
+        onLowStock:"",
+        dailyCollection:"",
+        phoneNumber:""
+    }
+}
+$scope.saveReports=function(){
+    console.log($scope.reportObj)
+}
+})
