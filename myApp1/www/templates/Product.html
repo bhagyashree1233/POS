@@ -85,9 +85,9 @@
                 </div>
                 <div id="product-categary">
                     <div id="product-categary-previous">
-                        <button class="button icon ion-chevron-up" id="button-previous" ng-click="previous()"></button>
+                        <button class="button icon ion-chevron-left" id="button-previous" ng-click="previous()"></button>
                     </div>
-                    <!--        <div id="product-categary-buttons">
+           <!--     <div id="product-categary-buttons">
                         <ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)" id="product-cat-slide">
                             <ion-slide id="product-slide" ng-repeat="(key, value) in Categary">
                                 <button class="product-categary-button" ng-repeat="cat in value" ng-click="display(cat.catName)">{{cat.catName}}</button>
@@ -95,12 +95,12 @@
                         </ion-slide-box>
                     </div>
             -->
-                   <ion-scroll direction="y" id="product-categary-scroll">
+                    <ion-scroll direction="x" id="product-categary-scroll">
                        <button class="product-categary-button" ng-repeat="catName in categaryArr" ng-click="display(catName)">{{catName}}</button>
                     </ion-scroll>
                
                     <div class="catButtons" id="product-categary-next">
-                        <button class="button icon ion-chevron-down" id="button-next" ng-click="next()"></button>
+                        <button class="button icon ion-chevron-right" id="button-next" ng-click="next()"></button>
                     </div>
                 </div>
             </div>

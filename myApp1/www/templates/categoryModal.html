@@ -3,9 +3,9 @@
         <div class="list">
             <div class="item item-input-inset">
                 <label class="item-input-wrapper">
-                    <input type="text" placeholder="Add New Category"></input>
+                    <input type="text" ng-model="newCategaryName" id="newCategoryAddField" placeholder="Add New Category"></input>
                 </label>
-                <button class="button button-small">Add</button>
+                <button class="button button-small" ng-disabled="!newCategaryName" ng-click="addNewCategary(newCategaryName)">Add</button>
             </div>
         </div>
         <div class="card">
