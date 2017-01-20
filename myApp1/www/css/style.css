@@ -47,8 +47,9 @@
 
 #product-categary-scroll {
     height:100%;
-    width:100%;
+    width: 100%;
     margin:0vh;
+    overflow: scroll;
 }
 
 #product-categary-next, #product-categary-previous{
@@ -308,5 +309,4 @@ input.printerSettingtext{
 #categaryModal {
 	width:50%;
 	left:40%;
-
 }

@@ -1,5 +1,4 @@
 // Ionic Starter App
-
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
@@ -35,16 +34,50 @@ angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard', '
 
 .state('app.Payments', {
  
-    controller:'paymentSettings',
-	url: '/Payments',
+   
+	url: '/Settings',
 	views: {
-		
       'menuContent': {
-        templateUrl: 'templates/PaymentSettings.html'
+        templateUrl: 'templates/Settings.html'
+         
       }
 	}
 })
+.state('app.PrinterSetting', {
+ 
+   
+	url: '/printerSettings',
+	views: {
+      'menuContent': {
+        templateUrl: 'templates/PrinterSettings.html'
+         
+      }
+	}
+})
+.state('app.PaymentSetting', {
+ 
+   
+	url: '/paymentSettings',
+	views: {
+      'menuContent': {
+        templateUrl: 'templates/PaymentSettings.html'
+         
+      }
+	}
+})
+.state('app.Reports', {
+ 
+   
+	url: '/Reports',
+	views: {
+      'menuContent': {
+      	controller:'reports',
+        templateUrl: 'templates/Reports.html'
 
+         
+      }
+	}
+})
 	.state('app.inventory', {
     url: '/inventory',
     views: {
@@ -67,6 +100,8 @@ angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard', '
     url: '/Test',
     templateUrl: 'templates/Keypad.html',    
   })
+
+
 
   
  $urlRouterProvider.otherwise('/app/product');
