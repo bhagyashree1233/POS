@@ -36,6 +36,11 @@
     overflow-y: hidden;
     height: 90%;
 }
+#product-billing-head {
+	height:5%;
+	margin:0.5vh;
+	width:100%;
+}
 
 #product-categary {
     border: 1px solid black;
