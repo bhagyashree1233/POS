@@ -3,10 +3,15 @@
         <div class="row" id="product">
             <div class="col-30" id="product-billing">
                 <div id="product-billing-col1">
-                    <div class="card" style="height:7%">
-                        <div class="item item-text-wrap" style="font-weight:bolder; text-transform: uppercase;">
-                            <span>Total Amount</span>
-                            :<span style="float:right">{{totalPrice}}</span>
+                    <div id="product-billing-head" style="height:6%;width:100%;color:black;">
+                        <i style="font-size:5vh;" ng-click="void()" class="icon ion-ios-trash-outline"></i>
+                        <h3 style="display:inline;margin:0 24%;">Bill Total</h3>
+                        <i style="font-size:5vh;float:right;" class="icon ion-ios-minus-outline" ng-click="holdItems()"></i>
+                    </div>
+                    <div class="card" style="height:8%;width:80%;margin:auto;">
+                        <div class="item item-text-wrap" style="font-weight:bolder;text-align:center;">
+                            <i class="icon ion-person-add"></i>
+                            <span>Add Customer</span>
                         </div>
                     </div>
                     <button ng-show="scrollTopBtn" ng-click="scrollTop()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:25%;border-radius:50%;width:5vh;height:5vh;">
@@ -15,30 +20,33 @@
                     <button ng-show="scrollBottomBtn" ng-click="scrollBottom()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:58%;border-radius:50%;width:5vh;height:5vh;">
                         <i style="font-size:3vh;" class="icon ion-chevron-down"></i>
                     </button>
-                    <div class="card" style="height:60%">
+                    <div class="card" style="height:50%">
                         <table style="width:100%;color:black;font-weight:bolder; text-transform: uppercase;">
                             <tr style="text-align:center;">
                                 <th>
                                     <span>Item Name</span>
                                 </th>
-                                <th style="text-align:center;">
+                                <th style="text-align:center;"> 
                                     <span>Quantity</span>
                                 </th>
                                 <th>
-                                    <span>Amount</span>
+                                    <span>Amount</span> 
                                 </th>
                             </tr>
                         </table>
                         <ion-scroll delegate-handle="scrollSmall" on-scroll="onScroll()" direction="y" class="product-billing-tableScroll">
                             <table id="product-billing-table" style="color:black;text-align:center;font-weight:bolder; text-transform: uppercase;">
                                 <tr ng-repeat="product in productArr" ng-model="selectedItem" ng-class="{'selected':product.selected}" ng-click="selectedProduct(product)">
-                                    <td>
+                                    <td ng-show="showDelete" ng-click="">
+                                      Delete
+                                    </td>
+                                    <td on-hold="onHold()">
                                         <span>{{product.name}}</span>
                                     </td>
-                                    <td>
+                                    <td on-hold="onHold()">
                                         <span style="text-align:right;">{{product.quantity}}</span>
                                     </td>
-                                    <td>
+                                    <td on-hold="onHold()">
                                         <span style="text-align:right;">{{product.productAmount}}</span>
                                     </td>
                                 </tr>
@@ -56,12 +64,15 @@
                             </table>
                         </ion-scroll>
                     </div>
-                    <div class="card" style="padding:1vh;height:23%">
+                    <div class="totalAmountCalculation" style="margin:2vh;height:15%;">
                         <p style="font-size:18px;color:black;">Total Amount:{{totalPrice}}</p>
-                        <p style="font-size:18px;color:black;">Service Tax(5%):{{serviceTax*totalPrice}}</p>
-                        <p style="font-size:18px;color:black;">Payable Amount: {{totalPrice+serviceTax*totalPrice}}</p>
+                        <p style="font-size:18px;color:black;">Tax(5%):{{serviceTax*totalPrice}}</p>
                         <p style="font-size:18px;color:black;">Paid Amount: {{typedAmount}}</p>
                         <p style="font-size:18px;color:black;" ng-if="typedAmount>0">Balence: {{typedAmount-(totalPrice+serviceTax*totalPrice)}}</p>
+                    </div>
+                    <div style="margin:2vh;height:20%;">
+                        <h3 style="float:right;">{{totalPrice+serviceTax*totalPrice}}</h3>
+                        <button style="border-radius:7%;" ng-click="openPaymentModal()" class="button button-block button-balanced">Charge {{totalPrice+serviceTax*totalPrice}}</button>
                     </div>
                 </div>
             </div>
@@ -69,11 +80,10 @@
                 <i style="font-size:6vh;color:white;" class="icon ion-chevron-right"></i>
             </button>
             <div id="productsView">
-            
                 <div class="col-70" id="product-display">
                     <div id="product-display-col1" class="card" ng-click="openNumericModal(Product)" ng-repeat="Product in prodCat">
                         <div id="product-name" align="left">
-                            <p style="font-weight:bolder;text-transform: uppercase;padding:2vh;margin:auto;position:absolute;font-size:small;">{{Product.name}}{{Product.productId}}</p>
+                            <p style="font-weight:bolder;text-transform: uppercase;padding:2vh;margin:auto;position:absolute;font-size:small;">{{Product.name}}</p>
                         </div>
                         <div id="product-image" align="right">
                             <img ng-src={{Product.image}} style="padding:auto;margin:auto;height:100%;width:100%;"></img>

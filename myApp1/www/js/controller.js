@@ -1,9 +1,27 @@
-angular.module('starter.controller', [])
+angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', function($scope, $rootScope, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
+    //$rootScope.Products;
+    loadingProducts();
+    function loadingProducts() {
+        console.log('entered products loading...');
+        var productsJsonObj = window.localStorage.getItem('productsObj');
+        console.log(productsJsonObj);
+        if (productsJsonObj == "") {
+            productsJsonObj = {}
+            productsJsonObj['products'] = [];
+        } else {
+            productsJsonObj = JSON.parse(productsJsonObj);
+            console.log(productsJsonObj);
+        }
+        $rootScope.Products = productsJsonObj.products;
+    }
+    console.log($rootScope.Products);
 
-
-.controller('ProductCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', function($scope, $rootScope, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
-    //    $rootScope.products = [];
-    $rootScope.Products = [{
+     $scope.onHold = function(){
+      console.log('eneterd on hold');
+     $scope.showDelete = true;
+  }
+  
+    /*    $rootScope.Products = [{
         productId: '1',
         name: 'Coffee',
         discount: '10',
@@ -143,7 +161,8 @@ angular.module('starter.controller', [])
         unit: 'ltr',
         unitPrice: '66'
     }];
-    $rootScope.categaryArr = ['DCPTO1', 'DCPTO2', 'DCPTO3', 'DCPTO4', 'DCPTO5', 'DCPTO6', 'DCPTO7', 'DCPTO8', 'DCPTO9', 'DCPT10', 'DCPT11', 'DCPT12', 'DCPT13', 'DCPT14', 'DCPT15'];
+ */
+    $rootScope.categaryArr = ['All', 'DCPTO1', 'DCPTO2', 'DCPTO3', 'DCPTO4', 'DCPTO5', 'DCPTO6', 'DCPTO7', 'DCPTO8', 'DCPTO9', 'DCPT10', 'DCPT11', 'DCPT12', 'DCPT13', 'DCPT14', 'DCPT15'];
     console.log($rootScope.categaryArr);
     /*   
     for(var i=0; i<$scope.Categarys; i++){
@@ -203,9 +222,15 @@ angular.module('starter.controller', [])
     $scope.display = function(catName) {
         $scope.prodCat = [];
         console.log($scope.prodCat.length);
-        for (var i = 0; i < $scope.Products.length; i++) {
-            if ($scope.Products[i].categary == catName) {
+        if (catName === 'All') {
+            for (var i = 0; i < $scope.Products.length; i++) {
                 $scope.prodCat.push($scope.Products[i]);
+            }
+        } else {
+            for (var i = 0; i < $scope.Products.length; i++) {
+                if ($scope.Products[i].categary == catName) {
+                    $scope.prodCat.push($scope.Products[i]);
+                }
             }
         }
         console.log($scope.prodCat)
@@ -525,19 +550,6 @@ angular.module('starter.controller', [])
         $scope.typedCode = null;
     }
     ;
-    ionic.Platform.ready(function() {
-        //   window.localStorage.removeItem("holdEvents");
-        var itemsJsonObj = window.localStorage.getItem('holdEvents', "");
-        if (itemsJsonObj == undefined) {
-            window.localStorage.setItem('holdEvents', "");
-        }
-        //  window.localStorage.setItem('transactionEvents', "");    
-        var transactionsJsonObj = window.localStorage.getItem('transactionEvents', "");
-        console.log(transactionsJsonObj);
-        if (transactionsJsonObj == undefined) {
-            window.localStorage.setItem('transactionEvents', "");
-        }
-    })
     $ionicModal.fromTemplateUrl('templates/recallModal.html', {
         scope: $scope,
         animation: 'slide-in-up'
@@ -617,7 +629,7 @@ angular.module('starter.controller', [])
     ;
     //Slide Ends
 }
-]).controller("inventoryCtrl", function($scope, $rootScope, $cordovaCamera, $cordovaFile, $ionicModal) {
+]).controller("inventoryCtrl", function($scope, $rootScope, $cordovaCamera, $timeout, $cordovaFile, $ionicModal) {
     console.log($rootScope.Products);
     $scope.newProduct = {};
     $scope.addNewProduct = function() {
@@ -625,6 +637,16 @@ angular.module('starter.controller', [])
             console.log('entered if');
             console.log($scope.newProduct);
             $rootScope.Products.push($scope.newProduct);
+            var productsJsonObj = window.localStorage.getItem('productsObj');
+            console.log(productsJsonObj);
+            if (productsJsonObj != "") {
+                productsJsonObj = JSON.parse(productsJsonObj);
+            } else {
+                productsJsonObj = {};
+                productsJsonObj['products'] = [];
+            }
+            productsJsonObj.products.push($scope.newProduct);
+            productsJsonObj = window.localStorage.setItem('productsObj', JSON.stringify(productsJsonObj));
             $scope.newProduct = {};
         }
     }
@@ -636,6 +658,20 @@ angular.module('starter.controller', [])
         $rootScope.categaryArr.push(newCategaryName);
         document.getElementById('newCategoryAddField').value = null;
     }
+  /*  
+    var timer = false;
+    $scope.$watch('newProduct.productId', function() {
+        if (timer) {
+            $timeout.cancel(timer)
+        }
+        timer = $timeout(function() {
+            
+
+        }, 500)
+    });
+  */
+ 
+
     $scope.openCamera = function() {
         console.log('camera opened..');
         document.addEventListener("deviceready", function() {
@@ -707,59 +743,40 @@ angular.module('starter.controller', [])
     $scope.openCategoryModal = function() {
         $scope.categoryModal.show();
     }
-
-})
-.controller('printerSettings',function($scope){
-   $scope.printrSettings={};
-   $scope.savePrinterSettings=function(){
-    console.log($scope.printrSettings);  
-    document.getElementById("prinrSettings").reset();
-
-   }
-})
-.controller('paymentSettings',function($scope){
-    $scope.pamentSetting={cash:false,
-    master:false,
-    amex:false,
-    payCurncy:'',
-    payTM:false,
-    visa:false
-    };
-      $scope.savePaymentSettings=function(){
-       console.log($scope.pamentSetting); 
-       document.getElementById("payMentSetting").reset();
-   }
-    
-})
-
-.controller('reports',function($scope){
-$scope.reportObj = {
-    storeReportOnCloud: false,
-    sendEmailReport: {
-        value:false,
-        email:""
-    },
-    sendSMS:{
-        value:false,
-        onLowStock:"",
-        dailyCollection:"",
-        phoneNumber:""
-    }
-}
-$scope.saveReports=function(){
-    console.log($scope.reportObj)
-}
-})
-
-.controller('printerSettings', function($scope) {
+}).controller('printerSettings', function($scope) {
     $scope.printrSettings = {};
     $scope.savePrinterSettings = function() {
         console.log($scope.printrSettings);
         document.getElementById("prinrSettings").reset();
     }
 }).controller('paymentSettings', function($scope) {
-    $scope.pamentSetting = {};
+    $scope.pamentSetting = {
+        cash: false,
+        master: false,
+        amex: false,
+        payCurncy: '',
+        payTM: false,
+        visa: false
+    };
     $scope.savePaymentSettings = function() {
         console.log($scope.pamentSetting);
+        document.getElementById("payMentSetting").reset();
+    }
+}).controller('reports', function($scope) {
+    $scope.reportObj = {
+        storeReportOnCloud: false,
+        sendEmailReport: {
+            value: false,
+            email: ""
+        },
+        sendSMS: {
+            value: false,
+            onLowStock: "",
+            dailyCollection: "",
+            phoneNumber: ""
+        }
+    }
+    $scope.saveReports = function() {
+        console.log($scope.reportObj)
     }
 })
