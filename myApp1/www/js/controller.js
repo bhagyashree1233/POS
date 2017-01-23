@@ -240,6 +240,11 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     $scope.serviceTax = 0.05;
     //  $scope.quantity=0;
     $scope.save = function(product) {
+          var paymentSettingJSONObj=localStorage.getItem("payMentSetting");
+           if(paymentSettingJSONObj==undefined){
+      	    window.localStorage.setItem('payMentSetting', "");
+      }
+        $scope.pamentSetting=JSON.parse(paymentSettingJSONObj);
         console.log($scope.typedCode);
         if ($scope.typedCode == null) {
             console.log('Type Code Null')
@@ -367,8 +372,10 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         case 8:
         case 9:
         case 0:
+        case 10:
             if (!/^\d+$/.test(tempT)) {
                 $scope.typedAmount = keyCode;
+                console.log($scope.typedAmount)
             } else {
                 $scope.typedAmount += '' + keyCode;
             }
@@ -471,6 +478,12 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         $scope.paymentModal.hide();
         //  document.getElementById("buttonPayment").disabled = true; 
         var transactionJsonObj = window.localStorage.getItem('transactionEvents');
+         var printerSettingObj=localStorage.getItem("printerSetting");
+         if(printerSettingObj!==""){
+             printerSettingObj = JSON.parse(printerSettingObj);
+         }else{
+             printerSettingObj={};
+         }
         console.log(transactionJsonObj);
         if (transactionJsonObj != "") {
             transactionJsonObj = JSON.parse(transactionJsonObj);
@@ -479,7 +492,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         }
         console.log(transactionJsonObj);
         if (transactionJsonObj.lastRecieptId == undefined) {
-            transactionJsonObj.lastRecieptId = "100";
+            transactionJsonObj.lastRecieptId =printerSettingObj.strtBillNmbr ;
         }
         var transactionObj = {};
         transactionObj.date = (new Date()).toString().substring(4, 24);
@@ -522,19 +535,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         $scope.typedCode = null;
     }
     ;
-    ionic.Platform.ready(function() {
-        //   window.localStorage.removeItem("holdEvents");
-        var itemsJsonObj = window.localStorage.getItem('holdEvents', "");
-        if (itemsJsonObj == undefined) {
-            window.localStorage.setItem('holdEvents', "");
-        }
-        //  window.localStorage.setItem('transactionEvents', "");    
-        var transactionsJsonObj = window.localStorage.getItem('transactionEvents', "");
-        console.log(transactionsJsonObj);
-        if (transactionsJsonObj == undefined) {
-            window.localStorage.setItem('transactionEvents', "");
-        }
-    })
+   
     $ionicModal.fromTemplateUrl('templates/recallModal.html', {
         scope: $scope,
         animation: 'slide-in-up'
@@ -706,30 +707,60 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     }
 
 })
-.controller('printerSettings',function($scope){
-   $scope.printrSettings={};
+.controller('printerSettings',function($rootScope,$scope,$cordovaSQLite){
+
+    
+   
    $scope.savePrinterSettings=function(){
-    console.log($scope.printrSettings);  
-    document.getElementById("prinrSettings").reset();
+       console.log($scope.printFormatSettings)
+       $rootScope.printFormatSettings=$scope.printFormatSettings;
+        var printFormatSettings=JSON.stringify($rootScope.printFormatSettings);
+       /* $cordovaSQLite.execute($rootScope.db, 'delete from settings')
+        .then(function(result) {
+            $scope.statusMessage = "Message saved successful, cheers!";
+            console.log($scope.statusMessage)
+        }, function(error) {
+            $scope.statusMessage = "Error on saving: " + error.message;
+            console.log($scope.statusMessage)
+        }) */
+    $cordovaSQLite.execute($rootScope.db, 'INSERT OR REPLACE INTO Settings (SettingsName,SettingsValue) VALUES (?,?) ',  ['PrinterFormatSettings',printFormatSettings] )
+        .then(function(result) {
+            $scope.statusMessage = "Message saved successful, cheers!";
+            console.log($scope.statusMessage)
+        }, function(error) {
+            $scope.statusMessage = "Error on saving: " + error.message;
+            console.log($scope.statusMessage)
+        })  
+    
 
    }
+  
 })
-.controller('paymentSettings',function($scope){
-    $scope.pamentSetting={cash:false,
-    master:false,
-    amex:false,
-    payCurncy:'',
-    payTM:false,
-    visa:false
-    };
+.controller('paymentSettings',['$scope', '$rootScope',function($scope,$rootScope){
+    
+    var paymentSettingJSONObj=localStorage.getItem("payMentSetting");
+      console.log(paymentSettingJSONObj);
+    if(paymentSettingJSONObj==""){
+      localStorage.setItem("payMentSetting","");
+    }else if(paymentSettingJSONObj==undefined){
+    localStorage.setItem("payMentSetting","");
+    }else{
+     console.log(paymentSettingJSONObj);
+    $scope.pamentSetting=JSON.parse(paymentSettingJSONObj);
+    }
+    
       $scope.savePaymentSettings=function(){
-       console.log($scope.pamentSetting); 
-       document.getElementById("payMentSetting").reset();
+        paymentSettingJSONObj=$scope.pamentSetting;
+        localStorage.setItem("payMentSetting",JSON.stringify( paymentSettingJSONObj));
+        console.log(JSON.parse(localStorage.getItem("payMentSetting")));
+       console.log(paymentSettingJSONObj);
+        
+       //document.getElementById("payMentSetting").reset();
    }
     
-})
+}])
 
-.controller('reports',function($scope){
+.controller('reports',['$scope', '$rootScope',function($rootScope,$scope){
 $scope.reportObj = {
     storeReportOnCloud: false,
     sendEmailReport: {
@@ -745,18 +776,49 @@ $scope.reportObj = {
 }
 $scope.saveReports=function(){
     console.log($scope.reportObj)
+    document.getElementById('report').reset();
 }
-})
+}])
 
-.controller('printerSettings', function($scope) {
-    $scope.printrSettings = {};
-    $scope.savePrinterSettings = function() {
-        console.log($scope.printrSettings);
-        document.getElementById("prinrSettings").reset();
-    }
-}).controller('paymentSettings', function($scope) {
-    $scope.pamentSetting = {};
-    $scope.savePaymentSettings = function() {
-        console.log($scope.pamentSetting);
-    }
-})
+
+.controller('taxSetting',['$scope', '$rootScope','$cordovaSQLite','$ionicPlatform',function($rootScope,$scope,$cordovaSQLite,$ionicPlatform){
+
+$rootScope.deviceReady.then(function(  ){
+     $scope.taxSettings=$rootScope.TaxSettings
+     console.log($scope.taxSettings)
+   })
+ var d = new Date();
+ var taxSettings=[]
+
+$scope.saveTaxSetting=function(){
+     
+     console.log($rootScope.TaxSettings);
+    $scope.taxSettings.push({
+    id:d.getTime(),
+    name:$scope.taxSettings.name,
+    taxRate:$scope.taxSettings.taxRate
+
+   } )
+   ;
+   
+    var taxSettings=JSON.stringify($scope.taxSettings);
+  
+   /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
+        .then(function(result) {
+            $scope.statusMessage = "Message saved successful, cheers!";
+            console.log($scope.statusMessage)
+        }, function(error) {
+            $scope.statusMessage = "Error on saving: " + error.message;
+            console.log($scope.statusMessage)
+        })*/
+    $cordovaSQLite.execute($rootScope.db, 'INSERT OR REPLACE INTO Settings (SettingsName,SettingsValue) VALUES (?,?) ',  ['TaxSettings',taxSettings] )
+        .then(function(result) {
+            $scope.statusMessage = "Message saved successful, cheers!";
+            console.log($scope.statusMessage)
+        }, function(error) {
+            $scope.statusMessage = "Error on saving: " + error.message;
+            console.log($scope.statusMessage)
+        }) 
+    
+}
+}])

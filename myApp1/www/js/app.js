@@ -4,7 +4,10 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard', 'ngCordova'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,$cordovaSQLite,$rootScope,$q) {
+	 var dfd = $q.defer();
+    $rootScope.deviceReady = dfd.promise;
+    
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -19,6 +22,61 @@ angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard', '
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+     var itemsJsonObj = window.localStorage.getItem('holdEvents', "");
+        if (itemsJsonObj == undefined) {
+            window.localStorage.setItem('holdEvents', "");
+        }
+        //  window.localStorage.setItem('transactionEvents', "");    
+        var transactionsJsonObj = window.localStorage.getItem('transactionEvents', "");
+        console.log(transactionsJsonObj);
+        if (transactionsJsonObj == undefined) {
+            window.localStorage.setItem('transactionEvents', "");
+        }
+    if (window.cordova) {
+    	//this.deleteDatabase("PayUPos.db");
+      $rootScope.db = $cordovaSQLite.openDB({ name: "PayUPos.db", location: 'default' }); //device
+     console.log("Android");
+    }else{
+    	//this.deleteDatabase("PayUPos.db");
+     $rootScope.db = window.openDatabase("PayUPos.db", '1', 'PayUPos', 1024 * 1024 * 100); // browser   
+      console.log("browser");
+    } 
+  //$cordovaSQLite.execute($rootScope.db, 'DROP  table Settings').then( console.log('Settings table deleted Successfully'));
+
+ $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Settings (SettingsName text PRIMARY KEY ,SettingsValue TEXT)').then( console.log('Settings table created Successfully'));
+  $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue  from Settings where SettingsName="PrinterFormatSettings"')
+        .then(function(result) {
+            //$scope.statusMessage = "Message saved successful, cheers!";
+            console.log(result.rows.length)
+            if(result.rows.length==1){
+          $rootScope.printFormatSettings=console.log(JSON.parse(result.rows[0].SettingsValue))
+           
+            }else{
+          $rootScope.printFormatSettings={}
+            }
+        }, function(error) {
+            //$scope.statusMessage = "Error on saving: " + error.message;
+            console.log(error)
+        }) 
+        $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue  from Settings where SettingsName="TaxSettings"')
+        .then(function(result) {
+            //$scope.statusMessage = "Message saved successful, cheers!";
+            console.log(result.rows.length)
+            if(result.rows.length==1){
+            	console.log(result.rows[0])
+          $rootScope.TaxSettings=JSON.parse(result.rows[0].SettingsValue)
+          console.log( $rootScope.TaxSettings)
+           dfd.resolve( $rootScope.TaxSettings ); 
+            }else{
+          $rootScope.TaxSettings=[];
+            }
+        }, function(error) {
+            //$scope.statusMessage = "Error on saving: " + error.message;
+            console.log(error)
+        }) 
+    
+   
+
   });
 })
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
@@ -61,6 +119,17 @@ angular.module('starter', ['ionic','starter.controller', 'ion-digit-keyboard', '
 	views: {
       'menuContent': {
         templateUrl: 'templates/PaymentSettings.html'
+         
+      }
+	}
+})
+.state('app.TaxSetting', {
+ 
+   
+	url: '/taxSettings',
+	views: {
+      'menuContent': {
+        templateUrl: 'templates/TaxSettings.html'
          
       }
 	}

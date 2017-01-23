@@ -310,3 +310,10 @@ input.printerSettingtext{
 	width:50%;
 	left:40%;
 }
+#errorMessage{
+	
+}
+.red {
+  border-color: red;
+  color:red;
+}

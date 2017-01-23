@@ -6,7 +6,7 @@
                     <div class="card" style="height:7%">
                         <div class="item item-text-wrap" style="font-weight:bolder; text-transform: uppercase;">
                             <span>Total Amount</span>
-                            :<span style="float:right">{{totalPrice}}</span>
+                            :<span style="float:right">{{pamentSetting.payCurncy}}{{totalPrice}}</span>
                         </div>
                     </div>
                     <button ng-show="scrollTopBtn" ng-click="scrollTop()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:25%;border-radius:50%;width:5vh;height:5vh;">
@@ -57,10 +57,10 @@
                         </ion-scroll>
                     </div>
                     <div class="card" style="padding:1vh;height:23%">
-                        <p style="font-size:18px;color:black;">Total Amount:{{totalPrice}}</p>
-                        <p style="font-size:18px;color:black;">Service Tax(5%):{{serviceTax*totalPrice}}</p>
-                        <p style="font-size:18px;color:black;">Payable Amount: {{totalPrice+serviceTax*totalPrice}}</p>
-                        <p style="font-size:18px;color:black;">Paid Amount: {{typedAmount}}</p>
+                        <p style="font-size:18px;color:black;">Total Amount:{{pamentSetting.payCurncy}}{{totalPrice}}</p>
+                        <p style="font-size:18px;color:black;">Service Amount:{{pamentSetting.payCurncy}}{{serviceTax*totalPrice}}</p>
+                        <p style="font-size:18px;color:black;">Payable Amount:{{pamentSetting.payCurncy}} {{totalPrice+serviceTax*totalPrice}}</p>
+                        <p style="font-size:18px;color:black;">Paid Amount:{{pamentSetting.payCurncy}} {{typedAmount}}</p>
                         <p style="font-size:18px;color:black;" ng-if="typedAmount>0">Balence: {{typedAmount-(totalPrice+serviceTax*totalPrice)}}</p>
                     </div>
                 </div>
@@ -83,6 +83,9 @@
                         </div>
                     </div>
                 </div>
+                <button class="button" ng-click="openPaymentModal()">PAYMENT</button>
+                <button class="button" id="button1" ng-click="recallItems()">RECALL</button>
+
                 <div id="product-categary">
                     <div id="product-categary-previous">
                         <button class="button icon ion-chevron-left" id="button-previous" ng-click="previous()"></button>
@@ -109,9 +112,7 @@
         <div class="bar bar-footer bar-light " id="footer">
             <button class="button" id="button1" ng-click="cancel(productArr,product)">CANCEL</button>
             <button class="button" id="button1" ng-click="void()">VOID</button>
-            <button class="button" ng-click="openPaymentModal()">PAYMENT</button>
             <button class="button" id="button1" ng-click="holdItems()">HOLD</button>
-            <button class="button" id="button1" ng-click="recallItems()">RECALL</button>
         </div>
       -->  
     </ion-content>
