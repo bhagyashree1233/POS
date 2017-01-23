@@ -282,7 +282,7 @@ color:black;
 
 }
 
-#inventoryContentDiv {
+#productContentDiv, #categoryContentDiv {
 	width:90%;
 	margin:auto;
 }
@@ -314,4 +314,8 @@ input.printerSettingtext{
 #categaryModal {
 	width:50%;
 	left:40%;
+}
+
+input.ng-invalid {
+    background-color: pink;
 }

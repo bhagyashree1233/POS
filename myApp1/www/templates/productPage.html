@@ -1,0 +1,66 @@
+<ion-view view-title="Add New Products" ng-controller="productCtrl">
+ <ion-content id="productContentDiv">
+  <form name="productForm" ng-submit="addNewProduct()">
+  <div class="list">
+  
+   <label class="item item-input">
+     <span class="input-label">Product Id :</span>
+     <input type="text" name="productIdInput" ng-minlength="1" ng-maxlength="20" ng-model="newProduct.productId" required>
+     <p style="color:red;" ng-show="productForm.productIdInput.$touched && productForm.productIdInput.$invalid">Length should be 1-20 characters</p> 
+    
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Product Name :</span>
+     <input type="text" name="productNameInput" ng-minlength="1" ng-maxlength="25" ng-model="newProduct.name" required></input>
+     <p style="color:red;" ng-show="productForm.productNameInput.$touched && productForm.productNameInput.$invalid">Length should be 1-25 characters</p> 
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Product Unit :</span>
+     <ion-radio ng-model="newProduct.unit" ng-value="'kgs'">Kgs</ion-radio>
+     <ion-radio ng-model="newProduct.unit" ng-value="'litres'">Litres</ion-radio>
+     <ion-radio ng-model="newProduct.unit" ng-value="'pieces'">pieces</ion-radio>
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Selling Price :</span>
+     <input type="number" name="productSpriceInput" step="0.1" min="0.1" max="1000000" ng-model="newProduct.unitPrice" required></input>
+     <p style="color:red;" ng-show="productForm.productSpriceInput.$touched && productForm.productSpriceInput.$invalid">Enter number between 0.1-1000000</p> 
+   </label>
+   <label class="item item-input item-select">
+     <span class="input-label">Tax Rate(%):</span>
+     <select ng-model="newProduct.tax" required="required" aria-required="true" >
+      <option ng-selected="true" ng-click="taxSelect(tax)" ng-repeat="tax in TaxSettings1">{{tax.TaxRate}}</option>
+    </select>
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Buying Price :</span>
+     <input type="number" name="productBpriceInput" step="0.1" ng-model="newProduct.actualPrice" required></input>
+   <p style="color:red;" ng-show="productForm.productBpriceInput.$touched && productForm.productBpriceInput.$invalid">Enter number between 0.1-1000000</p> 
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Items in-stock :</span>
+     <input type="number" step="0.1" min="0.1" max="1000000" ng-model="newProduct.inStock" required></input>
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Discount (%):</span>
+     <input type="number" step="0.1" min="0.1" max="100" ng-model="newProduct.discount">
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Category :</span>
+     <input type="text" ng-model="newProduct.category" readonly>
+     <a class="button" ng-click="openCategoryModal()">Select Category</a>
+   </label>
+   <label class="item item-input">
+     <span class="input-label">Image :</span>
+     <input type="text" ng-model="newProduct.image" readonly>
+     <a class="button" ng-click="openCamera()">Camera</a>
+   </label>
+   
+   <label class="item item-input">
+     <span class="input-label"></span>
+     <a class="button" ng-click="openGallery()">Gallery</a>
+   </label>
+  </div>
+  <button class="button button-block" ng-disabled="">Add Item</button>
+  </form>
+ </ion-content>
+</ion-view>

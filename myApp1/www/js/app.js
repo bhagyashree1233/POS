@@ -2,8 +2,8 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'starter.controller', 'ion-digit-keyboard', 'ngCordova']).run(function($ionicPlatform) {
-    $ionicPlatform.ready(function($rootScope) {
+angular.module('starter', ['ionic', 'starter.controller', 'ion-digit-keyboard', 'ngCordova']).run(function($ionicPlatform, $cordovaSQLite, $rootScope) {
+    $ionicPlatform.ready(function() {
         if (window.cordova && window.cordova.plugins.Keyboard) {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -16,6 +16,21 @@ angular.module('starter', ['ionic', 'starter.controller', 'ion-digit-keyboard', 
         if (window.StatusBar) {
             StatusBar.styleDefault();
         }
+        if (window.cordova) {
+            $rootScope.db = $cordovaSQLite.openDB({
+                name: "PayUPos.db",
+                location: 'default'
+            });
+            //device
+            console.log("Android");
+        } else {
+            $rootScope.db = window.openDatabase("PayUPos.db", '1', 'PayUPos', 1024 * 1024 * 100);
+            // browser
+            console.log("browser");
+        }
+        $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Category (CategoryId text primary key, CategoryName text, CategoryDesc text)").then(console.log('Category table created Successfully'));
+        $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Product (ProductId text primary key, ProductName text, ProductUnit text, ProductPrice real, TaxId integer, BuyingPrice real, TaxRate real, ItemsinStock real, Discount real, Category text, Image text)").then(console.log('Product table created Successfully'));
+        /*        
         //   window.localStorage.removeItem("holdEvents");
         var itemsJsonObj = window.localStorage.getItem('holdEvents');
         if (itemsJsonObj == null) {
@@ -32,6 +47,8 @@ angular.module('starter', ['ionic', 'starter.controller', 'ion-digit-keyboard', 
         if (productsJsonObj == null) {
             window.localStorage.setItem('productsObj', "");
         }
+
+ */
     });
 }).config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('top');
@@ -75,16 +92,47 @@ angular.module('starter', ['ionic', 'starter.controller', 'ion-digit-keyboard', 
                 templateUrl: 'templates/inventoryPage.html'
             }
         }
+    }).state('app.category', {
+        url: '/category',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/categoryPage.html'
+            }
+        }
     }).state('app.product', {
         url: '/product',
         views: {
             'menuContent': {
-                templateUrl: 'templates/Product.html'
+                templateUrl: 'templates/productPage.html'
+            }
+        }
+    }).state('app.home', {
+        url: '/home',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/homePage.html'
             }
         }
     }).state('Test1', {
         url: '/Test',
         templateUrl: 'templates/Keypad.html',
     })
-    $urlRouterProvider.otherwise('/app/product');
+    $urlRouterProvider.otherwise('/app/home');
+})
+
+.directive('textarea', function() {
+
+  return {
+    restrict: 'E',
+    link: function(scope, element, attr){
+        var update = function(){
+            element.css("height", "auto");
+            var height = element[0].scrollHeight; 
+            element.css("height", element[0].scrollHeight + "px");
+        };
+        scope.$watch(attr.ngModel, function(){
+            update();
+        });
+    }
+  };
 });

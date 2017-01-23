@@ -1,5 +1,6 @@
 angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', function($scope, $rootScope, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
     //$rootScope.Products;
+    $rootScope.db;
     loadingProducts();
     function loadingProducts() {
         console.log('entered products loading...');
@@ -15,12 +16,10 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         $rootScope.Products = productsJsonObj.products;
     }
     console.log($rootScope.Products);
-
-     $scope.onHold = function(){
-      console.log('eneterd on hold');
-     $scope.showDelete = true;
-  }
-  
+    $scope.onHold = function() {
+        console.log('eneterd on hold');
+        $scope.showDelete = true;
+    }
     /*    $rootScope.Products = [{
         productId: '1',
         name: 'Coffee',
@@ -162,8 +161,8 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         unitPrice: '66'
     }];
  */
-    $rootScope.categaryArr = ['All', 'DCPTO1', 'DCPTO2', 'DCPTO3', 'DCPTO4', 'DCPTO5', 'DCPTO6', 'DCPTO7', 'DCPTO8', 'DCPTO9', 'DCPT10', 'DCPT11', 'DCPT12', 'DCPT13', 'DCPT14', 'DCPT15'];
-    console.log($rootScope.categaryArr);
+  //  $rootScope.categaryArr = ['All', 'DCPTO1', 'DCPTO2', 'DCPTO3', 'DCPTO4', 'DCPTO5', 'DCPTO6', 'DCPTO7', 'DCPTO8', 'DCPTO9', 'DCPT10', 'DCPT11', 'DCPT12', 'DCPT13', 'DCPT14', 'DCPT15'];
+  //  console.log($rootScope.categaryArr);
     /*   
     for(var i=0; i<$scope.Categarys; i++){
         
@@ -219,6 +218,12 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         }]
     }
   */
+    $rootScope.categaryArr; 
+    loadCategaryFromDB();
+    function loadCategaryFromDB(){
+         
+    }
+    
     $scope.display = function(catName) {
         $scope.prodCat = [];
         console.log($scope.prodCat.length);
@@ -629,14 +634,50 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     ;
     //Slide Ends
 }
-]).controller("inventoryCtrl", function($scope, $rootScope, $cordovaCamera, $timeout, $cordovaFile, $ionicModal) {
+]).controller("productCtrl", function($scope, $rootScope, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal) {
     console.log($rootScope.Products);
-    $scope.newProduct = {};
+    $scope.TaxSettings1 = [{
+        Id: '1',
+        Name: 'tax1',
+        TaxRate: '5%'
+    }, {
+        Id: '2',
+        Name: 'tax2',
+        TaxRate: '10%'
+    }, {
+        Id: '3',
+        Name: 'tax3',
+        TaxRate: '15%'
+    }, {
+        Id: '4',
+        Name: 'tax4',
+        TaxRate: '20%'
+    }]
+    $scope.newProduct = {
+        unit: 'pieces'
+    };
+    $scope.$watch($scope.newProduct.productId, function(pId) {
+        console.log(pId);
+    });
+    $scope.taxSelect = function(tax) {
+        console.log('select selection...')
+        $scope.taxId = tax.Id;
+    }
+    $scope.newProduct.image = "/img/sc1.jpg";
     $scope.addNewProduct = function() {
-        if (!(angular.equals({}, $scope.newProduct))) {
-            console.log('entered if');
+        console.log('entered addNewProduct()..');
+        console.log($scope.newProduct);
+        if ($scope.newProduct.tax && $scope.newProduct.image) {
+            console.log('validation success and entered if');
             console.log($scope.newProduct);
-            $rootScope.Products.push($scope.newProduct);
+            var query = "INSERT INTO Product (ProductId, ProductName, ProductUnit, ProductPrice, TaxId, BuyingPrice, TaxRate, ItemsinStock, Discount, Category, Image) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            $cordovaSQLite.execute($rootScope.db, query, [$scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.taxId, $scope.newProduct.actualPrice, $scope.newProduct.tax, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.category, $scope.newProduct.image]).then(function(res) {
+                console.log("INSERT ID -> " + res.insertId);
+                console.log("saved to draft successfully...");
+            }, function(err) {
+                console.error(err);
+            });
+            /*   
             var productsJsonObj = window.localStorage.getItem('productsObj');
             console.log(productsJsonObj);
             if (productsJsonObj != "") {
@@ -647,7 +688,9 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             }
             productsJsonObj.products.push($scope.newProduct);
             productsJsonObj = window.localStorage.setItem('productsObj', JSON.stringify(productsJsonObj));
-            $scope.newProduct = {};
+            $rootScope.Products.push($scope.newProduct);
+           //  $scope.newProduct = {};
+         */
         }
     }
     $scope.onCategorySelect = function(categaryName) {
@@ -658,7 +701,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         $rootScope.categaryArr.push(newCategaryName);
         document.getElementById('newCategoryAddField').value = null;
     }
-  /*  
+    /*  
     var timer = false;
     $scope.$watch('newProduct.productId', function() {
         if (timer) {
@@ -670,8 +713,6 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         }, 500)
     });
   */
- 
-
     $scope.openCamera = function() {
         console.log('camera opened..');
         document.addEventListener("deviceready", function() {
@@ -742,6 +783,18 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     })
     $scope.openCategoryModal = function() {
         $scope.categoryModal.show();
+    }
+}).controller('categoryCtrl', function($scope, $cordovaSQLite, $rootScope) {
+    $scope.newCategory = {};
+    $scope.addNewCategory = function() {
+        console.log('eneterd add newCategory..');
+        var query = "INSERT INTO Category (CategoryId, CategoryName, CategoryDesc) VALUES (?,?,?)";
+        $cordovaSQLite.execute($rootScope.db, query, [$scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription]).then(function(res) {
+            console.log("INSERT ID -> " + res.insertId);
+            console.log("saved to category successfully...");
+        }, function(err) {
+            console.error(err.message);
+        });
     }
 }).controller('printerSettings', function($scope) {
     $scope.printrSettings = {};
