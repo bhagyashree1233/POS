@@ -30,6 +30,9 @@ angular.module('starter', ['ionic', 'starter.controller', 'ion-digit-keyboard', 
         }
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Category (CategoryId text primary key, CategoryName text, CategoryDesc text)").then(console.log('Category table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Product (ProductId text primary key, ProductName text, ProductUnit text, ProductPrice real, TaxId integer, BuyingPrice real, TaxRate real, ItemsinStock real, Discount real, Category text, Image text)").then(console.log('Product table created Successfully'));
+        $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Transaction (BillNo integer, DateTime text, ProductId text, ProductName text, Quantity real, ProductPrice real, Discount real, TaxRate real, TaxId integer, Category text, CategoryName text)").then(console.log('Transaction table created Successfully'));
+        $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
+        
         /*        
         //   window.localStorage.removeItem("holdEvents");
         var itemsJsonObj = window.localStorage.getItem('holdEvents');
@@ -118,21 +121,18 @@ angular.module('starter', ['ionic', 'starter.controller', 'ion-digit-keyboard', 
         templateUrl: 'templates/Keypad.html',
     })
     $urlRouterProvider.otherwise('/app/home');
-})
-
-.directive('textarea', function() {
-
-  return {
-    restrict: 'E',
-    link: function(scope, element, attr){
-        var update = function(){
-            element.css("height", "auto");
-            var height = element[0].scrollHeight; 
-            element.css("height", element[0].scrollHeight + "px");
-        };
-        scope.$watch(attr.ngModel, function(){
-            update();
-        });
-    }
-  };
+}).directive('textarea', function() {
+    return {
+        restrict: 'E',
+        link: function(scope, element, attr) {
+            var update = function() {
+                element.css("height", "auto");
+                var height = element[0].scrollHeight;
+                element.css("height", element[0].scrollHeight + "px");
+            };
+            scope.$watch(attr.ngModel, function() {
+                update();
+            });
+        }
+    };
 });

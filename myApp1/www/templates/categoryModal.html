@@ -5,12 +5,12 @@
                 <label class="item-input-wrapper">
                     <input type="text" ng-model="newCategaryName" id="newCategoryAddField" placeholder="Add New Category"></input>
                 </label>
-                <button class="button button-small" ng-disabled="!newCategaryName" ng-click="addNewCategary(newCategaryName)">Add</button>
+                <button class="button button-small" ng-click="addNewCategary(newCategaryName)">Add</button>
             </div>
         </div>
         <div class="card">
             <ion-list>
-                <ion-item style="color:black;" ng-click="onCategorySelect(categoryName)" ng-repeat="categoryName in categaryArr">
+                <ion-item style="color:black;" ng-click="onCategorySelect(categoryName)" ng-repeat="categoryName in categoryArr">
                     <span>{{categoryName}}</span>
                 </ion-item>
             </ion-list>

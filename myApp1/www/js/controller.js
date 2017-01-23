@@ -1,7 +1,7 @@
-angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', function($scope, $rootScope, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
+angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
     //$rootScope.Products;
-    $rootScope.db;
-    loadingProducts();
+    //  $rootScope.db;
+    /*    loadingProducts();
     function loadingProducts() {
         console.log('entered products loading...');
         var productsJsonObj = window.localStorage.getItem('productsObj');
@@ -15,6 +15,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         }
         $rootScope.Products = productsJsonObj.products;
     }
+ */
     console.log($rootScope.Products);
     $scope.onHold = function() {
         console.log('eneterd on hold');
@@ -161,8 +162,8 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         unitPrice: '66'
     }];
  */
-  //  $rootScope.categaryArr = ['All', 'DCPTO1', 'DCPTO2', 'DCPTO3', 'DCPTO4', 'DCPTO5', 'DCPTO6', 'DCPTO7', 'DCPTO8', 'DCPTO9', 'DCPT10', 'DCPT11', 'DCPT12', 'DCPT13', 'DCPT14', 'DCPT15'];
-  //  console.log($rootScope.categaryArr);
+    //  $rootScope.categaryArr = ['All', 'DCPTO1', 'DCPTO2', 'DCPTO3', 'DCPTO4', 'DCPTO5', 'DCPTO6', 'DCPTO7', 'DCPTO8', 'DCPTO9', 'DCPT10', 'DCPT11', 'DCPT12', 'DCPT13', 'DCPT14', 'DCPT15'];
+    //  console.log($rootScope.categaryArr);
     /*   
     for(var i=0; i<$scope.Categarys; i++){
         
@@ -218,12 +219,44 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         }]
     }
   */
-    $rootScope.categaryArr; 
-    loadCategaryFromDB();
-    function loadCategaryFromDB(){
-         
+    $rootScope.categoryArr = [];
+    loadCategoryFromDB();
+    function loadCategoryFromDB() {
+        //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
+        query = "SELECT * FROM Category";
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log(res);
+            for (var i = 0; i < res.rows.length; i++) {
+                $rootScope.categoryArr.push(res.rows.item(i).CategoryName);
+                console.log(res.rows.item(i).CategoryName);
+            }
+            console.log($rootScope.categoryArr);
+        })
     }
-    
+    $rootScope.Products = [];
+    loadProductsFromDB();
+    function loadProductsFromDB() {
+        //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
+        query = "SELECT * FROM Product";
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log(res);
+            for (var i = 0; i < res.rows.length; i++) {
+                $rootScope.Products.push({
+                    productId: res.rows.item(i).ProductId,
+                    name: res.rows.item(i).ProductName,
+                    unit: res.rows.item(i).ProductUnit,
+                    unitPrice: res.rows.item(i).ProductPrice,
+                    tax: res.rows.item(i).TaxRate,
+                    actualPrice: res.rows.item(i).BuyingPrice,
+                    inStock: res.rows.item(i).ItemsinStock,
+                    discount: res.rows.item(i).Discount,
+                    category: res.rows.item(i).Category,
+                    image: res.rows.item(i).Image
+                });
+            }
+            console.log($rootScope.Products);
+        })
+    }
     $scope.display = function(catName) {
         $scope.prodCat = [];
         console.log($scope.prodCat.length);
@@ -634,85 +667,76 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     ;
     //Slide Ends
 }
-]).controller("productCtrl", function($scope, $rootScope, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal) {
+]).controller("productCtrl", function($scope, $state, $rootScope, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal) {
     console.log($rootScope.Products);
     $scope.TaxSettings1 = [{
         Id: '1',
         Name: 'tax1',
-        TaxRate: '5%'
+        TaxRate: '5'
     }, {
         Id: '2',
         Name: 'tax2',
-        TaxRate: '10%'
+        TaxRate: '10'
     }, {
         Id: '3',
         Name: 'tax3',
-        TaxRate: '15%'
+        TaxRate: '15'
     }, {
         Id: '4',
         Name: 'tax4',
-        TaxRate: '20%'
+        TaxRate: '20'
     }]
+    $scope.selectedTax = {};
     $scope.newProduct = {
         unit: 'pieces'
     };
-    $scope.$watch($scope.newProduct.productId, function(pId) {
-        console.log(pId);
+    $scope.$watch('newProduct.productId', function(newpId, oldpId) {
+        console.log(newpId);
+        query = "SELECT * FROM Product where ProductId = '" + newpId + "'";
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log(res);
+            if (res.rows.length == 0) {
+                console.log('Id not exists..');
+                $scope.checkIdShow = false;
+            } else {
+                console.log('Id already exists..');
+                $scope.checkIdShow = true;
+            }
+        })
     });
-    $scope.taxSelect = function(tax) {
-        console.log('select selection...')
-        $scope.taxId = tax.Id;
-    }
     $scope.newProduct.image = "/img/sc1.jpg";
     $scope.addNewProduct = function() {
+        console.log($scope.selectedTax);
         console.log('entered addNewProduct()..');
         console.log($scope.newProduct);
-        if ($scope.newProduct.tax && $scope.newProduct.image) {
+        if (!(angular.equals({}, $scope.selectedTax))) {
+            $scope.newProduct['taxRate'] = $scope.selectedTax.tax.TaxRate;
+            $scope.newProduct['taxId'] = $scope.selectedTax.tax.Id;
             console.log('validation success and entered if');
             console.log($scope.newProduct);
             var query = "INSERT INTO Product (ProductId, ProductName, ProductUnit, ProductPrice, TaxId, BuyingPrice, TaxRate, ItemsinStock, Discount, Category, Image) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-            $cordovaSQLite.execute($rootScope.db, query, [$scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.taxId, $scope.newProduct.actualPrice, $scope.newProduct.tax, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.category, $scope.newProduct.image]).then(function(res) {
+            $cordovaSQLite.execute($rootScope.db, query, [$scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.category, $scope.newProduct.image]).then(function(res) {
                 console.log("INSERT ID -> " + res.insertId);
                 console.log("saved to draft successfully...");
+                $rootScope.Products.push($scope.newProduct);
+                $scope.newProduct = {
+                    unit: 'pieces'
+                };
             }, function(err) {
                 console.error(err);
             });
-            /*   
-            var productsJsonObj = window.localStorage.getItem('productsObj');
-            console.log(productsJsonObj);
-            if (productsJsonObj != "") {
-                productsJsonObj = JSON.parse(productsJsonObj);
-            } else {
-                productsJsonObj = {};
-                productsJsonObj['products'] = [];
-            }
-            productsJsonObj.products.push($scope.newProduct);
-            productsJsonObj = window.localStorage.setItem('productsObj', JSON.stringify(productsJsonObj));
-            $rootScope.Products.push($scope.newProduct);
-           //  $scope.newProduct = {};
-         */
         }
     }
-    $scope.onCategorySelect = function(categaryName) {
-        $scope.newProduct.categary = categaryName;
+    $scope.onCategorySelect = function(categoryName) {
+        $scope.newProduct.category = categoryName;
         $scope.categoryModal.hide();
     }
     $scope.addNewCategary = function(newCategaryName) {
-        $rootScope.categaryArr.push(newCategaryName);
-        document.getElementById('newCategoryAddField').value = null;
+        $state.go('app.category');
+        $scope.categoryModal.hide();
+        //  $rootScope.categoryArr.push(newCategaryName);
+        //  document.getElementById('newCategoryAddField').value = null;
     }
-    /*  
-    var timer = false;
-    $scope.$watch('newProduct.productId', function() {
-        if (timer) {
-            $timeout.cancel(timer)
-        }
-        timer = $timeout(function() {
-            
-
-        }, 500)
-    });
-  */
     $scope.openCamera = function() {
         console.log('camera opened..');
         document.addEventListener("deviceready", function() {
@@ -782,6 +806,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         $scope.categoryModal = modal;
     })
     $scope.openCategoryModal = function() {
+        console.log('open categoryModal')
         $scope.categoryModal.show();
     }
 }).controller('categoryCtrl', function($scope, $cordovaSQLite, $rootScope) {
@@ -791,11 +816,27 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         var query = "INSERT INTO Category (CategoryId, CategoryName, CategoryDesc) VALUES (?,?,?)";
         $cordovaSQLite.execute($rootScope.db, query, [$scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription]).then(function(res) {
             console.log("INSERT ID -> " + res.insertId);
+            $rootScope.categoryArr.push($scope.newCategory.categoryName);
             console.log("saved to category successfully...");
+            $scope.newCategory = {};
         }, function(err) {
             console.error(err.message);
         });
     }
+    $scope.$watch('newCategory.categoryId', function(newcId, oldcId) {
+        console.log(newcId);
+        query = "SELECT * FROM Category where CategoryId = '" + newcId + "'";
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log(res);
+            if (res.rows.length == 0) {
+                console.log('Id not exists..');
+                $scope.catIdErrorMsg = false;
+            } else {
+                console.log('Id already exists..');
+                $scope.catIdErrorMsg = true;
+            }
+        })
+    });
 }).controller('printerSettings', function($scope) {
     $scope.printrSettings = {};
     $scope.savePrinterSettings = function() {
