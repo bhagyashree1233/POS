@@ -80,6 +80,7 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
     return {
         addNewCategory: addNewCategory,
         addNewProduct: addNewProduct,
+        loadProductsForCategory:loadProductsForCategory,
         loadFromDB: loadFromDB,
         storeToTransaction: storeToTransaction
     }

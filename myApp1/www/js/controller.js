@@ -1,7 +1,7 @@
-angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
+angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService) {
     console.log($rootScope.Products);
     $scope.onHold = function() {
-        console.log('eneterd on hold');
+        console.log('enterd on hold');
         $scope.showDelete = true;
     }
     /*    $rootScope.Products = [{
@@ -24,47 +24,39 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     $rootScope.categoryArr = [{
         categoryName: 'All'
     }];
-    loadCategoryFromDB();
-    function loadCategoryFromDB() {
-        //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
-        query = "SELECT * FROM Category";
-        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
-            console.log(res);
-            for (var i = 0; i < res.rows.length; i++) {
-                $rootScope.categoryArr.push({
-                    categoryId: res.rows.item(i).CategoryId,
-                    categoryName: res.rows.item(i).CategoryName
-                });
-                console.log(res.rows.item(i));
-            }
-            console.log($rootScope.categoryArr);
-        })
-    }
+    var promise = dbService.loadFromDB('Category');
+    promise.then(function(res) {
+        for (var i = 0; i < res.rows.length; i++) {
+            $rootScope.categoryArr.push({
+                categoryId: res.rows.item(i).CategoryId,
+                categoryName: res.rows.item(i).CategoryName
+            });
+        }
+    }, function(res) {
+        console.log(res);
+    })
     //load products list from DB
     $rootScope.Products = [];
-    loadProductsFromDB();
-    function loadProductsFromDB() {
-        //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
-        query = "SELECT * FROM Product";
-        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
-            console.log(res);
-            for (var i = 0; i < res.rows.length; i++) {
-                $rootScope.Products.push({
-                    productId: res.rows.item(i).ProductId,
-                    name: res.rows.item(i).ProductName,
-                    unit: res.rows.item(i).ProductUnit,
-                    unitPrice: res.rows.item(i).ProductPrice,
-                    tax: res.rows.item(i).TaxRate,
-                    actualPrice: res.rows.item(i).BuyingPrice,
-                    inStock: res.rows.item(i).ItemsinStock,
-                    discount: res.rows.item(i).Discount,
-                    category: res.rows.item(i).Category,
-                    image: res.rows.item(i).Image
-                });
-            }
-            console.log($rootScope.Products);
-        })
-    }
+    var promise = dbService.loadFromDB('Product');
+    promise.then(function(res) {
+        console.log(res);
+        for (var i = 0; i < res.rows.length; i++) {
+            $rootScope.Products.push({
+                productId: res.rows.item(i).ProductId,
+                name: res.rows.item(i).ProductName,
+                unit: res.rows.item(i).ProductUnit,
+                unitPrice: res.rows.item(i).ProductPrice,
+                tax: res.rows.item(i).TaxRate,
+                actualPrice: res.rows.item(i).BuyingPrice,
+                inStock: res.rows.item(i).ItemsinStock,
+                discount: res.rows.item(i).Discount,
+                category: res.rows.item(i).Category,
+                image: res.rows.item(i).Image
+            });
+        }
+    }, function(res) {
+        console.log(res)
+    })
     $scope.display = function(catName) {
         $scope.prodCat = [];
         console.log($scope.prodCat.length);
@@ -131,7 +123,10 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             productId: product.productId,
             name: product.name,
             quantity: qty,
-            productAmount: productAmount,
+            productAmount: product.unitPrice,
+            productTotalPrice: productAmount,
+            productTaxAmount: '',
+            productTotalAmount:'',
             discount: product.discount,
             taxRate: product.taxRate,
             taxId: product.taxId,
@@ -139,6 +134,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             categoryName: product.categoryName,
             selected: false
         })
+      //  TotalPrice real, TaxAmount real, TotalAmount real;
         $scope.numericModal.hide();
         $scope.newProduct = {};
         $scope.typedCode = null;
@@ -309,7 +305,6 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
                   borderColor: '#43bf58' // Only clearly visible on round buttons (until next plugin version)
               }
           }
-
            //Numeric keypad ending*/
     $ionicModal.fromTemplateUrl('templates/PaymentModel.html', {
         scope: $scope,
@@ -345,68 +340,38 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     }
     $scope.receipt = function() {
         $scope.paymentModal.hide();
-        storeToTransaction();
-        /*        //  document.getElementById("buttonPayment").disabled = true; 
-        var transactionJsonObj = window.localStorage.getItem('transactionEvents');
-        console.log(transactionJsonObj);
-        if (transactionJsonObj != "") {
-            transactionJsonObj = JSON.parse(transactionJsonObj);
-        } else {
-            transactionJsonObj = {};
-        }
-        console.log(transactionJsonObj);
-        if (transactionJsonObj.lastRecieptId == undefined) {
-            transactionJsonObj.lastRecieptId = "100";
-        }
-        var transactionObj = {};
-       
-        transactionObj.date = (new Date()).toString().substring(4, 24);
-        transactionObj.recieptId = parseInt(transactionJsonObj.lastRecieptId) + 1;
-        transactionObj.products = $scope.productArr;
-        transactionObj.productsAmount = $scope.totalPrice;
-        transactionObj.serviceTax = $scope.serviceTax * $scope.totalPrice;
-        transactionObj.totalAmount = $scope.payableAmount;
-        transactionObj.paidAmount = $scope.typedAmount;
-        transactionObj.balanceAmount = $scope.Balence;
-        transactionJsonObj[transactionObj.recieptId] = transactionObj;
-        transactionJsonObj.lastRecieptId = (transactionObj.recieptId).toString();
-        window.localStorage.setItem('transactionEvents', JSON.stringify(transactionJsonObj));
-        console.log(transactionJsonObj);
-  */
-        $scope.productArr = [];
-        $scope.totalPrice = null;
-        $scope.payableAmount = null;
-        $scope.typedAmount = null;
-        $scope.Balence = null;
+        var promise = dbService.storeToTransaction($scope.productArr);
+        promise.then(function(result) {
+            console.log(result);
+            $scope.productArr = [];
+            $scope.totalPrice = null;
+            $scope.payableAmount = null;
+            $scope.typedAmount = null;
+            $scope.Balence = null;
+        }, function(result) {
+            console.log(result);
+        })
     }
- /*   {
-            productId: product.productId,
-            name: product.name,
-            quantity: qty,
-            productAmount: productAmount,
-            discount: product.discount,
-            taxRate: product.taxRate,
-            taxId: product.taxId,
-            category: product.categoryId,
-            categoryName: product.categoryName,
-            selected: false
-        }
-  */      
+
+ /*   
     function storeToTransaction() {
+        console.log($scope.productArr);
         var d = (new Date()).toString().substring(4, 24);
-        $scope.BillNo =(new Date()).getTime();
+        $scope.BillNo = (new Date()).getTime();
+        // $scope.BillNo =101;
         for (var i = 0; i < $scope.productArr.length; i++) {
-            console.log($scope.productArr);
             var productObj = $scope.productArr[i];
-            var query = "INSERT INTO Transaction (BillNo, DateTime, ProductId, ProductName, Quantity, ProductPrice, Discount, TaxRate, TaxId, Category, CategoryName) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-            $cordovaSQLite.execute($rootScope.db, query, [$scope.BillNo, d, $scope.productObj.productId, $scope.productObj.name, $scope.productObj.quantity, $scope.productObj.productAmount, $scope.productObj.discount, $scope.productObj.taxRate, $scope.productObj.taxId, $scope.productObj.category, $scope.productObj.categoryName]).then(function(res) {
+            var query = "INSERT INTO TransactionDetails (BillNo, DateTime, ProductId, ProductName, Quantity, ProductPrice, Discount, TaxRate, TaxId, Category, CategoryName) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            $cordovaSQLite.execute($rootScope.db, query, [$scope.BillNo, d, productObj.productId.toString(), productObj.name, productObj.quantity, productObj.productAmount, productObj.discount, productObj.taxRate, productObj.taxId, productObj.category, productObj.categoryName]).then(function(res) {
+                //     $cordovaSQLite.execute($rootScope.db, query, [102, "24-Jan-2017 11:03:24", "Cofee123", "cofee", 2, 120, 3, 4, 4, "CAT01", "Category 01"]).then(function(res) {
                 console.log("INSERT ID -> " + res.insertId);
-               
             }, function(err) {
                 console.error(err);
             });
         }
     }
+ */
+    
     // Quantity model start
     $ionicModal.fromTemplateUrl('templates/numericKeypad.html', {
         scope: $scope,
@@ -508,7 +473,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     ;
     //Slide Ends
 }
-]).controller("productCtrl", function($scope, $state, $rootScope, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal) {
+]).controller("productCtrl", function($scope, $state, $rootScope, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
     console.log($rootScope.Products);
     $scope.TaxSettings1 = [{
         Id: '1',
@@ -555,7 +520,14 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             $scope.newProduct['taxId'] = $scope.selectedTax.tax.Id;
             console.log('validation success and entered if');
             console.log($scope.newProduct);
-            var query = "INSERT INTO Product (ProductId, ProductName, ProductUnit, ProductPrice, TaxId, BuyingPrice, TaxRate, ItemsinStock, Discount, Category, Image) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            var promise = dbService.addNewProduct($scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.image);
+            promise.then(function(result) {
+                console.log(result);
+                $rootScope.Products.push($scope.newProduct);
+            }, function(result) {
+                console.log(result);
+            })
+            /*    var query = "INSERT INTO Product (ProductId, ProductName, ProductUnit, ProductPrice, TaxId, BuyingPrice, TaxRate, ItemsinStock, Discount, Category, Image) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
             $cordovaSQLite.execute($rootScope.db, query, [$scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.image]).then(function(res) {
                 console.log("INSERT ID -> " + res.insertId);
                 console.log("saved to draft successfully...");
@@ -566,6 +538,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             }, function(err) {
                 console.error(err);
             });
+        */
         }
     }
     $scope.onCategorySelect = function(categoryObj) {
@@ -651,10 +624,17 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         console.log('open categoryModal')
         $scope.categoryModal.show();
     }
-}).controller('categoryCtrl', function($scope, $cordovaSQLite, $rootScope) {
+}).controller('categoryCtrl', function($scope, $cordovaSQLite, $rootScope, dbService) {
     $scope.newCategory = {};
     $scope.addNewCategory = function() {
-        console.log('eneterd add newCategory..');
+        var promise = dbService.addNewCategory($scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
+        promise.then(function(result) {
+            console.log(result);
+            $rootScope.categoryArr.push($scope.newCategory);
+        }, function() {
+            console.log(result);
+        });
+        /*       console.log('eneterd add newCategory..');
         var query = "INSERT INTO Category (CategoryId, CategoryName, CategoryDesc) VALUES (?,?,?)";
         $cordovaSQLite.execute($rootScope.db, query, [$scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription]).then(function(res) {
             console.log("INSERT ID -> " + res.insertId);
@@ -664,6 +644,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         }, function(err) {
             console.error(err.message);
         });
+ */
     }
     $scope.$watch('newCategory.categoryId', function(newcId, oldcId) {
         console.log(newcId);
