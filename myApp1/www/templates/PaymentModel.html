@@ -27,6 +27,8 @@
             <a  ng-click="paidAmount(typedAmount)" class="button button-block button-assertive icon-left ion-checkmark" ng-if="typedAmount>=payableAmount" ng-disabled="enterBtn" >Enter</a>
             <a class="button button-block button-stable" disabled>&nbsp;</a>
             <a ng-click="keyPressedAmount(0)" class="button button-block button-positive">0</a>
+            <a ng-click="keyPressedAmount('.')" class="button button-block button-positive">.</a>
+
         </div>
         <div class="button-bar sam-cust-bar">
 

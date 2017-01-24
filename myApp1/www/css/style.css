@@ -316,6 +316,16 @@ input.printerSettingtext{
 	left:40%;
 }
 
+#errorMessage{
+	
+}
+.red {
+  border-color: red;
+  color:red;
+}
+
+
 input.ng-invalid {
     background-color: pink;
 }
+

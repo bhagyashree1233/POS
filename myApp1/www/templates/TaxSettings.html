@@ -1,0 +1,26 @@
+<ion-view >
+<ion-content ng-controller="taxSetting">
+<ion-list>
+
+<form name="myForm" ng-submit="saveTaxSetting()">
+
+<label class="item item-input">
+                <span class="input-label">Name:</span>
+                <input name="taxNme" ng-model="taxSettings.name" type="text"   required>
+                <p style="color:black" ng-show="myForm.taxNme.$invalid.required">Required </p>
+                
+             </label>
+         <label class="item item-input">
+                <span class="input-label">Tax Rate:</span>
+                <input type="text" name="taxRate" ng-model="taxSettings.taxRate" required >
+               <p style="color:black" ng-show="myForm.taxRate.$error.required"> Required </p>
+
+            </label>
+            
+            <div class="padding">
+  <button type="submit"  class="button button-block button-dark" style="margin:auto;width:70%">Submit</button>
+  </div>
+  </form>
+</ion-list>
+</ion-content>
+</ion-view>

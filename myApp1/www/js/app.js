@@ -2,8 +2,10 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
+
 angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ion-digit-keyboard', 'ngCordova']).run(function($ionicPlatform, $cordovaSQLite, $rootScope) {
     $ionicPlatform.ready(function() {
+
         if (window.cordova && window.cordova.plugins.Keyboard) {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -34,7 +36,41 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Product (ProductId text primary key, ProductName text, ProductUnit text, ProductPrice real, TaxId integer, BuyingPrice real, TaxRate real, ItemsinStock real, Discount real, CategoryId text, Image text)").then(console.log('Product table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS TransactionDetails (BillNo integer, DateTime text, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, Category text, CategoryName text)").then(console.log('TransactionDetails table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
-        
+        //$cordovaSQLite.execute($rootScope.db, 'DROP  table Settings').then( console.log('Settings table deleted Successfully'));
+
+   $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Settings (SettingsName text PRIMARY KEY ,SettingsValue TEXT)').then( console.log('Settings table created Successfully'));
+    $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue  from Settings where SettingsName="PrinterFormatSettings"')
+        .then(function(result) {
+            //$scope.statusMessage = "Message saved successful, cheers!";
+            console.log(result.rows.length)
+            if(result.rows.length==1){
+          $rootScope.printFormatSettings=console.log(JSON.parse(result.rows[0].SettingsValue))
+           
+            }else{
+          $rootScope.printFormatSettings={}
+            }
+        }, function(error) {
+            //$scope.statusMessage = "Error on saving: " + error.message;
+            console.log(error)
+        }) 
+        $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue  from Settings where SettingsName="TaxSettings"')
+        .then(function(result) {
+            //$scope.statusMessage = "Message saved successful, cheers!";
+            console.log(result.rows.length)
+            if(result.rows.length==1){
+            	console.log(result.rows[0])
+          $rootScope.TaxSettings=JSON.parse(result.rows[0].SettingsValue)
+          console.log( $rootScope.TaxSettings)
+           dfd.resolve( $rootScope.TaxSettings ); 
+            }else{
+          $rootScope.TaxSettings=[];
+            }
+        }, function(error) {
+            //$scope.statusMessage = "Error on saving: " + error.message;
+            console.log(error)
+        })
+		 });
+})
         /*        
         //   window.localStorage.removeItem("holdEvents");
         var itemsJsonObj = window.localStorage.getItem('holdEvents');
@@ -52,10 +88,11 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         if (productsJsonObj == null) {
             window.localStorage.setItem('productsObj', "");
         }
+     */
 
- */
-    });
-}).config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+    
+   
+ .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('top');
     $stateProvider.state('app', {
         url: '/app',

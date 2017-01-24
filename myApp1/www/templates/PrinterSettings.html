@@ -1,68 +1,110 @@
 <ion-view view="Printer Settings">
     <ion-content ng-controller="printerSettings">
-        <ion-list >
-        <form id="prinrSettings">
+        
+        <form id="prinrSettings" name="myForm" ng-submit="savePrinterSettings()" >
             <label class="item item-input">
                 <span class="input-label">Shop Name:</span>
-                <input type="text" class="printerSettingtext" ng-model="printrSettings.shopName">
+                <input type="text" name="shopName" id="shopName" class="printerSettingtext"  ng-minlength=3 ng-maxlength=20 ng-model="printFormatSettings.shopName" required>
+               <p  ng-show="myForm.shopName.$touched && myForm.shopName.$error.required">Shop Name Reqired</p>
+               <p id="errorMessage" ng-show="myForm.shopName.$error.minlength">Shop Name should more then 3 letters</p>
+               <p id="errorMessage" ng-show="myForm.shopName.$error.maxlength">Shop Name  should be less then 20 letters</p>
+
+
+             </label>
+         <label class="item item-input">
+                <span class="input-label">Address Line1:</span>
+                <input type="text" name="addressLine1"class="printerSettingtext" ng-minlength=0 ng-maxlength=20 ng-model="printFormatSettings.addressLine1">
+               <p id="errorMessage" ng-show="myForm.addressLine1.$error.maxlength">Address Line 1 should be less then 20 letters</p>
+
             </label>
             <label class="item item-input">
-                <span class="input-label">Shop Address:</span>
-                <input type="text" class="printerSettingtext" ng-model="printrSettings.shopAddress">
+                <span class="input-label">Address Line2:</span>
+                <input type="text" name="addressLine2" class="printerSettingtext" ng-model="printFormatSettings.addressLine2" ng-minlength=0 ng-maxlength=20>
+               <p id="errorMessage" ng-show="myForm.addressLine2.$error.maxlength">Address Line 2 should be less then 20 letters</p>
+
             </label>
             <label class="item item-input">
-                <span class="input-label">TIN:</span>
-                <input type="text" class="printerSettingtext" ng-model="printrSettings.tin">
+                <span class="input-label">Phone No:</span>
+                <input type="number" name="number1" class="printerSettingtext" ng-model="printFormatSettings.phNumber" ng-minlength=7 ng-maxlength=13>
+                <p id="errorMessage" ng-show="myForm.number1.$error.minlength">Phone Number more then 7 digits</p>
+               <p id="errorMessage" ng-show="myForm.number1.$error.maxlength">Phone Number should be less then 13 digits</p>
+
             </label>
             <label class="item item-input">
-                <span class="input-label">Telephone:</span>
-                <input type="text" class="printerSettingtext" ng-model="printrSettings.tlpNmbr">
-            </label>
-            <label class="item item-input">
-                <span class="input-label">Wifi Password:</span>
-                <input type="text" class="printerSettingtext" ng-model="printrSettings.wifiPasswrd">
+                <span class="input-label" >TIN Number:</span>
+                <input type="text" name="tinNum"class="printerSettingtext" ng-model="printFormatSettings.tin" ng-minlength=0 ng-maxlength=13>
+                <p id="errorMessage" ng-show="myForm.tinNum.$error.minlength">TIN Number should more then 3 digits</p>
+               <p id="errorMessage" ng-show="myForm.tinNum.$error.maxlength">TIN Number should be less then 13 digits</p>
+
             </label>
             <label class="item item-input">
                 <span class="input-label">Greeting:</span>
-                <input type="text" class="printerSettingtext" ng-model="printrSettings.greeting">
-            </label>
-            <label class="item item-input">
-                <span class="input-label">Notice:</span>
-                <input type="text" class="printerSettingtext" ng-model="printrSettings.notice">
+                <input type="text" class="printerSettingtext" name="greetings" ng-model="printFormatSettings.greeting" ng-minlength=0 ng-maxlength=20>
+                 <p id="errorMessage" ng-show="myForm.greetings.$error.minlength">Greeting should more then 3 letters</p>
+               <p id="errorMessage" ng-show="myForm.greetings.$error.maxlength">Greeting  should be less then 20 letters</p>
+
             </label>
             <label class="item item-input">
                 <span class="input-label">Starting Bill Number:</span>
-                <input type="text" class="printerSettingtext" ng-model="printrSettings.strtBillNmbr">
+                <input type="number" name="startBillNm"class="printerSettingtext" ng-model="printFormatSettings.strtBillNmbr" min="1" max="99999" required>
+                
+                <p id="errorMessage" ng-show="myForm.startBillNm.$touched && myForm.startBillNm.$error.required && myForm.startBillNm.$invalid">Start Bill Number requied and should be between 1 to 99999 digits </p>
             </label>
+            
+            
             <label class="item item-input">
                 <span class="input-label">Token Number:</span>
                 <label class="toggle">
-                    <input type="checkbox" ng-model="printrSettings.tokNum">
+                    <input type="checkbox" ng-model="printFormatSettings.tokNum">
                     <div class="track">
                         <div class="handle"></div>
                     </div>
                 </label>
             </label>
-            <div ng-show="printrSettings.tokNum">
+            <div ng-show="printFormatSettings.tokNum">
                 <label class="item item-input">
-                    <span class="input-label">Starting:</span>
-                    <input type="text" class="printerSettingtext" ng-model="printrSettings.tokStartNmbr">
+                    <span class="input-label">Token Start No:</span>
+                    <input type="number" name="strtTokenNum"class="printerSettingtext" ng-model="printFormatSettings.tokStartNmbr" min="1" max="999" required>
+                 <p  ng-show="myForm.strtTokenNum.$touched && myForm.strtTokenNum.$error.required">Start token Number Reqired</p>
+                <p id="errorMessage" ng-show="myForm.strtTokenNum.$invalid">Start token Number should be between 1 to 999</p>
+
                 </label>
                 <label class="item item-input">
-                    <span class="input-label">Reset After:</span>
-                    <input type="text" class="printerSettingtext" ng-model="printrSettings.tokResetAftr">
+                    <span class="input-label">Token Reset After:</span>
+                    <input type="number" name="restTokenNum"class="printerSettingtext" ng-model="printFormatSettings.tokResetAftr" max="999">
+                <p id="errorMessage" ng-show="printFormatSettings.tokResetAftr>=printFormatSettings.tokStartNmbr &&printFormatSettings.tokResetAftr!=0  ">Token Rest Number should be less then Start Token Number </p>
+                <p id="errorMessage" ng-show="myForm.restTokenNum.$invalid">Reset token number should be less then 999 digits</p>
+
                 </label>
             </div>
             <label class="item item-input">
-                <span class="input-label">Copies:</span>
-                <input type="number" pattern="[0-9]*" class="printerSettingtext" ng-model="printrSettings.copies" required>
+                <span class="input-label">Bill Copies:</span>
+                <input type="number" pattern="[0-9]*" name="billCopies"class="printerSettingtext" ng-model="printFormatSettings.billCopies" min="1" max="5" required>
+              <p  ng-show="myForm.billCopies.$touched && myForm.billCopies.$error.required">Bill Copies Reqired</p>
+                <p id="errorMessage" ng-show="myForm.billCopies.$invalid">Bill Copies Sholud be bellow 5</p>
             </label>
-            </form>
-          <div class="padding">
-          <button type="submit" ng-click="savePrinterSettings()" class="button button-block button-dark" style="margin:auto;width:70%">Submit</button>
-        </div>
-        </ion-list>
+            
+            <label class="item item-input">
+                <span class="input-label">Wifi Password:</span>
+                <input type="text" name="wifiPassword" class="printerSettingtext" ng-model="printrSettings.wifiPasswrd" ng-minlength=2 ng-maxlength=10>
+                <p id="errorMessage" ng-show="myForm.wifiPassword.$error.minlength">Wifi Password should more then 2 letters</p>
+                <p id="errorMessage" ng-show="myForm.wifiPassword.$error.maxlength">Wifi Password  should be less then 10 letters</p>
 
-        
+            </label>
+            
+            <label class="item item-input">
+                <span class="input-label">Wifi SSID:</span> 
+                <input type="text" name="wifiSsid"class="printerSettingtext" ng-model="printFormatSettings.wifiSsid" ng-minlength=2 ng-maxlength=10>
+                 <p id="errorMessage" ng-show="myForm.wifiSsid.$error.minlength">Wifi SSID should more then 2 letters</p>
+                <p id="errorMessage" ng-show="myForm.wifiSsid.$error.maxlength">Wifi SSID  should be less then 10 letters</p>
+ 
+            </label>
+            
+            
+          <div class="padding">
+          <button type="submit"  class="button button-block button-dark" style="margin:auto;width:70%">Submit</button>
+        </div>
+        </form>
+              
     </ion-content>
 </ion-view>
