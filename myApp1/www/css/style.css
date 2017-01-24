@@ -36,6 +36,11 @@
     overflow-y: hidden;
     height: 90%;
 }
+#product-billing-head {
+	height:5%;
+	margin:0.5vh;
+	width:100%;
+}
 
 #product-categary {
     border: 1px solid black;
@@ -277,7 +282,7 @@ color:black;
 
 }
 
-#inventoryContentDiv {
+#productContentDiv, #categoryContentDiv {
 	width:90%;
 	margin:auto;
 }
@@ -310,6 +315,7 @@ input.printerSettingtext{
 	width:50%;
 	left:40%;
 }
+
 #errorMessage{
 	
 }
@@ -317,3 +323,9 @@ input.printerSettingtext{
   border-color: red;
   color:red;
 }
+
+
+input.ng-invalid {
+    background-color: pink;
+}
+
