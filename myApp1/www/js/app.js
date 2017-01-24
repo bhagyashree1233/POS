@@ -2,7 +2,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'starter.controller', 'ion-digit-keyboard', 'ngCordova']).run(function($ionicPlatform, $cordovaSQLite, $rootScope) {
+angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ion-digit-keyboard', 'ngCordova']).run(function($ionicPlatform, $cordovaSQLite, $rootScope) {
     $ionicPlatform.ready(function() {
         if (window.cordova && window.cordova.plugins.Keyboard) {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -25,12 +25,14 @@ angular.module('starter', ['ionic', 'starter.controller', 'ion-digit-keyboard', 
             console.log("Android");
         } else {
             $rootScope.db = window.openDatabase("PayUPos.db", '1', 'PayUPos', 1024 * 1024 * 100);
-            // browser
+            // browser 
             console.log("browser");
         }
+       // $cordovaSQLite.execute($rootScope.db, "DROP TABLE TransactionDetails ").then(console.log('Transaction table droped Successfully')); 
+        
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Category (CategoryId text primary key, CategoryName text, CategoryDesc text)").then(console.log('Category table created Successfully'));
-        $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Product (ProductId text primary key, ProductName text, ProductUnit text, ProductPrice real, TaxId integer, BuyingPrice real, TaxRate real, ItemsinStock real, Discount real, Category text, Image text)").then(console.log('Product table created Successfully'));
-        $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Transaction (BillNo integer, DateTime text, ProductId text, ProductName text, Quantity real, ProductPrice real, Discount real, TaxRate real, TaxId integer, Category text, CategoryName text)").then(console.log('Transaction table created Successfully'));
+        $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Product (ProductId text primary key, ProductName text, ProductUnit text, ProductPrice real, TaxId integer, BuyingPrice real, TaxRate real, ItemsinStock real, Discount real, CategoryId text, Image text)").then(console.log('Product table created Successfully'));
+        $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS TransactionDetails (BillNo integer, DateTime text, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, Category text, CategoryName text)").then(console.log('TransactionDetails table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
         
         /*        

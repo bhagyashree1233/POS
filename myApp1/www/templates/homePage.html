@@ -107,7 +107,7 @@
                     </div>
             -->
                     <ion-scroll direction="x" id="product-categary-scroll">
-                        <button class="product-categary-button" ng-repeat="catName in categoryArr" ng-click="display(catName)">{{catName}}</button>
+                        <button class="product-categary-button" ng-repeat="categoryObj in categoryArr" ng-click="display(categoryObj.categoryName)">{{categoryObj.categoryName}}</button>
                     </ion-scroll>
                     <div class="catButtons" id="product-categary-next">
                         <button class="button icon ion-chevron-right" id="button-next" ng-click="next()"></button>

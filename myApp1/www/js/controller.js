@@ -1,24 +1,7 @@
-angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
-    //$rootScope.Products;
-    //  $rootScope.db;
-    /*    loadingProducts();
-    function loadingProducts() {
-        console.log('entered products loading...');
-        var productsJsonObj = window.localStorage.getItem('productsObj');
-        console.log(productsJsonObj);
-        if (productsJsonObj == "") {
-            productsJsonObj = {}
-            productsJsonObj['products'] = [];
-        } else {
-            productsJsonObj = JSON.parse(productsJsonObj);
-            console.log(productsJsonObj);
-        }
-        $rootScope.Products = productsJsonObj.products;
-    }
- */
+angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService) {
     console.log($rootScope.Products);
     $scope.onHold = function() {
-        console.log('eneterd on hold');
+        console.log('enterd on hold');
         $scope.showDelete = true;
     }
     /*    $rootScope.Products = [{
@@ -32,231 +15,48 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         inStock: 100,
         tax: 5,
         actualPrice: '10'
-    }, {
-        productId: '2',
-        name: 'Coffee',
-        discount: '15%',
-        image: '/img/coffee-cup.jpg',
-        categary: 'DCPTO2',
-        unit: 'ltr',
-        unitPrice: '60'
-    }, {
-        productId: '3',
-        name: 'Coffee',
-        discount: '20%',
-        image: '/img/images.jpg',
-        categary: 'DCPTO3',
-        unit: 'kg',
-        unitPrice: '70'
-    }, {
-        productId: '4',
-        name: 'Coffee',
-        discount: '18%',
-        image: '/img/download.jpg',
-        categary: 'DCPTO2',
-        unit: 'ltr',
-        unitPrice: '80'
-    }, {
-        productId: '5',
-        name: 'Coffee',
-        discount: '9%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO1',
-        unit: 'ltr',
-        unitPrice: '50'
-    }, {
-        productId: '6',
-        name: 'Coffee',
-        discount: '10%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO1',
-        unit: 'kg',
-        unitPrice: '60'
-    }, {
-        productId: '7',
-        name: 'Coffee',
-        discount: '14%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO5',
-        unit: 'ltr',
-        unitPrice: '90'
-    }, {
-        productId: '8',
-        name: 'Coffee',
-        discount: '34%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO6',
-        unit: 'ltr',
-        unitPrice: '100000000'
-    }, {
-        productId: '9',
-        name: 'Coffee',
-        discount: '44%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO7',
-        unit: 'ltr',
-        unitPrice: '10'
-    }, {
-        productId: '10',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO8',
-        unit: 'ltr',
-        unitPrice: '20'
-    }, {
-        productId: '11',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: '',
-        unit: 'ltr',
-        unitPrice: '50'
-    }, {
-        productId: '12',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO6',
-        unit: 'ltr',
-        unitPrice: '100'
-    }, {
-        productId: '13',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO3',
-        unit: 'ltr',
-        unitPrice: '120'
-    }, {
-        productId: '14',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO9',
-        unit: 'ltr',
-        unitPrice: '233'
-    }, {
-        productId: '15',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO10',
-        unit: 'ltr',
-        unitPrice: '34'
-    }, {
-        productId: '16',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO11',
-        unit: 'ltr',
-        unitPrice: '45'
-    }, {
-        productId: '17',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO10',
-        unit: 'ltr',
-        unitPrice: '66'
     }];
- */
-    //  $rootScope.categaryArr = ['All', 'DCPTO1', 'DCPTO2', 'DCPTO3', 'DCPTO4', 'DCPTO5', 'DCPTO6', 'DCPTO7', 'DCPTO8', 'DCPTO9', 'DCPT10', 'DCPT11', 'DCPT12', 'DCPT13', 'DCPT14', 'DCPT15'];
-    //  console.log($rootScope.categaryArr);
-    /*   
-    for(var i=0; i<$scope.Categarys; i++){
-        
-        for(var j=0; j<6;j++){
-           
-        }
-    }    
  
-    $scope.Categary = {
-        slide1: [{
-            catName: 'DCPTO1'
-        }, {
-            catName: 'DCPTO2'
-        }, {
-            catName: 'DCPTO3'
-        }, {
-            catName: 'DCPTO4'
-        }, {
-            catName: 'DCPTO5'
-        }, {
-            catName: 'DCPTO6'
-        }, {
-            catName: 'DCPTO7'
-        }, {
-            catName: 'DCPTO8'
-        }, {
-            catName: 'DCPTO9'
-        }, {
-            catName: 'DCPT10'
-        }, {
-            catName: 'DCPT11'
-        }, {
-            catName: 'DCPT12'
-        }],
-        slide2: [{
-            catName: 'DCPT13'
-        }, {
-            catName: 'DCPT14'
-        }, {
-            catName: 'DCPT15'
-        }, {
-            catName: 'DCPT16'
-        }, {
-            catName: 'DCPT17'
-        }, {
-            catName: 'DCPT18'
-        }, {
-            catName: 'DCPT19'
-        }, {
-            catName: 'DCPT20'
-        }, {
-            catName: 'DCPT21'
-        }]
-    }
-  */
-    $rootScope.categoryArr = [];
-    loadCategoryFromDB();
-    function loadCategoryFromDB() {
-        //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
-        query = "SELECT * FROM Category";
-        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
-            console.log(res);
-            for (var i = 0; i < res.rows.length; i++) {
-                $rootScope.categoryArr.push(res.rows.item(i).CategoryName);
-                console.log(res.rows.item(i).CategoryName);
-            }
-            console.log($rootScope.categoryArr);
-        })
-    }
+    //  $rootScope.categaryArr = ['All', 'DCPTO1', 'DCPTO2', 'DCPTO3', 'DCPTO4', 'DCPTO5', 'DCPTO6', 'DCPTO7', 'DCPTO8', 'DCPTO9', 'DCPT10', 'DCPT11', 'DCPT12', 'DCPT13', 'DCPT14', 'DCPT15'];
+   
+ */
+    //load categary list from DB
+    $rootScope.categoryArr = [{
+        categoryName: 'All'
+    }];
+    var promise = dbService.loadFromDB('Category');
+    promise.then(function(res) {
+        for (var i = 0; i < res.rows.length; i++) {
+            $rootScope.categoryArr.push({
+                categoryId: res.rows.item(i).CategoryId,
+                categoryName: res.rows.item(i).CategoryName
+            });
+        }
+    }, function(res) {
+        console.log(res);
+    })
+    //load products list from DB
     $rootScope.Products = [];
-    loadProductsFromDB();
-    function loadProductsFromDB() {
-        //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
-        query = "SELECT * FROM Product";
-        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
-            console.log(res);
-            for (var i = 0; i < res.rows.length; i++) {
-                $rootScope.Products.push({
-                    productId: res.rows.item(i).ProductId,
-                    name: res.rows.item(i).ProductName,
-                    unit: res.rows.item(i).ProductUnit,
-                    unitPrice: res.rows.item(i).ProductPrice,
-                    tax: res.rows.item(i).TaxRate,
-                    actualPrice: res.rows.item(i).BuyingPrice,
-                    inStock: res.rows.item(i).ItemsinStock,
-                    discount: res.rows.item(i).Discount,
-                    category: res.rows.item(i).Category,
-                    image: res.rows.item(i).Image
-                });
-            }
-            console.log($rootScope.Products);
-        })
-    }
+    var promise = dbService.loadFromDB('Product');
+    promise.then(function(res) {
+        console.log(res);
+        for (var i = 0; i < res.rows.length; i++) {
+            $rootScope.Products.push({
+                productId: res.rows.item(i).ProductId,
+                name: res.rows.item(i).ProductName,
+                unit: res.rows.item(i).ProductUnit,
+                unitPrice: res.rows.item(i).ProductPrice,
+                tax: res.rows.item(i).TaxRate,
+                actualPrice: res.rows.item(i).BuyingPrice,
+                inStock: res.rows.item(i).ItemsinStock,
+                discount: res.rows.item(i).Discount,
+                category: res.rows.item(i).Category,
+                image: res.rows.item(i).Image
+            });
+        }
+    }, function(res) {
+        console.log(res)
+    })
     $scope.display = function(catName) {
         $scope.prodCat = [];
         console.log($scope.prodCat.length);
@@ -320,21 +120,27 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         var productAmount = product.unitPrice * qty;
         console.log('ProductAmount' + productAmount);
         $scope.productArr.push({
+            productId: product.productId,
             name: product.name,
             quantity: qty,
-            productAmount: productAmount,
+            productAmount: product.unitPrice,
+            productTotalPrice: productAmount,
+            productTaxAmount: '',
+            productTotalAmount:'',
+            discount: product.discount,
+            taxRate: product.taxRate,
+            taxId: product.taxId,
+            category: product.categoryId,
+            categoryName: product.categoryName,
             selected: false
         })
+      //  TotalPrice real, TaxAmount real, TotalAmount real;
         $scope.numericModal.hide();
         $scope.newProduct = {};
         $scope.typedCode = null;
         console.log($scope.productArr);
         $scope.totalPrice = $scope.totalPrice + productAmount;
         console.log('This is Totla Price' + $scope.totalPrice);
-        //  var qty =document.getElementById('quantity').value = 0;
-        //   for(var i=0;i<$scope.productArr.length;i++){
-        //   document.getElementsByClassName("quantity1")[i].value=null;
-        //   }
     }
     $scope.selectedProduct = function(product) {
         product.selected ? product.selected = false : product.selected = true;
@@ -535,37 +341,38 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     }
     $scope.receipt = function() {
         $scope.paymentModal.hide();
-        //  document.getElementById("buttonPayment").disabled = true; 
-        var transactionJsonObj = window.localStorage.getItem('transactionEvents');
-        console.log(transactionJsonObj);
-        if (transactionJsonObj != "") {
-            transactionJsonObj = JSON.parse(transactionJsonObj);
-        } else {
-            transactionJsonObj = {};
-        }
-        console.log(transactionJsonObj);
-        if (transactionJsonObj.lastRecieptId == undefined) {
-            transactionJsonObj.lastRecieptId = "100";
-        }
-        var transactionObj = {};
-        transactionObj.date = (new Date()).toString().substring(4, 24);
-        ;transactionObj.recieptId = parseInt(transactionJsonObj.lastRecieptId) + 1;
-        transactionObj.products = $scope.productArr;
-        transactionObj.productsAmount = $scope.totalPrice;
-        transactionObj.serviceTax = $scope.serviceTax * $scope.totalPrice;
-        transactionObj.totalAmount = $scope.payableAmount;
-        transactionObj.paidAmount = $scope.typedAmount;
-        transactionObj.balanceAmount = $scope.Balence;
-        transactionJsonObj[transactionObj.recieptId] = transactionObj;
-        transactionJsonObj.lastRecieptId = (transactionObj.recieptId).toString();
-        window.localStorage.setItem('transactionEvents', JSON.stringify(transactionJsonObj));
-        console.log(transactionJsonObj);
-        $scope.productArr = [];
-        $scope.totalPrice = null;
-        $scope.payableAmount = null;
-        $scope.typedAmount = null;
-        $scope.Balence = null;
+        var promise = dbService.storeToTransaction($scope.productArr);
+        promise.then(function(result) {
+            console.log(result);
+            $scope.productArr = [];
+            $scope.totalPrice = null;
+            $scope.payableAmount = null;
+            $scope.typedAmount = null;
+            $scope.Balence = null;
+        }, function(result) {
+            console.log(result);
+        })
     }
+
+ /*   
+    function storeToTransaction() {
+        console.log($scope.productArr);
+        var d = (new Date()).toString().substring(4, 24);
+        $scope.BillNo = (new Date()).getTime();
+        // $scope.BillNo =101;
+        for (var i = 0; i < $scope.productArr.length; i++) {
+            var productObj = $scope.productArr[i];
+            var query = "INSERT INTO TransactionDetails (BillNo, DateTime, ProductId, ProductName, Quantity, ProductPrice, Discount, TaxRate, TaxId, Category, CategoryName) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            $cordovaSQLite.execute($rootScope.db, query, [$scope.BillNo, d, productObj.productId.toString(), productObj.name, productObj.quantity, productObj.productAmount, productObj.discount, productObj.taxRate, productObj.taxId, productObj.category, productObj.categoryName]).then(function(res) {
+                //     $cordovaSQLite.execute($rootScope.db, query, [102, "24-Jan-2017 11:03:24", "Cofee123", "cofee", 2, 120, 3, 4, 4, "CAT01", "Category 01"]).then(function(res) {
+                console.log("INSERT ID -> " + res.insertId);
+            }, function(err) {
+                console.error(err);
+            });
+        }
+    }
+ */
+    
     // Quantity model start
     $ionicModal.fromTemplateUrl('templates/numericKeypad.html', {
         scope: $scope,
@@ -667,7 +474,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     ;
     //Slide Ends
 }
-]).controller("productCtrl", function($scope, $state, $rootScope, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal) {
+]).controller("productCtrl", function($scope, $state, $rootScope, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
     console.log($rootScope.Products);
     $scope.TaxSettings1 = [{
         Id: '1',
@@ -714,8 +521,15 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             $scope.newProduct['taxId'] = $scope.selectedTax.tax.Id;
             console.log('validation success and entered if');
             console.log($scope.newProduct);
-            var query = "INSERT INTO Product (ProductId, ProductName, ProductUnit, ProductPrice, TaxId, BuyingPrice, TaxRate, ItemsinStock, Discount, Category, Image) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-            $cordovaSQLite.execute($rootScope.db, query, [$scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.category, $scope.newProduct.image]).then(function(res) {
+            var promise = dbService.addNewProduct($scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.image);
+            promise.then(function(result) {
+                console.log(result);
+                $rootScope.Products.push($scope.newProduct);
+            }, function(result) {
+                console.log(result);
+            })
+            /*    var query = "INSERT INTO Product (ProductId, ProductName, ProductUnit, ProductPrice, TaxId, BuyingPrice, TaxRate, ItemsinStock, Discount, Category, Image) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            $cordovaSQLite.execute($rootScope.db, query, [$scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.image]).then(function(res) {
                 console.log("INSERT ID -> " + res.insertId);
                 console.log("saved to draft successfully...");
                 $rootScope.Products.push($scope.newProduct);
@@ -725,10 +539,12 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             }, function(err) {
                 console.error(err);
             });
+        */
         }
     }
-    $scope.onCategorySelect = function(categoryName) {
-        $scope.newProduct.category = categoryName;
+    $scope.onCategorySelect = function(categoryObj) {
+        $scope.newProduct.categoryName = categoryObj.categoryName;
+        $scope.newProduct.categoryId = categoryObj.categoryId;
         $scope.categoryModal.hide();
     }
     $scope.addNewCategary = function(newCategaryName) {
@@ -809,10 +625,17 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         console.log('open categoryModal')
         $scope.categoryModal.show();
     }
-}).controller('categoryCtrl', function($scope, $cordovaSQLite, $rootScope) {
+}).controller('categoryCtrl', function($scope, $cordovaSQLite, $rootScope, dbService) {
     $scope.newCategory = {};
     $scope.addNewCategory = function() {
-        console.log('eneterd add newCategory..');
+        var promise = dbService.addNewCategory($scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
+        promise.then(function(result) {
+            console.log(result);
+            $rootScope.categoryArr.push($scope.newCategory);
+        }, function() {
+            console.log(result);
+        });
+        /*       console.log('eneterd add newCategory..');
         var query = "INSERT INTO Category (CategoryId, CategoryName, CategoryDesc) VALUES (?,?,?)";
         $cordovaSQLite.execute($rootScope.db, query, [$scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription]).then(function(res) {
             console.log("INSERT ID -> " + res.insertId);
@@ -822,6 +645,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         }, function(err) {
             console.error(err.message);
         });
+ */
     }
     $scope.$watch('newCategory.categoryId', function(newcId, oldcId) {
         console.log(newcId);

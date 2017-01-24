@@ -10,8 +10,8 @@
         </div>
         <div class="card">
             <ion-list>
-                <ion-item style="color:black;" ng-click="onCategorySelect(categoryName)" ng-repeat="categoryName in categoryArr">
-                    <span>{{categoryName}}</span>
+                <ion-item style="color:black;" ng-if="categoryObj.categoryName != 'All'" ng-click="onCategorySelect(categoryObj)" ng-repeat="categoryObj in categoryArr">
+                    <span>{{categoryObj.categoryName}}</span>
                 </ion-item>
             </ion-list>
         </div>
