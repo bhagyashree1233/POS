@@ -39,10 +39,10 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         })
         return deferred.promise;
     }
-    function addNewProduct(productId, name, unit, unitPrice, taxId, actualPrice, taxRate, inStock, discount, categoryId, image) {
+    function addNewProduct(productId, name, unit, unitPrice, taxId, actualPrice, taxRate, inStock, discount, categoryId, categoryName, image) {
         var deferred = $q.defer();
-        var query = "INSERT INTO Product (ProductId, ProductName, ProductUnit, ProductPrice, TaxId, BuyingPrice, TaxRate, ItemsinStock, Discount, CategoryId, Image) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-        $cordovaSQLite.execute($rootScope.db, query, [productId, name, unit, unitPrice, taxId, actualPrice, taxRate, inStock, discount, categoryId, image]).then(function(res) {
+        var query = "INSERT INTO Product (ProductId, ProductName, ProductUnit, ProductPrice, TaxId, BuyingPrice, TaxRate, ItemsinStock, Discount, CategoryId, CategoryName, Image) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        $cordovaSQLite.execute($rootScope.db, query, [productId, name, unit, unitPrice, taxId, actualPrice, taxRate, inStock, discount, categoryId, categoryName, image]).then(function(res) {
             console.log("INSERT ID -> " + res.insertId);
             console.log("saved to Product successfully...");
             deferred.resolve('success');
@@ -64,8 +64,9 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         var BillNo = 1 + lastBillNo;
         for (var i = 0; i < productArr.length; i++) {
             var productObj = productArr[i];
-            var query = "INSERT INTO TransactionDetails (BillNo, DateTime, ProductId, ProductName, Quantity, ProductPrice, TotalPrice, TaxAmount, TotalAmount, Discount, TaxRate, TaxId, Category, CategoryName) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-            $cordovaSQLite.execute($rootScope.db, query, [BillNo, d, productObj.productId.toString(), productObj.name, productObj.quantity, productObj.productAmount, productObj,productTotalPrice, productObj.productTaxAmount, productObj.productTotalAmount, productObj.discount, productObj.taxRate, productObj.taxId, productObj.category, productObj.categoryName]).then(function(res) {
+            console.log(productObj);
+            var query = "INSERT INTO TransactionDetails (BillNo, DateTime, ProductId, ProductName, Quantity, ProductPrice, TotalPrice, TaxAmount, TotalAmount, Discount, TaxRate, TaxId, CategoryId, CategoryName) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $cordovaSQLite.execute($rootScope.db, query, [BillNo, d, productObj.productId, productObj.name, productObj.quantity, productObj.productPrice, productObj.productTotalPrice, productObj.productTaxAmount, productObj.productTotalAmount, productObj.discount, productObj.taxRate, productObj.taxId, productObj.categoryId, productObj.categoryName]).then(function(res) {
                 //     $cordovaSQLite.execute($rootScope.db, query, [102, "24-Jan-2017 11:03:24", "Cofee123", "cofee", 2, 120, 3, 4, 4, "CAT01", "Category 01"]).then(function(res) {
                 console.log("INSERT ID -> " + res.insertId);
                 localStorage.setItem('lastBillNumber', BillNo);
