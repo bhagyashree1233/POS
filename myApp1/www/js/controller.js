@@ -18,7 +18,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                 categoryName: res.rows.item(i).CategoryName
             });
         }
-
         //--------logic for category slide view-----------
         var tempCatArr = [];
         console.log(tempCatArr)
@@ -701,24 +700,71 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             }
         })
     });
-}).controller('printerSettings', function($scope) {
-    $scope.printrSettings = {};
-    $scope.savePrinterSettings = function() {
-        console.log($scope.printrSettings);
-        document.getElementById("prinrSettings").reset();
+}).controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
+    $scope.taxSettings = [];
+    $scope.taxSettings[0].id = $rootScope.TaxSettings[0].id;
+    $scope.taxSettings[0].name = $rootScope.TaxSettings[0].name;
+    $scope.taxSettings[0].taxRate = $rootScope.TaxSettings[0].taxRate;
+    var d = new Date();
+    var taxSettings = []
+    $scope.saveTaxSetting = function() {
+        console.log('Hai i am in TaxSetting Save')
+        $scope.taxSettings.push({
+            id: parseInt(d.getTime()),
+            name: $scope.taxSettings.name,
+            taxRate: parseFloat($scope.taxSettings.taxRate)
+        });
+        var taxSettings = JSON.stringify($scope.taxSettings);
+        var promise = settingService.set("TaxSettings", taxSettings)
+        promise.then(function(data) {
+            console.log(data);
+        })
+        /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
+                 .then(function(result) {
+                     $scope.statusMessage = "Message saved successful, cheers!";
+                     console.log($scope.statusMessage)
+                 }, function(error) {
+                     $scope.statusMessage = "Error on saving: " + error.message;
+                     console.log($scope.statusMessage)
+                 })*/
     }
-}).controller('paymentSettings', function($scope) {
-    $scope.pamentSetting = {
-        cash: false,
-        master: false,
-        amex: false,
-        payCurncy: '',
-        payTM: false,
-        visa: false
-    };
+}
+]).controller('printerSettings', function($scope, settingService) {
+    $scope.printFormatSettings = {};
+    $scope.printFormatSettings.addressLine1 = $rootScope.printFormatSettings.addressLine1;
+    $scope.printFormatSettings.addressLine2 = $rootScope.printFormatSettings.addressLine2,
+    $scope.printFormatSettings.billCopies = $rootScope.printFormatSettings.billCopies,
+    $scope.printFormatSettings.greeting = $rootScope.printFormatSettings.greeting,
+    $scope.printFormatSettings.phNumber = $rootScope.printFormatSettings.phNumber,
+    $scope.printFormatSettings.shopName = $rootScope.printFormatSettings.shopName,
+    $scope.printFormatSettings.strtBillNmbr = $rootScope.printFormatSettings.strtBillNmbr,
+    $scope.printFormatSettings.tin = $rootScope.printFormatSettings.tin,
+    $scope.printFormatSettings.tokNum = $rootScope.printFormatSettings.tokNum,
+    $scope.printFormatSettings.tokResetAftr = $rootScope.printFormatSettings.tokResetAftr,
+    $scope.printFormatSettings.tokStartNmbr = $rootScope.printFormatSettings.tokStartNmbr,
+    $scope.printFormatSettings.wifiSsid = $rootScope.printFormatSettings.wifiSsid
+    $scope.savePrinterSettings = function() {
+        console.log($scope.printFormatSettings)
+        var printFormatSettings = JSON.stringify($scope.printFormatSettings);
+        var promise = settingService.set("PrinterFormatSettings", printFormatSettings);
+        promise.then(function(data) {
+            console.log(data)
+        })
+    }
+}).controller('paymentSettings', function($scope, settingService) {
+    $scope.paymentSetting = {};
+    $scope.paymentSetting.currency = $rootScope.PaymentSettings.currency
+    $scope.paymentSetting.paymentOptions.cash = $rootScope.PaymentSettings.paymentOptions.cash
+    $scope.paymentSetting.paymentOptions.master = $rootScope.PaymentSettings.paymentOptions.master
+    $scope.paymentSetting.paymentOptions.amex = $rootScope.PaymentSettings.paymentOptions.amex
+    $scope.paymentSetting.paymentOptions.payTM = $rootScope.PaymentSettings.paymentOptions.payTM
+    $scope.paymentSetting.paymentOptions.visa = $rootScope.PaymentSettings.paymentOptions.visa
     $scope.savePaymentSettings = function() {
-        console.log($scope.pamentSetting);
-        document.getElementById("payMentSetting").reset();
+        var paymentSetting = JSON.stringify($scope.paymentSetting);
+        var promise = settingService.set("PaymentSettings", paymentSetting);
+        promise.then(function(data) {
+            console.log(data)
+        })
     }
 }).controller('reports', function($scope) {
     $scope.reportObj = {
@@ -737,6 +783,4 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     $scope.saveReports = function() {
         console.log($scope.reportObj)
     }
-}).controller('editProductsCtrl', function($scope){
-     
-})
+}).controller('editProductsCtrl', function($scope) {})
