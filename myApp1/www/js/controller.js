@@ -616,7 +616,45 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             }
         })
     });
-}).controller('printerSettings', function($scope) {
+})
+    .controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform) {
+
+        $rootScope.deviceReady.then(function() {
+            $scope.taxSettings = $rootScope.TaxSettings
+            console.log($scope.taxSettings)
+        })
+        var d = new Date();
+        var taxSettings = []
+
+        $scope.saveTaxSetting = function() {
+
+            console.log($rootScope.TaxSettings);
+            $scope.taxSettings.push({
+                id: d.getTime(),
+                name: $scope.taxSettings.name,
+                taxRate: $scope.taxSettings.taxRate
+
+            });
+
+            var taxSettings = JSON.stringify($scope.taxSettings);
+            var promise=settingService.set("TaxSettings",taxSettings)
+             promise.then(function(data){
+                 console.log(data);
+             })
+
+            /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
+                 .then(function(result) {
+                     $scope.statusMessage = "Message saved successful, cheers!";
+                     console.log($scope.statusMessage)
+                 }, function(error) {
+                     $scope.statusMessage = "Error on saving: " + error.message;
+                     console.log($scope.statusMessage)
+                 })*/
+        }
+    }])
+
+
+    .controller('printerSettings', function($scope) {
     $scope.printrSettings = {};
     $scope.savePrinterSettings = function() {
         console.log($scope.printrSettings);
@@ -653,3 +691,5 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         console.log($scope.reportObj)
     }
 })
+
+

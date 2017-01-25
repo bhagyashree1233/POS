@@ -86,3 +86,44 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         storeToTransaction: storeToTransaction
     }
 })
+
+.factory("settingService", function($q,$cordovaSQLite,$rootScope)  {
+  
+
+  function set(SettingsName,SettingsValue) {
+     var dfd = $q.defer();
+    $cordovaSQLite.execute($rootScope.db, 'INSERT OR REPLACE INTO Settings (SettingsName,SettingsValue) VALUES (?,?) ', [SettingsName, SettingsValue])
+                .then(function(result) {
+               dfd.resolve(result);
+                }, function(error) {
+               dfd.resolve(error);
+     })
+     return dfd.promise;
+  }
+
+  function get(SettingsName) { 
+        var dfd = $q.defer();
+        //$rootScope.deviceReady = dfd.promise;
+      $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue  from Settings where SettingsName=?',[SettingsName])
+                .then(function(result) {
+                 dfd.resolve(result);
+                }, function(error) {
+                 dfd.resolve(error);
+                })
+                return dfd.promise;
+  }
+function getItemReport(startDate,endDate,itemCode){
+  var dfd = $q.defer();
+  $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue  from Settings where SettingsName=?',[SettingsName])
+                .then(function(result) {
+                 dfd.resolve(result);
+                }, function(error) {
+                 dfd.resolve(error);
+                })
+                 return dfd.promise;
+}
+  return {
+      set : set,
+      get : get 
+  }
+})  
