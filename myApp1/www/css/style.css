@@ -329,3 +329,7 @@ input.ng-invalid {
     background-color: pink;
 }
 
+input.ng-invalid.ng-dirty {
+    background-color: red;
+    color:red;
+  }

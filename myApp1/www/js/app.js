@@ -2,7 +2,8 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ion-digit-keyboard', 'ngCordova']).run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q,settingService) {
+angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ion-digit-keyboard', 'ngCordova'])
+.run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q,settingService,salesService) {
     var dfd = $q.defer();
         $rootScope.deviceReady = dfd.promise;
 	$ionicPlatform.ready(function() {
@@ -12,7 +13,7 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
             // Don't remove this line unless you know what you are doing. It stops the viewport
             // from snapping when text inputs are focused. Ionic handles this internally for
-            // a much nicer keyboard experience.
+            // a much nicer keyboard experience
             cordova.plugins.Keyboard.disableScroll(true);
         }
         if (window.StatusBar) {
@@ -30,7 +31,7 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
             // browser 
             console.log("browser");
         }
-      //  $cordovaSQLite.execute($rootScope.db, "DROP TABLE TransactionDetails ").then(console.log('Transaction table droped Successfully')); 
+       //$cordovaSQLite.execute($rootScope.db, "DROP TABLE TransactionDetails ").then(console.log('Transaction table droped Successfully')); 
         
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Category (CategoryId text primary key, CategoryName text, CategoryDesc text)").then(console.log('Category table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Product (ProductId text primary key, ProductName text, ProductUnit text, ProductPrice real, TaxId integer, BuyingPrice real, TaxRate real, ItemsinStock real, Discount real, CategoryId text, CategoryName text, Image text)").then(console.log('Product table created Successfully'));
@@ -41,15 +42,28 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
               var promise  =settingService.get("PrinterFormatSettings");
               promise.then(function(data){
                console.log(data)
+              $rootScope.printFormatSettings=data.rows[0].SettingsValue;
               })
               var promise  =settingService.get("TaxSettings");
               promise.then(function(data){
                console.log(data)
+               $rootScope.TaxSettings=data.rows[0].SettingsValue;
+               
               })
               var promise  =settingService.get("PaymentSettings");
               promise.then(function(data){
                console.log(data)
+               $rootScope.PaymentSettings=data.rows[0].SettingsValue;
               })
+              var promise  =salesService.get("233");
+              promise.then(function(data){
+               console.log(data)
+              })
+              var promise  =salesService.getSalesReport("1485323465391","1485323465391");
+              promise.then(function(data){
+               console.log(data)
+              })
+
     });
 }).config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('top');
@@ -86,6 +100,15 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
                 templateUrl: 'templates/Reports.html'
             }
         }
+    })
+    .state('app.TaxSettings', {
+        url: '/TaxSettings',
+        views: {
+            'menuContent': {
+                controller: 'reports',
+                templateUrl: 'templates/TaxSettings.html'
+            }
+        }
     }).state('app.inventory', {
         url: '/inventory',
         views: {
@@ -114,7 +137,8 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
                 templateUrl: 'templates/homePage.html'
             }
         }
-    }).state('Test1', {
+    })
+    .state('Test1', {
         url: '/Test',
         templateUrl: 'templates/Keypad.html',
     })

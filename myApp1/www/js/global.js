@@ -15,10 +15,20 @@ tokResetAftr:1,
 tokStartNmbr:999,
 wifiSsid:""}
 
-$rootScope.TaxSettings=[{}]
+$rootScope.TaxSettings=[{
+    id:0,
+    name:'',
+    taxRate:0.0
+}]
 $rootScope.PaymentSettings={
    currency:'Inr',
-   paymentOptions:[]
+   paymentOptions:[{
+   cash:true,
+    master: false,
+     amex: false,
+     payTM: false,
+     visa: false
+  } ]
 }
 
 })
