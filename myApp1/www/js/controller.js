@@ -1,238 +1,89 @@
-angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$rootScope', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', function($scope, $rootScope, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate) {
-    //$rootScope.Products;
-    loadingProducts();
-    function loadingProducts() {
-        console.log('entered products loading...');
-        var productsJsonObj = window.localStorage.getItem('productsObj');
-        console.log(productsJsonObj);
-        if (productsJsonObj == "") {
-            productsJsonObj = {}
-            productsJsonObj['products'] = [];
-        } else {
-            productsJsonObj = JSON.parse(productsJsonObj);
-            console.log(productsJsonObj);
-        }
-        $rootScope.Products = productsJsonObj.products;
+angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService) {
+    //console.log($rootScope.Products);
+    $scope.onHold = function() {
+        console.log('enterd on hold');
+        $scope.showDelete = true;
     }
-    console.log($rootScope.Products);
-
-     $scope.onHold = function(){
-      console.log('eneterd on hold');
-     $scope.showDelete = true;
-  }
-  
-    /*    $rootScope.Products = [{
-        productId: '1',
-        name: 'Coffee',
-        discount: '10',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO1',
-        unit: 'kg',
-        unitPrice: '20',
-        inStock: 100,
-        tax: 5,
-        actualPrice: '10'
-    }, {
-        productId: '2',
-        name: 'Coffee',
-        discount: '15%',
-        image: '/img/coffee-cup.jpg',
-        categary: 'DCPTO2',
-        unit: 'ltr',
-        unitPrice: '60'
-    }, {
-        productId: '3',
-        name: 'Coffee',
-        discount: '20%',
-        image: '/img/images.jpg',
-        categary: 'DCPTO3',
-        unit: 'kg',
-        unitPrice: '70'
-    }, {
-        productId: '4',
-        name: 'Coffee',
-        discount: '18%',
-        image: '/img/download.jpg',
-        categary: 'DCPTO2',
-        unit: 'ltr',
-        unitPrice: '80'
-    }, {
-        productId: '5',
-        name: 'Coffee',
-        discount: '9%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO1',
-        unit: 'ltr',
-        unitPrice: '50'
-    }, {
-        productId: '6',
-        name: 'Coffee',
-        discount: '10%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO1',
-        unit: 'kg',
-        unitPrice: '60'
-    }, {
-        productId: '7',
-        name: 'Coffee',
-        discount: '14%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO5',
-        unit: 'ltr',
-        unitPrice: '90'
-    }, {
-        productId: '8',
-        name: 'Coffee',
-        discount: '34%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO6',
-        unit: 'ltr',
-        unitPrice: '100000000'
-    }, {
-        productId: '9',
-        name: 'Coffee',
-        discount: '44%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO7',
-        unit: 'ltr',
-        unitPrice: '10'
-    }, {
-        productId: '10',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO8',
-        unit: 'ltr',
-        unitPrice: '20'
-    }, {
-        productId: '11',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: '',
-        unit: 'ltr',
-        unitPrice: '50'
-    }, {
-        productId: '12',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO6',
-        unit: 'ltr',
-        unitPrice: '100'
-    }, {
-        productId: '13',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO3',
-        unit: 'ltr',
-        unitPrice: '120'
-    }, {
-        productId: '14',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO9',
-        unit: 'ltr',
-        unitPrice: '233'
-    }, {
-        productId: '15',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO10',
-        unit: 'ltr',
-        unitPrice: '34'
-    }, {
-        productId: '16',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO11',
-        unit: 'ltr',
-        unitPrice: '45'
-    }, {
-        productId: '17',
-        name: 'Coffee',
-        discount: '12%',
-        image: '/img/Iced_Coffee.jpg',
-        categary: 'DCPTO10',
-        unit: 'ltr',
-        unitPrice: '66'
+    //load categary list from DB
+    $rootScope.categoryArr = [{
+        categoryName: 'All',
+        categoryId: 'all'
     }];
- */
-    $rootScope.categaryArr = ['All', 'DCPTO1', 'DCPTO2', 'DCPTO3', 'DCPTO4', 'DCPTO5', 'DCPTO6', 'DCPTO7', 'DCPTO8', 'DCPTO9', 'DCPT10', 'DCPT11', 'DCPT12', 'DCPT13', 'DCPT14', 'DCPT15'];
-    console.log($rootScope.categaryArr);
-    /*   
-    for(var i=0; i<$scope.Categarys; i++){
-        
-        for(var j=0; j<6;j++){
-           
+    $scope.tempAllCatArr = [];
+    var promise = dbService.loadFromDB('Category');
+    promise.then(function(res) {
+        for (var i = 0; i < res.rows.length; i++) {
+            $rootScope.categoryArr.push({
+                categoryId: res.rows.item(i).CategoryId,
+                categoryName: res.rows.item(i).CategoryName
+            });
         }
-    }    
- 
-    $scope.Categary = {
-        slide1: [{
-            catName: 'DCPTO1'
-        }, {
-            catName: 'DCPTO2'
-        }, {
-            catName: 'DCPTO3'
-        }, {
-            catName: 'DCPTO4'
-        }, {
-            catName: 'DCPTO5'
-        }, {
-            catName: 'DCPTO6'
-        }, {
-            catName: 'DCPTO7'
-        }, {
-            catName: 'DCPTO8'
-        }, {
-            catName: 'DCPTO9'
-        }, {
-            catName: 'DCPT10'
-        }, {
-            catName: 'DCPT11'
-        }, {
-            catName: 'DCPT12'
-        }],
-        slide2: [{
-            catName: 'DCPT13'
-        }, {
-            catName: 'DCPT14'
-        }, {
-            catName: 'DCPT15'
-        }, {
-            catName: 'DCPT16'
-        }, {
-            catName: 'DCPT17'
-        }, {
-            catName: 'DCPT18'
-        }, {
-            catName: 'DCPT19'
-        }, {
-            catName: 'DCPT20'
-        }, {
-            catName: 'DCPT21'
-        }]
-    }
-  */
-    $scope.display = function(catName) {
+        //--------logic for category slide view-----------
+        var tempCatArr = [];
+        console.log(tempCatArr)
+        for (var i = 0; i < $rootScope.categoryArr.length; i++) {
+            tempCatArr.push($rootScope.categoryArr[i]);
+            if (((i != 0) && (i % 4 == 0)) || (i == ($rootScope.categoryArr.length - 1))) {
+                $scope.tempAllCatArr.push(tempCatArr)
+                tempCatArr = [];
+            }
+        }
+        console.log($scope.tempAllCatArr);
+        //------------------------------------------------
+    }, function(res) {
+        console.log(res);
+    })
+    //load products list from DB
+    $rootScope.Products = [];
+    var promise = dbService.loadFromDB('Product');
+    promise.then(function(res) {
+        console.log(res);
+        for (var i = 0; i < res.rows.length; i++) {
+            $rootScope.Products.push({
+                productId: res.rows.item(i).ProductId,
+                name: res.rows.item(i).ProductName,
+                unit: res.rows.item(i).ProductUnit,
+                unitPrice: res.rows.item(i).ProductPrice,
+                taxRate: res.rows.item(i).TaxRate,
+                taxId: res.rows.item(i).TaxId,
+                actualPrice: res.rows.item(i).BuyingPrice,
+                inStock: res.rows.item(i).ItemsinStock,
+                discount: res.rows.item(i).Discount,
+                categoryId: res.rows.item(i).CategoryId,
+                categoryName: res.rows.item(i).CategoryName,
+                image: res.rows.item(i).Image
+            });
+        }
+    }, function(res) {
+        console.log(res)
+    })
+    $scope.display = function(catId) {
+        console.log(catId);
         $scope.prodCat = [];
         console.log($scope.prodCat.length);
-        if (catName === 'All') {
+        if (catId === 'all') {
             for (var i = 0; i < $scope.Products.length; i++) {
                 $scope.prodCat.push($scope.Products[i]);
             }
         } else {
             for (var i = 0; i < $scope.Products.length; i++) {
-                if ($scope.Products[i].categary == catName) {
+                if ($scope.Products[i].categoryId == catId) {
                     $scope.prodCat.push($scope.Products[i]);
                 }
             }
         }
+        /*
+        var promise = dbService.loadProductsForCategory(categoryId)
+        promise.then(function(res){
+            $scope.prodCat.push({
+                categoryId: res.rows.item(i).CategoryId,
+                categoryName: res.rows.item(i).CategoryName,
+                categoryDescription: res.rows.item(i).CategoryDesc
+              }) 
+        }, function(res){
+             console.log(res); 
+        })
+ */
         console.log($scope.prodCat)
         console.log($scope.prodCat.length)
     }
@@ -263,8 +114,11 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     // $scope.numValue = 0;
     $scope.prodCat = $scope.Products;
     $scope.productArr = [];
+    $scope.discountAmount = 0;
     $scope.totalPrice = null;
+    $scope.totalTaxAmount = 0;
     $scope.index = null;
+    $scope.totalChargeAmount = 0;
     $scope.serviceTax = 0.05;
     //  $scope.quantity=0;
     $scope.save = function(product) {
@@ -276,28 +130,130 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
             qty = $scope.typedCode;
         }
         //  var qty =document.getElementById('quantity').value;
-        console.log('I am in Save Function')
-        console.log('Scope quanitity' + qty)
+        console.log('I am in Save Function');
+        // console.log('Scope quanitity' + qty);
         console.log(product.name + ' ' + product.unitPrice + ' ' + qty);
-        var productAmount = product.unitPrice * qty;
-        console.log('ProductAmount' + productAmount);
+        var productTotalPrice = product.unitPrice * qty;
+        console.log("productTotalPrice: " + productTotalPrice);
+        var productTotalTax = (product.taxRate / 100) * productTotalPrice;
+        console.log("productTotalTax: " + productTotalTax);
+        var discountAmount = (product.discount / 100) * productTotalPrice;
+        console.log("discountAmount: " + discountAmount);
+        var productTotalAmount = productTotalPrice + productTotalTax - discountAmount;
+        console.log("productTotalAmount: " + productTotalAmount);
         $scope.productArr.push({
+            productId: product.productId,
             name: product.name,
             quantity: qty,
-            productAmount: productAmount,
+            productPrice: product.unitPrice,
+            productTotalPrice: productTotalPrice,
+            productTaxAmount: productTotalTax,
+            discount: product.discount,
+            discountAmount: discountAmount,
+            productTotalAmount: productTotalAmount,
+            taxRate: product.taxRate,
+            taxId: product.taxId,
+            categoryId: product.categoryId,
+            categoryName: product.categoryName,
             selected: false
         })
+        //  TotalPrice real, TaxAmount real, TotalAmount real;
         $scope.numericModal.hide();
         $scope.newProduct = {};
         $scope.typedCode = null;
         console.log($scope.productArr);
-        $scope.totalPrice = $scope.totalPrice + productAmount;
+        $scope.totalPrice = $scope.totalPrice + productTotalPrice;
+        $scope.totalTaxAmount = $scope.totalTaxAmount + productTotalTax;
+        $scope.discountAmount = ($scope.discountAmount + discountAmount);
+        $scope.totalChargeAmount = $scope.totalChargeAmount + productTotalAmount;
         console.log('This is Totla Price' + $scope.totalPrice);
-        //  var qty =document.getElementById('quantity').value = 0;
-        //   for(var i=0;i<$scope.productArr.length;i++){
-        //   document.getElementsByClassName("quantity1")[i].value=null;
-        //   }
     }
+    $scope.paidAmount = function(typedAmount) {
+        var typedAmount = parseInt($scope.typedAmount);
+        $scope.paidAmount = typedAmount;
+        $scope.Balance = typedAmount - $scope.totalChargeAmount;
+        // document.getElementById("buttonPayment").disabled = true;
+        $scope.enterBtn = true;
+        $scope.receiptBtnShow = false;
+    }
+    $scope.receipt = function() {
+        $scope.paymentModal.hide();
+        $scope.transactionDate = (new Date()).getTime();
+        var promise = dbService.storeToTransaction($scope.productArr, $scope.transactionDate);
+        promise.then(function(result) {
+            console.log(result);
+            $scope.paymentMethod = "cash";
+            $scope.totalItems = $scope.productArr.length;
+            toBillDetails();
+            //clear all values
+            $scope.productArr = [];
+            $scope.totalPrice = null;
+            $scope.payableAmount = null;
+            $scope.typedAmount = null;
+            $scope.Balance = null;
+            $scope.totalTaxAmount = 0;
+            $scope.discountAmount = 0;
+            $scope.totalChargeAmount = 0;
+        }, function(result) {
+            console.log(result);
+        })
+    }
+    function toBillDetails() {
+        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.transactionDate);
+        promise.then(function(result) {
+            console.log(result);
+        }, function(result) {
+            console.log(result);
+        })
+    }
+    //BillNo, TotalPrice, DiscountAmount, TaxAmount, TotalAmount, PaymentMethod, DateTime, TotalItems, BillStatus
+    var billDetail = [];
+    var promise = dbService.getBillDetails(2);
+    promise.then(function(res) {
+        for (var i = 0; i < res.rows.length; i++) {
+            billDetail.push({
+                BillNo: res.rows.item(i).BillNo,
+                TotalPrice: res.rows.item(i).TotalPrice,
+                DiscountAmount: res.rows.item(i).DiscountAmount,
+                TaxAmount: res.rows.item(i).TaxAmount,
+                TotalAmount: res.rows.item(i).TotalAmount,
+                PaymentMethod: res.rows.item(i).PaymentMethod,
+                DateTime: res.rows.item(i).DateTime,
+                TotalItems: res.rows.item(i).TotalItems,
+                BillStatus: res.rows.item(i).BillStatus
+            });
+        }
+        console.log(billDetail);
+    }, function(res) {
+        console.log(res)
+    })
+    //BillNo, DateTime, ProductId, ProductName, Quantity, ProductPrice, TotalPrice, TaxAmount, TotalAmount, DiscountAmount, Discount, TaxRate, TaxId, CategoryId, CategoryName    
+    var transactionDetail = [];
+    var promise = dbService.getTransactionDetails(3);
+    promise.then(function(res) {
+        for (var i = 0; i < res.rows.length; i++) {
+            transactionDetail.push({
+                BillNo: res.rows.item(i).BillNo,
+                DateTime: res.rows.item(i).DateTime,
+                ProductId: res.rows.item(i).ProductId,
+                ProductName: res.rows.item(i).ProductName,
+                Quantity: res.rows.item(i).Quantity,
+                ProductPrice: res.rows.item(i).ProductPrice,
+                TotalPrice: res.rows.item(i).TotalPrice,
+                TaxAmount: res.rows.item(i).TaxAmount,
+                TotalAmount: res.rows.item(i).TotalAmount,
+                DiscountAmount: res.rows.item(i).DiscountAmount,
+                Discount: res.rows.item(i).Discount,
+                TaxRate: res.rows.item(i).TaxRate,
+                TaxId: res.rows.item(i).TaxId,
+                CategoryId: res.rows.item(i).CategoryId,
+                CategoryName: res.rows.item(i).CategoryName
+            });
+        }
+        console.log(transactionDetail);
+    }, function(res) {
+        console.log(res)
+    })
     $scope.selectedProduct = function(product) {
         product.selected ? product.selected = false : product.selected = true;
     }
@@ -305,7 +261,7 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         for (var i = 0; i < $scope.productArr.length; i++) {
             var bool = $scope.productArr[i].selected;
             if (bool) {
-                $scope.totalPrice = $scope.totalPrice - $scope.productArr[i].productAmount;
+                $scope.totalPrice = $scope.totalPrice - $scope.productArr[i].productTotalPrice;
                 $scope.productArr.splice(i, 1);
             }
         }
@@ -313,6 +269,12 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     $scope.void = function() {
         $scope.productArr = [];
         $scope.totalPrice = null;
+        $scope.payableAmount = null;
+        $scope.typedAmount = null;
+        $scope.Balance = null;
+        $scope.totalTaxAmount = 0;
+        $scope.discountAmount = 0;
+        $scope.totalChargeAmount = 0;
     }
     //Numeric keypad for Quantity Start
     $scope.typedCode = 1;
@@ -426,43 +388,6 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     $scope.removeAllA = function() {
         $scope.typedAmount = "";
     }
-    //Numeric keypad for Quantity Start
-    /* $scope.numbers = '1';
-          console.log($scope.numbers);
-          $scope.keyboardVisible = false;
-          $scope.showKeyboard = function() {
-            $scope.keyboardVisible = true;
-          }  
-          $scope.keyboardSettings = {
-           action: function(number) {
-              $scope.numbers += number;
-              console.log($scope.numbers);
-           },
-           leftButton: {
-              html: '<i class="icon ion-backspace"></i>',
-              action: function() {
-                  $scope.numbers = $scope.numbers.slice(0, -1);
-              }
-           },
-           rightButton: {
-              html: '<i class="icon ion-checkmark-circled"></i>',
-              action: function() {
-                  
-              }
-            },
-            showLetters:false,
-            theme:'assertive',
-            width:'100%',
-            height:'50%',
-              style: {
-                  color: '#fff', // Text color
-                  bgColor: '#4cda64', // Background color
-                  activeBgColor: '#43bf58', // Baackground color when pressed
-                  borderColor: '#43bf58' // Only clearly visible on round buttons (until next plugin version)
-              }
-          }
-
-           //Numeric keypad ending*/
     $ionicModal.fromTemplateUrl('templates/PaymentModel.html', {
         scope: $scope,
         animation: 'slide-in-up'
@@ -470,14 +395,14 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         $scope.paymentModal = modal;
     });
     $scope.openPaymentModal = function() {
-        console.log('I am in openModel')
-        $scope.typedAmount = null;
-        $scope.payableAmount = $scope.totalPrice + ($scope.serviceTax * $scope.totalPrice);
-        $scope.paymentModal.show();
-        $scope.receiptBtnShow = true;
-        $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
-        //  $scope.productAmount=$scope.newProduct.unitPrice*$scope.typedCode;
-        // console.log($scope.productAmount);
+        if ($scope.productArr.length) {
+            console.log('I am in openModel')
+            $scope.typedAmount = null;
+            $scope.payableAmount = $scope.totalPrice + ($scope.serviceTax * $scope.totalPrice);
+            $scope.paymentModal.show();
+            $scope.receiptBtnShow = true;
+            $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
+        }
     }
     ;
     $scope.closePaymentModal = function() {
@@ -487,47 +412,6 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     }
     ;
     // Payment model end
-    $scope.paidAmount = function(typedAmount) {
-        var typedAmount = parseInt($scope.typedAmount);
-        $scope.paidAmount = typedAmount;
-        $scope.Balence = typedAmount - $scope.payableAmount;
-        // document.getElementById("buttonPayment").disabled = true;
-        $scope.enterBtn = true;
-        $scope.receiptBtnShow = false;
-    }
-    $scope.receipt = function() {
-        $scope.paymentModal.hide();
-        //  document.getElementById("buttonPayment").disabled = true; 
-        var transactionJsonObj = window.localStorage.getItem('transactionEvents');
-        console.log(transactionJsonObj);
-        if (transactionJsonObj != "") {
-            transactionJsonObj = JSON.parse(transactionJsonObj);
-        } else {
-            transactionJsonObj = {};
-        }
-        console.log(transactionJsonObj);
-        if (transactionJsonObj.lastRecieptId == undefined) {
-            transactionJsonObj.lastRecieptId = "100";
-        }
-        var transactionObj = {};
-        transactionObj.date = (new Date()).toString().substring(4, 24);
-        ;transactionObj.recieptId = parseInt(transactionJsonObj.lastRecieptId) + 1;
-        transactionObj.products = $scope.productArr;
-        transactionObj.productsAmount = $scope.totalPrice;
-        transactionObj.serviceTax = $scope.serviceTax * $scope.totalPrice;
-        transactionObj.totalAmount = $scope.payableAmount;
-        transactionObj.paidAmount = $scope.typedAmount;
-        transactionObj.balanceAmount = $scope.Balence;
-        transactionJsonObj[transactionObj.recieptId] = transactionObj;
-        transactionJsonObj.lastRecieptId = (transactionObj.recieptId).toString();
-        window.localStorage.setItem('transactionEvents', JSON.stringify(transactionJsonObj));
-        console.log(transactionJsonObj);
-        $scope.productArr = [];
-        $scope.totalPrice = null;
-        $scope.payableAmount = null;
-        $scope.typedAmount = null;
-        $scope.Balence = null;
-    }
     // Quantity model start
     $ionicModal.fromTemplateUrl('templates/numericKeypad.html', {
         scope: $scope,
@@ -629,49 +513,87 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     ;
     //Slide Ends
 }
-]).controller("inventoryCtrl", function($scope, $rootScope, $cordovaCamera, $timeout, $cordovaFile, $ionicModal) {
+]).controller("productCtrl", function($scope, $state, $rootScope, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
     console.log($rootScope.Products);
-    $scope.newProduct = {};
-    $scope.addNewProduct = function() {
-        if (!(angular.equals({}, $scope.newProduct))) {
-            console.log('entered if');
-            console.log($scope.newProduct);
-            $rootScope.Products.push($scope.newProduct);
-            var productsJsonObj = window.localStorage.getItem('productsObj');
-            console.log(productsJsonObj);
-            if (productsJsonObj != "") {
-                productsJsonObj = JSON.parse(productsJsonObj);
+    $scope.TaxSettings1 = [{
+        Id: '1',
+        Name: 'tax1',
+        TaxRate: '5'
+    }, {
+        Id: '2',
+        Name: 'tax2',
+        TaxRate: '10'
+    }, {
+        Id: '3',
+        Name: 'tax3',
+        TaxRate: '15'
+    }, {
+        Id: '4',
+        Name: 'tax4',
+        TaxRate: '20'
+    }]
+    $scope.selectedTax = {};
+    $scope.newProduct = {
+        unit: 'pieces'
+    };
+    $scope.$watch('newProduct.productId', function(newpId, oldpId) {
+        console.log(newpId);
+        if (newpId) {
+            $scope.productSuccessMessage = false;
+            // to hide success message
+            $scope.categoryForm.catIdInput.$setUntouched();
+        }
+        query = "SELECT * FROM Product where ProductId = '" + newpId + "'";
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log(res);
+            if (res.rows.length == 0) {
+                console.log('Id not exists..');
+                $scope.checkIdShow = false;
             } else {
-                productsJsonObj = {};
-                productsJsonObj['products'] = [];
+                console.log('Id already exists..');
+                $scope.checkIdShow = true;
             }
-            productsJsonObj.products.push($scope.newProduct);
-            productsJsonObj = window.localStorage.setItem('productsObj', JSON.stringify(productsJsonObj));
-            $scope.newProduct = {};
+        })
+    });
+    $scope.$watch('newProduct.inStock', function(newValue, oldValue) {
+        if ($scope.newProduct.unit == 'pieces') {
+            $scope.newProduct.inStock = Math.round(newValue);
+        }
+    });
+    $scope.newProduct.image = "/img/sc1.jpg";
+    $scope.addNewProduct = function() {
+        console.log($scope.selectedTax);
+        console.log('entered addNewProduct()..');
+        console.log($scope.newProduct);
+        if (!($scope.checkIdShow)) {
+            $scope.newProduct['taxRate'] = $scope.selectedTax.tax.TaxRate;
+            $scope.newProduct['taxId'] = $scope.selectedTax.tax.Id;
+            console.log('validation success and entered if');
+            console.log($scope.newProduct);
+            var promise = dbService.addNewProduct($scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite);
+            promise.then(function(result) {
+                console.log(result);
+                $rootScope.Products.push($scope.newProduct);
+                $scope.newProduct = {
+                    unit: 'pieces'
+                };
+                $scope.productSuccessMessage = true;
+            }, function(result) {
+                console.log(result);
+            })
         }
     }
-    $scope.onCategorySelect = function(categaryName) {
-        $scope.newProduct.categary = categaryName;
+    $scope.onCategorySelect = function(categoryObj) {
+        $scope.newProduct.categoryName = categoryObj.categoryName;
+        $scope.newProduct.categoryId = categoryObj.categoryId;
         $scope.categoryModal.hide();
     }
     $scope.addNewCategary = function(newCategaryName) {
-        $rootScope.categaryArr.push(newCategaryName);
-        document.getElementById('newCategoryAddField').value = null;
+        $state.go('app.category');
+        $scope.categoryModal.hide();
+        //  $rootScope.categoryArr.push(newCategaryName);
+        //  document.getElementById('newCategoryAddField').value = null;
     }
-  /*  
-    var timer = false;
-    $scope.$watch('newProduct.productId', function() {
-        if (timer) {
-            $timeout.cancel(timer)
-        }
-        timer = $timeout(function() {
-            
-
-        }, 500)
-    });
-  */
- 
-
     $scope.openCamera = function() {
         console.log('camera opened..');
         document.addEventListener("deviceready", function() {
@@ -741,26 +663,108 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
         $scope.categoryModal = modal;
     })
     $scope.openCategoryModal = function() {
+        console.log('open categoryModal')
         $scope.categoryModal.show();
     }
-}).controller('printerSettings', function($scope) {
-    $scope.printrSettings = {};
-    $scope.savePrinterSettings = function() {
-        console.log($scope.printrSettings);
-        document.getElementById("prinrSettings").reset();
+}).controller('categoryCtrl', function($scope, $state, $cordovaSQLite, $rootScope, dbService) {
+    $scope.newCategory = {};
+    $scope.addNewCategory = function() {
+        if (!($scope.catIdErrorMsg)) {
+            var promise = dbService.addNewCategory($scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
+            promise.then(function(result) {
+                console.log(result);
+                $scope.succesMessage = true;
+                $rootScope.categoryArr.push($scope.newCategory);
+                $scope.newCategory = {};
+            }, function() {
+                console.log(result);
+            });
+        }
     }
-}).controller('paymentSettings', function($scope) {
-    $scope.pamentSetting = {
-        cash: false,
-        master: false,
-        amex: false,
-        payCurncy: '',
-        payTM: false,
-        visa: false
-    };
+    $scope.$watch('newCategory.categoryId', function(newcId, oldcId) {
+        if (newcId) {
+            $scope.succesMessage = false;
+            // to hide success message
+            $scope.categoryForm.catIdInput.$setUntouched();
+        }
+        console.log(newcId);
+        query = "SELECT * FROM Category where CategoryId = '" + newcId + "'";
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log(res);
+            if (res.rows.length == 0) {
+                console.log('Id not exists..');
+                $scope.catIdErrorMsg = false;
+            } else {
+                console.log('Id already exists..');
+                $scope.catIdErrorMsg = true;
+            }
+        })
+    });
+}).controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
+    $scope.taxSettings = [];
+    $scope.taxSettings[0].id = $rootScope.TaxSettings[0].id;
+    $scope.taxSettings[0].name = $rootScope.TaxSettings[0].name;
+    $scope.taxSettings[0].taxRate = $rootScope.TaxSettings[0].taxRate;
+    var d = new Date();
+    var taxSettings = []
+    $scope.saveTaxSetting = function() {
+        console.log('Hai i am in TaxSetting Save')
+        $scope.taxSettings.push({
+            id: parseInt(d.getTime()),
+            name: $scope.taxSettings.name,
+            taxRate: parseFloat($scope.taxSettings.taxRate)
+        });
+        var taxSettings = JSON.stringify($scope.taxSettings);
+        var promise = settingService.set("TaxSettings", taxSettings)
+        promise.then(function(data) {
+            console.log(data);
+        })
+        /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
+                 .then(function(result) {
+                     $scope.statusMessage = "Message saved successful, cheers!";
+                     console.log($scope.statusMessage)
+                 }, function(error) {
+                     $scope.statusMessage = "Error on saving: " + error.message;
+                     console.log($scope.statusMessage)
+                 })*/
+    }
+}
+]).controller('printerSettings', function($scope, settingService) {
+    $scope.printFormatSettings = {};
+    $scope.printFormatSettings.addressLine1 = $rootScope.printFormatSettings.addressLine1;
+    $scope.printFormatSettings.addressLine2 = $rootScope.printFormatSettings.addressLine2,
+    $scope.printFormatSettings.billCopies = $rootScope.printFormatSettings.billCopies,
+    $scope.printFormatSettings.greeting = $rootScope.printFormatSettings.greeting,
+    $scope.printFormatSettings.phNumber = $rootScope.printFormatSettings.phNumber,
+    $scope.printFormatSettings.shopName = $rootScope.printFormatSettings.shopName,
+    $scope.printFormatSettings.strtBillNmbr = $rootScope.printFormatSettings.strtBillNmbr,
+    $scope.printFormatSettings.tin = $rootScope.printFormatSettings.tin,
+    $scope.printFormatSettings.tokNum = $rootScope.printFormatSettings.tokNum,
+    $scope.printFormatSettings.tokResetAftr = $rootScope.printFormatSettings.tokResetAftr,
+    $scope.printFormatSettings.tokStartNmbr = $rootScope.printFormatSettings.tokStartNmbr,
+    $scope.printFormatSettings.wifiSsid = $rootScope.printFormatSettings.wifiSsid
+    $scope.savePrinterSettings = function() {
+        console.log($scope.printFormatSettings)
+        var printFormatSettings = JSON.stringify($scope.printFormatSettings);
+        var promise = settingService.set("PrinterFormatSettings", printFormatSettings);
+        promise.then(function(data) {
+            console.log(data)
+        })
+    }
+}).controller('paymentSettings', function($scope, settingService) {
+    $scope.paymentSetting = {};
+    $scope.paymentSetting.currency = $rootScope.PaymentSettings.currency
+    $scope.paymentSetting.paymentOptions.cash = $rootScope.PaymentSettings.paymentOptions.cash
+    $scope.paymentSetting.paymentOptions.master = $rootScope.PaymentSettings.paymentOptions.master
+    $scope.paymentSetting.paymentOptions.amex = $rootScope.PaymentSettings.paymentOptions.amex
+    $scope.paymentSetting.paymentOptions.payTM = $rootScope.PaymentSettings.paymentOptions.payTM
+    $scope.paymentSetting.paymentOptions.visa = $rootScope.PaymentSettings.paymentOptions.visa
     $scope.savePaymentSettings = function() {
-        console.log($scope.pamentSetting);
-        document.getElementById("payMentSetting").reset();
+        var paymentSetting = JSON.stringify($scope.paymentSetting);
+        var promise = settingService.set("PaymentSettings", paymentSetting);
+        promise.then(function(data) {
+            console.log(data)
+        })
     }
 }).controller('reports', function($scope) {
     $scope.reportObj = {
@@ -779,4 +783,4 @@ angular.module('starter.controller', []).controller('ProductCtrl', ['$scope', '$
     $scope.saveReports = function() {
         console.log($scope.reportObj)
     }
-})
+}).controller('editProductsCtrl', function($scope) {})

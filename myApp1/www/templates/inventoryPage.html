@@ -1,54 +1,15 @@
-<ion-view view-title="Inventory" ng-controller="inventoryCtrl">
- <ion-content id="inventoryContentDiv">
-  <div class="list">
-   <label class="item item-input">
-     <span class="input-label">Item Name :</span>
-     <input type="text" ng-model="newProduct.name"></input>
-   </label>
-   <label class="item item-input">
-     <span class="input-label">Product Unit :</span>
-     <ion-radio ng-model="newProduct.unit" ng-value="'kgs'">Kgs</ion-radio>
-     <ion-radio ng-model="newProduct.unit" ng-value="'litres'">Litres</ion-radio>
-     <ion-radio ng-model="newProduct.unit" ng-value="'pieces'">pieces</ion-radio>
-   </label>
-   <label class="item item-input">
-     <span class="input-label">Selling Price :</span>
-     <input type="number" ng-model="newProduct.unitPrice">
-   </label>
-   <label class="item item-input">
-     <span class="input-label">Tax (%):</span>
-     <input type="number" ng-model="newProduct.tax">
-   </label>
-   <label class="item item-input">
-     <span class="input-label">Items in-stock :</span>
-     <input type="number" ng-model="newProduct.inStock">
-   </label>
-   <label class="item item-input">
-     <span class="input-label">Product Id :</span>
-     <input type="text" ng-model="newProduct.productId">
-   </label>
-   <label class="item item-input">
-     <span class="input-label">Discount (%):</span>
-     <input type="number" ng-model="newProduct.discount">
-   </label>
-   <label class="item item-input">
-     <span class="input-label">Category :</span>
-     <button class="button" ng-click="openCategoryModal()">Select Category</button>
-   </label>
-   <label class="item item-input">
-     <span class="input-label">Image :</span>
-     <button class="button" ng-click="openCamera()">Camera</button>
-   </label>
-   
-   <label class="item item-input">
-     <span class="input-label"></span>
-     <button class="button" ng-click="openGallery()">Gallery</button>
-   </label>
-   <label class="item item-input">
-     <span class="input-label">Actual Price :</span>
-     <input type="number"  ng-model="newProduct.actualPrice">
-   </label>
-  </div>
-  <button class="button button-block" ng-click="addNewProduct()">Add Item</button>
+<ion-view view-title="Inventory">
+ <ion-content>  
+  <ion-list>
+    <ion-item href="#/app/category">
+      Category
+    </ion-item>
+    <ion-item href="#/app/product">
+      Product
+    </ion-item>
+    <ion-item href="#/app/editProducts">
+      Edit Products
+    </ion-item>
+  </ion-list>
  </ion-content>
 </ion-view>
