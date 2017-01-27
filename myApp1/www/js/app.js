@@ -3,6 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
+
 angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ion-digit-keyboard', 'ngCordova', 'ion-floating-menu']).run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q, settingService, salesService, dbService) {
     var dfd = $q.defer();
     $rootScope.deviceReady = dfd.promise;
@@ -31,7 +32,13 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
             // browser 
             console.log("browser");
         }
-        //  $cordovaSQLite.execute($rootScope.db, "DROP TABLE BillDetails ").then(console.log('Transaction table droped Successfully')); 
+
+
+        $rootScope.printFormatSettings = printFormatSettings;
+        $rootScope.TaxSettings=TaxSettings;
+        $rootScope.PaymentSettings=PaymentSettings;
+       //$cordovaSQLite.execute($rootScope.db, "DROP TABLE TransactionDetails ").then(console.log('Transaction table droped Successfully')); 
+        
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Category (CategoryId text primary key, CategoryName text, CategoryDesc text)").then(console.log('Category table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Product (ProductId text primary key, ProductName text, ProductUnit text, ProductPrice real, TaxId integer, BuyingPrice real, TaxRate real, ItemsinStock real, Discount real, CategoryId text, CategoryName text, Image text, Favourite text)").then(console.log('Product table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS TransactionDetails (BillNo integer, DateTime integer, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, DiscountAmount real, Discount real, TaxRate real, TaxId integer, CategoryId text, CategoryName text)").then(console.log('TransactionDetails table created Successfully'));
@@ -86,6 +93,7 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
     }, function(res) {
         console.log(res)
     })
+
     });
 }).config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('top');

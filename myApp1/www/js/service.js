@@ -159,97 +159,116 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         editProduct: editProduct,
         deleteProduct: deleteProduct
     }
-}).factory("settingService", function($q, $cordovaSQLite, $rootScope) {
-    function set(SettingsName, SettingsValue) {
-        var dfd = $q.defer();
-        $cordovaSQLite.execute($rootScope.db, 'INSERT OR REPLACE INTO Settings (SettingsName,SettingsValue) VALUES (?,?) ', [SettingsName, SettingsValue]).then(function(result) {
-            dfd.resolve(result);
-        }, function(error) {
-            dfd.resolve(error);
-        })
-        return dfd.promise;
-    }
-    function get(SettingsName) {
+}).factory("settingService", function($q,$cordovaSQLite,$rootScope)  {
+  
+
+  function set(SettingsName,SettingsValue) {
+     var dfd = $q.defer();
+    $cordovaSQLite.execute($rootScope.db, 'INSERT OR REPLACE INTO Settings (SettingsName,SettingsValue) VALUES (?,?) ', [SettingsName, SettingsValue])
+                .then(function(result) {
+               dfd.resolve(result);
+                }, function(error) {
+               dfd.resolve(error);
+     })
+     return dfd.promise;
+  }
+
+  function get(SettingsName) { 
         var dfd = $q.defer();
         //$rootScope.deviceReady = dfd.promise;
-        $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue  from Settings where SettingsName=?', [SettingsName]).then(function(result) {
-            dfd.resolve(result);
-        }, function(error) {
-            dfd.resolve(error);
-        })
-        return dfd.promise;
-    }
-    return {
-        set: set,
-        get: get
-    }
-}).factory("salesService", function($q, $cordovaSQLite, $rootScope) {
-    var report = []
-    function get(itemCode, strt, end) {
-        var dfd = $q.defer();
-        // BillNo integer, DateTime text, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, CategoryId text, CategoryName text
-        var query = '';
-        if (strt && end == undefined) {
-            query = 'Select * from TransactionDetails WHERE ProductId=' + itemCode + ''
-        } else if (itemCode == undefined && strt == undefined) {
-            query = 'Select * from TransactionDetails WHERE DateTime=' + end + ''
-        } else if (itemCode == undefined && end == undefined) {
-            query = 'Select * from TransactionDetails WHERE DateTime=' + strt + ''
-        } else {
-            var query = 'Select * from TransactionDetails WHERE (DateTime BETWEEN ' + strt + 'AND ' + end + ')'
-        }
-        $cordovaSQLite.execute($rootScope.db, query).then(function(result) {
-            console.log(result)
-            console.log(result.rows.length)
-            for (var i = 0; i < result.rows.length; i++) {
-                report.push({
-                    itemCode: result.rows[i].ProductId,
-                    itemName: result.rows[i].ProductName,
-                    qtySold: result.rows[i].Quantity,
-                    totalAmountwoTax: result.rows[i].TotalPrice,
-                    totalTax: result.rows[i].TaxAmount,
-                    totalAmount: result.rows[i].TotalAmount
+      $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue  from Settings where SettingsName=?',[SettingsName])
+                .then(function(result) {
+                 dfd.resolve(result);
+                }, function(error) {
+                 dfd.resolve(error);
+                })
+                return dfd.promise;
+  }
+
+  return {
+      set : set,
+      get : get 
+  }
+})  
+
+.factory("salesService", function($q,$cordovaSQLite,$rootScope)  {
+  var report=[]
+  
+  function get(itemCode,strt,end){
+var dfd = $q.defer();
+         // BillNo integer, DateTime text, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, CategoryId text, CategoryName text
+var query='';
+console.log(itemCode+"itemCode"+strt+''+end)
+if(strt==undefined && end==undefined){
+  console.log('I am in First query')
+query='Select * from TransactionDetails WHERE ProductId='+itemCode+''
+}else if(itemCode==undefined && strt==undefined){
+    console.log('I am in Second query')
+ query='Select * from TransactionDetails WHERE DateTime='+end+''
+}else if(itemCode==undefined && end==undefined){
+    console.log('I am in third query')
+query='Select * from TransactionDetails WHERE DateTime='+strt+''
+}else{
+query='Select * from TransactionDetails WHERE (DateTime BETWEEN '+strt+'AND '+end+')'
+}
+  $cordovaSQLite.execute($rootScope.db,query)
+                .then(function(result) {
+                 console.log(result)
+                 console.log(result.rows.length)
+               for(var i=0;i<result.rows.length;i++){
+                 report.push({itemCode:result.rows[i].ProductId,
+                  itemName:result.rows[i].ProductName,
+                  qtySold:result.rows[i].Quantity,
+                  totalAmountwoTax:result.rows[i].TotalPrice,
+                  totalTax:result.rows[i].TaxAmount,
+                  totalAmount:result.rows[i].TotalAmount
                 })
             }
-            console.log(report.length);
-            dfd.resolve(report);
-        }, function(error) {
-            dfd.resolve(error);
-        })
-        return dfd.promise;
-    }
-    function getSalesReport(strt, end) {
-        var salesReport = []
-        //$cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
-        var dfd = $q.defer();
-        if (end = "") {
-            var query = 'Select * from BillDetails Where DateTime=' + strt + '';
-        } else if (strt = "") {
-            var query = 'Select * from BillDetails Where DateTime=' + end + '';
-        } else {
-            var query = 'Select * from BillDetails Where DateTime Between ' + strt + ' and ' + end + '';
-        }
-        $cordovaSQLite.execute($rootScope.db, query, [strt, end]).then(function(result) {
-            console.log(result)
-            for (var i = 0; i < result.rows.length; i++) {
-                salesReport.push({
-                    totalBills: result.rows[i].TotalItems,
-                    avgBillAmt: result.rows[i].TotalPrice / result.rows[i].TotalItems,
-                    totalBillAmt: result.rows[i].TotalPrice,
-                    totalTax: result.rows[i].TaxAmount,
-                    afterTax: result.rows[i].TotalAmount,
-                    startDate: strt,
-                    endDate: end
+                console.log(report.length);
+                 dfd.resolve(report);
+                }, function(error) {
+                 dfd.resolve(error);
                 })
-            }
-            dfd.resolve(salesReport);
-        }, function(error) {
-            dfd.resolve(error);
+                 return dfd.promise;
+}
+function getSalesReport(strt,end){
+  
+  var salesReport=[]
+//$cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
+var dfd = $q.defer();
+if(end==undefined){
+  var query='Select * from BillDetails Where DateTime='+strt+'';
+}else if(strt==undefined){
+  var query='Select * from BillDetails Where DateTime='+end+'';
+}else {
+  var query='Select * from BillDetails Where DateTime Between '+strt+' and '+end+'';
+}
+  $cordovaSQLite.execute($rootScope.db,query)
+                .then(function(result) {
+      console.log(result)
+      for(var i=0;i<result.rows.length;i++){
+        salesReport.push({
+          totalBills:result.rows[i].TotalItems,
+          avgBillAmt:result.rows[i].TotalPrice/result.rows[i].TotalItems,
+          totalBillAmt:result.rows[i].TotalPrice,
+          totalTax:result.rows[i].TaxAmount,
+          afterTax:result.rows[i].TotalAmount,
+          startDate:strt,
+          endDate:end
+
         })
-        return dfd.promise;
-    }
-    return {
-        get: get,
-        getSalesReport: getSalesReport
-    }
+      }
+      dfd.resolve(salesReport);
+                }, function(error) {
+                 dfd.resolve(error);
+                })
+                 return dfd.promise;      
+          
+
+}
+
+ return {
+    get :get,
+    getSalesReport:getSalesReport
+  }
 })
