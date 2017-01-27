@@ -340,8 +340,10 @@ input.ng-invalid {
     background-color: pink;
 }
 
-span.editProHead {
-	margin-right:25px;
+.editProHead {
+	margin:10vh;
 }
+
+
 
 
