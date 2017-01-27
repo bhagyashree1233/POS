@@ -1,0 +1,23 @@
+<ion-view view-title="Edit Products" ng-controller="editProductsCtrl">
+ <ion-content id="editProductContent"> 
+ <ion-list>
+  <ion-item>
+     <span class="editProHead"><b>productId</b></span>
+     <span class="editProHead"><b> productName</b></span>
+     <span class="editProHead"><b> productUnitPrice</b></span>
+     <span class="editProHead"><b> CategoryName</b></span>
+     <span class="editProHead"><b> CategoryId</b></span>
+     <span class="editProHead"><b> Image</b></span>
+   </ion-item>
+  </ion-list> 
+  <ion-list>
+   <ion-item ng-repeat="product in Products">
+     <span>{{product.productId}}<span>
+     <span>{{product.name}}<span>  
+     <span>{{product.unitPrice}}<span>
+     <span>{{product.categoryName}}<span>
+     <span>{{product.categoryId}}<span>      
+   </ion-item>
+  </ion-list>
+ </ion-content>
+</ion-view>

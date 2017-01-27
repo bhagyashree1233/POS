@@ -2,11 +2,14 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
+
 angular.module('starter', ['ionic', 'starter.controller','starter.globalcontroller', 'starter.services', 'ion-digit-keyboard', 'ngCordova'])
 .run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q,settingService,salesService) {
+
+
     var dfd = $q.defer();
-        $rootScope.deviceReady = dfd.promise;
-	$ionicPlatform.ready(function() {
+    $rootScope.deviceReady = dfd.promise;
+    $ionicPlatform.ready(function() {
         if (window.cordova && window.cordova.plugins.Keyboard) {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -31,6 +34,7 @@ angular.module('starter', ['ionic', 'starter.controller','starter.globalcontroll
             // browser 
             console.log("browser");
         }
+
 
         $rootScope.printFormatSettings = printFormatSettings;
         $rootScope.TaxSettings=TaxSettings;
@@ -107,8 +111,7 @@ angular.module('starter', ['ionic', 'starter.controller','starter.globalcontroll
                 templateUrl: 'templates/Reports.html'
             }
         }
-    })
-    .state('app.TaxSettings', {
+    }).state('app.TaxSettings', {
         url: '/TaxSettings',
         views: {
             'menuContent': {
@@ -144,8 +147,14 @@ angular.module('starter', ['ionic', 'starter.controller','starter.globalcontroll
                 templateUrl: 'templates/homePage.html'
             }
         }
-    })
-    .state('Test1', {
+    }).state('app.editProducts', {
+        url: '/editProducts',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/editProducts.html'
+            }
+        }
+    }).state('Test1', {
         url: '/Test',
         templateUrl: 'templates/Keypad.html',
     })

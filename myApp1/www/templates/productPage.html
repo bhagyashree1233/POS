@@ -3,6 +3,10 @@
         <form name="productForm" ng-submit="addNewProduct()">
             <div class="list">
                 <label class="item item-input">
+                    <span class="input-label">Favourite Product:</span>
+                    <ion-toggle style="border:0px;min-height:6vh;" ng-model="newProduct.favourite" toggle-class="toggle-calm"></ion-toggle>
+                </label>
+                <label class="item item-input">
                     <span class="input-label">Product Id :</span>
                     <input type="text" name="productIdInput" ng-minlength="1" ng-maxlength="20" ng-model="newProduct.productId" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2000, 'blur': 1 }}" required>
                     <p style="color:red;" ng-show="productForm.productIdInput.$touched && productForm.productIdInput.$invalid">Length should be 1-20 characters</p>
@@ -29,7 +33,7 @@
                     <select ng-model="selectedTax.tax" name="taxSelect" ng-options="tax as tax.TaxRate for tax in TaxSettings1" required="required">
                         <option value="">Please select</option>
                     </select>
-                <p style="color:red;" ng-show="productForm.taxSelect.$touched && productForm.taxSelect.$invalid">Please select</p>
+                    <p style="color:red;" ng-show="productForm.taxSelect.$touched && productForm.taxSelect.$invalid">Please select</p>
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Buying Price :</span>
@@ -46,12 +50,12 @@
                 </label>
                 <label class="item item-input item-button-right" ng-click="openCategoryModal()">
                     <span class="input-label">Category :</span>
-                    <input type="text" ng-model="newProduct.category" readonly>
+                    <input type="text" ng-model="newProduct.category" readonly="readonly">
                     <a class="button">Select Category</a>
                 </label>
                 <label class="item item-input" ng-click="openCamera()">
                     <span class="input-label">Image :</span>
-                    <input type="text" ng-model="newProduct.image" readonly>
+                    <input type="text" ng-model="newProduct.image" readonly="readonly">
                     <a class="button">Camera</a>
                 </label>
                 <label class="item item-input" ng-click="openGallery()">
@@ -61,5 +65,6 @@
             </div>
             <button class="button button-block" ng-disabled="">Add Item</button>
         </form>
+        <p style="color:green;" ng-show="productSuccessMessage">Product Added successfully</p>
     </ion-content>
 </ion-view>
