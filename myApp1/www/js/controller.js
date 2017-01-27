@@ -1,5 +1,6 @@
 angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService) {
         console.log($rootScope.Products);
+
         $scope.onHold = function() {
             console.log('enterd on hold');
             $scope.showDelete = true;
@@ -187,9 +188,13 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         }
         //Numeric keypad for Quantity Start
         $scope.typedCode = 1;
+        var count=0;
         $scope.keyPressed = function(keyCode) {
             //console.log(keyCode)
-            tempT = $scope.typedCode;
+            tempT = $scope.typedCode.length;
+            console.log(tempT)
+            console.log(count++)
+                 console.log($scope.typedCode.length)
             switch (keyCode) {
                 case -4:
                     $scope.sendTheCodeQ();
@@ -605,27 +610,34 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     })
     .controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
 
-        $scope.taxSettings = [];
-        $scope.taxSettings[0].id=$rootScope.TaxSettings[0].id;
-        $scope.taxSettings[0].name=$rootScope.TaxSettings[0].name;
-        $scope.taxSettings[0].taxRate=$rootScope.TaxSettings[0].taxRate;
+      $scope.taxSettings = [];
+       $scope.txSetting={};
+       console.log($rootScope.TaxSettings[0].name);
+     // $scope.taxSettings[0]['$scope.txSetting.id']=$rootScope.TaxSettings[0].id;
+     // $scope.taxSettings[0][$scope.txSetting.name]=$rootScope.TaxSettings[0].name;
+     // $scope.taxSettings[0][$scope.txSetting.taxRate]=$rootScope.TaxSettings[0].taxRate;
+      console.log($rootScope.$scope.TaxSettings[0].name)
         var d = new Date();
         var taxSettings = []
-
-        $scope.saveTaxSetting = function() {
-                console.log('Hai i am in TaxSetting Save')
-            $scope.taxSettings.push({
-                id:parseInt(d.getTime()),
-                name: $scope.taxSettings.name,
-                taxRate: parseFloat($scope.taxSettings.taxRate)
-
-            });
+        $scope.addMore=function(){
+                var txSetting =$scope.txSetting
+                $scope.taxSettings.push({txSetting})
+                console.log($scope.taxSettings)
+                document.getElementById("myTaxSettingForm").reset();
+                $scope.txSetting={}
+        }
+          $scope.saveTaxSetting = function() {
+              var txSetting =$scope.txSetting
+              $scope.taxSettings.push({txSetting})
+            console.log('Hai i am in TaxSetting Save')
+           
+           console.log($scope.taxSettings)
+            
             var taxSettings = JSON.stringify($scope.taxSettings);
             var promise = settingService.set("TaxSettings", taxSettings)
             promise.then(function(data) {
                 console.log(data);
             })
-
             /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
                  .then(function(result) {
                      $scope.statusMessage = "Message saved successful, cheers!";
@@ -636,9 +648,9 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                  })*/
         }
     }])
-    .controller('printerSettings', function($scope, settingService) {
+    .controller('printerSettings', function($scope, settingService,$rootScope) {
          $scope.printFormatSettings={}  ; 
-        $scope.printFormatSettings.addressLine1 = $rootScope.printFormatSettings.addressLine1;
+        $scope.printFormatSettings['addressLine1'] = $rootScope.printFormatSettings.addressLine1;
          $scope.printFormatSettings.addressLine2=$rootScope.printFormatSettings.addressLine2,
           $scope.printFormatSettings.billCopies=$rootScope.printFormatSettings.billCopies,
           $scope.printFormatSettings.greeting=$rootScope.printFormatSettings.greeting,
@@ -659,14 +671,9 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             })
 
         }
-    }).controller('paymentSettings', function($scope, settingService) {
-        $scope.paymentSetting = {};
-      $scope.paymentSetting.currency=$rootScope.PaymentSettings.currency
-      $scope.paymentSetting.paymentOptions.cash=$rootScope.PaymentSettings.paymentOptions.cash
-      $scope.paymentSetting.paymentOptions.master=$rootScope.PaymentSettings.paymentOptions.master
-      $scope.paymentSetting.paymentOptions.amex=$rootScope.PaymentSettings.paymentOptions.amex
-      $scope.paymentSetting.paymentOptions.payTM=$rootScope.PaymentSettings.paymentOptions.payTM
-      $scope.paymentSetting.paymentOptions.visa=$rootScope.PaymentSettings.paymentOptions.visa
+    }).controller('paymentSettings', function($scope, settingService,$rootScope) {
+       console.log($rootScope.PaymentSettings)
+      $scope.paymentSetting=$rootScope.PaymentSettings
         $scope.savePaymentSettings = function() {
             var paymentSetting = JSON.stringify($scope.paymentSetting);
             var promise = settingService.set("PaymentSettings", paymentSetting);

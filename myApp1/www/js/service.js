@@ -126,14 +126,18 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
 var dfd = $q.defer();
          // BillNo integer, DateTime text, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, CategoryId text, CategoryName text
 var query='';
-if(strt&&end==undefined){
+console.log(itemCode+"itemCode"+strt+''+end)
+if(strt==undefined && end==undefined){
+  console.log('I am in First query')
 query='Select * from TransactionDetails WHERE ProductId='+itemCode+''
-}else if(itemCode==undefined&&strt==undefined){
+}else if(itemCode==undefined && strt==undefined){
+    console.log('I am in Second query')
  query='Select * from TransactionDetails WHERE DateTime='+end+''
-}else if(itemCode==undefined&&end==undefined){
+}else if(itemCode==undefined && end==undefined){
+    console.log('I am in third query')
 query='Select * from TransactionDetails WHERE DateTime='+strt+''
 }else{
- var query='Select * from TransactionDetails WHERE (DateTime BETWEEN '+strt+'AND '+end+')'
+query='Select * from TransactionDetails WHERE (DateTime BETWEEN '+strt+'AND '+end+')'
 }
   $cordovaSQLite.execute($rootScope.db,query)
                 .then(function(result) {
@@ -160,14 +164,14 @@ function getSalesReport(strt,end){
   var salesReport=[]
 //$cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
 var dfd = $q.defer();
-if(end=""){
+if(end==undefined){
   var query='Select * from BillDetails Where DateTime='+strt+'';
-}else if(strt=""){
+}else if(strt==undefined){
   var query='Select * from BillDetails Where DateTime='+end+'';
 }else {
   var query='Select * from BillDetails Where DateTime Between '+strt+' and '+end+'';
 }
-  $cordovaSQLite.execute($rootScope.db,query,[strt,end])
+  $cordovaSQLite.execute($rootScope.db,query)
                 .then(function(result) {
       console.log(result)
       for(var i=0;i<result.rows.length;i++){

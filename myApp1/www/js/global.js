@@ -1,7 +1,4 @@
-angular.module('starter.globalcontroller', [])
-
-.controller('global',function($rootScope,$scope,$cordovaSQLite){
-$rootScope.printFormatSettings={
+var printFormatSettings={
 addressLine1:"",
 addressLine2:"",
 billCopies:1,
@@ -15,20 +12,32 @@ tokResetAftr:1,
 tokStartNmbr:999,
 wifiSsid:""}
 
-$rootScope.TaxSettings=[{
+
+var TaxSettings=[{
     id:0,
-    name:'',
+    name:'Hai',
     taxRate:0.0
 }]
-$rootScope.PaymentSettings={
-   currency:'Inr',
+
+var PaymentSettings={
+   currency:'USD ($):',
    paymentOptions:[{
-   cash:true,
-    master: false,
-     amex: false,
-     payTM: false,
-     visa: false
+   Cash:true,
+    Master: false,
+     Amex: false,
+     PayTM: false,
+     Visa: false
   } ]
 }
+
+
+
+
+angular.module('starter.globalcontroller', [])
+
+.controller('global',function($rootScope,$scope,$cordovaSQLite){
+  console.log('Hello hai')
+
+
 
 })
