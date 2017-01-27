@@ -1,4 +1,5 @@
 <ion-view view-title="Add New Products" ng-controller="productCtrl">
+    
     <ion-content id="productContentDiv">
         <form name="productForm" ng-submit="addNewProduct()">
             <div class="list">
@@ -8,7 +9,7 @@
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Product Id :</span>
-                    <input type="text" name="productIdInput" ng-minlength="1" ng-maxlength="20" ng-model="newProduct.productId" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2000, 'blur': 1 }}" required>
+                    <input type="text" name="productIdInput" ng-minlength="1" ng-maxlength="20" ng-model="newProduct.productId" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2000, 'blur': 1 }}" ng-disabled="pIdDisable" required>
                     <p style="color:red;" ng-show="productForm.productIdInput.$touched && productForm.productIdInput.$invalid">Length should be 1-20 characters</p>
                     <p style="color:red;" ng-show="checkIdShow">Id already exists</p>
                 </label>
@@ -33,6 +34,7 @@
                     <select ng-model="selectedTax.tax" name="taxSelect" ng-options="tax as tax.TaxRate for tax in TaxSettings1" required="required">
                         <option value="">Please select</option>
                     </select>
+                    <p>{{selectedTax.tax.TaxRate}}</p>
                     <p style="color:red;" ng-show="productForm.taxSelect.$touched && productForm.taxSelect.$invalid">Please select</p>
                 </label>
                 <label class="item item-input">
@@ -50,7 +52,7 @@
                 </label>
                 <label class="item item-input item-button-right" ng-click="openCategoryModal()">
                     <span class="input-label">Category :</span>
-                    <input type="text" ng-model="newProduct.category" readonly="readonly">
+                    <input type="text" ng-model="newProduct.categoryName" readonly="readonly">
                     <a class="button">Select Category</a>
                 </label>
                 <label class="item item-input" ng-click="openCamera()">
