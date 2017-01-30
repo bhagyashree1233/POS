@@ -64,15 +64,15 @@
                         </ion-scroll>
                     </div>
                     <div class="totalAmountCalculation" style="margin:2vh;height:15%;">
-                        <p style="font-size:18px;color:black;">Total Amount:{{totalPrice}}</p>
-                        <p style="font-size:18px;color:black;">Tax:{{totalTaxAmount}}</p>
-                        <p style="font-size:18px;color:black;">Discount Amount:{{discountAmount}}</p>
-                        <p style="font-size:18px;color:black;">Paid Amount: {{typedAmount}}</p>
-                        <p style="font-size:18px;color:black;" ng-if="typedAmount>0">Balence: {{Balance}}</p>
+                        <p style="font-size:18px;color:black;">Total Amount{{currencySymbol}}:{{totalPrice}}</p>
+                        <p style="font-size:18px;color:black;">Tax{{currencySymbol}}:{{totalTaxAmount}}</p>
+                        <p style="font-size:18px;color:black;">Discount Amount{{currencySymbol}}:{{discountAmount}}</p>
+                        <p style="font-size:18px;color:black;">Paid Amount{{currencySymbol}}: {{typedAmount}}</p>
+                        <p style="font-size:18px;color:black;" ng-if="typedAmount>0">Balence{{currencySymbol}}: {{Balance}}</p>
                     </div>
                     <div style="margin:2vh;height:20%;">
-                        <h3 style="float:right;">{{totalChargeAmount}}</h3>
-                        <button style="border-radius:7%;" ng-click="openPaymentModal()" class="button button-block button-balanced">Charge {{totalChargeAmount}}</button>
+                        <h3 style="float:right;">{{totalChargeAmount}}{{currencySymbol}}</h3>
+                        <button style="border-radius:7%;" ng-click="openPaymentModal()" class="button button-block button-balanced">Charge {{totalChargeAmount}}{{currencySymbol}}</button>
                     </div>
                 </div>
             </div>

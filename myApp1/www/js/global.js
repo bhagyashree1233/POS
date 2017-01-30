@@ -8,8 +8,8 @@ shopName:"",
 strtBillNmbr:1,
 tin:"",
 tokNum:true,
-tokResetAftr:1,
-tokStartNmbr:999,
+tokResetAftr:999,
+tokStartNmbr:1,
 wifiSsid:""}
 
 
@@ -20,7 +20,7 @@ var TaxSettings=[{
 }]
 
 var PaymentSettings={
-   currency:'USD ($):',
+   currency:'USD ($)',
    paymentOptions:[{
    Cash:true,
     Master: false,

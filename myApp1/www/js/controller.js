@@ -1,10 +1,10 @@
 angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService) {
-  //console.log($rootScope.Products);
+    //console.log($rootScope.Products);
     $scope.onHold = function() {
         console.log('enterd on hold');
         $scope.showDelete = true;
     }
-    //load categary list from DB
+   //load categary list from DB
     $rootScope.categoryArr = [{
         categoryName: 'All',
         categoryId: 'all'
@@ -122,6 +122,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     $scope.serviceTax = 0.05;
     //  $scope.quantity=0;
     $scope.save = function(product) {
+        console.log(product);
         console.log($scope.typedCode);
         if ($scope.typedCode == null) {
             console.log('Type Code Null')
@@ -168,15 +169,20 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.totalChargeAmount = $scope.totalChargeAmount + productTotalAmount;
         console.log('This is Totla Price' + $scope.totalPrice);
     }
-    $scope.paidAmount = function(typedAmount) {
-        var typedAmount = parseInt($scope.typedAmount);
-        $scope.paidAmount = typedAmount;
+    $scope.paidAmount = function() {
+        console.log('I am in Paid Function')
+        console.log($scope.typedAmount)
+        var typedAmount = parseFloat($scope.typedAmount);
+
+        $scope.paidAmount1 = typedAmount;
+        console.log(typedAmount)
         $scope.Balance = typedAmount - $scope.totalChargeAmount;
         // document.getElementById("buttonPayment").disabled = true;
         $scope.enterBtn = true;
         $scope.receiptBtnShow = false;
     }
     $scope.receipt = function() {
+        
         $scope.paymentModal.hide();
         $scope.transactionDate = (new Date()).getTime();
         var promise = dbService.storeToTransaction($scope.productArr, $scope.transactionDate);
@@ -194,6 +200,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             $scope.totalTaxAmount = 0;
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
+            
         }, function(result) {
             console.log(result);
         })
@@ -278,8 +285,15 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     }
     //Numeric keypad for Quantity Start
     $scope.typedCode = 1;
+    var count = 0
     $scope.keyPressed = function(keyCode) {
-        //console.log(keyCode)
+        console.log($scope.typedCode.length);
+        console.log(count++)
+        if ($scope.typedCode.length == count) {
+            $scope.typedCode = $scope.typedCode.slice(0, -1);
+        } else {
+            console.log($scope.typedCode.length);
+        }
         tempT = $scope.typedCode;
         switch (keyCode) {
         case -4:
@@ -301,29 +315,31 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         case 8:
         case 9:
         case 0:
-            if (!/^\d+$/.test(tempT)) {
+        case '.':
+            if (!/\d/.test(tempT)) {
                 $scope.typedCode = keyCode;
             } else {
                 $scope.typedCode += '' + keyCode;
+                 console.log($scope.typedCode)
             }
             break;
         }
     }
     ;
     $scope.sendTheCodeQ = function() {
-        if (/^\d+$/.test(tempT)) {
+        if (/\d/.test(tempT)) {
             // TODO : sends the entered code
             console.log('entered code is ' + $scope.typedCode + " " + $scope.typedCode.length);
-            $scope.typedCode = null;
+            $scope.typedCode = "";
         }
     }
     ;
     $scope.removeQ = function() {
         console.log($scope.typedCode)
-        if ($scope.typedCode > 0) {
+        if ($scope.typedCode.length > 0) {
             $scope.typedCode = $scope.typedCode.slice(0, -1);
         } else {
-            $scope.typedCode = null;
+            $scope.typedCode = '';
         }
         console.log('I am in remove');
         // TODO start scaning the code and once it receives send to the socket
@@ -331,7 +347,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     ;
     $scope.removeAllQ = function() {
         //Numeric keypad for Payment Start
-        $scope.typedCode = null;
+        $scope.typedCode = '';
     }
     $scope.typedAmount = "";
     $scope.keyPressedAmount = function(keyCode) {
@@ -357,17 +373,21 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         case 8:
         case 9:
         case 0:
-            if (!/^\d+$/.test(tempT)) {
+        case '.':
+            if (!/\d/.test(tempT)) {
+
                 $scope.typedAmount = keyCode;
+                console.log( $scope.typedAmount)
             } else {
                 $scope.typedAmount += '' + keyCode;
+                console.log( $scope.typedAmount)
             }
             break;
         }
     }
     ;
     $scope.sendTheCodeA = function() {
-        if (/^\d+$/.test(tempT)) {
+        if (/\d/.test(tempT)) {
             // TODO : sends the entered code
             console.log('entered code is ' + $scope.typedCode + " " + $scope.typedAmount.length);
             $scope.typedAmount = "";
@@ -395,6 +415,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.paymentModal = modal;
     });
     $scope.openPaymentModal = function() {
+        $scope.enterBtn=false;
         if ($scope.productArr.length) {
             console.log('I am in openModel')
             $scope.typedAmount = null;
@@ -409,6 +430,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         console.log('I am in close Model')
         $scope.typedAmount = "";
         $scope.paymentModal.hide();
+        
     }
     ;
     // Payment model end
@@ -432,6 +454,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.numericModal.hide();
         $scope.newProduct = {};
         $scope.typedCode = null;
+        count = 0;
     }
     ;
     $ionicModal.fromTemplateUrl('templates/recallModal.html', {
@@ -700,38 +723,40 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             }
         })
     });
-})
-    .controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
-
-      $scope.taxSettings = [];
-       $scope.txSetting={};
-       console.log($rootScope.TaxSettings[0].name);
-     // $scope.taxSettings[0]['$scope.txSetting.id']=$rootScope.TaxSettings[0].id;
-     // $scope.taxSettings[0][$scope.txSetting.name]=$rootScope.TaxSettings[0].name;
-     // $scope.taxSettings[0][$scope.txSetting.taxRate]=$rootScope.TaxSettings[0].taxRate;
-      console.log($rootScope.$scope.TaxSettings[0].name)
-        var d = new Date();
-        var taxSettings = []
-        $scope.addMore=function(){
-                var txSetting =$scope.txSetting
-                $scope.taxSettings.push({txSetting})
-                console.log($scope.taxSettings)
-                document.getElementById("myTaxSettingForm").reset();
-                $scope.txSetting={}
-        }
-          $scope.saveTaxSetting = function() {
-              var txSetting =$scope.txSetting
-              $scope.taxSettings.push({txSetting})
-            console.log('Hai i am in TaxSetting Save')
-           
-           console.log($scope.taxSettings)
-            
-            var taxSettings = JSON.stringify($scope.taxSettings);
-            var promise = settingService.set("TaxSettings", taxSettings)
-            promise.then(function(data) {
-                console.log(data);
-            })
-            /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
+}).controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
+    $scope.taxSettings = [];
+    $scope.txSetting = {};
+    console.log($rootScope.TaxSettings)
+    
+     $scope.taxSettings[0]={id:$rootScope.TaxSettings[0].id,name:$rootScope.TaxSettings[0].name,taxRate:$rootScope.TaxSettings[0].taxRate};
+    // $scope.taxSettings[0][$scope.txSetting.name]=;
+    // $scope.taxSettings[0][$scope.txSetting.taxRate]=;
+    //console.log($rootScope.$scope.TaxSettings[0].name)
+    var d = new Date();
+    var taxSettings = []
+    $scope.addMore = function() {
+        var txSetting = $scope.txSetting
+        $scope.taxSettings.push({
+            txSetting
+        })
+        console.log($scope.taxSettings)
+        document.getElementById("myTaxSettingForm").reset();
+        $scope.txSetting = {}
+    }
+    $scope.saveTaxSetting = function() {
+        
+        var txSetting = $scope.txSetting
+        $scope.taxSettings.push({
+            txSetting
+        })
+        console.log('Hai i am in TaxSetting Save')
+        console.log($scope.taxSettings)
+        var taxSettings = JSON.stringify($scope.taxSettings);
+        var promise = settingService.set("TaxSettings", taxSettings)
+        promise.then(function(data) {
+            console.log(data);
+        })
+        /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
 
         var taxSettings = JSON.stringify($scope.taxSettings);
         var promise = settingService.set("TaxSettings", taxSettings)
@@ -749,60 +774,57 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                  })*/
     }
 }
-])
-    .controller('printerSettings', function($scope, settingService,$rootScope) {
-         $scope.printFormatSettings={}  ; 
-        $scope.printFormatSettings['addressLine1'] = $rootScope.printFormatSettings.addressLine1;
-         $scope.printFormatSettings.addressLine2=$rootScope.printFormatSettings.addressLine2,
-          $scope.printFormatSettings.billCopies=$rootScope.printFormatSettings.billCopies,
-          $scope.printFormatSettings.greeting=$rootScope.printFormatSettings.greeting,
-           $scope.printFormatSettings.phNumber=$rootScope.printFormatSettings.phNumber,
-           $scope.printFormatSettings.shopName=$rootScope.printFormatSettings.shopName,
-            $scope.printFormatSettings.strtBillNmbr=$rootScope.printFormatSettings.strtBillNmbr,
-           $scope.printFormatSettings.tin=$rootScope.printFormatSettings.tin,
-            $scope.printFormatSettings.tokNum=$rootScope.printFormatSettings.tokNum,
-            $scope.printFormatSettings.tokResetAftr=$rootScope.printFormatSettings.tokResetAftr,
-            $scope.printFormatSettings.tokStartNmbr=$rootScope.printFormatSettings.tokStartNmbr,
-             $scope.printFormatSettings.wifiSsid=$rootScope.printFormatSettings.wifiSsid
-        $scope.savePrinterSettings = function() {
-                console.log($scope.printFormatSettings)
-            var printFormatSettings = JSON.stringify($scope.printFormatSettings);
-            var promise = settingService.set("PrinterFormatSettings", printFormatSettings);
-            promise.then(function(data) {
-                console.log(data)
-            })
-
+]).controller('printerSettings', function($scope, settingService, $rootScope) {
+    $scope.printFormatSettings = {};
+    $scope.printFormatSettings['addressLine1'] = $rootScope.printFormatSettings.addressLine1;
+    $scope.printFormatSettings.addressLine2 = $rootScope.printFormatSettings.addressLine2,
+    $scope.printFormatSettings.billCopies = $rootScope.printFormatSettings.billCopies,
+    $scope.printFormatSettings.greeting = $rootScope.printFormatSettings.greeting,
+    $scope.printFormatSettings.phNumber = $rootScope.printFormatSettings.phNumber,
+    $scope.printFormatSettings.shopName = $rootScope.printFormatSettings.shopName,
+    $scope.printFormatSettings.strtBillNmbr = $rootScope.printFormatSettings.strtBillNmbr,
+    $scope.printFormatSettings.tin = $rootScope.printFormatSettings.tin,
+    $scope.printFormatSettings.tokNum = $rootScope.printFormatSettings.tokNum,
+    $scope.printFormatSettings.tokResetAftr = $rootScope.printFormatSettings.tokResetAftr,
+    $scope.printFormatSettings.tokStartNmbr = $rootScope.printFormatSettings.tokStartNmbr,
+    $scope.printFormatSettings.wifiSsid = $rootScope.printFormatSettings.wifiSsid
+    $scope.savePrinterSettings = function() {
+        console.log($scope.printFormatSettings)
+        var printFormatSettings = JSON.stringify($scope.printFormatSettings);
+        var promise = settingService.set("PrinterFormatSettings", printFormatSettings);
+        promise.then(function(data) {
+            console.log(data)
+        })
+    }
+}).controller('paymentSettings', function($scope, settingService, $rootScope) {
+    $scope.paymentSetting={};
+    console.log($rootScope.PaymentSettings)
+    $scope.paymentSetting.currency = $rootScope.PaymentSettings.currency;
+    console.log($scope.paymentSetting)
+    $scope.paymentSetting.paymentOptions=$rootScope.PaymentSettings.paymentOptions;
+    $scope.savePaymentSettings = function() {
+        console.log($scope.paymentSetting)
+        var paymentSetting = JSON.stringify($scope.paymentSetting);
+        var promise = settingService.set("PaymentSettings", paymentSetting);
+        promise.then(function(data) {
+            console.log(data)
+        })
+    }
+}).controller('reports', function($scope) {
+    $scope.reportObj = {
+        storeReportOnCloud: false,
+        sendEmailReport: {
+            value: false,
+            email: ""
+        },
+        sendSMS: {
+            value: false,
+            onLowStock: "",
+            dailyCollection: "",
+            phoneNumber: ""
         }
-    }).controller('paymentSettings', function($scope, settingService,$rootScope) {
-       console.log($rootScope.PaymentSettings)
-      $scope.paymentSetting=$rootScope.PaymentSettings
-        $scope.savePaymentSettings = function() {
-            var paymentSetting = JSON.stringify($scope.paymentSetting);
-            var promise = settingService.set("PaymentSettings", paymentSetting);
-            promise.then(function(data) {
-                console.log(data)
-            })
-        }
-    }).controller('reports', function($scope) {
-        $scope.reportObj = {
-            storeReportOnCloud: false,
-            sendEmailReport: {
-                value: false,
-                email: ""
-            },
-            sendSMS: {
-                value: false,
-                onLowStock: "",
-                dailyCollection: "",
-                phoneNumber: ""
-            }
-        }
-        $scope.saveReports = function() {
-            console.log($scope.reportObj)
-        }
-    })
-
-    
-    
-
-
+    }
+    $scope.saveReports = function() {
+        console.log($scope.reportObj)
+    }
+})
