@@ -1,64 +1,66 @@
-angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService) {
+angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
-        var promise = dbService.loadFromDB('Product');
+        console.log('entered before enter view')
+        loadProducts();
+        loadCategory();
+    });
+    $ionicPlatform.ready(function() {
+        loadProducts();
+        loadCategory();
+    })
+    $scope.Products = [];
+    $scope.categoryArr = [];
+    $scope.allSlideCatArr = [];
+    $scope.allSlideProductArr = [];
+    function loadProducts() {
+        var promise = dbService.loadProductFromDB('Product');
         promise.then(function(res) {
-            console.log(res);
-            $rootScope.Products = [];
-            for (var i = 0; i < res.rows.length; i++) {
-                $rootScope.Products.push({
-                    productId: res.rows.item(i).ProductId,
-                    name: res.rows.item(i).ProductName,
-                    unit: res.rows.item(i).ProductUnit,
-                    unitPrice: res.rows.item(i).ProductPrice,
-                    taxRate: res.rows.item(i).TaxRate,
-                    taxId: res.rows.item(i).TaxId,
-                    actualPrice: res.rows.item(i).BuyingPrice,
-                    inStock: res.rows.item(i).ItemsinStock,
-                    discount: res.rows.item(i).Discount,
-                    categoryId: res.rows.item(i).CategoryId,
-                    categoryName: res.rows.item(i).CategoryName,
-                    image: res.rows.item(i).Image,
-                    favorite: res.rows.item(i).Favourite
-                });
-            }
+            $scope.Products = res;
+            console.log('products loaded...');
+            productSlideLogic();
         }, function(res) {
             console.log(res)
         })
-    });
-    //console.log($rootScope.Products);
+    }
+    function loadCategory() {
+        var promise = dbService.loadCategoryFromDB('Category');
+        promise.then(function(res) {
+            $scope.categoryArr = res;
+            categorySlideLogic();
+        }, function(res) {
+            console.log(res);
+        })
+    }
+    function productSlideLogic() {
+        $scope.allSlideProductArr = [];
+        var tempProductArr = [];
+        console.log($scope.Products);
+        for (var i = 0; i < $scope.Products.length; i++) {
+            tempProductArr.push($scope.Products[i]);
+            if (((i != 0) && (i % 11 == 0)) || (i == ($scope.Products.length - 1))) {
+                $scope.allSlideProductArr.push(tempProductArr)
+                tempProductArr = [];
+            }
+        }
+        console.log($scope.allSlideProductArr);
+    }
+    function categorySlideLogic() {
+        $scope.allSlideCatArr = [];
+        var tempCatArr = [];
+        //  console.log(tempCatArr)
+        for (var i = 0; i < $scope.categoryArr.length; i++) {
+            tempCatArr.push($scope.categoryArr[i]);
+            if (((i != 0) && (i % 4 == 0)) || (i == ($scope.categoryArr.length - 1))) {
+                $scope.allSlideCatArr.push(tempCatArr)
+                tempCatArr = [];
+            }
+        }
+        console.log($scope.allSlideCatArr);
+    }
     $scope.onHold = function() {
         console.log('enterd on hold');
         $scope.showDelete = true;
     }
-    //load categary list from DB
-    $rootScope.categoryArr = [{
-        categoryName: 'Favourite',
-        categoryId: 'favourite'
-    }];
-    $scope.tempAllCatArr = [];
-    var promise = dbService.loadFromDB('Category');
-    promise.then(function(res) {
-        for (var i = 0; i < res.rows.length; i++) {
-            $rootScope.categoryArr.push({
-                categoryId: res.rows.item(i).CategoryId,
-                categoryName: res.rows.item(i).CategoryName
-            });
-        }
-        //--------logic for category slide view-----------
-        var tempCatArr = [];
-        console.log(tempCatArr)
-        for (var i = 0; i < $rootScope.categoryArr.length; i++) {
-            tempCatArr.push($rootScope.categoryArr[i]);
-            if (((i != 0) && (i % 4 == 0)) || (i == ($rootScope.categoryArr.length - 1))) {
-                $scope.tempAllCatArr.push(tempCatArr)
-                tempCatArr = [];
-            }
-        }
-        console.log($scope.tempAllCatArr);
-        //------------------------------------------------
-    }, function(res) {
-        console.log(res);
-    })
     //load products list from DB
     $scope.display = function(catId) {
         console.log(catId);
@@ -117,7 +119,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         // $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
     }
     // $scope.numValue = 0;
-    $scope.prodCat = $scope.Products;
     $scope.productArr = [];
     $scope.discountAmount = 0;
     $scope.totalPrice = null;
@@ -518,16 +519,13 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     ;
     //Slide Ends
 }
-]).controller("productCtrl", function($scope, $state, $rootScope, $ionicHistory, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
+]).controller("productCtrl", function($scope, $state, $rootScope, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
+        loadCategory();
         $scope.notEditingProduct = angular.equals({}, $rootScope.editingProduct);
         console.log($scope.notEditingProduct);
         if (!($scope.notEditingProduct)) {
             $scope.newProduct = $rootScope.editingProduct;
-            //   $scope.selectedTax = {};
-            //   $scope.selectedTax['tax'] = {};
-            //   $scope.selectedTax.tax['TaxRate'] = $scope.newProduct.taxRate;
-            //   $scope.selectedTax.tax['Id'] = $scope.newProduct.taxId;
             $rootScope.editingProduct = {};
             $scope.pIdDisable = true;
             console.log($scope.selectedTax);
@@ -536,6 +534,14 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         }
         console.log("State Params: ", data.stateParams);
     });
+    function loadCategory() {
+        var promise = dbService.loadProductFromDB('Category');
+        promise.then(function(res) {
+            $scope.categoryArr = res;
+        }, function(res) {
+            console.log(res)
+        })
+    }
     console.log($rootScope.Products);
     console.log($rootScope.editingProduct);
     $scope.newProduct = $rootScope.editingProduct;
@@ -607,6 +613,19 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                         image: "/img/sc1.jpg"
                     };
                     $scope.productSuccessMessage = true;
+                    //confirmation popup
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: 'Add More Products ',
+                        template: 'Do you want to add more products?'
+                    });
+                    confirmPopup.then(function(res) {
+                        if (res) {
+                            console.log('add more products');
+                        } else {
+                            console.log('No');
+                            $ionicHistory.goBack();
+                        }
+                    });
                 }, function(result) {
                     console.log(result);
                 })
@@ -709,7 +728,59 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         console.log('open categoryModal')
         $scope.categoryModal.show();
     }
-}).controller('categoryCtrl', function($scope, $state, $ionicHistory, $cordovaSQLite, $rootScope, dbService) {
+}).controller('categoryCtrl', function($scope, $state, $ionicHistory, $ionicPopup, $cordovaSQLite, $rootScope, dbService) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+        loadCategory();
+    });
+    function loadCategory() {
+        var promise = dbService.loadProductFromDB('Category');
+        promise.then(function(res) {
+            $scope.categoryArr = res;
+        }, function(res) {
+            console.log(res)
+        })
+    }
+    $scope.deleteCategory = function() {
+        if ($scope.searchCategory.categoryId) {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Delete Category ',
+                template: 'Are you sure you want to delete Category?'
+            });
+            confirmPopup.then(function(res) {
+                if (res) {
+                    console.log('delete Category');
+                    var promise = dbService.deleteCategory($scope.searchCategory.categoryId);
+                    promise.then(function(res) {
+                        console.log(res);
+                        $ionicHistory.goBack();
+                    }, function() {
+                        console.log(res);
+                    })
+                } else {
+                    console.log('No');
+                }
+            });
+        } else {
+            $scope.selectCategoryWarningMsg = true;
+        }
+    }
+    $scope.editCategory = function() {
+        console.log('entered edit category');
+        
+        if ($scope.searchCategory.categoryId) {
+            $scope.showEditField = true;
+        }  else {
+            $scope.selectCategoryWarningMsg = true;
+        }
+    }
+    $scope.searchCategory = {
+        categoryId: ""
+    };
+    $scope.editSelectedCategory = function(categoryEditObj) {
+        //  $scope.searchCategory = categoryEditObj;
+        $scope.searchCategory.categoryId = categoryEditObj.categoryId;
+        $scope.showCategoryEdit = true;
+    }
     $scope.newCategory = {};
     $scope.addNewCategory = function() {
         if (!($scope.catIdErrorMsg)) {
@@ -722,6 +793,20 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                 if ($rootScope.cameFromProduct) {
                     $rootScope.cameFromProduct = false;
                     $ionicHistory.goBack();
+                } else {
+                    //confirmation popup
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: 'Add More Category ',
+                        template: 'Do you want to add more Category?'
+                    });
+                    confirmPopup.then(function(res) {
+                        if (res) {
+                            console.log('add more Category');
+                        } else {
+                            console.log('No');
+                            $ionicHistory.goBack();
+                        }
+                    });
                 }
             }, function() {
                 console.log(result);
@@ -748,11 +833,21 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         })
     });
 }).controller('editProductsCtrl', function($scope, $rootScope, $state, $ionicHistory, dbService) {
-    $scope.$on("$ionicView.beforeEnter", function(event, data) {});
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+        loadProducts();
+    });
     $scope.editProduct = function(editingProduct) {
         console.log(editingProduct);
         $rootScope.editingProduct = editingProduct;
         $state.go('app.product');
+    }
+    function loadProducts() {
+        var promise = dbService.loadProductFromDB('Product');
+        promise.then(function(res) {
+            $scope.Products = res;
+        }, function(res) {
+            console.log(res)
+        })
     }
     $scope.showProduct = true;
     $scope.onEditProductHold = function() {
@@ -781,27 +876,9 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             var promise = dbService.deleteProduct($scope.deleteProductId);
             promise.then(function(result) {
                 // $ionicHistory.goBack();
-                var promise = dbService.loadFromDB('Product');
+                var promise = dbService.loadProductFromDB('Product');
                 promise.then(function(res) {
-                    console.log(res);
-                    $rootScope.Products = [];
-                    for (var i = 0; i < res.rows.length; i++) {
-                        $rootScope.Products.push({
-                            productId: res.rows.item(i).ProductId,
-                            name: res.rows.item(i).ProductName,
-                            unit: res.rows.item(i).ProductUnit,
-                            unitPrice: res.rows.item(i).ProductPrice,
-                            taxRate: res.rows.item(i).TaxRate,
-                            taxId: res.rows.item(i).TaxId,
-                            actualPrice: res.rows.item(i).BuyingPrice,
-                            inStock: res.rows.item(i).ItemsinStock,
-                            discount: res.rows.item(i).Discount,
-                            categoryId: res.rows.item(i).CategoryId,
-                            categoryName: res.rows.item(i).CategoryName,
-                            image: res.rows.item(i).Image,
-                            favorite: res.rows.item(i).Favourite
-                        });
-                    }
+                    $rootScope.Products = res;
                 }, function(res) {
                     console.log(res)
                 })

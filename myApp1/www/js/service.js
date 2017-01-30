@@ -13,13 +13,53 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         });
         return deferred.promise;
     }
-    function loadFromDB(tableName) {
+    function loadProductFromDB(tableName) {
         var deferred = $q.defer();
         //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
         query = "SELECT * FROM " + tableName;
         $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            var Products = [];
+            for (var i = 0; i < res.rows.length; i++) {
+                Products.push({
+                    productId: res.rows.item(i).ProductId,
+                    name: res.rows.item(i).ProductName,
+                    unit: res.rows.item(i).ProductUnit,
+                    unitPrice: res.rows.item(i).ProductPrice,
+                    taxRate: res.rows.item(i).TaxRate,
+                    taxId: res.rows.item(i).TaxId,
+                    actualPrice: res.rows.item(i).BuyingPrice,
+                    inStock: res.rows.item(i).ItemsinStock,
+                    discount: res.rows.item(i).Discount,
+                    categoryId: res.rows.item(i).CategoryId,
+                    categoryName: res.rows.item(i).CategoryName,
+                    image: res.rows.item(i).Image,
+                    favorite: res.rows.item(i).Favourite
+                });
+            }
+            deferred.resolve(Products);
+        }, function(err) {
+            console.error(err);
+            deferred.reject('failure');
+        })
+        return deferred.promise;
+    }
+    function loadCategoryFromDB(tableName) {
+        var deferred = $q.defer();
+        var categoryArr = [{
+            categoryName: 'Favourite',
+            categoryId: 'favourite'
+        }];
+        //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
+        query = "SELECT * FROM " + tableName;
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
             console.log('success');
-            deferred.resolve(res);
+            for (var i = 0; i < res.rows.length; i++) {
+                categoryArr.push({
+                    categoryId: res.rows.item(i).CategoryId,
+                    categoryName: res.rows.item(i).CategoryName
+                });
+            }
+            deferred.resolve(categoryArr);
         }, function(err) {
             console.error(err);
             deferred.reject('failure');
@@ -118,7 +158,7 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
     }
     function editProduct(productId, name, unit, unitPrice, taxId, actualPrice, taxRate, inStock, discount, categoryId, categoryName, image, favourite) {
         var deferred = $q.defer();
-        var query = "update Product Set ProductName='" + name + "', ProductUnit='" + unit + "', ProductPrice=" + unitPrice + ", TaxId='" + taxId + "', BuyingPrice=" + actualPrice + ", TaxRate=" + taxRate + ", ItemsinStock=" + inStock + ", Discount=" + discount + ", CategoryId='" + categoryId + "', CategoryName='" + categoryName + "', Image='" + image + "', Favourite='" + favourite + "' where ProductId=" + productId;
+        var query = "update Product Set ProductName='" + name + "', ProductUnit='" + unit + "', ProductPrice=" + unitPrice + ", TaxId='" + taxId + "', BuyingPrice=" + actualPrice + ", TaxRate=" + taxRate + ", ItemsinStock=" + inStock + ", Discount=" + discount + ", CategoryId='" + categoryId + "', CategoryName='" + categoryName + "', Image='" + image + "', Favourite='" + favourite + "' where ProductId='" + productId+"'";
         console.log(query);
         $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
             //console.log("INSERT ID -> " + res.insertId);
@@ -134,7 +174,7 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         var deferred = $q.defer();
         for (var id in deleteProductId) {
             var productId = id;
-            var query = "delete from Product where ProductId='" + productId+"'";
+            var query = "delete from Product where ProductId='" + productId + "'";
             console.log(query);
             $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
                 //console.log("INSERT ID -> " + res.insertId);
@@ -147,128 +187,129 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         }
         return deferred.promise;
     }
+    function deleteCategory(deleteCategoryId) {
+        var deferred = $q.defer();
+            var query = "delete from Category where CategoryId='" + deleteCategoryId + "'";
+            console.log(query);
+            $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+                //console.log("INSERT ID -> " + res.insertId);
+                console.log("deleted from Category successfully...");
+                deferred.resolve('deleted success');
+            }, function(err) {
+                console.error(err);
+                deferred.reject('failure');
+            });
+        return deferred.promise;
+    }
     return {
         addNewCategory: addNewCategory,
         addNewProduct: addNewProduct,
         loadProductsForCategory: loadProductsForCategory,
-        loadFromDB: loadFromDB,
+        loadProductFromDB: loadProductFromDB,
+        loadCategoryFromDB: loadCategoryFromDB,
         storeToTransaction: storeToTransaction,
         storeToBillDetails: storeToBillDetails,
         getBillDetails: getBillDetails,
         getTransactionDetails: getTransactionDetails,
         editProduct: editProduct,
-        deleteProduct: deleteProduct
+        deleteProduct: deleteProduct,
+        deleteCategory:deleteCategory
     }
-}).factory("settingService", function($q,$cordovaSQLite,$rootScope)  {
-  
-
-  function set(SettingsName,SettingsValue) {
-     var dfd = $q.defer();
-    $cordovaSQLite.execute($rootScope.db, 'INSERT OR REPLACE INTO Settings (SettingsName,SettingsValue) VALUES (?,?) ', [SettingsName, SettingsValue])
-                .then(function(result) {
-               dfd.resolve(result);
-                }, function(error) {
-               dfd.resolve(error);
-     })
-     return dfd.promise;
-  }
-
-  function get(SettingsName) { 
+}).factory("settingService", function($q, $cordovaSQLite, $rootScope) {
+    function set(SettingsName, SettingsValue) {
+        var dfd = $q.defer();
+        $cordovaSQLite.execute($rootScope.db, 'INSERT OR REPLACE INTO Settings (SettingsName,SettingsValue) VALUES (?,?) ', [SettingsName, SettingsValue]).then(function(result) {
+            dfd.resolve(result);
+        }, function(error) {
+            dfd.resolve(error);
+        })
+        return dfd.promise;
+    }
+    function get(SettingsName) {
         var dfd = $q.defer();
         //$rootScope.deviceReady = dfd.promise;
-      $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue  from Settings where SettingsName=?',[SettingsName])
-                .then(function(result) {
-                 dfd.resolve(result);
-                }, function(error) {
-                 dfd.resolve(error);
-                })
-                return dfd.promise;
-  }
-
-  return {
-      set : set,
-      get : get 
-  }
-})  
-
-.factory("salesService", function($q,$cordovaSQLite,$rootScope)  {
-  var report=[]
-  
-  function get(itemCode,strt,end){
-var dfd = $q.defer();
-         // BillNo integer, DateTime text, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, CategoryId text, CategoryName text
-var query='';
-console.log(itemCode+"itemCode"+strt+''+end)
-if(strt==undefined && end==undefined){
-  console.log('I am in First query')
-query='Select * from TransactionDetails WHERE ProductId='+itemCode+''
-}else if(itemCode==undefined && strt==undefined){
-    console.log('I am in Second query')
- query='Select * from TransactionDetails WHERE DateTime='+end+''
-}else if(itemCode==undefined && end==undefined){
-    console.log('I am in third query')
-query='Select * from TransactionDetails WHERE DateTime='+strt+''
-}else{
-query='Select * from TransactionDetails WHERE (DateTime BETWEEN '+strt+'AND '+end+')'
-}
-  $cordovaSQLite.execute($rootScope.db,query)
-                .then(function(result) {
-                 console.log(result)
-                 console.log(result.rows.length)
-               for(var i=0;i<result.rows.length;i++){
-                 report.push({itemCode:result.rows[i].ProductId,
-                  itemName:result.rows[i].ProductName,
-                  qtySold:result.rows[i].Quantity,
-                  totalAmountwoTax:result.rows[i].TotalPrice,
-                  totalTax:result.rows[i].TaxAmount,
-                  totalAmount:result.rows[i].TotalAmount
+        $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue  from Settings where SettingsName=?', [SettingsName]).then(function(result) {
+            dfd.resolve(result);
+        }, function(error) {
+            dfd.resolve(error);
+        })
+        return dfd.promise;
+    }
+    return {
+        set: set,
+        get: get
+    }
+}).factory("salesService", function($q, $cordovaSQLite, $rootScope) {
+    var report = []
+    function get(itemCode, strt, end) {
+        var dfd = $q.defer();
+        // BillNo integer, DateTime text, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, CategoryId text, CategoryName text
+        var query = '';
+        console.log(itemCode + "itemCode" + strt + '' + end)
+        if (strt == undefined && end == undefined) {
+            console.log('I am in First query')
+            query = 'Select * from TransactionDetails WHERE ProductId=' + itemCode + ''
+        } else if (itemCode == undefined && strt == undefined) {
+            console.log('I am in Second query')
+            query = 'Select * from TransactionDetails WHERE DateTime=' + end + ''
+        } else if (itemCode == undefined && end == undefined) {
+            console.log('I am in third query')
+            query = 'Select * from TransactionDetails WHERE DateTime=' + strt + ''
+        } else {
+            query = 'Select * from TransactionDetails WHERE (DateTime BETWEEN ' + strt + 'AND ' + end + ')'
+        }
+        $cordovaSQLite.execute($rootScope.db, query).then(function(result) {
+            console.log(result)
+            console.log(result.rows.length)
+            for (var i = 0; i < result.rows.length; i++) {
+                report.push({
+                    itemCode: result.rows[i].ProductId,
+                    itemName: result.rows[i].ProductName,
+                    qtySold: result.rows[i].Quantity,
+                    totalAmountwoTax: result.rows[i].TotalPrice,
+                    totalTax: result.rows[i].TaxAmount,
+                    totalAmount: result.rows[i].TotalAmount
                 })
             }
-                console.log(report.length);
-                 dfd.resolve(report);
-                }, function(error) {
-                 dfd.resolve(error);
-                })
-                 return dfd.promise;
-}
-function getSalesReport(strt,end){
-  
-  var salesReport=[]
-//$cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
-var dfd = $q.defer();
-if(end==undefined){
-  var query='Select * from BillDetails Where DateTime='+strt+'';
-}else if(strt==undefined){
-  var query='Select * from BillDetails Where DateTime='+end+'';
-}else {
-  var query='Select * from BillDetails Where DateTime Between '+strt+' and '+end+'';
-}
-  $cordovaSQLite.execute($rootScope.db,query)
-                .then(function(result) {
-      console.log(result)
-      for(var i=0;i<result.rows.length;i++){
-        salesReport.push({
-          totalBills:result.rows[i].TotalItems,
-          avgBillAmt:result.rows[i].TotalPrice/result.rows[i].TotalItems,
-          totalBillAmt:result.rows[i].TotalPrice,
-          totalTax:result.rows[i].TaxAmount,
-          afterTax:result.rows[i].TotalAmount,
-          startDate:strt,
-          endDate:end
-
+            console.log(report.length);
+            dfd.resolve(report);
+        }, function(error) {
+            dfd.resolve(error);
         })
-      }
-      dfd.resolve(salesReport);
-                }, function(error) {
-                 dfd.resolve(error);
+        return dfd.promise;
+    }
+    function getSalesReport(strt, end) {
+        var salesReport = []
+        //$cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
+        var dfd = $q.defer();
+        if (end == undefined) {
+            var query = 'Select * from BillDetails Where DateTime=' + strt + '';
+        } else if (strt == undefined) {
+            var query = 'Select * from BillDetails Where DateTime=' + end + '';
+        } else {
+            var query = 'Select * from BillDetails Where DateTime Between ' + strt + ' and ' + end + '';
+        }
+        $cordovaSQLite.execute($rootScope.db, query).then(function(result) {
+            console.log(result)
+            for (var i = 0; i < result.rows.length; i++) {
+                salesReport.push({
+                    totalBills: result.rows[i].TotalItems,
+                    avgBillAmt: result.rows[i].TotalPrice / result.rows[i].TotalItems,
+                    totalBillAmt: result.rows[i].TotalPrice,
+                    totalTax: result.rows[i].TaxAmount,
+                    afterTax: result.rows[i].TotalAmount,
+                    startDate: strt,
+                    endDate: end
                 })
-                 return dfd.promise;      
-          
-
-}
-
- return {
-    get :get,
-    getSalesReport:getSalesReport
-  }
+            }
+            dfd.resolve(salesReport);
+        }, function(error) {
+            dfd.resolve(error);
+        })
+        return dfd.promise;
+    }
+    return {
+        get: get,
+        getSalesReport: getSalesReport
+    }
 })
