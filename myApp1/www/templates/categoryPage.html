@@ -5,24 +5,63 @@
                 <label class="item item-input">
                     <span class="input-label">Category Id :</span>
                     <input type="text" name="catIdInput" ng-minlength="1" ng-maxlength="20" ng-model="newCategory.categoryId" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2000, 'blur': 1 }}" placeholder="Enter category Id" required></input>
-                    <p style="color:red;" ng-show="categoryForm.catIdInput.$touched && categoryForm.catIdInput.$invalid">Required and length should be 0-20 characters</p> 
-                    <p style="color:red;" ng-show="catIdErrorMsg">Id already exists</p> 
+                    <p style="color:red;" ng-show="categoryForm.catIdInput.$touched && categoryForm.catIdInput.$invalid">Required and length should be 0-20 characters</p>
+                    <p style="color:red;" ng-show="catIdErrorMsg">Id already exists</p>
                 </label>
- 
                 <label class="item item-input">
                     <span class="input-label">Category Name :</span>
                     <input type="text" name="catNameInput" ng-minlength="1" ng-maxlength="25" ng-model="newCategory.categoryName" placeholder="Enter category Name" required></input>
-                    <p style="color:red;" ng-show="categoryForm.catNameInput.$touched && categoryForm.catNameInput.$invalid">Required and length should be 0-20 characters</p> 
+                    <p style="color:red;" ng-show="categoryForm.catNameInput.$touched && categoryForm.catNameInput.$invalid">Required and length should be 0-20 characters</p>
                 </label>
-
                 <label class="item item-input">
                     <span class="input-label">Category Description :</span>
                     <textarea name="catDescInput" ng-minlength="1" ng-maxlength="50" ng-model="newCategory.categoryDescription" placeholder="Type..."></textarea>
-                    <p style="color:red;" ng-show="categoryForm.catDescInput.$touched && categoryForm.catDescInput.$invalid">Required and length should be 0-20 characters</p> 
+                    <p style="color:red;" ng-show="categoryForm.catDescInput.$touched && categoryForm.catDescInput.$invalid">Required and length should be 0-20 characters</p>
                 </label>
-            <div>
-            <button class="button button-block" ng-disabled="categoryForm.$invalid">Add Category</button>
+                <div>
+                    <button class="button button-block" ng-disabled="categoryForm.$invalid">Add Category</button>
         </form>
-              <p style="color:green;" ng-show="succesMessage">Category Added successfully</p> 
+        <p style="color:green;" ng-show="succesMessage">Category Added successfully</p>
+        <hr/>
+        <div>
+            <h3 style="text-align:center;">Edit Category</h3>
+            <label class="item item-input">
+                <span class="input-label">Category Id :</span>
+                <input type="text" name="categoryEdit" ng-model="searchCategory.categoryId" placeholder="Enter category Id"></input>
+            </label>
+            <div style="display:inline">
+                <a class="button button-positive" ng-click="editCategory()">Edit </a>
+                <a class="button button-assertive" ng-click="deleteCategory()">Delete</a>
+            </div>
+            <div>
+                <ion-list>
+                    <ion-item>
+                        <span style="margin:11%;">CategoryId</span>
+                        <span style="margin:9%;">CategoryName</span>
+                        <span style="margin:11%;">CategoryDesc</span>
+                    </ion-item>
+                </ion-list>
+                <ion-list>
+                    <ion-item ng-repeat="categoryObj in categoryArr | filter:searchCategory:strict| limitTo:4" ng-click="editSelectedCategory(categoryObj)">
+                        <span style="margin:12%;">{{categoryObj.categoryId}}</span>
+                        <span style="margin:12%;">{{categoryObj.categoryName}}</span>
+                        <span style="margin:12%;">{{categoryObj.categoryDescription}}</span>
+                    </ion-item>
+                </ion-list>
+            </div>
+            <p style="color:red;" ng-show="selectCategoryWarningMsg">Please select category from list...</p>
+            <div ng-show="showEditField">
+                <ion-item>
+                    <label class="item item-input">
+                        <span class="input-label">Category New Name :</span>
+                        <input type="text" placeholder="Enter category new name"></input>
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Category New Description :</span>
+                        <input type="text" placeholder="Enter category new Description"></input>
+                    </label>
+                </ion-item>
+            </div>
+        </div>
     </ion-content>
 </ion-view>

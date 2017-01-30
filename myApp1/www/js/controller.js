@@ -1,69 +1,77 @@
-angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService) {
-    //console.log($rootScope.Products);
+
+angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+        console.log('entered before enter view')
+        loadProducts();
+        loadCategory();
+    });
+    $ionicPlatform.ready(function() {
+        loadProducts();
+        loadCategory();
+    })
+    $scope.Products = [];
+    $scope.categoryArr = [];
+    $scope.allSlideCatArr = [];
+    $scope.allSlideProductArr = [];
+    function loadProducts() {
+        var promise = dbService.loadProductFromDB('Product');
+        promise.then(function(res) {
+            $scope.Products = res;
+            console.log('products loaded...');
+            productSlideLogic();
+        }, function(res) {
+            console.log(res)
+        })
+    }
+    function loadCategory() {
+        var promise = dbService.loadCategoryFromDB('Category');
+        promise.then(function(res) {
+            $scope.categoryArr = res;
+            categorySlideLogic();
+        }, function(res) {
+            console.log(res);
+        })
+    }
+    function productSlideLogic() {
+        $scope.allSlideProductArr = [];
+        var tempProductArr = [];
+        console.log($scope.Products);
+        for (var i = 0; i < $scope.Products.length; i++) {
+            tempProductArr.push($scope.Products[i]);
+            if (((i != 0) && (i % 11 == 0)) || (i == ($scope.Products.length - 1))) {
+                $scope.allSlideProductArr.push(tempProductArr)
+                tempProductArr = [];
+            }
+        }
+        console.log($scope.allSlideProductArr);
+    }
+    function categorySlideLogic() {
+        $scope.allSlideCatArr = [];
+        var tempCatArr = [];
+        //  console.log(tempCatArr)
+        for (var i = 0; i < $scope.categoryArr.length; i++) {
+            tempCatArr.push($scope.categoryArr[i]);
+            if (((i != 0) && (i % 4 == 0)) || (i == ($scope.categoryArr.length - 1))) {
+                $scope.allSlideCatArr.push(tempCatArr)
+                tempCatArr = [];
+            }
+        }
+        console.log($scope.allSlideCatArr);
+    }
     $scope.onHold = function() {
         console.log('enterd on hold');
         $scope.showDelete = true;
     }
-   //load categary list from DB
-    $rootScope.categoryArr = [{
-        categoryName: 'All',
-        categoryId: 'all'
-    }];
-    $scope.tempAllCatArr = [];
-    var promise = dbService.loadFromDB('Category');
-    promise.then(function(res) {
-        for (var i = 0; i < res.rows.length; i++) {
-            $rootScope.categoryArr.push({
-                categoryId: res.rows.item(i).CategoryId,
-                categoryName: res.rows.item(i).CategoryName
-            });
-        }
-        //--------logic for category slide view-----------
-        var tempCatArr = [];
-        console.log(tempCatArr)
-        for (var i = 0; i < $rootScope.categoryArr.length; i++) {
-            tempCatArr.push($rootScope.categoryArr[i]);
-            if (((i != 0) && (i % 4 == 0)) || (i == ($rootScope.categoryArr.length - 1))) {
-                $scope.tempAllCatArr.push(tempCatArr)
-                tempCatArr = [];
-            }
-        }
-        console.log($scope.tempAllCatArr);
-        //------------------------------------------------
-    }, function(res) {
-        console.log(res);
-    })
     //load products list from DB
-    $rootScope.Products = [];
-    var promise = dbService.loadFromDB('Product');
-    promise.then(function(res) {
-        console.log(res);
-        for (var i = 0; i < res.rows.length; i++) {
-            $rootScope.Products.push({
-                productId: res.rows.item(i).ProductId,
-                name: res.rows.item(i).ProductName,
-                unit: res.rows.item(i).ProductUnit,
-                unitPrice: res.rows.item(i).ProductPrice,
-                taxRate: res.rows.item(i).TaxRate,
-                taxId: res.rows.item(i).TaxId,
-                actualPrice: res.rows.item(i).BuyingPrice,
-                inStock: res.rows.item(i).ItemsinStock,
-                discount: res.rows.item(i).Discount,
-                categoryId: res.rows.item(i).CategoryId,
-                categoryName: res.rows.item(i).CategoryName,
-                image: res.rows.item(i).Image
-            });
-        }
-    }, function(res) {
-        console.log(res)
-    })
     $scope.display = function(catId) {
         console.log(catId);
         $scope.prodCat = [];
         console.log($scope.prodCat.length);
-        if (catId === 'all') {
+        if (catId == 'favourite') {
             for (var i = 0; i < $scope.Products.length; i++) {
-                $scope.prodCat.push($scope.Products[i]);
+                if ($scope.Products[i].favourite == "true") {
+                    $scope.prodCat.push($scope.Products[i]);
+                }
             }
         } else {
             for (var i = 0; i < $scope.Products.length; i++) {
@@ -112,7 +120,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         // $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
     }
     // $scope.numValue = 0;
-    $scope.prodCat = $scope.Products;
     $scope.productArr = [];
     $scope.discountAmount = 0;
     $scope.totalPrice = null;
@@ -536,8 +543,32 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     ;
     //Slide Ends
 }
-]).controller("productCtrl", function($scope, $state, $rootScope, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
+]).controller("productCtrl", function($scope, $state, $rootScope, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+        loadCategory();
+        $scope.notEditingProduct = angular.equals({}, $rootScope.editingProduct);
+        console.log($scope.notEditingProduct);
+        if (!($scope.notEditingProduct)) {
+            $scope.newProduct = $rootScope.editingProduct;
+            $rootScope.editingProduct = {};
+            $scope.pIdDisable = true;
+            console.log($scope.selectedTax);
+        } else {
+            $scope.pIdDisable = false;
+        }
+        console.log("State Params: ", data.stateParams);
+    });
+    function loadCategory() {
+        var promise = dbService.loadProductFromDB('Category');
+        promise.then(function(res) {
+            $scope.categoryArr = res;
+        }, function(res) {
+            console.log(res)
+        })
+    }
     console.log($rootScope.Products);
+    console.log($rootScope.editingProduct);
+    $scope.newProduct = $rootScope.editingProduct;
     $scope.TaxSettings1 = [{
         Id: '1',
         Name: 'tax1',
@@ -564,19 +595,21 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         if (newpId) {
             $scope.productSuccessMessage = false;
             // to hide success message
-            $scope.categoryForm.catIdInput.$setUntouched();
+            //   $scope.categoryForm.catIdInput.$setUntouched();
         }
-        query = "SELECT * FROM Product where ProductId = '" + newpId + "'";
-        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
-            console.log(res);
-            if (res.rows.length == 0) {
-                console.log('Id not exists..');
-                $scope.checkIdShow = false;
-            } else {
-                console.log('Id already exists..');
-                $scope.checkIdShow = true;
-            }
-        })
+        if ($scope.notEditingProduct) {
+            query = "SELECT * FROM Product where ProductId = '" + newpId + "'";
+            $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+                console.log(res);
+                if (res.rows.length == 0) {
+                    console.log('Id not exists..');
+                    $scope.checkIdShow = false;
+                } else {
+                    console.log('Id already exists..');
+                    $scope.checkIdShow = true;
+                }
+            })
+        }
     });
     $scope.$watch('newProduct.inStock', function(newValue, oldValue) {
         if ($scope.newProduct.unit == 'pieces') {
@@ -587,20 +620,51 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     $scope.addNewProduct = function() {
         console.log($scope.selectedTax);
         console.log('entered addNewProduct()..');
+        $scope.newProduct.image = "/img/sc1.jpg";
         console.log($scope.newProduct);
-        if (!($scope.checkIdShow)) {
-            $scope.newProduct['taxRate'] = $scope.selectedTax.tax.TaxRate;
-            $scope.newProduct['taxId'] = $scope.selectedTax.tax.Id;
-            console.log('validation success and entered if');
-            console.log($scope.newProduct);
-            var promise = dbService.addNewProduct($scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite);
+        if ($scope.notEditingProduct) {
+            if (!($scope.checkIdShow)) {
+                $scope.newProduct['taxRate'] = $scope.selectedTax.tax.TaxRate;
+                $scope.newProduct['taxId'] = $scope.selectedTax.tax.Id;
+                console.log('validation success and entered if');
+                console.log($scope.newProduct);
+                var promise = dbService.addNewProduct($scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite);
+                promise.then(function(result) {
+                    console.log(result);
+                    //  $rootScope.Products.push($scope.newProduct);
+                    $scope.newProduct = {
+                        unit: 'pieces',
+                        image: "/img/sc1.jpg"
+                    };
+                    $scope.productSuccessMessage = true;
+                    //confirmation popup
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: 'Add More Products ',
+                        template: 'Do you want to add more products?'
+                    });
+                    confirmPopup.then(function(res) {
+                        if (res) {
+                            console.log('add more products');
+                        } else {
+                            console.log('No');
+                            $ionicHistory.goBack();
+                        }
+                    });
+                }, function(result) {
+                    console.log(result);
+                })
+            }
+        } else {
+            if (!(angular.equals({}, $scope.newProduct))) {
+                $scope.newProduct['taxRate'] = $scope.selectedTax.tax.TaxRate;
+                $scope.newProduct['taxId'] = $scope.selectedTax.tax.Id;
+            }
+            //  console.log($scope.newProduct);
+            var promise = dbService.editProduct($scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite);
             promise.then(function(result) {
                 console.log(result);
-                $rootScope.Products.push($scope.newProduct);
-                $scope.newProduct = {
-                    unit: 'pieces'
-                };
-                $scope.productSuccessMessage = true;
+                //   $rootScope.Products.push($scope.newProduct);
+                $ionicHistory.goBack();
             }, function(result) {
                 console.log(result);
             })
@@ -612,10 +676,9 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.categoryModal.hide();
     }
     $scope.addNewCategary = function(newCategaryName) {
+        $rootScope.cameFromProduct = true;
         $state.go('app.category');
         $scope.categoryModal.hide();
-        //  $rootScope.categoryArr.push(newCategaryName);
-        //  document.getElementById('newCategoryAddField').value = null;
     }
     $scope.openCamera = function() {
         console.log('camera opened..');
@@ -689,7 +752,59 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         console.log('open categoryModal')
         $scope.categoryModal.show();
     }
-}).controller('categoryCtrl', function($scope, $state, $cordovaSQLite, $rootScope, dbService) {
+}).controller('categoryCtrl', function($scope, $state, $ionicHistory, $ionicPopup, $cordovaSQLite, $rootScope, dbService) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+        loadCategory();
+    });
+    function loadCategory() {
+        var promise = dbService.loadProductFromDB('Category');
+        promise.then(function(res) {
+            $scope.categoryArr = res;
+        }, function(res) {
+            console.log(res)
+        })
+    }
+    $scope.deleteCategory = function() {
+        if ($scope.searchCategory.categoryId) {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Delete Category ',
+                template: 'Are you sure you want to delete Category?'
+            });
+            confirmPopup.then(function(res) {
+                if (res) {
+                    console.log('delete Category');
+                    var promise = dbService.deleteCategory($scope.searchCategory.categoryId);
+                    promise.then(function(res) {
+                        console.log(res);
+                        $ionicHistory.goBack();
+                    }, function() {
+                        console.log(res);
+                    })
+                } else {
+                    console.log('No');
+                }
+            });
+        } else {
+            $scope.selectCategoryWarningMsg = true;
+        }
+    }
+    $scope.editCategory = function() {
+        console.log('entered edit category');
+        
+        if ($scope.searchCategory.categoryId) {
+            $scope.showEditField = true;
+        }  else {
+            $scope.selectCategoryWarningMsg = true;
+        }
+    }
+    $scope.searchCategory = {
+        categoryId: ""
+    };
+    $scope.editSelectedCategory = function(categoryEditObj) {
+        //  $scope.searchCategory = categoryEditObj;
+        $scope.searchCategory.categoryId = categoryEditObj.categoryId;
+        $scope.showCategoryEdit = true;
+    }
     $scope.newCategory = {};
     $scope.addNewCategory = function() {
         if (!($scope.catIdErrorMsg)) {
@@ -697,8 +812,26 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             promise.then(function(result) {
                 console.log(result);
                 $scope.succesMessage = true;
-                $rootScope.categoryArr.push($scope.newCategory);
+                //   $rootScope.categoryArr.push($scope.newCategory);
                 $scope.newCategory = {};
+                if ($rootScope.cameFromProduct) {
+                    $rootScope.cameFromProduct = false;
+                    $ionicHistory.goBack();
+                } else {
+                    //confirmation popup
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: 'Add More Category ',
+                        template: 'Do you want to add more Category?'
+                    });
+                    confirmPopup.then(function(res) {
+                        if (res) {
+                            console.log('add more Category');
+                        } else {
+                            console.log('No');
+                            $ionicHistory.goBack();
+                        }
+                    });
+                }
             }, function() {
                 console.log(result);
             });
@@ -708,7 +841,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         if (newcId) {
             $scope.succesMessage = false;
             // to hide success message
-            $scope.categoryForm.catIdInput.$setUntouched();
+            //     $scope.categoryForm.catIdInput.$setUntouched();
         }
         console.log(newcId);
         query = "SELECT * FROM Category where CategoryId = '" + newcId + "'";
@@ -723,7 +856,64 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             }
         })
     });
-}).controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
+
+}).controller('editProductsCtrl', function($scope, $rootScope, $state, $ionicHistory, dbService) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+        loadProducts();
+    });
+    $scope.editProduct = function(editingProduct) {
+        console.log(editingProduct);
+        $rootScope.editingProduct = editingProduct;
+        $state.go('app.product');
+    }
+    function loadProducts() {
+        var promise = dbService.loadProductFromDB('Product');
+        promise.then(function(res) {
+            $scope.Products = res;
+        }, function(res) {
+            console.log(res)
+        })
+    }
+    $scope.showProduct = true;
+    $scope.onEditProductHold = function() {
+        console.log('on hold');
+        $scope.showDeleteOnHold = true;
+        $scope.showCheckMark = true;
+    }
+    $scope.cancelDelete = function() {
+        //  $scope.deleteProductId = {};
+        $scope.showDeleteOnHold = false;
+        $scope.showCheckMark = false;
+    }
+    $scope.deleteProductId = {};
+    $scope.selectedProduct = function(productId, value) {
+        if (value) {
+            $scope.deleteProductId[productId] = 'selected';
+            console.log(productId);
+        } else {
+            delete $scope.deleteProductId[productId];
+            console.log('unselected');
+        }
+        console.log($scope.deleteProductId);
+    }
+    $scope.deleteSelectedProducts = function() {
+        if (!(angular.equals({}, $scope.deleteProductId))) {
+            var promise = dbService.deleteProduct($scope.deleteProductId);
+            promise.then(function(result) {
+                // $ionicHistory.goBack();
+                var promise = dbService.loadProductFromDB('Product');
+                promise.then(function(res) {
+                    $rootScope.Products = res;
+                }, function(res) {
+                    console.log(res)
+                })
+            }, function(result) {
+                console.log(result);
+            })
+        }
+    }
+})
+.controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
     $scope.taxSettings = [];
     $scope.txSetting = {};
     console.log($rootScope.TaxSettings)
@@ -732,6 +922,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     // $scope.taxSettings[0][$scope.txSetting.name]=;
     // $scope.taxSettings[0][$scope.txSetting.taxRate]=;
     //console.log($rootScope.$scope.TaxSettings[0].name)
+
     var d = new Date();
     var taxSettings = []
     $scope.addMore = function() {
@@ -744,7 +935,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.txSetting = {}
     }
     $scope.saveTaxSetting = function() {
-        
+
         var txSetting = $scope.txSetting
         $scope.taxSettings.push({
             txSetting
@@ -764,7 +955,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             console.log(data);
         })
         /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
-
                  .then(function(result) {
                      $scope.statusMessage = "Message saved successful, cheers!";
                      console.log($scope.statusMessage)
@@ -797,6 +987,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         })
     }
 }).controller('paymentSettings', function($scope, settingService, $rootScope) {
+
     $scope.paymentSetting={};
     console.log($rootScope.PaymentSettings)
     $scope.paymentSetting.currency = $rootScope.PaymentSettings.currency;
@@ -804,6 +995,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     $scope.paymentSetting.paymentOptions=$rootScope.PaymentSettings.paymentOptions;
     $scope.savePaymentSettings = function() {
         console.log($scope.paymentSetting)
+
         var paymentSetting = JSON.stringify($scope.paymentSetting);
         var promise = settingService.set("PaymentSettings", paymentSetting);
         promise.then(function(data) {
