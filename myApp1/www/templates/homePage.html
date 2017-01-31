@@ -64,24 +64,26 @@
                         </ion-scroll>
                     </div>
                     <div class="totalAmountCalculation" style="margin:2vh;height:15%;">
-                        <p style="font-size:18px;color:black;">Total Amount:{{totalPrice}}</p>
-                        <p style="font-size:18px;color:black;">Tax:{{totalTaxAmount}}</p>
-                        <p style="font-size:18px;color:black;">Discount Amount:{{discountAmount}}</p>
-                        <p style="font-size:18px;color:black;">Paid Amount: {{typedAmount}}</p>
-                        <p style="font-size:18px;color:black;" ng-if="typedAmount>0">Balence: {{Balance}}</p>
+                        <p style="font-size:18px;color:black;">Total Amount{{currencySymbol}}:{{totalPrice}}</p>
+                        <p style="font-size:18px;color:black;">Tax{{currencySymbol}}:{{totalTaxAmount}}</p>
+                        <p style="font-size:18px;color:black;">Discount Amount{{currencySymbol}}:{{discountAmount}}</p>
+                        <p style="font-size:18px;color:black;">Paid Amount{{currencySymbol}}: {{typedAmount}}</p>
+                        <p style="font-size:18px;color:black;" ng-if="typedAmount>0">Balence{{currencySymbol}}: {{Balance}}</p>
                     </div>
                     <div style="margin:2vh;height:20%;">
-                        <h3 style="float:right;">{{totalChargeAmount}}</h3>
-                        <button style="border-radius:7%;" ng-click="openPaymentModal()" class="button button-block button-balanced">Charge {{totalChargeAmount}}</button>
+                        <h3 style="float:right;">{{totalChargeAmount}}{{currencySymbol}}</h3>
+                        <button style="border-radius:7%;" ng-click="openPaymentModal()" class="button button-block button-balanced">Charge {{totalChargeAmount}}{{currencySymbol}}</button>
                     </div>
                 </div>
             </div>
-            <button ng-show="true" ng-click="scrollSide()" style="background:black;opacity:0.4;border:0px;position:fixed;z-index:2;right:3%;top:43%;border-radius:50%;width:9vh;height:9vh;">
+      <!--      <button ng-show="true" ng-click="scrollSide()" style="background:black;opacity:0.4;border:0px;position:fixed;z-index:2;right:3%;top:43%;border-radius:50%;width:9vh;height:9vh;">
                 <i style="font-size:6vh;color:white;" class="icon ion-chevron-right"></i>
             </button>
+      -->
             <div id="productsView">
+                <!-- 
                 <div class="col-70" id="product-display">
-                    <div id="product-display-col1" class="card" ng-click="openNumericModal(Product)" ng-repeat="Product in prodCat">
+                    <div id="product-display-col1" class="card" ng-click="openNumericModal(Product)" ng-repeat="Product in Products">
                         <div id="product-name" align="left">
                             <p style="font-weight:bolder;text-transform: uppercase;padding:2vh;margin:auto;position:absolute;font-size:small;">{{Product.name}}</p>
                         </div>
@@ -94,13 +96,30 @@
                         </div>
                     </div>
                 </div>
+      -->
+                <ion-slide-box show-pager="false" id="productsViewSlideBox" >
+                    <ion-slide style="display:flex;width:100%;height:100%;flex-wrap:wrap;flex-direction:row;" ng-repeat="proArr in allSlideProductArr">
+                        <div class="card" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="openNumericModal(Product)" ng-repeat="Product in proArr">
+                            <div id="product-name" align="left">
+                                <p style="font-weight:bolder;text-transform: uppercase;padding:2vh;margin:auto;position:absolute;font-size:small;">{{Product.name}}</p>
+                            </div>
+                            <div id="product-image" align="right">
+                                <img ng-src={{Product.image}} style="padding:auto;margin:auto;height:100%;width:100%;"></img>
+                                <div id="product-stock"></div>
+                                <div id="product-price">
+                                    <p style="font-weight:bolder;color:lightblue;">{{Product.unitPrice}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </ion-slide>
+                </ion-slide-box>
                 <div id="product-categary">
                     <div id="product-categary-previous">
                         <button class="button icon ion-chevron-left" id="button-previous" ng-click="previous()"></button>
                     </div>
-                    <ion-slide-box show-pager="true" id="product-cat-slide">
-                        <ion-slide class="product-slide" ng-repeat="catArr in tempAllCatArr">
-                            <button class="product-categary-button"  ng-repeat="categoryObj in catArr" ng-click="display(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
+                    <ion-slide-box show-pager="true" id="product-cat-slide" delegate-handle="categorySlideHandle">
+                        <ion-slide class="product-slide" ng-repeat="catArr in allSlideCatArr">
+                            <button class="product-categary-button" ng-repeat="categoryObj in catArr" ng-click="display(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
                         </ion-slide>
                     </ion-slide-box>
                     <!-- 

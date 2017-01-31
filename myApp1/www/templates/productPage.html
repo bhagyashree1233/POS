@@ -11,7 +11,7 @@
                     <span class="input-label">Product Id :</span>
                     <input type="text" name="productIdInput" ng-minlength="1" ng-maxlength="20" ng-model="newProduct.productId" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2000, 'blur': 1 }}" ng-disabled="pIdDisable" required>
                     <p style="color:red;" ng-show="productForm.productIdInput.$touched && productForm.productIdInput.$invalid">Length should be 1-20 characters</p>
-                    <p style="color:red;" ng-show="checkIdShow">Id already exists</p>
+                    <p style="color:red;" ng-show="idExistsError">Id already exists</p>
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Product Name :</span>
@@ -29,12 +29,11 @@
                     <input type="number" name="productSpriceInput" step="0.1" min="0.1" max="1000000" ng-model="newProduct.unitPrice" required></input>
                     <p style="color:red;" ng-show="productForm.productSpriceInput.$touched && productForm.productSpriceInput.$invalid">Enter number between 0.1-1000000</p>
                 </label>
+
                 <label class="item item-input item-select">
                     <span class="input-label">Tax Rate(%):</span>
-                    <select ng-model="selectedTax.tax" name="taxSelect" ng-options="tax as tax.TaxRate for tax in TaxSettings1" required="required">
-                        <option value="">Please select</option>
-                    </select>
-                    <p>{{selectedTax.tax.TaxRate}}</p>
+                    <input type="text"  ng-click="openTaxRatePopover($event)" placeholder="select TaxRate" ng-model="newProduct.taxRate" readonly="readonly"></input>
+               
                     <p style="color:red;" ng-show="productForm.taxSelect.$touched && productForm.taxSelect.$invalid">Please select</p>
                 </label>
                 <label class="item item-input">
