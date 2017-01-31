@@ -45,23 +45,37 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
               var promise  =settingService.get("PrinterFormatSettings");
               promise.then(function(data){
                console.log(data)
+               if(data.rows.length>=1){
               $rootScope.printFormatSettings=JSON.parse(data.rows[0].SettingsValue);
-              
+               }else{
+                 console.log('No PrinterFormatSettings Record Found')  
+               }
               })
               var promise  =settingService.get("TaxSettings");
               promise.then(function(data){
                console.log(data)
+               if(data.rows.length>=1){
                $rootScope.TaxSettings=data.rows[0].SettingsValue;
-               
+               }else{
+                   console.log('No TaxSettings Record Found')
+               }
               })
               var promise  =settingService.get("PaymentSettings");
               promise.then(function(data){
                console.log(data)
+               if(data.rows.length>=1){
                $rootScope.PaymentSettings=JSON.parse(data.rows[0].SettingsValue);
                var  currency= $rootScope.PaymentSettings.currency.split(' ');
                var  currencyName=currency[0];
                var currencySymbol=currency[1];
                $rootScope.currencySymbol=currencySymbol;
+               }else{
+                   console.log('No PayMent Setting Record Found')
+                   var  currency= $rootScope.PaymentSettings.currency.split(' ');
+                   var  currencyName=currency[0];
+                   var currencySymbol=currency[1];
+               $rootScope.currencySymbol=currencySymbol;
+               }
               })
               var promise  =salesService.get("233",undefined,undefined);
               promise.then(function(data){
