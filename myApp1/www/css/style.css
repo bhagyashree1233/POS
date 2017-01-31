@@ -344,6 +344,7 @@ input.ng-invalid {
 	margin:10vh;
 }
 
-
-
-
+#productsViewSlideBox{
+	height:90%;
+	 width:100%;
+}

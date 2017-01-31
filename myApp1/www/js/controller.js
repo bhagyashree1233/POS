@@ -1,5 +1,7 @@
+
 angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading) {
     /*
+
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         console.log('entered before enter view')
         loadProducts();
@@ -157,6 +159,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     $scope.serviceTax = 0.05;
     //  $scope.quantity=0;
     $scope.save = function(product) {
+        console.log(product);
         console.log($scope.typedCode);
         if ($scope.typedCode == null) {
             console.log('Type Code Null')
@@ -203,15 +206,20 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount + productTotalAmount).toFixed(2));
         console.log('This is Totla Price' + $scope.totalPrice);
     }
-    $scope.paidAmount = function(typedAmount) {
-        var typedAmount = parseInt($scope.typedAmount);
-        $scope.paidAmount = typedAmount;
+    $scope.paidAmount = function() {
+        console.log('I am in Paid Function')
+        console.log($scope.typedAmount)
+        var typedAmount = parseFloat($scope.typedAmount);
+
+        $scope.paidAmount1 = typedAmount;
+        console.log(typedAmount)
         $scope.Balance = typedAmount - $scope.totalChargeAmount;
         // document.getElementById("buttonPayment").disabled = true;
         $scope.enterBtn = true;
         $scope.receiptBtnShow = false;
     }
     $scope.receipt = function() {
+        
         $scope.paymentModal.hide();
         $scope.transactionDate = (new Date()).getTime();
         var promise = dbService.storeToTransaction($scope.productArr, $scope.transactionDate);
@@ -229,6 +237,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             $scope.totalTaxAmount = 0;
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
+            
         }, function(result) {
             console.log(result);
         })
@@ -313,8 +322,15 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     }
     //Numeric keypad for Quantity Start
     $scope.typedCode = 1;
+    var count = 0
     $scope.keyPressed = function(keyCode) {
-        //console.log(keyCode)
+        console.log($scope.typedCode.length);
+        console.log(count++)
+        if ($scope.typedCode.length == count) {
+            $scope.typedCode = $scope.typedCode.slice(0, -1);
+        } else {
+            console.log($scope.typedCode.length);
+        }
         tempT = $scope.typedCode;
         switch (keyCode) {
         case -4:
@@ -336,29 +352,31 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         case 8:
         case 9:
         case 0:
-            if (!/^\d+$/.test(tempT)) {
+        case '.':
+            if (!/\d/.test(tempT)) {
                 $scope.typedCode = keyCode;
             } else {
                 $scope.typedCode += '' + keyCode;
+                 console.log($scope.typedCode)
             }
             break;
         }
     }
     ;
     $scope.sendTheCodeQ = function() {
-        if (/^\d+$/.test(tempT)) {
+        if (/\d/.test(tempT)) {
             // TODO : sends the entered code
             console.log('entered code is ' + $scope.typedCode + " " + $scope.typedCode.length);
-            $scope.typedCode = null;
+            $scope.typedCode = "";
         }
     }
     ;
     $scope.removeQ = function() {
         console.log($scope.typedCode)
-        if ($scope.typedCode > 0) {
+        if ($scope.typedCode.length > 0) {
             $scope.typedCode = $scope.typedCode.slice(0, -1);
         } else {
-            $scope.typedCode = null;
+            $scope.typedCode = '';
         }
         console.log('I am in remove');
         // TODO start scaning the code and once it receives send to the socket
@@ -366,7 +384,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     ;
     $scope.removeAllQ = function() {
         //Numeric keypad for Payment Start
-        $scope.typedCode = null;
+        $scope.typedCode = '';
     }
     $scope.typedAmount = "";
     $scope.keyPressedAmount = function(keyCode) {
@@ -392,17 +410,21 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         case 8:
         case 9:
         case 0:
-            if (!/^\d+$/.test(tempT)) {
+        case '.':
+            if (!/\d/.test(tempT)) {
+
                 $scope.typedAmount = keyCode;
+                console.log( $scope.typedAmount)
             } else {
                 $scope.typedAmount += '' + keyCode;
+                console.log( $scope.typedAmount)
             }
             break;
         }
     }
     ;
     $scope.sendTheCodeA = function() {
-        if (/^\d+$/.test(tempT)) {
+        if (/\d/.test(tempT)) {
             // TODO : sends the entered code
             console.log('entered code is ' + $scope.typedCode + " " + $scope.typedAmount.length);
             $scope.typedAmount = "";
@@ -430,6 +452,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.paymentModal = modal;
     });
     $scope.openPaymentModal = function() {
+        $scope.enterBtn=false;
         if ($scope.productArr.length) {
             console.log('I am in openModel')
             $scope.typedAmount = null;
@@ -444,6 +467,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         console.log('I am in close Model')
         $scope.typedAmount = "";
         $scope.paymentModal.hide();
+        
     }
     ;
     // Payment model end
@@ -467,6 +491,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.numericModal.hide();
         $scope.newProduct = {};
         $scope.typedCode = null;
+        count = 0;
     }
     ;
     $ionicModal.fromTemplateUrl('templates/recallModal.html', {
@@ -913,6 +938,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             }
         })
     });
+
 }).controller('editProductsCtrl', function($scope, $rootScope, $state, $ionicHistory, dbService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         loadProducts();
@@ -974,14 +1000,17 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             })
         }
     }
-}).controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
+})
+.controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
     $scope.taxSettings = [];
     $scope.txSetting = {};
-    console.log($rootScope.TaxSettings[0].name);
-    // $scope.taxSettings[0]['$scope.txSetting.id']=$rootScope.TaxSettings[0].id;
-    // $scope.taxSettings[0][$scope.txSetting.name]=$rootScope.TaxSettings[0].name;
-    // $scope.taxSettings[0][$scope.txSetting.taxRate]=$rootScope.TaxSettings[0].taxRate;
-    console.log($rootScope.$scope.TaxSettings[0].name)
+    console.log($rootScope.TaxSettings)
+    
+     $scope.taxSettings[0]={id:$rootScope.TaxSettings[0].id,name:$rootScope.TaxSettings[0].name,taxRate:$rootScope.TaxSettings[0].taxRate};
+    // $scope.taxSettings[0][$scope.txSetting.name]=;
+    // $scope.taxSettings[0][$scope.txSetting.taxRate]=;
+    //console.log($rootScope.$scope.TaxSettings[0].name)
+
     var d = new Date();
     var taxSettings = []
     $scope.addMore = function() {
@@ -994,6 +1023,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.txSetting = {}
     }
     $scope.saveTaxSetting = function() {
+
         var txSetting = $scope.txSetting
         $scope.taxSettings.push({
             txSetting
@@ -1006,6 +1036,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             console.log(data);
         })
         /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
+
         var taxSettings = JSON.stringify($scope.taxSettings);
         var promise = settingService.set("TaxSettings", taxSettings)
         promise.then(function(data) {
@@ -1044,9 +1075,15 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         })
     }
 }).controller('paymentSettings', function($scope, settingService, $rootScope) {
+
+    $scope.paymentSetting={};
     console.log($rootScope.PaymentSettings)
-    $scope.paymentSetting = $rootScope.PaymentSettings
+    $scope.paymentSetting.currency = $rootScope.PaymentSettings.currency;
+    console.log($scope.paymentSetting)
+    $scope.paymentSetting.paymentOptions=$rootScope.PaymentSettings.paymentOptions;
     $scope.savePaymentSettings = function() {
+        console.log($scope.paymentSetting)
+
         var paymentSetting = JSON.stringify($scope.paymentSetting);
         var promise = settingService.set("PaymentSettings", paymentSetting);
         promise.then(function(data) {
