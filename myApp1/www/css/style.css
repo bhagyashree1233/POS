@@ -10,10 +10,9 @@
     flex-wrap: wrap;
 }
 #productsView {
-	width:70%;
+    width: 70%;
 }
-
-#product{
+#product {
     width: 100%;
     height: 100%;
     padding: 0vh;
@@ -37,54 +36,53 @@
     height: 100%;
 }
 #product-billing-head {
-	height:5%;
-	margin:0.5vh;
-	width:100%;
+    height: 5%;
+    margin: 0.5vh;
+    width: 100%;
 }
-
 #product-categary {
     border: 1px solid black;
     width: 100%;
     height: 10%;
     display: inline-flex;
-    padding: auto;
+    postion: fixed;
+    bottom: 0vh;
 }
-#product-cat-slide{
-	width:100%;
-	height:100%;
-}
-.product-slide{
-	width:100%;
-	height:100%;
-}
-
-#product-categary-scroll {
-    height:100%;
+#product-cat-slide {
     width: 100%;
-    margin:0vh;
+    height: 100%;
+}
+.product-slide {
+    width: 100%;
+    height: 100%;
+}
+#product-categary-scroll {
+    height: 100%;
+    width: 100%;
+    margin: 0vh;
     overflow: scroll;
 }
-#product-categary-next, #product-categary-previous{
-	width:6%;
-	height:auto;
-	background: black;
+#product-categary-next,
+#product-categary-previous {
+    width: 6%;
+    height: auto;
+    background: black;
 }
-#button-next, #button-previous{
-	width:100%;
-	height:100%;
-	background:black;
-	color:white;
+#button-next,
+#button-previous {
+    width: 100%;
+    height: 100%;
+    background: black;
+    color: white;
 }
-
 .product-categary-button {
     background: black;
     color: white;
     width: 20%;
     line-height: 8vh!important;
     border-radius: 0.4;
-    height:100%;
+    height: 100%;
 }
-
 .bar-light .button {
     padding: 3vh;
     width: 20%;
@@ -93,7 +91,6 @@
     color: white;
     font-size: small;
 }
-
 /*
 .bar-footer {
     position: fixed;
@@ -106,6 +103,7 @@
     overflow-y: false;
 }
 */
+
 #product-display-row {
     padding: auto;
     width: 100%;
@@ -120,7 +118,7 @@
     height: 18%;
     background: black;
     color: white;
-    margin:0.5vh;
+    margin: 0.5vh;
 }
 #product-display-row>#product-image {
     float: right;
@@ -218,7 +216,7 @@ body {
     padding: 0;
 }
 .inputview {
-    background-color:#ddd;
+    background-color: #ddd;
     padding: 15px;
     margin: 0;
     font-size: 14px;
@@ -226,7 +224,6 @@ body {
     border: 1px solid #cecece;
     display: block
 }
-
 #model-view {
     top: 0;
     right: 20%;
@@ -236,115 +233,86 @@ body {
     width: 75%;
     height: 75%;
 }
-
 #holdModal {
     width: 90%;
     height: 85%;
     left: 5%;
     top: 5%;
 }
-
 #quantity-close {
     color: black;
-    
 }
-
 #recallModal {
-	width:100%;
-	height:90%;
-	top:0vh;
-	left:0vh;
-
+    width: 100%;
+    height: 90%;
+    top: 0vh;
+    left: 0vh;
 }
-
-#recallModal button .icon{
-  
+#recallModal button .icon {} .recallTabs {
+    width: 85%;
+    height: 80%;
+    left: 6%;
+    top: 10%;
 }
-
-.recallTabs {
-  	width:85%;
-	height:80%;
-	left:6%;
-	top:10%;
-} 
-
-#quantity-close{
-
-color:black;
-	
+#quantity-close {
+    color: black;
 }
-
- .modal-backdrop-bg{
-	background-color:rgba(204, 204, 204, 0.01);
-} 
- .modal-open .modal-backdrop {
-
-    
+.modal-backdrop-bg {
+    background-color: rgba(204, 204, 204, 0.01);
+}
+.modal-open .modal-backdrop {
     pointer-events: none;
 }
-
-#paymentModel>.modal{
-   top:20%;
-   left:30%;
-
-
+#paymentModel>.modal {
+    top: 20%;
+    left: 30%;
 }
-
-#productContentDiv, #categoryContentDiv {
-	width:90%;
-	margin:auto;
+#productContentDiv,
+#categoryContentDiv {
+    width: 90%;
+    margin: auto;
 }
-#productContentDiv input[readonly="readonly"] { 
-  background-color: transparent; 
+#productContentDiv input[readonly="readonly"] {
+    background-color: transparent;
 }
-
-input.printerSettingtext{
-	border: 0.1vh solid #b2b2b2;
-	width:200px;
+input.printerSettingtext {
+    border: 0.1vh solid #b2b2b2;
+    width: 200px;
 }
-
-#currency{
-	width:55%;
+#currency {
+    width: 55%;
 }
-#payment{
-    width:55%;
+#payment {
+    width: 55%;
 }
-.pySttg.item-radio .item-content{
-    margin-left:5vh;
+.pySttg.item-radio .item-content {
+    margin-left: 5vh;
 }
-.pySttg.item-radio .ion-checkmark{
-	top:0;
-	left:0;
-	position:absolute;
-	width:10%;
-	border-radius:60%;
-	line-height:1vh;
-	color:black;
-
-
+.pySttg.item-radio .ion-checkmark {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 10%;
+    border-radius: 60%;
+    line-height: 1vh;
+    color: black;
+}
 #categaryModal {
-	width:50%;
-	left:40%;
-}
-
-#errorMessage{
-	
+    width: 50%;
+    left: 40%;
 }
 .red {
-  border-color: red;
-  color:red;
+    border-color: red;
+    color: red;
 }
-
-
-input.ng-invalid {
-    background-color: pink;
+#productsViewSlidBx {
+    height: 90%;
+    width: 100%;
 }
 
 .editProHead {
-	margin:10vh;
+    margin: 10vh;
 }
-
-#productsViewSlideBox{
-	height:90%;
-	 width:100%;
+.slider-slides{
+width:100% !important;
 }

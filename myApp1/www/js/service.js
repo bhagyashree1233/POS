@@ -219,7 +219,9 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
     function set(SettingsName, SettingsValue) {
         var dfd = $q.defer();
         $cordovaSQLite.execute($rootScope.db, 'INSERT OR REPLACE INTO Settings (SettingsName,SettingsValue) VALUES (?,?) ', [SettingsName, SettingsValue]).then(function(result) {
+           console.log(result)
             dfd.resolve(result);
+
         }, function(error) {
             dfd.resolve(error);
         })
