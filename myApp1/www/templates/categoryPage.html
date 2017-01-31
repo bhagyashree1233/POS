@@ -42,26 +42,28 @@
                     </ion-item>
                 </ion-list>
                 <ion-list>
-                    <ion-item ng-repeat="categoryObj in categoryArr | filter:searchCategory:strict| limitTo:4" ng-click="editSelectedCategory(categoryObj)">
+                    <ion-item ng-if="categoryObj.categoryId != 'favourite'" ng-repeat="categoryObj in categoryArr | filter:searchCategory:strict| limitTo:5" ng-click="editSelectedCategory(categoryObj)">
                         <span style="margin:12%;">{{categoryObj.categoryId}}</span>
                         <span style="margin:12%;">{{categoryObj.categoryName}}</span>
                         <span style="margin:12%;">{{categoryObj.categoryDescription}}</span>
                     </ion-item>
                 </ion-list>
             </div>
-            <p style="color:red;" ng-show="selectCategoryWarningMsg">Please select category from list...</p>
+            <p style="color:red;" ng-show="selectCategoryWarningMsg" >Please select category from list...</p>
             <div ng-show="showEditField">
                 <ion-item>
                     <label class="item item-input">
                         <span class="input-label">Category New Name :</span>
-                        <input type="text" placeholder="Enter category new name"></input>
+                        <input type="text" ng-model="editedCategory.name" ng-focus="nameFocused()" placeholder="Enter category new name"></input>
                     </label>
                     <label class="item item-input">
                         <span class="input-label">Category New Description :</span>
-                        <input type="text" placeholder="Enter category new Description"></input>
+                        <input type="text" ng-model="editedCategory.description" placeholder="Enter category new Description"></input>
                     </label>
                 </ion-item>
+                <a class="button button-block" ng-click="saveEditedCategory()">Save</a>
             </div>
+           <p style="color:red;" ng-show="newNameDescWarningMsg" >Please give new name and description...</p> 
         </div>
     </ion-content>
 </ion-view>

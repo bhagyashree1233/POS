@@ -1,10 +1,32 @@
-angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform) {
+angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading) {
+    /*
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         console.log('entered before enter view')
         loadProducts();
         loadCategory();
     });
+*/
+    $scope.$on("$ionicParentView.enter", function(event, data) {
+        console.log('entered before enter parent view');
+        loadProducts();
+        loadCategory();
+    });
     $ionicPlatform.ready(function() {
+        
+        $rootScope.showDbLoading = function() {
+            $ionicLoading.show({
+                template: 'Loading...'
+            }).then(function() {
+                console.log("The loading indicator is now displayed");
+            });
+        }
+        ;
+        $rootScope.hideDbLoading = function() {
+            $ionicLoading.hide().then(function() {
+                console.log("The loading indicator is now hidden");
+            });
+        }
+        ;
         loadProducts();
         loadCategory();
     })
@@ -13,20 +35,24 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     $scope.allSlideCatArr = [];
     $scope.allSlideProductArr = [];
     function loadProducts() {
+        $rootScope.showDbLoading();
         var promise = dbService.loadProductFromDB('Product');
         promise.then(function(res) {
             $scope.Products = res;
             console.log('products loaded...');
             productSlideLogic();
+            $rootScope.hideDbLoading();
         }, function(res) {
             console.log(res)
         })
     }
     function loadCategory() {
+        $rootScope.showDbLoading();
         var promise = dbService.loadCategoryFromDB('Category');
         promise.then(function(res) {
             $scope.categoryArr = res;
             categorySlideLogic();
+            $rootScope.hideDbLoading();
         }, function(res) {
             console.log(res);
         })
@@ -66,19 +92,22 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         console.log(catId);
         $scope.prodCat = [];
         console.log($scope.prodCat.length);
-        if (catId == 'favourite') {
-            for (var i = 0; i < $scope.Products.length; i++) {
+        /*    for (var i = 0; i < $scope.Products.length; i++) {
                 if ($scope.Products[i].favourite == "true") {
                     $scope.prodCat.push($scope.Products[i]);
                 }
-            }
-        } else {
-            for (var i = 0; i < $scope.Products.length; i++) {
-                if ($scope.Products[i].categoryId == catId) {
-                    $scope.prodCat.push($scope.Products[i]);
-                }
-            }
-        }
+              }  
+        */
+        $rootScope.showDbLoading();
+        var promise = dbService.loadProductsForCategory(catId);
+        promise.then(function(res) {
+            $scope.Products = res;
+            console.log('products loaded...');
+            productSlideLogic();
+            $rootScope.hideDbLoading();
+        }, function(res) {
+            console.log(res)
+        })
         /*
         var promise = dbService.loadProductsForCategory(categoryId)
         promise.then(function(res){
@@ -169,9 +198,9 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.typedCode = null;
         console.log($scope.productArr);
         $scope.totalPrice = $scope.totalPrice + productTotalPrice;
-        $scope.totalTaxAmount = $scope.totalTaxAmount + productTotalTax;
-        $scope.discountAmount = ($scope.discountAmount + discountAmount);
-        $scope.totalChargeAmount = $scope.totalChargeAmount + productTotalAmount;
+        $scope.totalTaxAmount = parseFloat(($scope.totalTaxAmount + productTotalTax).toFixed(2));
+        $scope.discountAmount = parseFloat(($scope.discountAmount + discountAmount).toFixed(2));
+        $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount + productTotalAmount).toFixed(2));
         console.log('This is Totla Price' + $scope.totalPrice);
     }
     $scope.paidAmount = function(typedAmount) {
@@ -510,16 +539,18 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     }
     $scope.next = function() {
         console.log('I am in next')
-        $ionicScrollDelegate.scrollBy(0, 68, true);
+        //  $ionicScrollDelegate.scrollBy(0, 68, true);
+        $ionicSlideBoxDelegate.$getByHandle('categorySlideHandle').next();
     }
     ;
     $scope.previous = function() {
-        $ionicScrollDelegate.scrollBy(0, -68, true);
+        // $ionicScrollDelegate.scrollBy(0, -68, true);
+        $ionicSlideBoxDelegate.$getByHandle('categorySlideHandle').previous();
     }
     ;
     //Slide Ends
 }
-]).controller("productCtrl", function($scope, $state, $rootScope, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
+]).controller("productCtrl", function($scope, $state, $rootScope, $ionicPopover, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         loadCategory();
         $scope.notEditingProduct = angular.equals({}, $rootScope.editingProduct);
@@ -535,9 +566,11 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         console.log("State Params: ", data.stateParams);
     });
     function loadCategory() {
+        $rootScope.showDbLoading();
         var promise = dbService.loadProductFromDB('Category');
         promise.then(function(res) {
             $scope.categoryArr = res;
+            $rootScope.hideDbLoading();
         }, function(res) {
             console.log(res)
         })
@@ -562,15 +595,29 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         Name: 'tax4',
         TaxRate: '20'
     }]
-    $scope.selectedTax = {};
     $scope.newProduct = {
-        unit: 'pieces'
+        unit: 'pieces',
+        favourite: false
     };
+    $scope.onTaxRateSelect = function(tax) {
+        $scope.newProduct.taxRate = tax.TaxRate;
+        $scope.newProduct.taxId = tax.Id;
+        $scope.taxRatePopover.hide();
+    }
+    $ionicPopover.fromTemplateUrl('templates/taxRatePopover.html', {
+        scope: $scope
+    }).then(function(popover) {
+        $scope.taxRatePopover = popover;
+    });
+    $scope.openTaxRatePopover = function($event) {
+        $scope.taxRatePopover.show($event);
+    }
+    ;
     $scope.$watch('newProduct.productId', function(newpId, oldpId) {
         console.log(newpId);
         if (newpId) {
-            $scope.productSuccessMessage = false;
             // to hide success message
+            $scope.productSuccessMessage = false;
             //   $scope.categoryForm.catIdInput.$setUntouched();
         }
         if ($scope.notEditingProduct) {
@@ -579,10 +626,10 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                 console.log(res);
                 if (res.rows.length == 0) {
                     console.log('Id not exists..');
-                    $scope.checkIdShow = false;
+                    $scope.idExistsError = false;
                 } else {
                     console.log('Id already exists..');
-                    $scope.checkIdShow = true;
+                    $scope.idExistsError = true;
                 }
             })
         }
@@ -599,19 +646,23 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.newProduct.image = "/img/sc1.jpg";
         console.log($scope.newProduct);
         if ($scope.notEditingProduct) {
-            if (!($scope.checkIdShow)) {
-                $scope.newProduct['taxRate'] = $scope.selectedTax.tax.TaxRate;
-                $scope.newProduct['taxId'] = $scope.selectedTax.tax.Id;
+            if (!($scope.idExistsError)) {
+                if (!(angular.isDefined($scope.newProduct.discount))) {
+                    $scope.newProduct.discount = 0;
+                }
                 console.log('validation success and entered if');
                 console.log($scope.newProduct);
+                $rootScope.showDbLoading();
                 var promise = dbService.addNewProduct($scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite);
                 promise.then(function(result) {
                     console.log(result);
                     //  $rootScope.Products.push($scope.newProduct);
                     $scope.newProduct = {
                         unit: 'pieces',
-                        image: "/img/sc1.jpg"
+                        image: "/img/sc1.jpg",
+                        favourite: false
                     };
+                    $rootScope.hideDbLoading();
                     $scope.productSuccessMessage = true;
                     //confirmation popup
                     var confirmPopup = $ionicPopup.confirm({
@@ -631,14 +682,13 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                 })
             }
         } else {
-            if (!(angular.equals({}, $scope.newProduct))) {
-                $scope.newProduct['taxRate'] = $scope.selectedTax.tax.TaxRate;
-                $scope.newProduct['taxId'] = $scope.selectedTax.tax.Id;
-            }
+            //enters if Product is editing
             //  console.log($scope.newProduct);
+            $rootScope.showDbLoading();
             var promise = dbService.editProduct($scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite);
             promise.then(function(result) {
                 console.log(result);
+                $rootScope.hideDbLoading();
                 //   $rootScope.Products.push($scope.newProduct);
                 $ionicHistory.goBack();
             }, function(result) {
@@ -733,9 +783,11 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         loadCategory();
     });
     function loadCategory() {
-        var promise = dbService.loadProductFromDB('Category');
+        $rootScope.showDbLoading();
+        var promise = dbService.loadCategoryFromDB('Category');
         promise.then(function(res) {
             $scope.categoryArr = res;
+            $rootScope.hideDbLoading();
         }, function(res) {
             console.log(res)
         })
@@ -749,9 +801,11 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             confirmPopup.then(function(res) {
                 if (res) {
                     console.log('delete Category');
+                    $rootScope.showDbLoading();
                     var promise = dbService.deleteCategory($scope.searchCategory.categoryId);
                     promise.then(function(res) {
                         console.log(res);
+                        $rootScope.hideDbLoading();
                         $ionicHistory.goBack();
                     }, function() {
                         console.log(res);
@@ -764,29 +818,55 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             $scope.selectCategoryWarningMsg = true;
         }
     }
+    $scope.editedCategory = {
+        name: "",
+        description: ""
+    };
     $scope.editCategory = function() {
         console.log('entered edit category');
-        
         if ($scope.searchCategory.categoryId) {
             $scope.showEditField = true;
-        }  else {
+        } else {
             $scope.selectCategoryWarningMsg = true;
         }
+    }
+    $scope.saveEditedCategory = function() {
+        if ($scope.editedCategory.name && $scope.editedCategory.description) {
+            $rootScope.showDbLoading();
+            var promise = dbService.editCategory($scope.searchCategory.categoryId, $scope.editedCategory.name, $scope.editedCategory.description);
+            promise.then(function(res) {
+                console.log(res);
+                $rootScope.hideDbLoading();
+                $ionicHistory.goBack();
+            }, function() {
+                console.log(res);
+            })
+        } else {
+            console.log('enter new name and description...');
+            $scope.newNameDescWarningMsg = true;
+        }
+    }
+    $scope.nameFocused = function() {
+        $scope.newNameDescWarningMsg = false;
     }
     $scope.searchCategory = {
         categoryId: ""
     };
     $scope.editSelectedCategory = function(categoryEditObj) {
         //  $scope.searchCategory = categoryEditObj;
+        console.log(categoryEditObj);
         $scope.searchCategory.categoryId = categoryEditObj.categoryId;
         $scope.showCategoryEdit = true;
+        $scope.selectCategoryWarningMsg = false;
     }
     $scope.newCategory = {};
     $scope.addNewCategory = function() {
         if (!($scope.catIdErrorMsg)) {
+            $rootScope.showDbLoading();
             var promise = dbService.addNewCategory($scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
             promise.then(function(result) {
                 console.log(result);
+                $rootScope.hideDbLoading();
                 $scope.succesMessage = true;
                 //   $rootScope.categoryArr.push($scope.newCategory);
                 $scope.newCategory = {};
@@ -802,6 +882,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                     confirmPopup.then(function(res) {
                         if (res) {
                             console.log('add more Category');
+                            $state.reload();
                         } else {
                             console.log('No');
                             $ionicHistory.goBack();
@@ -842,8 +923,10 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $state.go('app.product');
     }
     function loadProducts() {
+        $rootScope.showDbLoading();
         var promise = dbService.loadProductFromDB('Product');
         promise.then(function(res) {
+            $rootScope.hideDbLoading();
             $scope.Products = res;
         }, function(res) {
             console.log(res)
@@ -873,12 +956,16 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     }
     $scope.deleteSelectedProducts = function() {
         if (!(angular.equals({}, $scope.deleteProductId))) {
+            $rootScope.showDbLoading();
             var promise = dbService.deleteProduct($scope.deleteProductId);
             promise.then(function(result) {
                 // $ionicHistory.goBack();
                 var promise = dbService.loadProductFromDB('Product');
                 promise.then(function(res) {
+                    $rootScope.hideDbLoading();
                     $rootScope.Products = res;
+                    $state.reload();
+                    $scope.showCheckMark = false;
                 }, function(res) {
                     console.log(res)
                 })

@@ -76,9 +76,10 @@
                     </div>
                 </div>
             </div>
-            <button ng-show="true" ng-click="scrollSide()" style="background:black;opacity:0.4;border:0px;position:fixed;z-index:2;right:3%;top:43%;border-radius:50%;width:9vh;height:9vh;">
+      <!--      <button ng-show="true" ng-click="scrollSide()" style="background:black;opacity:0.4;border:0px;position:fixed;z-index:2;right:3%;top:43%;border-radius:50%;width:9vh;height:9vh;">
                 <i style="font-size:6vh;color:white;" class="icon ion-chevron-right"></i>
             </button>
+      -->
             <div id="productsView">
                 <!-- 
                 <div class="col-70" id="product-display">
@@ -116,7 +117,7 @@
                     <div id="product-categary-previous">
                         <button class="button icon ion-chevron-left" id="button-previous" ng-click="previous()"></button>
                     </div>
-                    <ion-slide-box show-pager="true" id="product-cat-slide">
+                    <ion-slide-box show-pager="true" id="product-cat-slide" delegate-handle="categorySlideHandle">
                         <ion-slide class="product-slide" ng-repeat="catArr in allSlideCatArr">
                             <button class="product-categary-button" ng-repeat="categoryObj in catArr" ng-click="display(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
                         </ion-slide>
