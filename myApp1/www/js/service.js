@@ -191,9 +191,9 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         });
         return deferred.promise;
     }
-    function editCategory(productId, name, desc) {
+    function editCategory(categoryId, name, desc) {
         var deferred = $q.defer();
-        var query = "update Category Set CategoryName='" + name + "',CategoryDesc='" + desc + "' where CategoryId='" + categoryIdId + "'";
+        var query = "update Category Set CategoryName='" + name + "',CategoryDesc='" + desc + "' where CategoryId='" + categoryId + "'";
         console.log(query);
         $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
             //console.log("INSERT ID -> " + res.insertId);
