@@ -1,4 +1,3 @@
-
 angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading) {
     /*
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -20,6 +19,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     $scope.categoryArr = [];
     $scope.allSlideCatArr = [];
     $scope.allSlideProductArr = [];
+
     function loadProducts() {
         $rootScope.showDbLoading();
         var promise = dbService.loadProductFromDB('Product');
@@ -32,6 +32,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             console.log(res)
         })
     }
+
     function loadCategory() {
         $rootScope.showDbLoading();
         var promise = dbService.loadCategoryFromDB('Category');
@@ -43,6 +44,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             console.log(res);
         })
     }
+
     function productSlideLogic() {
         $scope.allSlideProductArr = [];
         var tempProductArr = [];
@@ -56,6 +58,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         }
         console.log($scope.allSlideProductArr);
     }
+
     function categorySlideLogic() {
         $scope.allSlideCatArr = [];
         var tempCatArr = [];
@@ -79,6 +82,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.showDelete = false;
         calculateProductCost();
     }
+
     function calculateProductCost() {
         $scope.totalPrice = 0;
         $scope.totalTaxAmount = 0;
@@ -142,8 +146,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             $scope.scrollBottomBtn = false;
             $scope.scrollTopBtn = false;
         }
-    }
-    ;
+    };
     $scope.scrollTop = function() {
         $ionicScrollDelegate.$getByHandle('scrollSmall').scrollTop(true);
         //$ionicScrollDelegate.scrollBy(0, -50, true);
@@ -242,6 +245,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             console.log(result);
         })
     }
+
     function toBillDetails() {
         var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.transactionDate);
         promise.then(function(result) {
@@ -330,44 +334,42 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         }
         tempT = $scope.typedCode;
         switch (keyCode) {
-        case -4:
-            $scope.sendTheCodeQ();
-            break;
-        case -3:
-            $scope.removeQ();
-            break;
-        case -2:
-            $scope.removeAllQ();
-            break;
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 0:
-        case '.':
-            if (!/\d/.test(tempT)) {
-                $scope.typedCode = keyCode;
-            } else {
-                $scope.typedCode += '' + keyCode;
-                console.log($scope.typedCode)
-            }
-            break;
+            case -4:
+                $scope.sendTheCodeQ();
+                break;
+            case -3:
+                $scope.removeQ();
+                break;
+            case -2:
+                $scope.removeAllQ();
+                break;
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 0:
+            case '.':
+                if (!/\d/.test(tempT)) {
+                    $scope.typedCode = keyCode;
+                } else {
+                    $scope.typedCode += '' + keyCode;
+                    console.log($scope.typedCode)
+                }
+                break;
         }
-    }
-    ;
+    };
     $scope.sendTheCodeQ = function() {
         if (/\d/.test(tempT)) {
             // TODO : sends the entered code
             console.log('entered code is ' + $scope.typedCode + " " + $scope.typedCode.length);
             $scope.typedCode = "";
         }
-    }
-    ;
+    };
     $scope.removeQ = function() {
         console.log($scope.typedCode)
         if ($scope.typedCode.length > 0) {
@@ -377,8 +379,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         }
         console.log('I am in remove');
         // TODO start scaning the code and once it receives send to the socket
-    }
-    ;
+    };
     $scope.removeAllQ = function() {
         //Numeric keypad for Payment Start
         $scope.typedCode = '';
@@ -388,45 +389,43 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         //console.log(keyCode)
         tempT = $scope.typedAmount;
         switch (keyCode) {
-        case -4:
-            $scope.sendTheCodeA();
-            break;
-        case -3:
-            $scope.removeA();
-            break;
-        case -2:
-            $scope.removeAllA();
-            break;
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 0:
-        case '.':
-            if (!/\d/.test(tempT)) {
-                $scope.typedAmount = keyCode;
-                console.log($scope.typedAmount)
-            } else {
-                $scope.typedAmount += '' + keyCode;
-                console.log($scope.typedAmount)
-            }
-            break;
+            case -4:
+                $scope.sendTheCodeA();
+                break;
+            case -3:
+                $scope.removeA();
+                break;
+            case -2:
+                $scope.removeAllA();
+                break;
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 0:
+            case '.':
+                if (!/\d/.test(tempT)) {
+                    $scope.typedAmount = keyCode;
+                    console.log($scope.typedAmount)
+                } else {
+                    $scope.typedAmount += '' + keyCode;
+                    console.log($scope.typedAmount)
+                }
+                break;
         }
-    }
-    ;
+    };
     $scope.sendTheCodeA = function() {
         if (/\d/.test(tempT)) {
             // TODO : sends the entered code
             console.log('entered code is ' + $scope.typedCode + " " + $scope.typedAmount.length);
             $scope.typedAmount = "";
         }
-    }
-    ;
+    };
     $scope.removeA = function() {
         console.log($scope.typedAmount)
         if ($scope.typedAmount.length > 0) {
@@ -436,8 +435,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         }
         console.log('I am in remove');
         // TODO start scaning the code and once it receives send to the socket
-    }
-    ;
+    };
     $scope.removeAllA = function() {
         $scope.typedAmount = "";
     }
@@ -457,14 +455,12 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             $scope.receiptBtnShow = true;
             $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
         }
-    }
-    ;
+    };
     $scope.closePaymentModal = function() {
         console.log('I am in close Model')
         $scope.typedAmount = "";
         $scope.paymentModal.hide();
-    }
-    ;
+    };
     // Payment model end
     // Quantity model start
     $ionicModal.fromTemplateUrl('templates/numericKeypad.html', {
@@ -479,16 +475,14 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
         $scope.typedCode = "1";
         $scope.newProduct = product;
-    }
-    ;
+    };
     $scope.closeNumericModal = function() {
         console.log(' Closing Numeric Model')
         $scope.numericModal.hide();
         $scope.newProduct = {};
         $scope.typedCode = null;
         count = 0;
-    }
-    ;
+    };
     $ionicModal.fromTemplateUrl('templates/recallModal.html', {
         scope: $scope,
         animation: 'slide-in-up'
@@ -500,8 +494,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     }
     $scope.closeRecallModal = function() {
         $scope.recallModal.hide();
-    }
-    ;
+    };
     $scope.holdItems = function() {
         if ($scope.productArr.length != 0) {
             var itemsDetails = {};
@@ -561,16 +554,13 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         console.log('I am in next')
         //  $ionicScrollDelegate.scrollBy(0, 68, true);
         $ionicSlideBoxDelegate.$getByHandle('categorySlideHandle').next();
-    }
-    ;
+    };
     $scope.previous = function() {
         // $ionicScrollDelegate.scrollBy(0, -68, true);
         $ionicSlideBoxDelegate.$getByHandle('categorySlideHandle').previous();
-    }
-    ;
+    };
     //Slide Ends
-} 
-]).controller("productCtrl", function($scope, $state, $rootScope, $ionicPopover, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
+}]).controller("productCtrl", function($scope, $state, $rootScope, $ionicPopover, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         console.log('working before enter..')
         $scope.notEditingProduct = angular.equals({}, $rootScope.editingProduct);
@@ -589,6 +579,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         loadCategory();
         //    console.log("State Params: ", data.stateParams);
     });
+
     function loadCategory() {
         $rootScope.showDbLoading();
         var promise = dbService.loadProductFromDB('Category');
@@ -628,8 +619,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     });
     $scope.openTaxRatePopover = function($event) {
         $scope.taxRatePopover.show($event);
-    }
-    ;
+    };
     $scope.$watch('newProduct.productId', function(newpId, oldpId) {
         console.log(newpId);
         if (newpId) {
@@ -760,7 +750,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                 }, function(error) {
                     console.dir(error);
                 });
-            }, function(err) {// error
+            }, function(err) { // error
             });
         }, false);
     }
@@ -808,6 +798,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         loadCategory();
     });
+
     function loadCategory() {
         $rootScope.showDbLoading();
         var promise = dbService.loadCategoryFromDB('Category');
@@ -951,6 +942,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $rootScope.editingProduct = editingProduct;
         $state.go('app.product');
     }
+
     function loadProducts() {
         $rootScope.showDbLoading();
         var promise = dbService.loadProductFromDB('Product');
@@ -1005,138 +997,150 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             })
         }
     }
-}) .controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
-        $scope.taxSettings = [];
-        $scope.txSetting = {};
-        console.log($rootScope.TaxSettings)
+}).controller('taxSetting', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $state, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
+    console.log('I am in tax  settings');
 
-        $scope.taxSettings[0] = {
-            id: $rootScope.TaxSettings[0].id,
-            name: $rootScope.TaxSettings[0].name,
-            taxRate: $rootScope.TaxSettings[0].taxRate
-        };
-        // $scope.taxSettings[0][$scope.txSetting.name]=;
-        // $scope.taxSettings[0][$scope.txSetting.taxRate]=;
-        //console.log($rootScope.$scope.TaxSettings[0].name)
+    $scope.taxSettings = [];
+    $scope.txSetting = {};
+    console.log($rootScope.TaxSettings)
+    $scope.taxSettings[0] = {
+        id: $rootScope.TaxSettings[0].id,
+        name: $rootScope.TaxSettings[0].name,
+        taxRate: $rootScope.TaxSettings[0].taxRate
+    };
 
-        var d = new Date();
-        var taxSettings = []
-        $scope.addMore = function() {
-            var txSetting = $scope.txSetting
-            $scope.taxSettings.push({
-                txSetting
+    var d = new Date();
+    var taxSettings = []
+    console.log($scope)
 
-            })
-            console.log($scope.taxSettings)
-            document.getElementById("myTaxSettingForm").reset();
-            $scope.txSetting = {}
-        }
+    $scope.addMore = function() {
+        console.log('Hi am in addMore')
+        var txSetting = $scope.txSetting
+        $scope.taxSettings.push({
+            txSetting
 
-        $scope.saveTaxSetting = function() {
+        })
+        console.log($scope.taxSettings)
+        document.getElementById("myTaxSettingForm").reset();
+        $scope.txSetting = {}
+    }
 
-            var txSetting = $scope.txSetting
-            $scope.taxSettings.push({
-                txSetting
-            })
-            console.log('Hai i am in TaxSetting Save')
-            console.log($scope.taxSettings)
-            var taxSettings = JSON.stringify($scope.taxSettings);
-            var promise = settingService.set("TaxSettings", taxSettings)
-            promise.then(function(data) {
-                console.log(data);
-                if(data.rows.length>=1){
-               $rootScope.TaxSettings=data.rows[0].SettingsValue;
-               }else{
-                   console.log('No TaxSettings Record Found')
-               }
-            })
-            /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
+    $scope.saveTaxSetting = function() {
 
-            var taxSettings = JSON.stringify($scope.taxSettings);
-            var promise = settingService.set("TaxSettings", taxSettings)
-            promise.then(function(data) {
-                console.log(data);
-            })
-            /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
-                     .then(function(result) {
-                         $scope.statusMessage = "Message saved successful, cheers!";
-                         console.log($scope.statusMessage)
-                     }, function(error) {
-                         $scope.statusMessage = "Error on saving: " + error.message;
-                         console.log($scope.statusMessage)
-                     })*/
-        }
-    }]).controller('printerSettings', function($scope, settingService, $rootScope) {
-        $scope.printFormatSettings = {};
-        $scope.printFormatSettings['addressLine1'] = $rootScope.printFormatSettings.addressLine1;
-        $scope.printFormatSettings.addressLine2 = $rootScope.printFormatSettings.addressLine2,
-            $scope.printFormatSettings.billCopies = $rootScope.printFormatSettings.billCopies,
-            $scope.printFormatSettings.greeting = $rootScope.printFormatSettings.greeting,
-            $scope.printFormatSettings.phNumber = $rootScope.printFormatSettings.phNumber,
-            $scope.printFormatSettings.shopName = $rootScope.printFormatSettings.shopName,
-            $scope.printFormatSettings.strtBillNmbr = $rootScope.printFormatSettings.strtBillNmbr,
-            $scope.printFormatSettings.tin = $rootScope.printFormatSettings.tin,
-            $scope.printFormatSettings.tokNum = $rootScope.printFormatSettings.tokNum,
-            $scope.printFormatSettings.tokResetAftr = $rootScope.printFormatSettings.tokResetAftr,
-            $scope.printFormatSettings.tokStartNmbr = $rootScope.printFormatSettings.tokStartNmbr,
-            $scope.printFormatSettings.wifiSsid = $rootScope.printFormatSettings.wifiSsid
-        $scope.savePrinterSettings = function() {
-            console.log($scope.printFormatSettings)
-            var printFormatSettings = JSON.stringify($scope.printFormatSettings);
-            var promise = settingService.set("PrinterFormatSettings", printFormatSettings);
-            promise.then(function(data) {
-                console.log(data)
-                if(data.rows.length>=1){
-              $rootScope.printFormatSettings=JSON.parse(data.rows[0].SettingsValue);
-               }else{
-                 console.log('No PrinterFormatSettings Record Found')  
-               }
-            })
-        }
-    }).controller('paymentSettings', function($scope, settingService, $rootScope) {
-
-        $scope.paymentSetting = {};
-        console.log($rootScope.PaymentSettings)
-        $scope.paymentSetting.currency = $rootScope.PaymentSettings.currency;
-        console.log($scope.paymentSetting)
-        $scope.paymentSetting.paymentOptions = $rootScope.PaymentSettings.paymentOptions;
-        $scope.savePaymentSettings = function() {
-            console.log($scope.paymentSetting)
-
-            var paymentSetting = JSON.stringify($scope.paymentSetting);
-            var promise = settingService.set("PaymentSettings", paymentSetting);
-            promise.then(function(data) {
-                console.log(data.rows.length);
-               if(data.rows.length>=1){
-               $rootScope.PaymentSettings=JSON.parse(data.rows[0].SettingsValue);
-               var  currency= $rootScope.PaymentSettings.currency.split(' ');
-               var  currencyName=currency[0];
-               var currencySymbol=currency[1];
-               $rootScope.currencySymbol=currencySymbol;
-               }else{
-                   console.log('No PayMent Setting Record Found')
-                   var  currency= $rootScope.PaymentSettings.currency.split(' ');
-                   var  currencyName=currency[0];
-                   var currencySymbol=currency[1];
-               $rootScope.currencySymbol=currencySymbol;
-               }
-            })
-        }
-    }).controller('reports', function($scope) {
-        $scope.reportObj = {
-            storeReportOnCloud: false,
-            sendEmailReport: {
-                value: false,
-                email: ""
-            },
-            sendSMS: {
-                value: false,
-                onLowStock: "",
-                dailyCollection: "",
-                phoneNumber: ""
+        var txSetting = $scope.txSetting
+        $scope.taxSettings.push({
+            txSetting
+        })
+        console.log('Hai i am in TaxSetting Save')
+        console.log($scope.taxSettings)
+        var taxSettings = JSON.stringify($scope.taxSettings);
+        var promise = settingService.set("TaxSettings", taxSettings)
+        promise.then(function(data) {
+            console.log(data);
+            if (data.rowsAffected >= 1) {
+                var promise = settingService.get("TaxSettings", taxSettings);
+                promise.then(function(data) {
+                    $rootScope.TaxSettings = data.rows[0].SettingsValue;
+                })
+            } else {
+                console.log('No TaxSettings Record Found')
             }
+        })
+        /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
+
+        var taxSettings = JSON.stringify($scope.taxSettings);
+        var promise = settingService.set("TaxSettings", taxSettings)
+        promise.then(function(data) {
+            console.log(data);
+        })
+        /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
+                 .then(function(result) {
+                     $scope.statusMessage = "Message saved successful, cheers!";
+                     console.log($scope.statusMessage)
+                 }, function(error) {
+                     $scope.statusMessage = "Error on saving: " + error.message;
+                     console.log($scope.statusMessage)
+                 })*/
+        $state.go('Settings')
+    }
+}]).controller('printerSettings', function($scope, settingService, $rootScope) {
+    $scope.printFormatSettings = {};
+    $scope.printFormatSettings['addressLine1'] = $rootScope.printFormatSettings.addressLine1;
+    $scope.printFormatSettings.addressLine2 = $rootScope.printFormatSettings.addressLine2,
+        $scope.printFormatSettings.billCopies = $rootScope.printFormatSettings.billCopies,
+        $scope.printFormatSettings.greeting = $rootScope.printFormatSettings.greeting,
+        $scope.printFormatSettings.phNumber = $rootScope.printFormatSettings.phNumber,
+        $scope.printFormatSettings.shopName = $rootScope.printFormatSettings.shopName,
+        $scope.printFormatSettings.strtBillNmbr = $rootScope.printFormatSettings.strtBillNmbr,
+        $scope.printFormatSettings.tin = $rootScope.printFormatSettings.tin,
+        $scope.printFormatSettings.tokNum = $rootScope.printFormatSettings.tokNum,
+        $scope.printFormatSettings.tokResetAftr = $rootScope.printFormatSettings.tokResetAftr,
+        $scope.printFormatSettings.tokStartNmbr = $rootScope.printFormatSettings.tokStartNmbr,
+        $scope.printFormatSettings.wifiSsid = $rootScope.printFormatSettings.wifiSsid
+    $scope.savePrinterSettings = function() {
+        console.log($scope.printFormatSettings)
+        var printFormatSettings = JSON.stringify($scope.printFormatSettings);
+        var promise = settingService.set("PrinterFormatSettings", printFormatSettings);
+        promise.then(function(data) {
+            console.log(data)
+            if (data.rowsAffected >= 1) {
+                var promise = settingService.get("PrinterFormatSettings", printFormatSettings);
+                promise.then(function(data) {
+                    $rootScope.printFormatSettings = JSON.parse(data.rows[0].SettingsValue);
+                })
+            } else {
+                console.log('No PrinterFormatSettings Record Found')
+            }
+        })
+    }
+}).controller('paymentSettings', function($scope, settingService, $rootScope) {
+
+    $scope.paymentSetting = {};
+    console.log($rootScope.PaymentSettings)
+    $scope.paymentSetting.currency = $rootScope.PaymentSettings.currency;
+    console.log($scope.paymentSetting)
+    $scope.paymentSetting.paymentOptions = $rootScope.PaymentSettings.paymentOptions;
+    $scope.savePaymentSettings = function() {
+        console.log($scope.paymentSetting)
+
+        var paymentSetting = JSON.stringify($scope.paymentSetting);
+        var promise = settingService.set("PaymentSettings", paymentSetting);
+        promise.then(function(data) {
+            console.log(data.rows.length);
+            console.log(data)
+            if (data.rowsAffected >= 1) {
+                var promise = settingService.get("PaymentSettings", paymentSetting);
+                promise.then(function(data) {
+                    $rootScope.PaymentSettings = JSON.parse(data.rows[0].SettingsValue);
+                    var currency = $rootScope.PaymentSettings.currency.split(' ');
+                    var currencyName = currency[0];
+                    var currencySymbol = currency[1];
+                    $rootScope.currencySymbol = currencySymbol;
+                })
+            } else {
+                console.log('No PayMent Setting Record Found')
+                var currency = $rootScope.PaymentSettings.currency.split(' ');
+                var currencyName = currency[0];
+                var currencySymbol = currency[1];
+                $rootScope.currencySymbol = currencySymbol;
+            }
+        })
+    }
+}).controller('reports', function($scope) {
+    $scope.reportObj = {
+        storeReportOnCloud: false,
+        sendEmailReport: {
+            value: false,
+            email: ""
+        },
+        sendSMS: {
+            value: false,
+            onLowStock: "",
+            dailyCollection: "",
+            phoneNumber: ""
         }
-        $scope.saveReports = function() {
-            console.log($scope.reportObj)
-        }
-    })
+    }
+    $scope.saveReports = function() {
+        console.log($scope.reportObj)
+    }
+})

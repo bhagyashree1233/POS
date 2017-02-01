@@ -97,7 +97,7 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         promise.then(function(data) {
             console.log(data)
         })
-        var promise = salesService.getSalesReport("1485323465391", undefined);
+        var promise = salesService.getSalesReport("1485937937792.0", undefined);
         promise.then(function(data) {
             console.log(data)
         })
