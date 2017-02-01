@@ -26,7 +26,9 @@
                                 <th>
                                     <span>Item Name</span>
                                 </th>
-                                <th>
+
+                              <th style="text-align:center;">
+
                                     <span>Quantity</span>
                                 </th>
                                 <th>
@@ -34,6 +36,7 @@
                                 </th>
                             </tr>
                         </table>
+
                         <ion-scroll delegate-handle="scrollSmall" on-scroll="onScroll()" direction="y" class="product-billing-tableScroll">
                             <table id="product-billing-table" style="color:black;text-align:center;font-weight:bolder;">
                                 <tr ng-repeat="product in productArr" on-hold="onPressHold()">
@@ -98,7 +101,9 @@
                     </div>
                 </div>
       -->
+   
                 <ion-slide-box show-pager="true" style="width:100%;height:90%;" id="productsViewSlideBox" >
+
                     <ion-slide style="display:flex;width:100%;height:100%;flex-wrap:wrap;flex-direction:row;" ng-repeat="proArr in allSlideProductArr">
                         <div class="card" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="openNumericModal(Product)" ng-repeat="Product in proArr">
                             <div id="product-name" align="left">
@@ -114,6 +119,7 @@
                         </div>
                     </ion-slide>
                 </ion-slide-box>
+                
                 <div id="product-categary">
                     <div id="product-categary-previous">
                         <button class="button icon ion-chevron-left" id="button-previous" ng-click="previousCategorySlide()"></button>

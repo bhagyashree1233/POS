@@ -1,30 +1,29 @@
-<ion-view >
-<ion-content ng-controller="taxSetting">
-<ion-list>
+<ion-view view-title="TaxSettings">
+    <ion-content ng-controller="taxSetting">
+        
+            <form id="myTaxSettingForm" ng-submit="saveTaxSetting()">
+              <ion-list>
+                <label class="item ">
+                    <span class="input-label">Name:</span>
+                    <input name="taxNme" style="color:black" ng-model="txSetting.name" type="text" ng-minlength=1 ng-maxlength=25 required>
+                    <p ng-show="myForm.taxNme.$touched && myForm.taxNme.$error.required " style="color:red">Tax Name Required </p>
+                    <p ng-show="myForm.taxNme.$error.minlength" style="color:red">Tax Name min length 1</p>
+                    <p ng-show="myForm.taxNme.$error.maxlength" style="color:red">Tax Name max length 25 </p>
+                </label>
+                <label class="item ">
+                    <span class="input-label">Tax Rate:</span>
+                    <input type="number" style="color:black" step="any" name="taxRate" ng-model="txSetting.taxRate" required min="0.1" max="50">
+                    <p ng-show="myForm.taxRate.$touched && myForm.taxRate.$error.required" style="color:red">Tax Rate Required </p>
+                    <p ng-show="myForm.taxRate.$touched && myForm.taxRate.$invalid" style="color:red">Tax Rate length should be between 0.1 to 50 </p>
+                </label>
+                <div class="padding">
+             <button ng-click="addMore()" class="button button-block button-dark" style="margin:auto;width:70%">add</button>
 
-<form id="myTaxSettingForm" ng-submit="saveTaxSetting()">
+            <button type="submit" class="button button-block button-dark" style="margin:auto;width:70%">Submit</button>
+        </div>
+        </ion-list>
+        
+        </form>
 
-<label class="item ">
-                <span class="input-label">Name:</span>
-                <input name="taxNme" style="color:black" ng-model="txSetting.name" type="text"  ng-minlength=1 ng-maxlength=25 required>
-                <p  ng-show="myForm.taxNme.$touched && myForm.taxNme.$error.required " style="color:red">Tax Name Required </p>
-                <p  ng-show="myForm.taxNme.$error.minlength" style="color:red">Tax Name min length 1</p>
-               <p  ng-show="myForm.taxNme.$error.maxlength" style="color:red">Tax Name max length 25 </p>
-             </label>
-         <label class="item ">
-                <span class="input-label">Tax Rate:</span>
-                <input type="number" style="color:black" step="any"name="taxRate" ng-model="txSetting.taxRate" required min="0.1" max="50">
-               <p  ng-show="myForm.taxRate.$touched && myForm.taxRate.$error.required" style="color:red">Tax Rate Required </p>
-               <p  ng-show="myForm.taxRate.$touched && myForm.taxRate.$invalid" style="color:red">Tax Rate length should be between 0.1 to 50 </p>
-
-            </label>
-            
-            <div class="padding">
-  <button  ng-click="addMore()" class="button button-block button-dark" style="margin:auto;width:70%">add More</button>
-
-  <button type="submit"  class="button button-block button-dark" style="margin:auto;width:70%">Submit</button>
-  </div>
-  </form>
-</ion-list>
-</ion-content>
+    </ion-content>
 </ion-view>
