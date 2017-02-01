@@ -1,4 +1,3 @@
-
 angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading) {
     /*
 
@@ -14,21 +13,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         loadCategory();
     });
     $ionicPlatform.ready(function() {
-        
-        $rootScope.showDbLoading = function() {
-            $ionicLoading.show({
-                template: 'Loading...'
-            }).then(function() {
-                console.log("The loading indicator is now displayed");
-            });
-        }
-        ;
-        $rootScope.hideDbLoading = function() {
-            $ionicLoading.hide().then(function() {
-                console.log("The loading indicator is now hidden");
-            });
-        }
-        ;
         loadProducts();
         loadCategory();
     })
@@ -85,9 +69,28 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         }
         console.log($scope.allSlideCatArr);
     }
-    $scope.onHold = function() {
+    $scope.onPressHold = function() {
         console.log('enterd on hold');
         $scope.showDelete = true;
+    }
+    $scope.deleteItem = function(index) {
+        var deleteProduct = $scope.productArr[index];
+        $scope.productArr.splice(index, 1);
+        $scope.showDelete = false;
+        calculateProductCost();
+    }
+    function calculateProductCost() {
+        $scope.totalPrice = 0;
+        $scope.totalTaxAmount = 0;
+        $scope.discountAmount = 0;
+        $scope.totalChargeAmount = 0;
+        for (var i = 0; i < $scope.productArr.length; i++) {
+            var tempObj = $scope.productArr[i];
+            $scope.totalPrice = $scope.totalPrice + tempObj.productTotalPrice;
+            $scope.totalTaxAmount = parseFloat(($scope.totalTaxAmount + tempObj.productTaxAmount).toFixed(2));
+            $scope.discountAmount = parseFloat(($scope.discountAmount + tempObj.discountAmount).toFixed(2));
+            $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount + tempObj.productTotalAmount).toFixed(2));
+        }
     }
     //load products list from DB
     $scope.display = function(catId) {
@@ -171,13 +174,13 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         console.log('I am in Save Function');
         // console.log('Scope quanitity' + qty);
         console.log(product.name + ' ' + product.unitPrice + ' ' + qty);
-        var productTotalPrice = product.unitPrice * qty;
+        var productTotalPrice = parseFloat((product.unitPrice * qty).toFixed(2));
         console.log("productTotalPrice: " + productTotalPrice);
-        var productTotalTax = (product.taxRate / 100) * productTotalPrice;
+        var productTotalTax = parseFloat(((product.taxRate / 100) * productTotalPrice).toFixed(2));
         console.log("productTotalTax: " + productTotalTax);
-        var discountAmount = (product.discount / 100) * productTotalPrice;
+        var discountAmount = parseFloat(((product.discount / 100) * productTotalPrice).toFixed(2));
         console.log("discountAmount: " + discountAmount);
-        var productTotalAmount = productTotalPrice + productTotalTax - discountAmount;
+        var productTotalAmount = parseFloat((productTotalPrice + productTotalTax - discountAmount).toFixed(2));
         console.log("productTotalAmount: " + productTotalAmount);
         $scope.productArr.push({
             productId: product.productId,
@@ -204,13 +207,12 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.totalTaxAmount = parseFloat(($scope.totalTaxAmount + productTotalTax).toFixed(2));
         $scope.discountAmount = parseFloat(($scope.discountAmount + discountAmount).toFixed(2));
         $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount + productTotalAmount).toFixed(2));
-        console.log('This is Totla Price' + $scope.totalPrice);
+        console.log('This is Total Price' + $scope.totalPrice);
     }
     $scope.paidAmount = function() {
         console.log('I am in Paid Function')
         console.log($scope.typedAmount)
         var typedAmount = parseFloat($scope.typedAmount);
-
         $scope.paidAmount1 = typedAmount;
         console.log(typedAmount)
         $scope.Balance = typedAmount - $scope.totalChargeAmount;
@@ -219,7 +221,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.receiptBtnShow = false;
     }
     $scope.receipt = function() {
-        
         $scope.paymentModal.hide();
         $scope.transactionDate = (new Date()).getTime();
         var promise = dbService.storeToTransaction($scope.productArr, $scope.transactionDate);
@@ -237,7 +238,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             $scope.totalTaxAmount = 0;
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
-            
         }, function(result) {
             console.log(result);
         })
@@ -298,9 +298,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     }, function(res) {
         console.log(res)
     })
-    $scope.selectedProduct = function(product) {
-        product.selected ? product.selected = false : product.selected = true;
-    }
     $scope.cancel = function() {
         for (var i = 0; i < $scope.productArr.length; i++) {
             var bool = $scope.productArr[i].selected;
@@ -357,7 +354,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                 $scope.typedCode = keyCode;
             } else {
                 $scope.typedCode += '' + keyCode;
-                 console.log($scope.typedCode)
+                console.log($scope.typedCode)
             }
             break;
         }
@@ -412,12 +409,11 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         case 0:
         case '.':
             if (!/\d/.test(tempT)) {
-
                 $scope.typedAmount = keyCode;
-                console.log( $scope.typedAmount)
+                console.log($scope.typedAmount)
             } else {
                 $scope.typedAmount += '' + keyCode;
-                console.log( $scope.typedAmount)
+                console.log($scope.typedAmount)
             }
             break;
         }
@@ -452,7 +448,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.paymentModal = modal;
     });
     $scope.openPaymentModal = function() {
-        $scope.enterBtn=false;
+        $scope.enterBtn = false;
         if ($scope.productArr.length) {
             console.log('I am in openModel')
             $scope.typedAmount = null;
@@ -467,7 +463,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         console.log('I am in close Model')
         $scope.typedAmount = "";
         $scope.paymentModal.hide();
-        
     }
     ;
     // Payment model end
@@ -574,21 +569,25 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     }
     ;
     //Slide Ends
-}
+} 
 ]).controller("productCtrl", function($scope, $state, $rootScope, $ionicPopover, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
-        loadCategory();
+        console.log('working before enter..')
         $scope.notEditingProduct = angular.equals({}, $rootScope.editingProduct);
         console.log($scope.notEditingProduct);
         if (!($scope.notEditingProduct)) {
             $scope.newProduct = $rootScope.editingProduct;
             $rootScope.editingProduct = {};
             $scope.pIdDisable = true;
-            console.log($scope.selectedTax);
         } else {
             $scope.pIdDisable = false;
+            $scope.newProduct = {
+                unit: 'pieces',
+                favourite: false
+            };
         }
-        console.log("State Params: ", data.stateParams);
+        loadCategory();
+        //    console.log("State Params: ", data.stateParams);
     });
     function loadCategory() {
         $rootScope.showDbLoading();
@@ -600,9 +599,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             console.log(res)
         })
     }
-    console.log($rootScope.Products);
-    console.log($rootScope.editingProduct);
-    $scope.newProduct = $rootScope.editingProduct;
     $scope.TaxSettings1 = [{
         Id: '1',
         Name: 'tax1',
@@ -620,10 +616,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         Name: 'tax4',
         TaxRate: '20'
     }]
-    $scope.newProduct = {
-        unit: 'pieces',
-        favourite: false
-    };
     $scope.onTaxRateSelect = function(tax) {
         $scope.newProduct.taxRate = tax.TaxRate;
         $scope.newProduct.taxId = tax.Id;
@@ -659,9 +651,18 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             })
         }
     });
+    $scope.newProduct = {
+        unit: 'pieces',
+        favourite: false
+    };
+    console.log($scope.newProduct);
+    console.log($scope);
     $scope.$watch('newProduct.inStock', function(newValue, oldValue) {
-        if ($scope.newProduct.unit == 'pieces') {
-            $scope.newProduct.inStock = Math.round(newValue);
+        console.log($scope.newProduct);
+        if (newValue) {
+            if ($scope.newProduct.unit == 'pieces') {
+                $scope.newProduct.inStock = Math.round(newValue);
+            }
         }
     });
     $scope.newProduct.image = "/img/sc1.jpg";
@@ -862,6 +863,9 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             promise.then(function(res) {
                 console.log(res);
                 $rootScope.hideDbLoading();
+                $scope.editedCategory = {};
+                $scope.newNameDescSuccessMsg = true;
+                newNameDescWarningMsg = false;
                 $ionicHistory.goBack();
             }, function() {
                 console.log(res);
@@ -938,7 +942,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             }
         })
     });
-
 }).controller('editProductsCtrl', function($scope, $rootScope, $state, $ionicHistory, dbService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         loadProducts();
@@ -991,6 +994,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                     $rootScope.hideDbLoading();
                     $rootScope.Products = res;
                     $state.reload();
+                    $scope.showDeleteOnHold = false;
                     $scope.showCheckMark = false;
                 }, function(res) {
                     console.log(res)
@@ -1000,17 +1004,18 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             })
         }
     }
-})
-.controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
+}).controller('taxSetting', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
     $scope.taxSettings = [];
     $scope.txSetting = {};
     console.log($rootScope.TaxSettings)
-    
-     $scope.taxSettings[0]={id:$rootScope.TaxSettings[0].id,name:$rootScope.TaxSettings[0].name,taxRate:$rootScope.TaxSettings[0].taxRate};
+    $scope.taxSettings[0] = {
+        id: $rootScope.TaxSettings[0].id,
+        name: $rootScope.TaxSettings[0].name,
+        taxRate: $rootScope.TaxSettings[0].taxRate
+    };
     // $scope.taxSettings[0][$scope.txSetting.name]=;
     // $scope.taxSettings[0][$scope.txSetting.taxRate]=;
     //console.log($rootScope.$scope.TaxSettings[0].name)
-
     var d = new Date();
     var taxSettings = []
     $scope.addMore = function() {
@@ -1023,7 +1028,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.txSetting = {}
     }
     $scope.saveTaxSetting = function() {
-
         var txSetting = $scope.txSetting
         $scope.taxSettings.push({
             txSetting
@@ -1075,15 +1079,13 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         })
     }
 }).controller('paymentSettings', function($scope, settingService, $rootScope) {
-
-    $scope.paymentSetting={};
+    $scope.paymentSetting = {};
     console.log($rootScope.PaymentSettings)
     $scope.paymentSetting.currency = $rootScope.PaymentSettings.currency;
     console.log($scope.paymentSetting)
-    $scope.paymentSetting.paymentOptions=$rootScope.PaymentSettings.paymentOptions;
+    $scope.paymentSetting.paymentOptions = $rootScope.PaymentSettings.paymentOptions;
     $scope.savePaymentSettings = function() {
         console.log($scope.paymentSetting)
-
         var paymentSetting = JSON.stringify($scope.paymentSetting);
         var promise = settingService.set("PaymentSettings", paymentSetting);
         promise.then(function(data) {
