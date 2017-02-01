@@ -14,19 +14,21 @@
                             <span>Add Customer</span>
                         </div>
                     </div>
-                    <button ng-show="scrollTopBtn" ng-click="scrollTop()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:25%;border-radius:50%;width:5vh;height:5vh;">
+                    <button ng-show="scrollTopBtn" ng-click="scrollTop()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:30%;border-radius:50%;width:5vh;height:5vh;">
                         <i style="font-size:3vh;" class="icon ion-chevron-up"></i>
                     </button>
                     <button ng-show="scrollBottomBtn" ng-click="scrollBottom()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:58%;border-radius:50%;width:5vh;height:5vh;">
                         <i style="font-size:3vh;" class="icon ion-chevron-down"></i>
                     </button>
                     <div class="card" style="height:50%">
-                        <table style="width:100%;color:black;font-weight:bolder; text-transform: uppercase;">
+                        <table style="width:100%;color:black;font-weight:bolder;">
                             <tr style="text-align:center;">
                                 <th>
                                     <span>Item Name</span>
                                 </th>
+
                               <th style="text-align:center;">
+
                                     <span>Quantity</span>
                                 </th>
                                 <th>
@@ -35,17 +37,18 @@
                             </tr>
                         </table>
                         <ion-scroll delegate-handle="scrollSmall" on-scroll="onScroll()" direction="y" class="product-billing-tableScroll">
-                            <table id="product-billing-table" style="color:black;text-align:center;font-weight:bolder; text-transform: uppercase;">
-                                <tr ng-repeat="product in productArr" ng-model="selectedItem" ng-class="{'selected':product.selected}" ng-click="selectedProduct(product)">
-                                    <td ng-show="showDelete" ng-click="">Delete
+                            <table id="product-billing-table" style="color:black;text-align:center;font-weight:bolder;">
+                                <tr ng-repeat="product in productArr" ng-click="">
+                                    <td ng-show="showDelete" ng-click="deleteItem($index)">
+                                      <button class="button button-assertive">Delete</button>
                                     </td>
-                                    <td on-hold="onHold()">
+                                    <td on-hold="onPressHold()">
                                         <span>{{product.name}}</span>
                                     </td>
-                                    <td on-hold="onHold()">
+                                    <td>
                                         <span style="text-align:right;">{{product.quantity}}</span>
                                     </td>
-                                    <td on-hold="onHold()">
+                                    <td>
                                         <span style="text-align:right;">{{product.productTotalPrice}}</span>
                                     </td>
                                 </tr>
@@ -76,9 +79,10 @@
                     </div>
                 </div>
             </div>
-            <button ng-show="true" ng-click="scrollSide()" style="background:black;opacity:0.4;border:0px;position:fixed;z-index:2;right:3%;top:43%;border-radius:50%;width:9vh;height:9vh;">
+      <!--      <button ng-show="true" ng-click="scrollSide()" style="background:black;opacity:0.4;border:0px;position:fixed;z-index:2;right:3%;top:43%;border-radius:50%;width:9vh;height:9vh;">
                 <i style="font-size:6vh;color:white;" class="icon ion-chevron-right"></i>
             </button>
+      -->
             <div id="productsView">
                 <!-- 
                 <div class="col-70" id="product-display">
@@ -95,8 +99,11 @@
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
       -->       
-                <ion-slide-box show-pager="false" style="height:90%; width:100%;" >
+   
+                <ion-slide-box show-pager="true" style="width:100%;height:90%;" id="productsViewSlideBox" >
+
                     <ion-slide style="display:flex;width:100%;height:100%;flex-wrap:wrap;flex-direction:row;" ng-repeat="proArr in allSlideProductArr">
                         <div class="card" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="openNumericModal(Product)" ng-repeat="Product in proArr">
                             <div id="product-name" align="left">
@@ -117,7 +124,7 @@
                     <div id="product-categary-previous">
                         <button class="button icon ion-chevron-left" id="button-previous" ng-click="previous()"></button>
                     </div>
-                    <ion-slide-box show-pager="true" id="product-cat-slide">
+                    <ion-slide-box show-pager="false" id="product-cat-slide" delegate-handle="categorySlideHandle">
                         <ion-slide class="product-slide" ng-repeat="catArr in allSlideCatArr">
                             <button class="product-categary-button" ng-repeat="categoryObj in catArr" ng-click="display(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
                         </ion-slide>
