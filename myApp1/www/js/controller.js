@@ -29,7 +29,8 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             productSlideLogic();
             $rootScope.hideDbLoading();
         }, function(res) {
-            console.log(res)
+            console.log(res);
+            $rootScope.hideDbLoading();
         })
     }
     function loadCategory() {
@@ -41,6 +42,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             $rootScope.hideDbLoading();
         }, function(res) {
             console.log(res);
+            $rootScope.hideDbLoading();
         })
     }
     function productSlideLogic() {
@@ -74,9 +76,9 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.showDelete = true;
     }
     $scope.deleteItem = function(index) {
-        var deleteProduct = $scope.productArr[index];
         $scope.productArr.splice(index, 1);
         $scope.showDelete = false;
+        delete $scope.itemsInStockObj[product.productId];
         calculateProductCost();
     }
     function calculateProductCost() {
@@ -95,14 +97,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
     //load products list from DB
     $scope.display = function(catId) {
         console.log(catId);
-        $scope.prodCat = [];
-        console.log($scope.prodCat.length);
-        /*    for (var i = 0; i < $scope.Products.length; i++) {
-                if ($scope.Products[i].favourite == "true") {
-                    $scope.prodCat.push($scope.Products[i]);
-                }
-              }  
-        */
         $rootScope.showDbLoading();
         var promise = dbService.loadProductsForCategory(catId);
         promise.then(function(res) {
@@ -111,22 +105,9 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             productSlideLogic();
             $rootScope.hideDbLoading();
         }, function(res) {
-            console.log(res)
+            console.log(res);
+            $rootScope.hideDbLoading();
         })
-        /*
-        var promise = dbService.loadProductsForCategory(categoryId)
-        promise.then(function(res){
-            $scope.prodCat.push({
-                categoryId: res.rows.item(i).CategoryId,
-                categoryName: res.rows.item(i).CategoryName,
-                categoryDescription: res.rows.item(i).CategoryDesc
-              }) 
-        }, function(res){
-             console.log(res); 
-        })
- */
-        console.log($scope.prodCat)
-        console.log($scope.prodCat.length)
     }
     $scope.scrollTopBtn = false;
     $scope.scrollBottomBtn = false;
@@ -152,14 +133,14 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $ionicScrollDelegate.scrollBy(0, 50, true);
         // $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
     }
+    $scope.itemsInStockObj = {};
     // $scope.numValue = 0;
     $scope.productArr = [];
-    $scope.discountAmount = 0;
-    $scope.totalPrice = null;
-    $scope.totalTaxAmount = 0;
     $scope.index = null;
+    $scope.totalPrice = 0;
+    $scope.totalTaxAmount = 0;
+    $scope.discountAmount = 0;
     $scope.totalChargeAmount = 0;
-    $scope.serviceTax = 0.05;
     //  $scope.quantity=0;
     $scope.save = function(product) {
         console.log(product);
@@ -170,6 +151,8 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         } else {
             qty = $scope.typedCode;
         }
+        $scope.itemsInStockObj[product.productId] = parseFloat(product.inStock) - parseFloat(qty);
+        console.log($scope.itemsInStockObj);
         //  var qty =document.getElementById('quantity').value;
         console.log('I am in Save Function');
         // console.log('Scope quanitity' + qty);
@@ -198,7 +181,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             categoryName: product.categoryName,
             selected: false
         })
-        //  TotalPrice real, TaxAmount real, TotalAmount real;
         $scope.numericModal.hide();
         $scope.newProduct = {};
         $scope.typedCode = null;
@@ -220,6 +202,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         $scope.enterBtn = true;
         $scope.receiptBtnShow = false;
     }
+    //receipt function to store all transaction details in DB
     $scope.receipt = function() {
         $scope.paymentModal.hide();
         $scope.transactionDate = (new Date()).getTime();
@@ -228,13 +211,23 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             console.log(result);
             $scope.paymentMethod = "cash";
             $scope.totalItems = $scope.productArr.length;
+            //update inStock in product
+            var promise = dbService.updateItemsInStock($scope.itemsInStockObj);
             toBillDetails();
+        }, function(result) {
+            console.log(result);
+        })
+    }
+    //function to save bill details to database
+    function toBillDetails() {
+        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.transactionDate);
+        promise.then(function(result) {
+            console.log(result);
             //clear all values
             $scope.productArr = [];
-            $scope.totalPrice = null;
-            $scope.payableAmount = null;
             $scope.typedAmount = null;
             $scope.Balance = null;
+            $scope.totalPrice = 0;
             $scope.totalTaxAmount = 0;
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
@@ -242,77 +235,33 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             console.log(result);
         })
     }
-    function toBillDetails() {
-        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.transactionDate);
-        promise.then(function(result) {
-            console.log(result);
-        }, function(result) {
-            console.log(result);
+    //function to get bill details
+    function getBillDetails() {
+        var billDetail = [];
+        var promise = dbService.getBillDetails(2);
+        promise.then(function(res) {
+            billDetail = res;
+            console.log(billDetail);
+        }, function(res) {
+            console.log(res)
         })
     }
-    //BillNo, TotalPrice, DiscountAmount, TaxAmount, TotalAmount, PaymentMethod, DateTime, TotalItems, BillStatus
-    var billDetail = [];
-    var promise = dbService.getBillDetails(2);
-    promise.then(function(res) {
-        for (var i = 0; i < res.rows.length; i++) {
-            billDetail.push({
-                BillNo: res.rows.item(i).BillNo,
-                TotalPrice: res.rows.item(i).TotalPrice,
-                DiscountAmount: res.rows.item(i).DiscountAmount,
-                TaxAmount: res.rows.item(i).TaxAmount,
-                TotalAmount: res.rows.item(i).TotalAmount,
-                PaymentMethod: res.rows.item(i).PaymentMethod,
-                DateTime: res.rows.item(i).DateTime,
-                TotalItems: res.rows.item(i).TotalItems,
-                BillStatus: res.rows.item(i).BillStatus
-            });
-        }
-        console.log(billDetail);
-    }, function(res) {
-        console.log(res)
-    })
-    //BillNo, DateTime, ProductId, ProductName, Quantity, ProductPrice, TotalPrice, TaxAmount, TotalAmount, DiscountAmount, Discount, TaxRate, TaxId, CategoryId, CategoryName    
-    var transactionDetail = [];
-    var promise = dbService.getTransactionDetails(3);
-    promise.then(function(res) {
-        for (var i = 0; i < res.rows.length; i++) {
-            transactionDetail.push({
-                BillNo: res.rows.item(i).BillNo,
-                DateTime: res.rows.item(i).DateTime,
-                ProductId: res.rows.item(i).ProductId,
-                ProductName: res.rows.item(i).ProductName,
-                Quantity: res.rows.item(i).Quantity,
-                ProductPrice: res.rows.item(i).ProductPrice,
-                TotalPrice: res.rows.item(i).TotalPrice,
-                TaxAmount: res.rows.item(i).TaxAmount,
-                TotalAmount: res.rows.item(i).TotalAmount,
-                DiscountAmount: res.rows.item(i).DiscountAmount,
-                Discount: res.rows.item(i).Discount,
-                TaxRate: res.rows.item(i).TaxRate,
-                TaxId: res.rows.item(i).TaxId,
-                CategoryId: res.rows.item(i).CategoryId,
-                CategoryName: res.rows.item(i).CategoryName
-            });
-        }
-        console.log(transactionDetail);
-    }, function(res) {
-        console.log(res)
-    })
-    $scope.cancel = function() {
-        for (var i = 0; i < $scope.productArr.length; i++) {
-            var bool = $scope.productArr[i].selected;
-            if (bool) {
-                $scope.totalPrice = $scope.totalPrice - $scope.productArr[i].productTotalPrice;
-                $scope.productArr.splice(i, 1);
-            }
-        }
+    //function to get transaction details
+    function getTransactionDetails() {
+        var transactionDetail = [];
+        var promise = dbService.getTransactionDetails(3);
+        promise.then(function(res) {
+            transactionDetail = res;
+            console.log(transactionDetail);
+        }, function(res) {
+            console.log(res)
+        })
     }
     $scope.void = function() {
         $scope.productArr = [];
-        $scope.totalPrice = null;
-        $scope.payableAmount = null;
         $scope.typedAmount = null;
         $scope.Balance = null;
+        $scope.totalPrice = 0;
         $scope.totalTaxAmount = 0;
         $scope.discountAmount = 0;
         $scope.totalChargeAmount = 0;
@@ -452,7 +401,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
         if ($scope.productArr.length) {
             console.log('I am in openModel')
             $scope.typedAmount = null;
-            $scope.payableAmount = $scope.totalPrice + ($scope.serviceTax * $scope.totalPrice);
             $scope.paymentModal.show();
             $scope.receiptBtnShow = true;
             $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
@@ -557,22 +505,23 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             window.localStorage.setItem('holdEvents', JSON.stringify(itemsJsonObj));
         }
     }
-    $scope.next = function() {
+    $scope.nextCategorySlide = function() {
         console.log('I am in next')
         //  $ionicScrollDelegate.scrollBy(0, 68, true);
         $ionicSlideBoxDelegate.$getByHandle('categorySlideHandle').next();
     }
     ;
-    $scope.previous = function() {
+    $scope.previousCategorySlide = function() {
         // $ionicScrollDelegate.scrollBy(0, -68, true);
         $ionicSlideBoxDelegate.$getByHandle('categorySlideHandle').previous();
     }
     ;
     //Slide Ends
-} 
+}
 ]).controller("productCtrl", function($scope, $state, $rootScope, $ionicPopover, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         console.log('working before enter..')
+        console.log($rootScope.editingProduct);
         $scope.notEditingProduct = angular.equals({}, $rootScope.editingProduct);
         console.log($scope.notEditingProduct);
         if (!($scope.notEditingProduct)) {
@@ -587,7 +536,6 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             };
         }
         loadCategory();
-        //    console.log("State Params: ", data.stateParams);
     });
     function loadCategory() {
         $rootScope.showDbLoading();
@@ -596,7 +544,8 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             $scope.categoryArr = res;
             $rootScope.hideDbLoading();
         }, function(res) {
-            console.log(res)
+            console.log(res);
+            $rootScope.hideDbLoading();
         })
     }
     $scope.TaxSettings1 = [{
@@ -665,11 +614,10 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             }
         }
     });
-    $scope.newProduct.image = "/img/sc1.jpg";
     $scope.addNewProduct = function() {
         console.log($scope.selectedTax);
         console.log('entered addNewProduct()..');
-        $scope.newProduct.image = "/img/sc1.jpg";
+        $scope.newProduct.image = "/img/icedcoffee.jpg";
         console.log($scope.newProduct);
         if ($scope.notEditingProduct) {
             if (!($scope.idExistsError)) {
@@ -705,6 +653,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                     });
                 }, function(result) {
                     console.log(result);
+                    $rootScope.hideDbLoading();
                 })
             }
         } else {
@@ -715,10 +664,10 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             promise.then(function(result) {
                 console.log(result);
                 $rootScope.hideDbLoading();
-                //   $rootScope.Products.push($scope.newProduct);
                 $ionicHistory.goBack();
             }, function(result) {
                 console.log(result);
+                $rootScope.hideDbLoading();
             })
         }
     }
@@ -815,7 +764,8 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             $scope.categoryArr = res;
             $rootScope.hideDbLoading();
         }, function(res) {
-            console.log(res)
+            console.log(res);
+            $rootScope.hideDbLoading();
         })
     }
     $scope.deleteCategory = function() {
@@ -835,6 +785,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                         $ionicHistory.goBack();
                     }, function() {
                         console.log(res);
+                        $rootScope.hideDbLoading();
                     })
                 } else {
                     console.log('No');
@@ -869,6 +820,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                 $ionicHistory.goBack();
             }, function() {
                 console.log(res);
+                $rootScope.hideDbLoading();
             })
         } else {
             console.log('enter new name and description...');
@@ -920,6 +872,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                 }
             }, function() {
                 console.log(result);
+                $rootScope.hideDbLoading();
             });
         }
     }
@@ -958,7 +911,8 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             $rootScope.hideDbLoading();
             $scope.Products = res;
         }, function(res) {
-            console.log(res)
+            console.log(res);
+            $rootScope.hideDbLoading();
         })
     }
     $scope.showProduct = true;
@@ -1001,6 +955,7 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
                 })
             }, function(result) {
                 console.log(result);
+                $rootScope.hideDbLoading();
             })
         }
     }

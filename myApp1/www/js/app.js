@@ -30,9 +30,11 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
             // browser 
             console.log("browser");
         }
+        $rootScope.editingProduct = {};
         $rootScope.showDbLoading = function() {
             $ionicLoading.show({
                 template: 'Loading...'
+               // duration: 15000
             }).then(function() {
                 console.log("The loading indicator is now displayed");
             });
@@ -42,15 +44,14 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
             $ionicLoading.hide().then(function() {
                 console.log("The loading indicator is now hidden");
             });
-        };
+        }
+        ;
         $rootScope.printFormatSettings = printFormatSettings;
         $rootScope.TaxSettings = TaxSettings;
         $rootScope.PaymentSettings = PaymentSettings;
         //$cordovaSQLite.execute($rootScope.db, "DROP TABLE TransactionDetails ").then(console.log('Transaction table droped Successfully')); 
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Category (CategoryId text primary key, CategoryName text, CategoryDesc text)").then(console.log('Category table created Successfully'));
-
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Product (ProductId text primary key, ProductName text, ProductUnit text, ProductPrice real, TaxId integer, BuyingPrice real, TaxRate real, ItemsinStock real, Discount real, CategoryId text, CategoryName text, Image text, Favourite text)").then(console.log('Product table created Successfully'));
-
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS TransactionDetails (BillNo integer, DateTime text,DiscountAmount real, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, CategoryId text, CategoryName text)").then(console.log('TransactionDetails table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Settings (SettingsName text PRIMARY KEY ,SettingsValue TEXT)').then(console.log('Settings table created Successfully'));
