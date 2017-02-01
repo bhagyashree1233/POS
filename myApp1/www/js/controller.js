@@ -1,5 +1,8 @@
 
-angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading) {
+angular.module('starter.controller', [])
+
+
+.controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading) {
     /*
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -531,6 +534,9 @@ angular.module('starter.controller', []).controller('homeCtrl', ['$scope', '$roo
             $scope.totalPrice = null;
         }
     }
+
+  
+
     $rootScope.recallItems = function() {
         var itemsJsonObj = window.localStorage.getItem('holdEvents');
         console.log(itemsJsonObj);

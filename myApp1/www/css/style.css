@@ -48,9 +48,11 @@
     height: 10%;
     display: inline-flex;
     padding: auto;
+    position: absolute; 
+    bottom: 0px;
 }
 #product-cat-slide{
-	width:100%;
+	width:50%;
 	height:100%;
 }
 .product-slide{
@@ -65,9 +67,11 @@
     overflow: scroll;
 }
 #product-categary-next, #product-categary-previous{
-	width:6%;
+	width:10%;
 	height:auto;
 	background: black;
+
+   
 }
 #button-next, #button-previous{
 	width:100%;
@@ -165,8 +169,18 @@
     position: relative;
     margin: 0vh;
     padding: auto;
-    float: right;
-    width: 50%;
+    
+    width: 100%;
+    bottom: 0px;
+    border: solid #111;
+    height: 100%;
+}
+#product-name {
+    position: relative;
+    margin: 0vh;
+    padding: auto;
+    
+    width: 100%;
     bottom: 0px;
     border: solid #111;
     height: 100%;
