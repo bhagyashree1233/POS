@@ -20,7 +20,7 @@
                     <span class="input-label">Product Name :</span>
                     <input type="text" name="productNameInput" maxlength="25" ng-model="newProduct.name"></input>
                 </label>
-                
+
                  
                 <label class="item item-input">
                     <span class="input-label">Product Unit :</span>
@@ -45,19 +45,23 @@
                
                     <p style="color:red;" ng-show="productForm.taxSelect.$touched && productForm.taxSelect.$invalid">Please select</p>
                 </label>
+
                 <label class="item item-input">
                     <span class="input-label">Buying Price :</span>
                     <input type="number" name="productBpriceInput" step="0.1" ng-model="newProduct.actualPrice" required></input>
                     <p style="color:red;" ng-show="productForm.productBpriceInput.$touched && productForm.productBpriceInput.$invalid">Enter number between 0.1-1000000</p>
                 </label>
+
                 <label class="item item-input">
                     <span class="input-label">Items in-stock :</span>
                     <input type="number" step="0.1" min="0.1" max="1000000" ng-model="newProduct.inStock" ng-model-options="{ updateOn: 'blur'}" required></input>
                 </label>
+
                 <label class="item item-input">
                     <span class="input-label">Discount (%):</span>
                     <input type="number" step="0.1" min="0.1" max="100" ng-model="newProduct.discount">
                 </label>
+                
                 <label class="item item-input item-button-right" ng-click="openCategoryModal()">
                     <span class="input-label">Category :</span>
                     <input type="text" ng-model="newProduct.categoryName" readonly="readonly">

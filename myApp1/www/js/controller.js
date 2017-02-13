@@ -628,11 +628,16 @@ angular.module('starter.controller', [])
      //min length;;
      //min value;;
      //valid number;;
-     //valid selection;;
+     //valid selection;; ex: category , tax rate.
+     //discount less than 100%
+     //if discount not entered set discout =0 
+     //if item in stock not entered set to 0;
+     //if image not selected, set default image;;
 
      //$rootScope.ShowToast("Invalid Selling Price",false); 
      
      //console.log("Invalid Selling Price");
+     
 
      if ($rootScope.CreateMode == 0)
      {
@@ -734,15 +739,15 @@ angular.module('starter.controller', [])
     function addNewProduct() {
         console.log($scope.selectedTax);
         console.log('entered addNewProduct()..');
-        $scope.newProduct.image = "/img/icedcoffee.jpg";
+        //$scope.newProduct.image = "/img/icedcoffee.jpg";
         console.log($scope.newProduct);
         
             if (!($scope.idExistsError)) {
-                if (!(angular.isDefined($scope.newProduct.discount))) {
+               /* if (!(angular.isDefined($scope.newProduct.discount))) {
                     $scope.newProduct.discount = 0;
                 }
                  if (!(angular.isDefined($scope.newProduct.inStock))) {
-                    $scope.newProduct.inStock = 1000000;
+                    $scope.newProduct.inStock = 1000000;*/
                 }
                 console.log('validation success and entered if');
                 console.log($scope.newProduct);
