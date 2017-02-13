@@ -35,9 +35,13 @@ var PaymentSettings={
 
 angular.module('starter.globalcontroller', [])
 
-.controller('global',function($rootScope,$scope,$cordovaSQLite){
-  console.log('Hello hai')
+.controller('global',function($rootScope,$scope,$cordovaSQLite,$state,$cordovaToast){
+  console.log('Hello hai');
    $rootScope.Mode = 0;
+   $rootScope.SelCat ='0';
+   $rootScope.CreateMode = 0;
+   $rootScope.PrevSelCat='0';
+   $rootScope.CurrentProduct={};
 
    $rootScope.OnModeChangeClick = function()
    {
@@ -59,15 +63,68 @@ angular.module('starter.globalcontroller', [])
    $rootScope.OnEditCategory = function()
    {
     console.log("On Edit Category");
+    $rootScope.CreateMode =0;
+     
+    if($rootScope.SelCat !='favourite')
+    $state.go('app.category');
 
    }
 
 
 $rootScope.AddNewCat = function()
-   {
+   { 
     console.log("On Add Category");
+    $rootScope.CreateMode =1;
+    $state.go('app.category');
 
    }
+
+$rootScope.AddNewPro = function()
+   {
+    console.log("On Add Product");
+    $rootScope.CreateMode =1;
+    $state.go('app.product');
+
+   }
+
+
+$rootScope.EditPro = function()
+   {
+    console.log("On Edit Product");
+    $rootScope.CreateMode =0;
+    $state.go('app.product');
+
+   }
+
+   $rootScope.ShowToast = function(message,longx)
+{
+    if(window.cordova){
+    if(longx == true)
+    {
+
+ $cordovaToast.showLongCenter(message).then(function(success) {
+    // success
+    console.log("Toast Success");
+  }, function (error) {
+    // error
+    console.log("Toast Failed");
+  });   
+    }
+
+else
+{
+$cordovaToast.showShortCenter(message).then(function(success) {
+    // success
+    console.log("Toast Success");
+  }, function (error) {
+    // error
+    console.log("Toast Failed");
+  });   
+
+}}
+
+}
+   
    
 
 

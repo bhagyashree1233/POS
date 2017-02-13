@@ -86,7 +86,7 @@
                 <i style="font-size:6vh;color:white;" class="icon ion-chevron-right"></i>
             </button>
       -->
-            <div id="productsView">
+           
                 <!-- 
                 <div class="col-70" id="product-display">
                     <div id="product-display-col1" class="card" ng-click="openNumericModal(Product)" ng-repeat="Product in Products">
@@ -103,12 +103,27 @@
                     </div>
                 </div>
       -->
-   
-                <ion-slide-box show-pager="true" style="width:100%;height:90%;" id="productsViewSlideBox" >
 
-                    <ion-slide style="display:flex;width:100%;height:100%;flex-wrap:wrap;flex-direction:row;" ng-repeat="proArr in allSlideProductArr">
-                        
-                        <div class="card" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="openNumericModal(Product)" ng-repeat="Product in proArr">
+       <!--<button class="product-categary-button" ng-show = "Mode == 1" ng-click="AddNewCat()">Add New</button>
+                        <button  class="product-categary-button"  ng-repeat="categoryObj in categoryArr" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
+                        -->
+        <div id="productsView">
+        <ion-scroll direction="y" id="productsViewSlideBox" style="width:100%;height:90%;" scrollbar-x = false scrollbar-y= false>
+                       
+
+                        <div class="card" ng-show = "Mode == 1" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="AddNewPro()">
+                            
+                          
+
+                            <div id="product-image" align="right">
+                                <img ng-src="img/add-product.png" style="padding:auto;margin:auto;height:100%;width:100%;"></img>
+                            </div>
+
+                        </div>
+
+
+                        <div class="card" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="OnProductClick(Product)" ng-repeat="Product in Products">
+                            
                             <div id="product-name" align="left">
                                 <p style="font-weight:bolder;text-transform: uppercase;padding:2vh;margin:auto;position:absolute;font-size:small;">{{Product.name}}</p>
                             </div>
@@ -120,36 +135,59 @@
                                 </div>
                             </div>
                         </div>
+                        
+          </ion-scroll>
+          
 
-                    </ion-slide>
-                </ion-slide-box>
+
+   
+                <!--<ion-slide-box show-pager="true" style="width:100%;height:90%;" id="productsViewSlideBox" >
+                 -->
+                    <!--<ion-slide style="display:flex;width:100%;height:100%;flex-wrap:wrap;flex-direction:row;" ng-repeat="proArr in allSlideProductArr">
+                        -->
+                       <!--<div class="card" ng-show = "Mode == 1" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="AddNewPro()">
+                            
+                          
+
+                            <div id="product-image" align="right">
+                                <img ng-src="img/add-product.png" style="padding:auto;margin:auto;height:100%;width:100%;"></img>
+                            </div>
+
+                        </div>-->
+
+
+
+                       <!-- <div class="card" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="openNumericModal(Product)" ng-repeat="Product in proArr">
+                            <div id="product-name" align="left">
+                                <p style="font-weight:bolder;text-transform: uppercase;padding:2vh;margin:auto;position:absolute;font-size:small;">{{Product.name}}</p>
+                            </div>
+
+                            <div id="product-image" align="right">
+                                <img ng-src={{Product.image}} style="padding:auto;margin:auto;height:100%;width:100%;"></img>
+                                <div id="product-stock">{{Product.inStock}}</div>
+                                <div id="product-price">
+                                    <p style="font-weight:bolder;color:lightblue;">{{Product.unitPrice}}</p>
+                                </div>
+                            </div>
+                        </div>-->
+
+                    <!--</ion-slide>-->
+                <!--</ion-slide-box>-->
 
                 <div id="product-categary">
-                    <div id="product-categary-previous">
-                        <button class="button icon ion-chevron-left" id="button-previous" ng-click="previousCategorySlide()"></button>
-                    </div>
-
-                    <ion-slide-box show-pager="true" id="product-cat-slide" delegate-handle="categorySlideHandle">
-                        
-                       
-
-                        <ion-slide class="product-slide" ng-repeat="catArr in allSlideCatArr">
-                           <button class="product-categary-button" ng-show = "Mode == 1" ng-click="AddNewCat()">Add New</button>
-                            <button class="product-categary-button" ng-repeat="categoryObj in catArr" ng-click="display(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
-                        </ion-slide>
-
-                    </ion-slide-box>
-                    <!-- 
-                    <ion-scroll direction="x" id="product-categary-scroll">
-                        <button class="product-categary-button" ng-repeat="categoryObj in categoryArr" ng-click="display(categoryObj.categoryName)">{{categoryObj.categoryName}}</button>
+                  
+                    
+                    <ion-scroll direction="x" id="product-categary-scroll" scrollbar-x = false scrollbar-y= false>
+                        <button class="product-categary-button" ng-show = "Mode == 1" ng-click="AddNewCat()">Add New</button>
+                        <button  class="product-categary-button"  ng-repeat="categoryObj in categoryArr" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
                     </ion-scroll>
-             -->
-                    <div class="catButtons" id="product-categary-next">
-                        <button class="button icon ion-chevron-right" id="button-next" ng-click="nextCategorySlide()"></button>
-                    </div>
                 </div>
+
             </div>
         </div>
+
+
+
         <!--  
         <div class="bar bar-footer bar-light " id="footer">
             <button class="button" id="button1" ng-click="cancel(productArr,product)">CANCEL</button>

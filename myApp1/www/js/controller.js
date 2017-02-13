@@ -3,7 +3,7 @@
 angular.module('starter.controller', [])
 
 
-.controller('homeCtrl', ['$scope', '$rootScope', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', function($scope, $rootScope, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading) {
+.controller('homeCtrl', ['$scope', '$rootScope','$state', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', function($scope, $rootScope, $state, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading) {
 
     /*
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -12,19 +12,47 @@ angular.module('starter.controller', [])
         loadCategory();
     });
 */
+
+//ionicParentView
+
     $scope.$on("$ionicParentView.enter", function(event, data) {
         console.log('entered before enter parent view');
-        loadProducts();
+        //loadProducts();
         loadCategory();
+        //$scope.highlight = "1x";
+        if($rootScope.SelCat =='0')
+        {
+            $scope.OnCatClick("favourite")
+        //$scope.highlight = "favourite";
+        }
+        else
+        {
+            $scope.OnCatClick($rootScope.SelCat)
+        //$scope.highlight = $rootScope.SelCat;
+        }
     });
+
+   
+
+    
+
+
     $ionicPlatform.ready(function() {
-        loadProducts();
-        loadCategory();
+        //loadProducts();
+        //loadCategory();
+        
+            //console.log("First Time");
+          // $scope.OnCatClick('favourite');
+
+        
     })
     $scope.Products = [];
     $scope.categoryArr = [];
     $scope.allSlideCatArr = [];
     $scope.allSlideProductArr = [];
+
+
+   
 
     function loadProducts() {
         $rootScope.showDbLoading();
@@ -40,13 +68,14 @@ angular.module('starter.controller', [])
         })
     }
 
-    function loadCategory() {
+    function loadCategory(highlight) {
         $rootScope.showDbLoading();
         var promise = dbService.loadCategoryFromDB('Category');
         promise.then(function(res) {
             $scope.categoryArr = res;
-            categorySlideLogic();
             $rootScope.hideDbLoading();
+            if(highlight!=undefined)
+            $scope.OnCatClick(highlight);
         }, function(res) {
             console.log(res);
             $rootScope.hideDbLoading();
@@ -67,6 +96,7 @@ angular.module('starter.controller', [])
         console.log($scope.allSlideProductArr);
     }
 
+ /*
     function categorySlideLogic() {
         $scope.allSlideCatArr = [];
         var tempCatArr = [];
@@ -80,6 +110,8 @@ angular.module('starter.controller', [])
         }
         console.log($scope.allSlideCatArr);
     }
+*/
+
     $scope.onPressHold = function() {
         console.log('enterd on hold');
         $scope.showDelete = true;
@@ -105,8 +137,21 @@ angular.module('starter.controller', [])
         }
     }
     //load products list from DB
-    $scope.display = function(catId) {
+    $scope.OnCatClick = function(catId) {
         console.log(catId);
+        $rootScope.SelCat = catId;
+        
+        //change background color;;
+       // if($rootScope.PrevSelCat!='0')
+         // document.getElementById($rootScope.PrevSelCat).style.backgroundColor='Black';
+        
+        //console.log("Setting Color.. Please Wait: ", catId);
+        //document.getElementById(catId).style.backgroundColor='Red';
+        //$rootScope.PrevSelCat = catId;
+        //console.log("After Red");
+
+        $scope.highlight = catId;
+
         $rootScope.showDbLoading();
         var promise = dbService.loadProductsForCategory(catId);
         promise.then(function(res) {
@@ -119,6 +164,10 @@ angular.module('starter.controller', [])
             $rootScope.hideDbLoading();
         })
     }
+
+    //$scope.OnCatClick("favourite");
+
+    /*
     $scope.scrollTopBtn = false;
     $scope.scrollBottomBtn = false;
     $scope.onScroll = function() {
@@ -141,7 +190,8 @@ angular.module('starter.controller', [])
     $scope.scrollBottom = function() {
         $ionicScrollDelegate.scrollBy(0, 50, true);
         // $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
-    }
+    }*/
+
     $scope.itemsInStockObj = {};
     // $scope.numValue = 0;
     $scope.productArr = [];
@@ -151,6 +201,7 @@ angular.module('starter.controller', [])
     $scope.discountAmount = 0;
     $scope.totalChargeAmount = 0;
     //  $scope.quantity=0;
+
     $scope.save = function(product) {
         console.log(product);
         console.log($scope.typedCode);
@@ -422,6 +473,27 @@ angular.module('starter.controller', [])
     }).then(function(modal) {
         $scope.numericModal = modal;
     });
+    
+    $scope.OnProductClick = function(Product)
+    {
+      if($rootScope.Mode == 1) //edit or add mode;;
+      {
+          console.log("Mode Edit");
+          $rootScope.CreateMode = 0; //edit mode;;
+          $rootScope.CurrentProduct = Product;
+          $state.go('app.product');
+
+      }
+      else
+      {
+          $scope.openNumericModal(product);
+      }
+
+
+
+    }
+
+
     $scope.openNumericModal = function(product) {
         console.log(' Open Numeric Model')
         $scope.numericModal.show();
@@ -518,17 +590,27 @@ angular.module('starter.controller', [])
     };
     //Slide Ends
 
-}]).controller("productCtrl", function($scope, $state, $rootScope, $ionicPopover, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
+}]) //END OF HOMECTRL;;
+
+
+
+.controller("productCtrl", function($scope, $state, $rootScope, $ionicPopover, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         console.log('working before enter..')
-        console.log($rootScope.editingProduct);
-        $scope.notEditingProduct = angular.equals({}, $rootScope.editingProduct);
-        console.log($scope.notEditingProduct);
-        if (!($scope.notEditingProduct)) {
-            $scope.newProduct = $rootScope.editingProduct;
+
+        
+
+        if ($rootScope.CreateMode == 0) { //editing;;
+            $scope.ProductButtonText = "Edit Product";
+            console.log("Edit Product: ");
+            console.log($rootScope.CurrentProduct);
+            $scope.newProduct = $rootScope.CurrentProduct;
             $rootScope.editingProduct = {};
             $scope.pIdDisable = true;
-        } else {
+        } 
+
+        else {
+            $scope.ProductButtonText = "Add Product";
             $scope.pIdDisable = false;
             $scope.newProduct = {
                 unit: 'pieces',
@@ -537,6 +619,33 @@ angular.module('starter.controller', [])
         }
         loadCategory();
     });
+
+
+    $scope.addEditProduct = function()
+    {
+
+     //validate here;;
+     //min length;;
+     //min value;;
+     //valid number;;
+     //valid selection;;
+
+     //$rootScope.ShowToast("Invalid Selling Price",false); 
+     
+     //console.log("Invalid Selling Price");
+
+     if ($rootScope.CreateMode == 0)
+     {
+         console.log("Edit Product");
+         editProduct();
+     }
+     else
+     {
+        console.log("Add Product");
+        addNewProduct();
+     }
+
+    }
 
     function loadCategory() {
         $rootScope.showDbLoading();
@@ -566,16 +675,19 @@ angular.module('starter.controller', [])
         Name: 'tax4',
         TaxRate: '20'
     }]
+
     $scope.onTaxRateSelect = function(tax) {
         $scope.newProduct.taxRate = tax.TaxRate;
         $scope.newProduct.taxId = tax.Id;
         $scope.taxRatePopover.hide();
     }
+    
     $ionicPopover.fromTemplateUrl('templates/taxRatePopover.html', {
         scope: $scope
     }).then(function(popover) {
         $scope.taxRatePopover = popover;
     });
+
     $scope.openTaxRatePopover = function($event) {
         $scope.taxRatePopover.show($event);
     };
@@ -600,12 +712,15 @@ angular.module('starter.controller', [])
             })
         }
     });
+
     $scope.newProduct = {
         unit: 'pieces',
         favourite: false
     };
+
+
     console.log($scope.newProduct);
-    console.log($scope);
+    
     $scope.$watch('newProduct.inStock', function(newValue, oldValue) {
         console.log($scope.newProduct);
         if (newValue) {
@@ -614,15 +729,20 @@ angular.module('starter.controller', [])
             }
         }
     });
-    $scope.addNewProduct = function() {
+
+
+    function addNewProduct() {
         console.log($scope.selectedTax);
         console.log('entered addNewProduct()..');
         $scope.newProduct.image = "/img/icedcoffee.jpg";
         console.log($scope.newProduct);
-        if ($scope.notEditingProduct) {
+        
             if (!($scope.idExistsError)) {
                 if (!(angular.isDefined($scope.newProduct.discount))) {
                     $scope.newProduct.discount = 0;
+                }
+                 if (!(angular.isDefined($scope.newProduct.inStock))) {
+                    $scope.newProduct.inStock = 1000000;
                 }
                 console.log('validation success and entered if');
                 console.log($scope.newProduct);
@@ -630,6 +750,8 @@ angular.module('starter.controller', [])
                 var promise = dbService.addNewProduct($scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite);
                 promise.then(function(result) {
                     console.log(result);
+                    console.log("Product Added Sucessfully");
+                    $rootScope.ShowToast("Product Added Sucessfully",false);
                     //  $rootScope.Products.push($scope.newProduct);
                     $scope.newProduct = {
                         unit: 'pieces',
@@ -653,24 +775,67 @@ angular.module('starter.controller', [])
                     });
                 }, function(result) {
                     console.log(result);
+                    console.log("Unable to add product");
+                    $rootScope.ShowToast("Unable to add product",false);
                     $rootScope.hideDbLoading();
                 })
             }
-        } else {
-            //enters if Product is editing
-            //  console.log($scope.newProduct);
+        
+    }
+
+
+ function editProduct()
+        { 
             $rootScope.showDbLoading();
             var promise = dbService.editProduct($scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite);
             promise.then(function(result) {
                 console.log(result);
+                console.log("product Edited Sucessfully");
                 $rootScope.hideDbLoading();
+                 $rootScope.ShowToast("product Edited Sucessfully",false);
                 $ionicHistory.goBack();
             }, function(result) {
                 console.log(result);
+                $rootScope.ShowToast("Unable to Edit product",false);
+                console.log("Unable to Edit product");
                 $rootScope.hideDbLoading();
             })
         }
+
+
+   $scope.deleteProduct = function(productId) {
+
+          console.log("Product Id:", productId);
+          $scope.ProductId = productId;
+           var confirmPopup = $ionicPopup.confirm({
+                title: 'The product will be permantly deleted',
+                template: 'Are you sure you want to delete Product?'
+            });
+
+             confirmPopup.then(function(res) {
+                if (res) {
+        
+            $rootScope.showDbLoading();
+            console.log("ProductId 2:",productId);
+            var promise = dbService.deleteProduct(productId);
+            promise.then(function(result) {
+
+                $rootScope.hideDbLoading();
+                $ionicHistory.goBack();
+               
+            }, function(result) {
+                console.log(result);
+                $rootScope.hideDbLoading();
+            });
+
+                }
+                else
+                return;
+        
+    });
+
     }
+    
     $scope.onCategorySelect = function(categoryObj) {
         $scope.newProduct.categoryName = categoryObj.categoryName;
         $scope.newProduct.categoryId = categoryObj.categoryId;
@@ -753,49 +918,112 @@ angular.module('starter.controller', [])
         console.log('open categoryModal')
         $scope.categoryModal.show();
     }
-}).controller('categoryCtrl', function($scope, $state, $ionicHistory, $ionicPopup, $cordovaSQLite, $rootScope, dbService) {
+})
+
+
+
+.controller('categoryCtrl', function($scope, $state, $ionicHistory, $ionicPopup, $cordovaSQLite, $rootScope, dbService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
-        loadCategory();
+        $scope.newCategory={};
+        $scope.newCategory.categoryId = "";
+        $scope.newCategory.categoryName="";
+        $scope.newCategory.categoryDescription="";
+
+        if($rootScope.CreateMode == 1)
+         $rootScope.CategoryButtonText = "Add Category";
+         else
+         {
+         $rootScope.CategoryButtonText = "Edit Category";
+         loadCategory();
+         }
     });
 
     function loadCategory() {
+        
         $rootScope.showDbLoading();
-        var promise = dbService.loadCategoryFromDB('Category');
+        var promise = dbService.GetCategoryById($rootScope.SelCat);
         promise.then(function(res) {
-            $scope.categoryArr = res;
+            if(res.categoryId !="Failed")
+            $scope.newCategory = res;
+
             $rootScope.hideDbLoading();
         }, function(res) {
             console.log(res);
             $rootScope.hideDbLoading();
         })
     }
-    $scope.deleteCategory = function() {
-        if ($scope.searchCategory.categoryId) {
-            var confirmPopup = $ionicPopup.confirm({
-                title: 'Delete Category ',
+
+    $scope.OnDone = function()
+    {
+      if($rootScope.CreateMode == 1)
+       $scope.addNewCategory();
+      else
+      $scope.saveEditedCategory();
+
+    }
+
+    $scope.deleteAllProductsAndCat = function()
+    {
+
+        var confirmPopup = $ionicPopup.confirm({
+                title: 'Will also delete all products in Category ',
                 template: 'Are you sure you want to delete Category?'
             });
-            confirmPopup.then(function(res) {
+
+             confirmPopup.then(function(res) {
                 if (res) {
-                    console.log('delete Category');
+                    console.log('Confirm Delete');
                     $rootScope.showDbLoading();
-                    var promise = dbService.deleteCategory($scope.searchCategory.categoryId);
-                    promise.then(function(res) {
+                 var promise1 = dbService.deleteAllProductsInCat($scope.newCategory.categoryId);
+                    promise1.then(function(res) {
                         console.log(res);
-                        $rootScope.hideDbLoading();
-                        $ionicHistory.goBack();
+                        console.log("deleted Products");
+                        $scope.deleteCategory();
+                        
                     }, function() {
                         console.log(res);
+                        console.log("Failed to delete Products in Category");
+                         $rootScope.ShowToast("Failed to delete Products in Category",false);
                         $rootScope.hideDbLoading();
                     })
-                } else {
-                    console.log('No');
-                }
-            });
-        } else {
-            $scope.selectCategoryWarningMsg = true;
-        }
+
+
+                     }
+                     else
+                        return;
+
+                     });
+                
+
+
+        
+
     }
+
+
+    $scope.deleteCategory = function() {
+        
+            
+           
+       var promise = dbService.deleteCategory($scope.newCategory.categoryId);
+                    promise.then(function(res) {
+                        console.log(res);
+                         $rootScope.ShowToast("Delete Category Success",false);
+                        $rootScope.hideDbLoading();
+                        //$ionicHistory.goBack();
+                        $rootScope.SelCat = 'favourite';
+                        $state.go('app.home');
+                    }, function() {
+                        console.log(res);
+                        $rootScope.ShowToast("Failed to Delete Category",false);
+                        $rootScope.hideDbLoading();
+                    })
+                
+                
+        }
+    
+
+
     $scope.editedCategory = {
         name: "",
         description: ""
@@ -808,10 +1036,15 @@ angular.module('starter.controller', [])
             $scope.selectCategoryWarningMsg = true;
         }
     }
+
+
     $scope.saveEditedCategory = function() {
-        if ($scope.editedCategory.name && $scope.editedCategory.description) {
+        if ($scope.newCategory.name !='' && $scope.newCategory.categoryId !='') {
+            console.log($scope.newCategory.categoryName);
+            console.log($scope.newCategory.categoryId);
+            console.log($scope.newCategory.categoryDescription);
             $rootScope.showDbLoading();
-            var promise = dbService.editCategory($scope.searchCategory.categoryId, $scope.editedCategory.name, $scope.editedCategory.description);
+            var promise = dbService.editCategory($scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
             promise.then(function(res) {
                 console.log(res);
                 $rootScope.hideDbLoading();
@@ -825,15 +1058,21 @@ angular.module('starter.controller', [])
             })
         } else {
             console.log('enter new name and description...');
-            $scope.newNameDescWarningMsg = true;
+            //$scope.newNameDescWarningMsg = true;
         }
     }
+
+
     $scope.nameFocused = function() {
         $scope.newNameDescWarningMsg = false;
     }
+
+
     $scope.searchCategory = {
         categoryId: ""
     };
+
+
     $scope.editSelectedCategory = function(categoryEditObj) {
         //  $scope.searchCategory = categoryEditObj;
         console.log(categoryEditObj);
@@ -841,9 +1080,16 @@ angular.module('starter.controller', [])
         $scope.showCategoryEdit = true;
         $scope.selectCategoryWarningMsg = false;
     }
+
+
     $scope.newCategory = {};
+
+
     $scope.addNewCategory = function() {
-        if (!($scope.catIdErrorMsg)) {
+
+
+        if (!($scope.catIdErrorMsg)) 
+        {
             $rootScope.showDbLoading();
             var promise = dbService.addNewCategory($scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
             promise.then(function(result) {
@@ -857,6 +1103,7 @@ angular.module('starter.controller', [])
                     $ionicHistory.goBack();
                 } else {
                     //confirmation popup
+                    $rootScope.ShowToast("Category Added Sucessfully",false);
                     var confirmPopup = $ionicPopup.confirm({
                         title: 'Add More Category ',
                         template: 'Do you want to add more Category?'
@@ -872,11 +1119,19 @@ angular.module('starter.controller', [])
                     });
                 }
             }, function() {
-                console.log(result);
+                console.log("Failed to Add Category");
+                $rootScope.ShowToast("Failed to Add Category",false);
                 $rootScope.hideDbLoading();
             });
         }
+        else
+        {
+            console.log("Id already Exists");
+            $rootScope.ShowToast("Id already Exists",false);
+        }
     }
+
+
     $scope.$watch('newCategory.categoryId', function(newcId, oldcId) {
         if (newcId) {
             $scope.succesMessage = false;
@@ -896,7 +1151,11 @@ angular.module('starter.controller', [])
             }
         })
     });
-}).controller('editProductsCtrl', function($scope, $rootScope, $state, $ionicHistory, dbService) {
+
+
+})
+/*
+.controller('editProductsCtrl', function($scope, $rootScope, $state, $ionicHistory, dbService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         loadProducts();
     });
@@ -939,30 +1198,10 @@ angular.module('starter.controller', [])
         }
         console.log($scope.deleteProductId);
     }
-    $scope.deleteSelectedProducts = function() {
-        if (!(angular.equals({}, $scope.deleteProductId))) {
-            $rootScope.showDbLoading();
-            var promise = dbService.deleteProduct($scope.deleteProductId);
-            promise.then(function(result) {
+   
+})*/
 
-                // $ionicHistory.goBack();
-                var promise = dbService.loadProductFromDB('Product');
-                promise.then(function(res) {
-                    $rootScope.hideDbLoading();
-                    $rootScope.Products = res;
-                    $state.reload();
-                    $scope.showDeleteOnHold = false;
-                    $scope.showCheckMark = false;
-                }, function(res) {
-                    console.log(res)
-                })
-            }, function(result) {
-                console.log(result);
-                $rootScope.hideDbLoading();
-            })
-        }
-    }
-}).controller('taxSetting', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $state, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
+.controller('taxSetting', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $state, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
     console.log('I am in tax  settings');
 
     $scope.taxSettings = [];
