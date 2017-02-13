@@ -747,8 +747,8 @@ angular.module('starter.controller', [])
                     $scope.newProduct.discount = 0;
                 }
                  if (!(angular.isDefined($scope.newProduct.inStock))) {
-                    $scope.newProduct.inStock = 1000000;*/
-                }
+                    $scope.newProduct.inStock = 1000000;
+                }*/
                 console.log('validation success and entered if');
                 console.log($scope.newProduct);
                 $rootScope.showDbLoading();
