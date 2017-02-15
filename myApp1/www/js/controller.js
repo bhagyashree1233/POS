@@ -623,7 +623,79 @@ angular.module('starter.controller', [])
 
     $scope.addEditProduct = function()
     {
+        var productId=document.getElementById('productId').value;
+        if(productId.length<1){
+             $rootScope.ShowToast("Enter productId ", false);
+            console.log('Enter Product Id')
+            return false
+        }
+        var productName=document.getElementById('productName').value;
+        if(productName.length<2){
+            $rootScope.ShowToast("Enter productName", false);
+            console.log('Enter Product Name')
+            return false
+        }
+    
+      var productSellingPrice = document.getElementById('productSellingPrice').value;
+    if (productSellingPrice.length < 1) {
+        $rootScope.ShowToast("Enter Selling Price ", false);
+        console.log("Enter Selling Price");
+        return false
+    } else if (!productSellingPrice.match(/^[0-9]+([,.][0-9]+)?$/g)) {
+        $rootScope.ShowToast("Invalid Selling Price", false);
+        console.log('Invalid product Selling')
+        return false
+    }
+    var taxRate = document.getElementById('taxRate').value;
+    console.log(taxRate);
+    if (taxRate == "") {
+        $rootScope.ShowToast("Select taxRate", false);
+        console.log('Select taxRate')
+        return false
+    }
 
+    var buyingPrice = document.getElementById('buyingPrice').value;
+    if (buyingPrice.length < 1) {
+        document.getElementById('buyingPrice').value = 0;
+    } else if (!buyingPrice.match(/^[0-9]+([,.][0-9]+)?$/g)) {
+        $rootScope.ShowToast("Invalid buyingPrice", false);
+        console.log('Invalid buyingPrice')
+        return false
+    }
+    var itemInStock = document.getElementById('itemsStock').value;
+    if (itemInStock.length < 1) {
+        document.getElementById('itemsStock').value = 100000;
+
+    } else if (!itemInStock.match('^[0-9]+$') && $scope.newProduct.unit == 'pieces') {
+        $rootScope.ShowToast("Invalid  itemInStock", false);
+        console.log('Invalid  itemInStock');
+        return false
+    } else if (!itemInStock.match(/^[0-9]+([,.][0-9]+)?$/g) && $scope.newProduct.unit == 'litres') {
+        $rootScope.ShowToast("Invalid  itemInStock", false);
+        console.log('Invalid  itemInStock');
+        return false
+    } else if (!itemInStock.match(/^[0-9]+([,.][0-9]+)?$/g) && $scope.newProduct.unit == 'kgs') {
+        $rootScope.ShowToast("Invalid  itemInStock", false);
+        console.log('Invalid  itemInStock');
+        return false
+    }
+    var discount = document.getElementById('discount').value;
+
+    if (discount.length < 1) {
+        document.getElementById('discount').value = 0;
+        return false
+    } else if (!discount.match(/^[0-9]+([,.][0-9]+)?$/g)) {
+        $rootScope.ShowToast("Invalid discount", false);
+        console.log('Invalid discount')
+        return false
+    }
+    
+    var Categary = document.getElementById('Category').value;
+    if (Categary == "") {
+        $rootScope.ShowToast("Select Categary", false);
+        console.log('Select Categary');
+        return false
+    }
      //validate here;;
      //min length;;
      //min value;;
@@ -1206,7 +1278,8 @@ angular.module('starter.controller', [])
    
 })*/
 
-.controller('taxSetting', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($rootScope, $state, $scope, $cordovaSQLite, $ionicPlatform, settingService) {
+.controller('taxSetting', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($scope, $rootScope, $state, $cordovaSQLite, $ionicPlatform, settingService) {
+    
     console.log('I am in tax  settings');
 
     $scope.taxSettings = [];
@@ -1223,6 +1296,22 @@ angular.module('starter.controller', [])
     console.log($scope)
 
     $scope.addMore = function() {
+        var taxNme=document.getElementById('taxNme').value;
+    if(taxNme.length<1){
+        console.log('Enter tax Setting')
+        return false
+    }else if(!taxNme.match(/^[a-z0-9]+$/i)){
+        console.log('Invalid tax Setting')
+        return false
+    }
+
+    var taxRate=document.getElementById('taxRate').value;
+    if(taxRate.length<1){
+        console.log('Enter tax Rate')
+    }else if(!taxRate.match(/^[0-9]+([,.][0-9]+)?$/g)){
+        console.log('Invalid tax Rate')
+        return false
+    }
         console.log('Hi am in addMore')
         var txSetting = $scope.txSetting
         $scope.taxSettings.push({
@@ -1235,10 +1324,28 @@ angular.module('starter.controller', [])
     }
 
     $scope.saveTaxSetting = function() {
+        var taxNme=document.getElementById('taxNme').value;
+    if(taxNme.length<1){
+        console.log('Enter tax Setting')
+        return false
+    }else if(!taxNme.match(/^[a-z0-9]+$/i)){
+        console.log('Invalid tax Setting')
+        return false
+    }
+
+    var taxRate=document.getElementById('taxRate').value;
+    if(taxRate.length<1){
+        console.log('Enter tax Rate')
+    }else if(!taxRate.match(/^[0-9]+([,.][0-9]+)?$/g)){
+        console.log('Invalid tax Rate')
+        return false
+    }
 
         var txSetting = $scope.txSetting
         $scope.taxSettings.push({
-            txSetting
+             id:'',
+           name: txSetting.name,
+           taxRate:txSetting.taxRate
         })
         console.log('Hai i am in TaxSetting Save')
         console.log($scope.taxSettings)
@@ -1270,7 +1377,7 @@ angular.module('starter.controller', [])
                      $scope.statusMessage = "Error on saving: " + error.message;
                      console.log($scope.statusMessage)
                  })*/
-        $state.go('Settings')
+        $state.go('app.Payments')
     }
 }]).controller('printerSettings', function($scope, settingService, $rootScope) {
     $scope.printFormatSettings = {};
@@ -1287,10 +1394,85 @@ angular.module('starter.controller', [])
         $scope.printFormatSettings.tokStartNmbr = $rootScope.printFormatSettings.tokStartNmbr,
         $scope.printFormatSettings.wifiSsid = $rootScope.printFormatSettings.wifiSsid
     $scope.savePrinterSettings = function() {
+        var shopName=document.getElementById('shopName').value;
+        
+        if(shopName.length<2){
+            $rootScope.ShowToast("Enter Shop Name", false);
+                console.log('Enter Shop Name')
+                return false
+            }else if(!shopName.match(/^[a-z0-9]+$/i)){
+                $rootScope.ShowToast("Invalid shopName", false);
+                console.log('Invalid shopName')
+              return false  
+            }
+        var number1=document.getElementById('number1').value;
+        if(!number1.match('^[0-9\+\]+$')){
+            $rootScope.ShowToast("Invalid Number", false);
+            console.log('Invalid Number')
+            return false 
+        }
+        var tinNum=document.getElementById('tinNum').value;
+        if(!tinNum.match('^[0-9]+$')){
+            $rootScope.ShowToast("Invalid TIN Number", false);
+            console.log('Invalid TIN Number')
+        }
+        var greetings=document.getElementById('greetings').value;
+        if(!greetings.match(/^[a-z0-9]+$/i)){
+          $rootScope.ShowToast("Invalid Greetings", false);
+           console.log('Invalid Greetings')
+           return false; 
+        }
+        var billNumber=document.getElementById('billNumber').value;
+        if(billNumber.length<1){
+            document.getElementById('billNumber').value=1;
+        }
+        var trtTokenNum=document.getElementById('trtTokenNum').value;
+        if(trtTokenNum.length<1){
+            document.getElementById('trtTokenNum').value=1;
+        }
+        
+       var restTokenNum=document.getElementById('restTokenNum').value;
+        if(restTokenNum.length<1){
+            document.getElementById('restTokenNum').value=999;
+        }
+       var billCopies=document.getElementById('billCopies').value;
+       if(billCopies.length<1){
+            document.getElementById('billCopies').value=1;
+        }
+        var wifiPassword=document.getElementById('wifiPassword').value;
+         if(wifiPassword.length<1){
+           console.log('WifiPassword Length ')
+        }else if(wifiPassword.length<2){
+            console.log('WifiPassword Length Should be greater then 2 ')
+            $rootScope.ShowToast("WifiPassword Length Should be greater then 2", false);
+            return false
+        }else if(!wifiPassword.match(/^[a-z0-9]+$/i)){
+           console.log('Invalid WifiPassword')
+             $rootScope.ShowToast("Invalid WifiPassword", false);
+           return false; 
+        }
+        var wifiSsid=document.getElementById('wifiSsid').value;
+        if(wifiSsid.length<1){
+
+         console.log('WifiSsid Length ')
+        }else if(wifiSsid.length<2){
+             $rootScope.ShowToast("wifiSsid Length Should be greater then 2", false);
+            console.log('wifiSsid Length Should be greater then 2 ')
+            return false
+        }else if(!wifiSsid.match(/^[a-z0-9]+$/i)){
+             $rootScope.ShowToast("wifiSsid Length Should be greater then 2", false);
+           console.log('Invalid WifiSsid')
+           return false; 
+        }
         console.log($scope.printFormatSettings)
         var printFormatSettings = JSON.stringify($scope.printFormatSettings);
         var promise = settingService.set("PrinterFormatSettings", printFormatSettings);
         promise.then(function(data) {
+         
+            
+           
+            
+
             console.log(data)
             if (data.rowsAffected >= 1) {
                 var promise = settingService.get("PrinterFormatSettings", printFormatSettings);

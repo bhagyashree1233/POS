@@ -1,25 +1,21 @@
 <ion-view view-title="TaxSettings">
     <ion-content ng-controller="taxSetting">
         
-            <form id="myTaxSettingForm" ng-submit="saveTaxSetting()">
+            <form id="myTaxSettingForm" >
               <ion-list>
                 <label class="item ">
                     <span class="input-label">Name:</span>
-                    <input name="taxNme" style="color:black" ng-model="txSetting.name" type="text" ng-minlength=1 ng-maxlength=25 required>
-                    <p ng-show="myForm.taxNme.$touched && myForm.taxNme.$error.required " style="color:red">Tax Name Required </p>
-                    <p ng-show="myForm.taxNme.$error.minlength" style="color:red">Tax Name min length 1</p>
-                    <p ng-show="myForm.taxNme.$error.maxlength" style="color:red">Tax Name max length 25 </p>
+                    <input name="taxNme" id="taxNme" style="color:black" ng-model="txSetting.name" type="text" maxlength=25 required>
+                    
                 </label>
                 <label class="item ">
                     <span class="input-label">Tax Rate:</span>
-                    <input type="number" style="color:black" step="any" name="taxRate" ng-model="txSetting.taxRate" required min="0.1" max="50">
-                    <p ng-show="myForm.taxRate.$touched && myForm.taxRate.$error.required" style="color:red">Tax Rate Required </p>
-                    <p ng-show="myForm.taxRate.$touched && myForm.taxRate.$invalid" style="color:red">Tax Rate length should be between 0.1 to 50 </p>
-                </label>
+                    <input type="tel" id="taxRate" style="color:black" step="any" name="taxRate" ng-model="txSetting.taxRate" required maxlength=4>
+                 </label>
                 <div class="padding">
              <button ng-click="addMore()" class="button button-block button-dark" style="margin:auto;width:70%">add</button>
 
-            <button type="submit" class="button button-block button-dark" style="margin:auto;width:70%">Submit</button>
+            <button type="submit"  ng-click="saveTaxSetting()" class="button button-block button-dark" style="margin:auto;width:70%">Submit</button>
         </div>
         </ion-list>
         
