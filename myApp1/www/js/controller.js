@@ -623,21 +623,21 @@ angular.module('starter.controller', [])
 
     $scope.addEditProduct = function()
     {
-        var productId=document.getElementById('productId').value;
-        if(productId.length<1){
+        var productId=$scope.newProduct.productId;
+        if(productId==undefined ||productId.length<1){
              $rootScope.ShowToast("Enter productId ", false);
             console.log('Enter Product Id')
             return false
         }
-        var productName=document.getElementById('productName').value;
-        if(productName.length<2){
+        var productName=$scope.newProduct.name;
+        if(productName==undefined ||productName.length<2){
             $rootScope.ShowToast("Enter productName", false);
             console.log('Enter Product Name')
             return false
         }
     
-      var productSellingPrice = document.getElementById('productSellingPrice').value;
-    if (productSellingPrice.length < 1) {
+      var productSellingPrice = $scope.newProduct.unitPrice;
+    if (productSellingPrice==undefined ||productSellingPrice.length < 1) {
         $rootScope.ShowToast("Enter Selling Price ", false);
         console.log("Enter Selling Price");
         return false
@@ -646,24 +646,24 @@ angular.module('starter.controller', [])
         console.log('Invalid product Selling')
         return false
     }
-    var taxRate = document.getElementById('taxRate').value;
+    var taxRate = $scope.newProduct.taxRate;
     console.log(taxRate);
-    if (taxRate == "") {
+    if (taxRate == undefined) {
         $rootScope.ShowToast("Select taxRate", false);
         console.log('Select taxRate')
         return false
     }
 
-    var buyingPrice = document.getElementById('buyingPrice').value;
-    if (buyingPrice.length < 1) {
+    var buyingPrice = $scope.newProduct.actualPrice;
+    if (buyingPrice==undefined || buyingPrice.length < 1) {
         document.getElementById('buyingPrice').value = 0;
     } else if (!buyingPrice.match(/^[0-9]+([,.][0-9]+)?$/g)) {
         $rootScope.ShowToast("Invalid buyingPrice", false);
         console.log('Invalid buyingPrice')
         return false
     }
-    var itemInStock = document.getElementById('itemsStock').value;
-    if (itemInStock.length < 1) {
+    var itemInStock = $scope.newProduct.inStock;
+    if (itemInStock==undefined ||itemInStock.length < 1) {
         document.getElementById('itemsStock').value = 100000;
 
     } else if (!itemInStock.match('^[0-9]+$') && $scope.newProduct.unit == 'pieces') {
@@ -679,19 +679,19 @@ angular.module('starter.controller', [])
         console.log('Invalid  itemInStock');
         return false
     }
-    var discount = document.getElementById('discount').value;
+    var discount = $scope.newProduct.discount;
 
-    if (discount.length < 1) {
+    if (discount==undefined||discount.length < 1) {
         document.getElementById('discount').value = 0;
-        return false
+        
     } else if (!discount.match(/^[0-9]+([,.][0-9]+)?$/g)) {
         $rootScope.ShowToast("Invalid discount", false);
         console.log('Invalid discount')
         return false
     }
     
-    var Categary = document.getElementById('Category').value;
-    if (Categary == "") {
+    var Categary = $scope.newProduct.categoryName;
+    if (Categary == undefined) {
         $rootScope.ShowToast("Select Categary", false);
         console.log('Select Categary');
         return false
@@ -1284,20 +1284,36 @@ angular.module('starter.controller', [])
 
     $scope.taxSettings = [];
     $scope.txSetting = {};
-    console.log($rootScope.TaxSettings)
-    $scope.taxSettings[0] = {
-        id: $rootScope.TaxSettings[0].id,
-        name: $rootScope.TaxSettings[0].name,
-        taxRate: $rootScope.TaxSettings[0].taxRate
+    $scope.tax={}
+    $scope.addView=true;
+    console.log($rootScope.TaxSettings.length)
+    for( var i=0;i<$rootScope.TaxSettings.length;i++){
+    $scope.taxSettings[i] = {
+        id: $rootScope.TaxSettings[i].id,
+        name: $rootScope.TaxSettings[i].name,
+        taxRate: $rootScope.TaxSettings[i].taxRate
     };
-
+    }
+    //$scope.taxSettings=[]
+    console.log($scope.taxSettings);
     var d = new Date();
     var taxSettings = []
-    console.log($scope)
+    console.log($rootScope.TaxSettings)
 
-    $scope.addMore = function() {
-        var taxNme=document.getElementById('taxNme').value;
-    if(taxNme.length<1){
+    $scope.add=function(tax){
+       $scope.tax=tax
+        for(var i=0;i<$rootScope.TaxSettings.length;i++){
+            if(tax.id==$rootScope.TaxSettings[i].id){
+                 $scope.tax=tax;
+                console.log($rootScope.TaxSettings[i].taxRate);
+            }
+        }
+    }
+    
+
+   /* $scope.addMore = function() {
+        var taxNme=$scope.txSetting.name;
+    if(taxNme==undefined ||taxNme.length<1){
         console.log('Enter tax Setting')
         return false
     }else if(!taxNme.match(/^[a-z0-9]+$/i)){
@@ -1305,8 +1321,8 @@ angular.module('starter.controller', [])
         return false
     }
 
-    var taxRate=document.getElementById('taxRate').value;
-    if(taxRate.length<1){
+    var taxRate=$scope.txSetting.taxRate;
+    if(taxRate==undefined ||taxRate.length<1){
         console.log('Enter tax Rate')
     }else if(!taxRate.match(/^[0-9]+([,.][0-9]+)?$/g)){
         console.log('Invalid tax Rate')
@@ -1322,19 +1338,17 @@ angular.module('starter.controller', [])
         document.getElementById("myTaxSettingForm").reset();
         $scope.txSetting = {}
     }
-
+*/
     $scope.saveTaxSetting = function() {
-        var taxNme=document.getElementById('taxNme').value;
-    if(taxNme.length<1){
+        console.log($scope.taxSettings);
+          var taxNme=$scope.txSetting.name;
+    if(taxNme==undefined ||taxNme.length<1){
         console.log('Enter tax Setting')
-        return false
-    }else if(!taxNme.match(/^[a-z0-9]+$/i)){
-        console.log('Invalid tax Setting')
         return false
     }
 
-    var taxRate=document.getElementById('taxRate').value;
-    if(taxRate.length<1){
+    var taxRate=$scope.txSetting.taxRate;
+    if(taxRate==undefined ||taxRate.length<1){
         console.log('Enter tax Rate')
     }else if(!taxRate.match(/^[0-9]+([,.][0-9]+)?$/g)){
         console.log('Invalid tax Rate')
@@ -1342,8 +1356,9 @@ angular.module('starter.controller', [])
     }
 
         var txSetting = $scope.txSetting
+        console.log($scope.taxSettings);
         $scope.taxSettings.push({
-             id:'',
+             id:d,
            name: txSetting.name,
            taxRate:txSetting.taxRate
         })
@@ -1356,17 +1371,19 @@ angular.module('starter.controller', [])
             if (data.rowsAffected >= 1) {
                 var promise = settingService.get("TaxSettings", taxSettings);
                 promise.then(function(data) {
-                    $rootScope.TaxSettings = data.rows[0].SettingsValue;
+                    $rootScope.TaxSettings = JSON.parse(data.rows[0].SettingsValue);
                 })
             } else {
                 console.log('No TaxSettings Record Found')
             }
         })
+     
+
         /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
 
         var taxSettings = JSON.stringify($scope.taxSettings);
         var promise = settingService.set("TaxSettings", taxSettings)
-        promise.then(function(data) {
+        promise.then(function(data) {=
             console.log(data);
         })
         /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
@@ -1377,8 +1394,29 @@ angular.module('starter.controller', [])
                      $scope.statusMessage = "Error on saving: " + error.message;
                      console.log($scope.statusMessage)
                  })*/
-        $state.go('app.Payments')
+           $scope.txSetting = {}
+       
     }
+    $scope.editTaxSetting=function(tax){
+        console.log(tax)
+        for(var i=0;i<$rootScope.TaxSettings.length;i++){
+            if(tax==$rootScope.TaxSettings[i].id){
+                console.log($rootScope.TaxSettings[i].id)
+                console.log($scope.txSetting.taxRate)
+            $rootScope.TaxSettings[i].name=$scope.txSetting.name;
+            $rootScope.TaxSettings[i].taxRate=$scope.txSetting.taxRate;
+            }
+        }
+        console.log($rootScope.TaxSettings)
+    }
+   $scope.view=function(tax){
+$scope.addView=false;
+$scope.txSetting.id=tax.id;
+$scope.txSetting.name=tax.name;
+$scope.txSetting.taxRate=tax.taxRate;
+$state.go('app.TaxSettings')
+   }
+    
 }]).controller('printerSettings', function($scope, settingService, $rootScope) {
     $scope.printFormatSettings = {};
     $scope.printFormatSettings['addressLine1'] = $rootScope.printFormatSettings.addressLine1;
@@ -1394,9 +1432,9 @@ angular.module('starter.controller', [])
         $scope.printFormatSettings.tokStartNmbr = $rootScope.printFormatSettings.tokStartNmbr,
         $scope.printFormatSettings.wifiSsid = $rootScope.printFormatSettings.wifiSsid
     $scope.savePrinterSettings = function() {
-        var shopName=document.getElementById('shopName').value;
+        var shopName=$scope.printFormatSettings.shopName;
         
-        if(shopName.length<2){
+        if(shopName==undefined||shopName.length<2){
             $rootScope.ShowToast("Enter Shop Name", false);
                 console.log('Enter Shop Name')
                 return false
@@ -1405,74 +1443,47 @@ angular.module('starter.controller', [])
                 console.log('Invalid shopName')
               return false  
             }
-        var number1=document.getElementById('number1').value;
+        var number1=$scope.printFormatSettings.phNumber;
         if(!number1.match('^[0-9\+\]+$')){
             $rootScope.ShowToast("Invalid Number", false);
             console.log('Invalid Number')
             return false 
         }
-        var tinNum=document.getElementById('tinNum').value;
+        var tinNum=$scope.printFormatSettings.tin;
         if(!tinNum.match('^[0-9]+$')){
             $rootScope.ShowToast("Invalid TIN Number", false);
-            console.log('Invalid TIN Number')
+           
         }
-        var greetings=document.getElementById('greetings').value;
-        if(!greetings.match(/^[a-z0-9]+$/i)){
-          $rootScope.ShowToast("Invalid Greetings", false);
-           console.log('Invalid Greetings')
-           return false; 
-        }
-        var billNumber=document.getElementById('billNumber').value;
-        if(billNumber.length<1){
+       
+        var billNumber=$scope.printFormatSettings.strtBillNmbr;
+        if(billNumber==undefined||billNumber.length<1){
             document.getElementById('billNumber').value=1;
+        }else if(!billNumber.match('^[0-9]+$')){
+            console.log('Invalid bill Number')
+            return false
         }
-        var trtTokenNum=document.getElementById('trtTokenNum').value;
-        if(trtTokenNum.length<1){
+        var trtTokenNum=$scope.printFormatSettings.tokStartNmbr;
+        console.log(trtTokenNum)
+        if(trtTokenNum==undefined||trtTokenNum.length<1){
             document.getElementById('trtTokenNum').value=1;
         }
         
-       var restTokenNum=document.getElementById('restTokenNum').value;
-        if(restTokenNum.length<1){
+       var restTokenNum=$scope.printFormatSettings.tokResetAftr;
+        if(restTokenNum==undefined||restTokenNum.length<1){
             document.getElementById('restTokenNum').value=999;
+        }else if(!restTokenNum.match('^[0-9]+$')||restTokenNum<trtTokenNum){
+            console.log('Invalid Input or reset should be greater then start token number')
+            return false
         }
-       var billCopies=document.getElementById('billCopies').value;
-       if(billCopies.length<1){
+       var billCopies=$scope.printFormatSettings.billCopies;
+       if(billCopies==undefined||billCopies.length<1){
             document.getElementById('billCopies').value=1;
         }
-        var wifiPassword=document.getElementById('wifiPassword').value;
-         if(wifiPassword.length<1){
-           console.log('WifiPassword Length ')
-        }else if(wifiPassword.length<2){
-            console.log('WifiPassword Length Should be greater then 2 ')
-            $rootScope.ShowToast("WifiPassword Length Should be greater then 2", false);
-            return false
-        }else if(!wifiPassword.match(/^[a-z0-9]+$/i)){
-           console.log('Invalid WifiPassword')
-             $rootScope.ShowToast("Invalid WifiPassword", false);
-           return false; 
-        }
-        var wifiSsid=document.getElementById('wifiSsid').value;
-        if(wifiSsid.length<1){
-
-         console.log('WifiSsid Length ')
-        }else if(wifiSsid.length<2){
-             $rootScope.ShowToast("wifiSsid Length Should be greater then 2", false);
-            console.log('wifiSsid Length Should be greater then 2 ')
-            return false
-        }else if(!wifiSsid.match(/^[a-z0-9]+$/i)){
-             $rootScope.ShowToast("wifiSsid Length Should be greater then 2", false);
-           console.log('Invalid WifiSsid')
-           return false; 
-        }
+       
         console.log($scope.printFormatSettings)
         var printFormatSettings = JSON.stringify($scope.printFormatSettings);
         var promise = settingService.set("PrinterFormatSettings", printFormatSettings);
         promise.then(function(data) {
-         
-            
-           
-            
-
             console.log(data)
             if (data.rowsAffected >= 1) {
                 var promise = settingService.get("PrinterFormatSettings", printFormatSettings);
@@ -1517,21 +1528,59 @@ angular.module('starter.controller', [])
             }
         })
     }
-}).controller('reports', function($scope) {
-    $scope.reportObj = {
-        storeReportOnCloud: false,
-        sendEmailReport: {
-            value: false,
-            email: ""
-        },
-        sendSMS: {
-            value: false,
-            onLowStock: "",
-            dailyCollection: "",
-            phoneNumber: ""
-        }
-    }
+}).controller('reports', function($scope,$rootScope,settingService) {
+    $scope.reportObj = {}
+    $scope.reportObj.storeCloud=$rootScope.Reports.storeCloud;
+    $scope.reportObj.sendEmail=$rootScope.Reports.sendEmail;
+    $scope.reportObj.emailAddress=$rootScope.Reports.emailAddress;
+    $scope.reportObj.sendSMS=$rootScope.Reports.sendSMS;
+    $scope.reportObj.smsLowStock=$rootScope.Reports.smsLowStock;
+    $scope.reportObj.smsDailyCollection=$rootScope.Reports.smsDailyCollection;
+    $scope.reportObj.smsPhoneNo=$rootScope.Reports.smsPhoneNo;
+    
+    console.log($scope.reportObj)
     $scope.saveReports = function() {
+        var sendEmailReport=$scope.reportObj.sendEmail;
+        var sendEmail=$scope.reportObj.emailAddress;
+        if(sendEmailReport==true){
+         if(sendEmail==undefined || sendEmail.length<=2){
+             $rootScope.ShowToast("Enter Email ID", false);
+             console.log('Enter Email ID')
+             return false
+         }
+        }
+        var sendSMSAlert= $scope.reportObj.sendSMS;
+        var phNo=$scope.reportObj.smsPhoneNo;
+        if(sendSMSAlert==true){
+         if(phNo==undefined || phNo<7){
+           $rootScope.ShowToast("Enter Phone Number or Valid Phone Number", false);
+             console.log('Enter Phone Number or Valid Phone Number')
+             return false  
+         }else if(!phNo.match('^[0-9\+\]+$')){
+            $rootScope.ShowToast("Enter Valid Phone Number", false);
+             console.log('Enter Valid Phone Number')
+             return false   
+         }
+        }
+         var reportsObj = JSON.stringify($scope.reportObj);
+        var promise = settingService.set("Reports", reportsObj);
+        promise.then(function(data) {
+            console.log(data.rows.length);
+            console.log(data)
+            if (data.rowsAffected >= 1) {
+                var promise = settingService.get("Reports", reportsObj);
+                promise.then(function(data) {
+                    $rootScope.Reports = JSON.parse(data.rows[0].SettingsValue);
+                    console.log($rootScope.Reports)
+                })
+            } else {
+                console.log('No PayMent Setting Record Found')
+                var currency = $rootScope.PaymentSettings.currency.split(' ');
+                var currencyName = currency[0];
+                var currencySymbol = currency[1];
+                $rootScope.currencySymbol = currencySymbol;
+            }
+        })
         console.log($scope.reportObj)
     }
 })
