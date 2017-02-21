@@ -19,6 +19,7 @@
     padding: 0vh;
     display: flex;
     display: -webkit-flex;
+   
 }
 #product-display {
     display: -webkit-flex;
@@ -48,6 +49,8 @@
     height: 10%;
     display: inline-flex;
     padding: auto;
+    position: fixed;
+    bottom: 5px;
 }
 #product-cat-slide{
 	width:100%;

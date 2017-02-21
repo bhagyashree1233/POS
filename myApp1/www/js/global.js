@@ -35,7 +35,7 @@ var PaymentSettings={
 
 angular.module('starter.globalcontroller', [])
 
-.controller('global',function($rootScope,$scope,$cordovaSQLite,$state,$cordovaToast){
+.controller('global',function($rootScope,$scope,$cordovaSQLite,$state,$cordovaToast, $ionicLoading){
   console.log('Hello hai');
    $rootScope.Mode = 0;
    $rootScope.SelCat ='0';
@@ -95,6 +95,20 @@ $rootScope.EditPro = function()
     $state.go('app.product');
 
    }
+
+       $rootScope.showDbLoading = function() {
+            $ionicLoading.show({
+                template: 'Loading...'
+               // duration: 15000
+            }).then(function() {
+                console.log("The loading indicator is now displayed");
+            });
+        };
+        $rootScope.hideDbLoading = function() {
+            $ionicLoading.hide().then(function() {
+                console.log("The loading indicator is now hidden");
+            });
+        };
 
    $rootScope.ShowToast = function(message,longx)
 {

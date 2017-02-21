@@ -3,7 +3,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ion-digit-keyboard', 'ngCordova', 'starter.globalcontroller','ion-floating-menu']).run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q, $ionicLoading, settingService, salesService, dbService) {
+angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ion-digit-keyboard', 'ngCordova', 'starter.globalcontroller','ion-floating-menu']).run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q, $ionicLoading, settingService, salesService, dbService,$state) {
 
     var dfd = $q.defer();
     $rootScope.deviceReady = dfd.promise;
@@ -33,21 +33,7 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
             console.log("browser");
         }
         $rootScope.editingProduct = {};
-        $rootScope.showDbLoading = function() {
-            $ionicLoading.show({
-                template: 'Loading...'
-               // duration: 15000
-            }).then(function() {
-                console.log("The loading indicator is now displayed");
-            });
-        }
-        ;
-        $rootScope.hideDbLoading = function() {
-            $ionicLoading.hide().then(function() {
-                console.log("The loading indicator is now hidden");
-            });
-        }
-        ;
+    //showdbloading;;
         $rootScope.printFormatSettings = printFormatSettings;
         $rootScope.TaxSettings = TaxSettings;
         $rootScope.PaymentSettings = PaymentSettings;
@@ -57,9 +43,9 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS TransactionDetails (BillNo integer, DateTime text,DiscountAmount real, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, CategoryId text, CategoryName text)").then(console.log('TransactionDetails table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Settings (SettingsName text PRIMARY KEY ,SettingsValue TEXT)').then(console.log('Settings table created Successfully'));
-        console.log($rootScope.printFormatSettings)
-        console.log($rootScope.PaymentSettings)
-        console.log($rootScope.TaxSettings)
+        console.log($rootScope.printFormatSettings);
+        console.log($rootScope.PaymentSettings);
+        console.log($rootScope.TaxSettings);
         var promise = settingService.get("PrinterFormatSettings");
         promise.then(function(data) {
             console.log(data)
@@ -103,8 +89,13 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         promise.then(function(data) {
             console.log(data)
         })
+
+        $state.go('app.home');
     });
-}).config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+})
+
+
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('top');
     $stateProvider.state('app', {
         url: '/app',
@@ -185,8 +176,12 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
     }).state('Test1', {
         url: '/Test',
         templateUrl: 'templates/Keypad.html',
+    }).state('Splash', {
+        url: '/Splash',
+        templateUrl: 'templates/Splash.html',
     })
-    $urlRouterProvider.otherwise('/app/home');
+    $urlRouterProvider.otherwise('/Splash');
+
 }).directive('textarea', function() {
     return {
         restrict: 'E',

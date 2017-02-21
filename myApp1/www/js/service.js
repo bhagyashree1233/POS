@@ -393,7 +393,9 @@ angular.module('starter.services', [])
         set: set,
         get: get
     }
-}).factory("salesService", function($q, $cordovaSQLite, $rootScope) {
+})
+
+.factory("salesService", function($q, $cordovaSQLite, $rootScope) {
     var report = []
     function get(itemCode, strt, end) {
         var dfd = $q.defer();
@@ -432,6 +434,8 @@ angular.module('starter.services', [])
         })
         return dfd.promise;
     }
+
+
     function getSalesReport(strt, end) {
         var salesReport = []
         //$cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));

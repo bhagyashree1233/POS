@@ -15,6 +15,35 @@ angular.module('starter.controller', [])
 
 //ionicParentView
 
+   //load products list from DB
+    $scope.OnCatClick = function(catId) {
+        console.log(catId);
+        $rootScope.SelCat = catId;
+        
+        //change background color;;
+       // if($rootScope.PrevSelCat!='0')
+         // document.getElementById($rootScope.PrevSelCat).style.backgroundColor='Black';
+        
+        //console.log("Setting Color.. Please Wait: ", catId);
+        //document.getElementById(catId).style.backgroundColor='Red';
+        //$rootScope.PrevSelCat = catId;
+        //console.log("After Red");
+
+        $scope.highlight = catId;
+
+        $rootScope.showDbLoading();
+        var promise = dbService.loadProductsForCategory(catId);
+        promise.then(function(res) {
+            $scope.Products = res;
+            console.log('products loaded...');
+            productSlideLogic();
+            $rootScope.hideDbLoading();
+        }, function(res) {
+            console.log(res);
+            $rootScope.hideDbLoading();
+        })
+    }
+
     $scope.$on("$ionicParentView.enter", function(event, data) {
         console.log('entered before enter parent view');
         //loadProducts();
@@ -136,34 +165,7 @@ angular.module('starter.controller', [])
             $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount + tempObj.productTotalAmount).toFixed(2));
         }
     }
-    //load products list from DB
-    $scope.OnCatClick = function(catId) {
-        console.log(catId);
-        $rootScope.SelCat = catId;
-        
-        //change background color;;
-       // if($rootScope.PrevSelCat!='0')
-         // document.getElementById($rootScope.PrevSelCat).style.backgroundColor='Black';
-        
-        //console.log("Setting Color.. Please Wait: ", catId);
-        //document.getElementById(catId).style.backgroundColor='Red';
-        //$rootScope.PrevSelCat = catId;
-        //console.log("After Red");
-
-        $scope.highlight = catId;
-
-        $rootScope.showDbLoading();
-        var promise = dbService.loadProductsForCategory(catId);
-        promise.then(function(res) {
-            $scope.Products = res;
-            console.log('products loaded...');
-            productSlideLogic();
-            $rootScope.hideDbLoading();
-        }, function(res) {
-            console.log(res);
-            $rootScope.hideDbLoading();
-        })
-    }
+ 
 
     //$scope.OnCatClick("favourite");
 
@@ -623,32 +625,39 @@ angular.module('starter.controller', [])
 
     $scope.addEditProduct = function()
     {
-        var productId=document.getElementById('productId').value;
-        if(productId.length<1){
+        //var productId=document.getElementById('productId').value;
+        if($scope.newProduct.productId==undefined || $scope.newProduct.productId.length<1){
              $rootScope.ShowToast("Enter productId ", false);
             console.log('Enter Product Id')
             return false
         }
-        var productName=document.getElementById('productName').value;
-        if(productName.length<2){
+        //var productName=document.getElementById('productName').value;
+        //if(productName.length<2){
+
+        if($scope.newProduct.name==undefined || $scope.newProduct.name.length<2)
+            {
             $rootScope.ShowToast("Enter productName", false);
             console.log('Enter Product Name')
             return false
-        }
+            }
     
-      var productSellingPrice = document.getElementById('productSellingPrice').value;
-    if (productSellingPrice.length < 1) {
+    //var productSellingPrice = document.getElementById('productSellingPrice').value;
+    
+    if ($scope.newProduct.unitPrice== undefined || $scope.newProduct.unitPrice.length < 1) {
         $rootScope.ShowToast("Enter Selling Price ", false);
         console.log("Enter Selling Price");
         return false
-    } else if (!productSellingPrice.match(/^[0-9]+([,.][0-9]+)?$/g)) {
+    } else if (!$scope.newProduct.unitPrice.match(/^[0-9]+([,.][0-9]+)?$/g)) {
         $rootScope.ShowToast("Invalid Selling Price", false);
         console.log('Invalid product Selling')
         return false
     }
-    var taxRate = document.getElementById('taxRate').value;
+
+    //var taxRate = document.getElementById('taxRate').value;
+    var taxRate = $scope.newProduct.taxRate;
+
     console.log(taxRate);
-    if (taxRate == "") {
+    if (taxRate== undefined || taxRate == "") {
         $rootScope.ShowToast("Select taxRate", false);
         console.log('Select taxRate')
         return false
