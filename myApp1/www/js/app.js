@@ -37,6 +37,7 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         $rootScope.printFormatSettings = printFormatSettings;
         $rootScope.TaxSettings = TaxSettings;
         $rootScope.PaymentSettings = PaymentSettings;
+        $rootScope.Reports=Reports;
         //$cordovaSQLite.execute($rootScope.db, "DROP TABLE TransactionDetails ").then(console.log('Transaction table droped Successfully')); 
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Category (CategoryId text primary key, CategoryName text, CategoryDesc text)").then(console.log('Category table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Product (ProductId text primary key, ProductName text, ProductUnit text, ProductPrice real, TaxId integer, BuyingPrice real, TaxRate real, ItemsinStock real, Discount real, CategoryId text, CategoryName text, Image text, Favourite text)").then(console.log('Product table created Successfully'));
@@ -59,7 +60,7 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         promise.then(function(data) {
             console.log(data)
             if (data.rows.length >= 1) {
-                $rootScope.TaxSettings = data.rows[0].SettingsValue;
+                $rootScope.TaxSettings = JSON.parse(data.rows[0].SettingsValue);
             } else {
                 console.log('No TaxSettings Record Found')
             }

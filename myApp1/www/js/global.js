@@ -30,6 +30,15 @@ var PaymentSettings={
   } ]
 }
 
+var Reports={
+        storeCloud: false,
+        sendEmail:false,
+        emailAddress:'',
+        sendSMS:false,
+        smsLowStock:false,
+        smsDailyCollection:false,
+        smsPhoneNo:''
+    }
 
 
 
