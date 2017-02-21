@@ -43,6 +43,31 @@
 	width:100%;
 }
 
+.button-circle {
+  width: 13vmin;
+  height: 13vmin;
+  color: black;
+  border-radius: 50%;
+  background-color: transparent;
+  border: .8vmin solid rgba(255, 255, 255, .5);
+  -webkit-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+  
+}
+
+.col.col-center{
+
+   display: -webkit-flex;
+   display: flex;
+   -webkit-flex-direction: row
+   flex-direction: row;
+   -webkit-align-items: center;
+   align-items: center;
+   -webkit-justify-content: center;
+   justify-content: center;
+  
+}
+
 #product-categary {
     border: 1px solid black;
     width: 100%;

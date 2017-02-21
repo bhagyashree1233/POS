@@ -1,0 +1,16 @@
+{
+
+"MenuItems" : [
+{
+"name": "Home",
+"icon": "ion-ios-home-outline",
+"state": "app.TaxSettings"
+},
+{
+"name": "Settings",
+"icon": "ion-ios-compose-outline",
+"state": "app.Reports"
+}
+]
+}
+

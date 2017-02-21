@@ -1286,8 +1286,45 @@ angular.module('starter.controller', [])
    
 })*/
 
-.controller('taxSetting', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($scope, $rootScope, $state, $cordovaSQLite, $ionicPlatform, settingService) {
-    
+.controller('MenuCtrl', function($scope, settingService, $rootScope,$state) {
+
+$rootScope.devWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width);
+console.log($rootScope.devWidth);
+$rootScope.menuWidth = 0.90 * $rootScope.devWidth;
+console.log("In Menu Ctrl");
+$scope.rightItems = [];
+
+jQuery.getJSON('json/MenuItems.json', function(data) {
+
+$scope.rightItems = data.MenuItems;
+
+
+
+});
+
+/*var Items = {};
+Items.name = "Home";
+Items.icon = "ion-ios-home-outline";
+Items.state = "app.TaxSettings";
+
+$scope.rightItems.push(Items);
+
+var Items1= {};
+Items1.name = "Settings";
+Items1.icon = "ion-ios-compose-outline";
+Items1.state = "app.Reports";
+
+$scope.rightItems.push(Items1);*/
+
+$scope.itemclick = function(obj)
+{
+    console.log("OnClick");
+    $state.go(obj.state);
+}
+
+})
+
+.controller('taxSetting', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($scope, $rootScope, $state, $cordovaSQLite, $ionicPlatform, settingService) {    
     console.log('I am in tax  settings');
 
     $scope.taxSettings = [];
@@ -1503,7 +1540,10 @@ $state.go('app.TaxSettings')
             }
         })
     }
-}).controller('paymentSettings', function($scope, settingService, $rootScope) {
+})
+
+
+.controller('paymentSettings', function($scope, settingService, $rootScope) {
 
     $scope.paymentSetting = {};
     console.log($rootScope.PaymentSettings)
