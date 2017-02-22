@@ -1,0 +1,20 @@
+<ion-view view-title="Sales Report">
+<ion-content style="text-align:center;" ng-controller="salesReportCtrl">
+<label class="item item-input">
+  <span class="input-label">Start</span>
+  <input type="date" ng-model="Dte.start">
+</label>
+<label class="item item-input">
+  <span class="input-label">End</span>
+  <input type="date" ng-model="Dte.end">
+</label>
+<button ion-button ng-click=save()>Get Report</button>
+<div ng-repeat="sales in salesReport">
+<p>After Tax:{{sales.afterTax}}</p>
+<p>Average Bill Amount:{{sales.avgBillAmt}}</p>
+<p>Total Bill Amount:{{sales.totalBillAmt}}</p>
+<p>Total Bill:{{sales.totalBills}}</p>
+<p>Total tax:{{sales.totalTax}}</p>
+</div>
+</ion-content>
+</ion-view>

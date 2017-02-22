@@ -4,12 +4,38 @@
 {
 "name": "Home",
 "icon": "ion-ios-home-outline",
+"state": "app.home"
+},
+
+{
+"name": "Printer-Setting",
+"icon": "ion-ios-printer-outline",
+"state": "app.PrinterSetting"
+},
+{
+"name": "Payment-Settings",
+"icon": "ion-cash",
+"state": "app.PaymentSetting"
+},
+{
+"name": "Tax-Settings",
+"icon": "ion-ios-compose-outline",
 "state": "app.TaxSettings"
 },
 {
-"name": "Settings",
+"name": "Report-Setting",
 "icon": "ion-ios-compose-outline",
 "state": "app.Reports"
+},
+{
+"name": "Sales-Report",
+"icon": "ion-ios-compose-outline",
+"state": "app.salesReport"
+},
+{
+"name": "Product-Report",
+"icon": "ion-ios-compose-outline",
+"state": "app.productReport"
 }
 ]
 }

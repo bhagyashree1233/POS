@@ -205,7 +205,16 @@ angular.module('starter.controller', [])
     //  $scope.quantity=0;
 
     $scope.save = function(product) {
-        console.log(product);
+        console.log("New Product"+product);
+        if($scope.productArr!=undefined && $scope.productArr.length<1){
+            for (var i=0;i<$scope.productArr.length;i++){
+                if(product.productId==$scope.productArr[i].productId){
+                   $scope.productArr[i].quantity=product.quantity+$scope.productArr[i].quantity;
+                    $scope.productArr[i].productTotalPrice=product.productTotalPrice+$scope.productArr[i].productTotalPrice;
+
+                }
+            }
+        }
         console.log($scope.typedCode);
         if ($scope.typedCode == null) {
             console.log('Type Code Null')
@@ -488,7 +497,7 @@ angular.module('starter.controller', [])
       }
       else
       {
-          $scope.openNumericModal(product);
+          $scope.openNumericModal(Product);
       }
 
 
@@ -497,11 +506,15 @@ angular.module('starter.controller', [])
 
 
     $scope.openNumericModal = function(product) {
+
         console.log(' Open Numeric Model')
         $scope.numericModal.show();
         $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
         $scope.typedCode = "1";
-        $scope.newProduct = product;
+        console.log(product.productId);
+        
+        $scope.newProduct=product
+        
     };
     $scope.closeNumericModal = function() {
         console.log(' Closing Numeric Model')
@@ -806,14 +819,14 @@ angular.module('starter.controller', [])
 
     console.log($scope.newProduct);
     
-    $scope.$watch('newProduct.inStock', function(newValue, oldValue) {
+    /*$scope.$watch('newProduct.inStock', function(newValue, oldValue) {
         console.log($scope.newProduct);
         if (newValue) {
             if ($scope.newProduct.unit == 'pieces') {
                 $scope.newProduct.inStock = Math.round(newValue);
             }
         }
-    });
+    });*/
 
 
     function addNewProduct() {
@@ -1631,4 +1644,17 @@ $state.go('app.TaxSettings')
         })
         console.log($scope.reportObj)
     }
+})
+
+.controller('salesReportCtrl', function($scope, salesService, $rootScope) {
+$scope.Dte={}
+$scope.salesReport=[]
+$scope.save=function(){
+
+ var promise = salesService.getSalesReport($scope.Dte.start.getTime(), $scope.Dte.end.getTime());
+        promise.then(function(data) {
+            console.log(data)
+            $scope.salesReport=data;
+        })
+}
 })

@@ -9,17 +9,19 @@
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
 }
-#productsView {
-	width:70%;
+#paymentModel>.modal {
+   top: 10%;
+    left: 30%;
 }
-
-#product{
+#productsView {
+    width: 70%;
+}
+#product {
     width: 100%;
     height: 100%;
     padding: 0vh;
     display: flex;
     display: -webkit-flex;
-   
 }
 #product-display {
     display: -webkit-flex;
@@ -38,36 +40,29 @@
     height: 100%;
 }
 #product-billing-head {
-	height:5%;
-	margin:0.5vh;
-	width:100%;
+    height: 5%;
+    margin: 0.5vh;
+    width: 100%;
 }
-
 .button-circle {
-  width: 13vmin;
-  height: 13vmin;
-  color: black;
-  border-radius: 50%;
-  background-color: transparent;
-  border: .8vmin solid rgba(255, 255, 255, .5);
-  -webkit-transition: all 0.2s ease-in;
-  transition: all 0.2s ease-in;
-  
+    width: 13vmin;
+    height: 13vmin;
+    color: black;
+    border-radius: 50%;
+    background-color: transparent;
+    border: .8vmin solid rgba(255, 255, 255, .5);
+    -webkit-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
 }
-
-.col.col-center{
-
-   display: -webkit-flex;
-   display: flex;
-   -webkit-flex-direction: row
-   flex-direction: row;
-   -webkit-align-items: center;
-   align-items: center;
-   -webkit-justify-content: center;
-   justify-content: center;
-  
+.col.col-center {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row flex-direction: row;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
 }
-
 #product-categary {
     border: 1px solid black;
     width: 100%;
@@ -77,43 +72,42 @@
     position: fixed;
     bottom: 5px;
 }
-#product-cat-slide{
-	width:100%;
-	height:100%;
+#product-cat-slide {
+    width: 100%;
+    height: 100%;
 }
-.product-slide{
-	width:100%;
-	height:100%;
+.product-slide {
+    width: 100%;
+    height: 100%;
 }
-
 #product-categary-scroll {
-    height:100%;
-    width: 100%; 
-    margin:0vh;
+    height: 100%;
+    width: 100%;
+    margin: 0vh;
     overflow-x: scroll;
     white-space: nowrap;
 }
-#product-categary-next, #product-categary-previous{
-	width:6%;
-	height:auto;
-	background: black;
+#product-categary-next,
+#product-categary-previous {
+    width: 6%;
+    height: auto;
+    background: black;
 }
-#button-next, #button-previous{
-	width:100%;
-	height:100%;
-	background:black;
-	color:white;
+#button-next,
+#button-previous {
+    width: 100%;
+    height: 100%;
+    background: black;
+    color: white;
 }
-
 .product-categary-button {
     background: black;
     color: white;
     width: 20%;
     line-height: 8vh!important;
     border-radius: 0.4;
-    height:100%;
+    height: 100%;
 }
-
 .bar-light .button {
     padding: 3vh;
     width: 20%;
@@ -122,7 +116,6 @@
     color: white;
     font-size: small;
 }
-
 /*
 .bar-footer {
     position: fixed;
@@ -135,6 +128,7 @@
     overflow-y: false;
 }
 */
+
 #product-display-row {
     padding: auto;
     width: 100%;
@@ -149,7 +143,7 @@
     height: 18%;
     background: black;
     color: white;
-    margin:0.5vh;
+    margin: 0.5vh;
 }
 #product-display-row>#product-image {
     float: right;
@@ -247,7 +241,7 @@ body {
     padding: 0;
 }
 .inputview {
-    background-color:#ddd;
+    background-color: #ddd;
     padding: 15px;
     margin: 0;
     font-size: 14px;
@@ -255,7 +249,6 @@ body {
     border: 1px solid #cecece;
     display: block
 }
-
 #model-view {
     top: 0;
     right: 20%;
@@ -265,119 +258,83 @@ body {
     width: 75%;
     height: 75%;
 }
-
 #holdModal {
     width: 90%;
     height: 85%;
     left: 5%;
     top: 5%;
 }
-
 #quantity-close {
     color: black;
-    
 }
-
 #recallModal {
-	width:100%;
-	height:90%;
-	top:0vh;
-	left:0vh;
-
+    width: 100%;
+    height: 90%;
+    top: 0vh;
+    left: 0vh;
 }
-
-#recallModal button .icon{
-  
+#recallModal button .icon {} .recallTabs {
+    width: 85%;
+    height: 80%;
+    left: 6%;
+    top: 10%;
 }
-
-.recallTabs {
-  	width:85%;
-	height:80%;
-	left:6%;
-	top:10%;
-} 
-
-#quantity-close{
-
-color:black;
-	
+#quantity-close {
+    color: black;
 }
-
- .modal-backdrop-bg{
-	background-color:rgba(204, 204, 204, 0.01);
-} 
- .modal-open .modal-backdrop {
-
-    
+.modal-backdrop-bg {
+    background-color: rgba(204, 204, 204, 0.01);
+}
+.modal-open .modal-backdrop {
     pointer-events: none;
 }
 
-#paymentModel>.modal{
-   top:20%;
-   left:30%;
-
-
+#productContentDiv,
+#categoryContentDiv {
+    width: 90%;
+    margin: auto;
 }
-
-#productContentDiv, #categoryContentDiv {
-	width:90%;
-	margin:auto;
+#productContentDiv input[readonly="readonly"] {
+    background-color: transparent;
 }
-#productContentDiv input[readonly="readonly"] { 
-  background-color: transparent; 
+input.printerSettingtext {
+    border: 0.1vh solid #b2b2b2;
+    width: 200px;
 }
-
-input.printerSettingtext{
-	border: 0.1vh solid #b2b2b2;
-	width:200px;
+#currency {
+    width: 55%;
 }
-
-#currency{
-	width:55%;
+#payment {
+    width: 55%;
 }
-#payment{
-    width:55%;
+.pySttg.item-radio .item-content {
+    margin-left: 5vh;
 }
-.pySttg.item-radio .item-content{
-    margin-left:5vh;
+.pySttg.item-radio .ion-checkmark {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 10%;
+    border-radius: 60%;
+    line-height: 1vh;
+    color: black;
 }
-.pySttg.item-radio .ion-checkmark{
-	top:0;
-	left:0;
-	position:absolute;
-	width:10%;
-	border-radius:60%;
-	line-height:1vh;
-	color:black;
-
-
-#categaryModal {
-	width:50%;
-	left:40%;
-}
-
-#errorMessage{
-	
-}
-.red {
-  border-color: red;
-  color:red;
-}
-
-
-input.ng-invalid {
-    background-color: pink;
-}
-
-.editProHead {
-	margin:10vh;
-}
-
-#productsViewSlideBox{
-	height:100%;
-    width: 100%; 
-    margin:0vh;
-    overflow-y: scroll;
-    white-space: nowrap;
-    
-}
+    #categaryModal {
+        width: 50%;
+        left: 40%;
+    }
+    #errorMessage {} .red {
+        border-color: red;
+        color: red;
+    }
+   
+    .editProHead {
+        margin: 10vh;
+    }
+    #productsViewSlideBox {
+        height: 100%;
+        width: 100%;
+        margin: 0vh;
+        overflow-y: scroll;
+        white-space: nowrap;
+    }

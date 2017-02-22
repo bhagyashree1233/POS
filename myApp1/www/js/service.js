@@ -440,10 +440,8 @@ angular.module('starter.services', [])
         var salesReport = []
         //$cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
         var dfd = $q.defer();
-        if (end == undefined) {
+        if (end == undefined && strt == undefined) {
             var query = 'Select * from BillDetails Where DateTime=' + strt + '';
-        } else if (strt == undefined) {
-            var query = 'Select * from BillDetails Where DateTime=' + end + '';
         } else {
             var query = 'Select * from BillDetails Where DateTime Between ' + strt + ' and ' + end + '';
         }
