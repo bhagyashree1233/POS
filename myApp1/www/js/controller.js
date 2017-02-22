@@ -1341,7 +1341,7 @@ $scope.itemclick = function(obj)
     }
     //$scope.taxSettings=[]
     console.log($scope.taxSettings);
-    var d = new Date();
+    
     var taxSettings = []
     console.log($rootScope.TaxSettings)
 
@@ -1384,13 +1384,16 @@ $scope.itemclick = function(obj)
         $scope.txSetting = {}
     }
 */
-    $scope.saveTaxSetting = function() {
+
+
+    $scope.saveTaxSetting = function(taxid) {
         console.log($scope.taxSettings);
           var taxNme=$scope.txSetting.name;
     if(taxNme==undefined ||taxNme.length<1){
         console.log('Enter tax Setting')
         return false
     }
+
 
     var taxRate=$scope.txSetting.taxRate;
     if(taxRate==undefined ||taxRate.length<1){
@@ -1400,67 +1403,115 @@ $scope.itemclick = function(obj)
         return false
     }
 
-        var txSetting = $scope.txSetting
-        console.log($scope.taxSettings);
+        var d = new Date();
         $scope.taxSettings.push({
              id:d,
-           name: txSetting.name,
-           taxRate:txSetting.taxRate
+           name: $scope.txSetting.name,
+           taxRate:$scope.txSetting.taxRate
         })
-        console.log('Hai i am in TaxSetting Save')
-        console.log($scope.taxSettings)
-        var taxSettings = JSON.stringify($scope.taxSettings);
-        var promise = settingService.set("TaxSettings", taxSettings)
+
+        
+         $scope.SaveTaxSettingsToDB($scope.taxSettings);
+    }
+
+
+    $scope.SaveTaxSettingsToDB= function(taxsettings)
+    {
+
+     var taxSettings = JSON.stringify(taxsettings);
+        var promise = settingService.set("TaxSettings", taxSettings);
         promise.then(function(data) {
             console.log(data);
             if (data.rowsAffected >= 1) {
                 var promise = settingService.get("TaxSettings", taxSettings);
                 promise.then(function(data) {
                     $rootScope.TaxSettings = JSON.parse(data.rows[0].SettingsValue);
+                    $scope.txSetting = {};
                 })
             } else {
-                console.log('No TaxSettings Record Found')
+                console.log('No TaxSettings Record Found');
             }
         })
-     
 
-        /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
-
-        var taxSettings = JSON.stringify($scope.taxSettings);
-        var promise = settingService.set("TaxSettings", taxSettings)
-        promise.then(function(data) {=
-            console.log(data);
-        })
-        /* $cordovaSQLite.execute($rootScope.db, 'delete from Settings where SettingsName="TaxSettings"')
-                 .then(function(result) {
-                     $scope.statusMessage = "Message saved successful, cheers!";
-                     console.log($scope.statusMessage)
-                 }, function(error) {
-                     $scope.statusMessage = "Error on saving: " + error.message;
-                     console.log($scope.statusMessage)
-                 })*/
-           $scope.txSetting = {}
-       
     }
-    $scope.editTaxSetting=function(tax){
-        console.log(tax)
-        for(var i=0;i<$rootScope.TaxSettings.length;i++){
-            if(tax==$rootScope.TaxSettings[i].id){
-                console.log($rootScope.TaxSettings[i].id)
-                console.log($scope.txSetting.taxRate)
-            $rootScope.TaxSettings[i].name=$scope.txSetting.name;
-            $rootScope.TaxSettings[i].taxRate=$scope.txSetting.taxRate;
+
+
+$scope.GetTaxIndex = function(taxId)
+{
+  for(var i=0;i<$scope.TaxSettings.length;i++){
+
+            if(taxId==$rootScope.TaxSettings[i].id)
+            {
+               return(i);
+           
             }
+  
+  }
+
+  return(-1);
+
+}
+
+$scope.deleteTaxSettings=function(taxId)
+{
+ var ind = $scope.GetTaxIndex(taxId);
+
+        if(ind >-1)//found index;;
+        {
+             //delete taxSettings
+             $scope.TaxSettings.splice(ind,1);
+             $scope.SaveTaxSettingsToDB($scope.TaxSettings);
+             console.log("Deleted");
         }
-        console.log($rootScope.TaxSettings)
+
+}
+
+    $scope.editTaxSetting=function(taxId){
+
+        var taxNme=$scope.txSetting.name;
+    if(taxNme==undefined ||taxNme.length<1){
+        console.log('Enter tax Setting')
+        return false
     }
+
+
+    var taxRate=$scope.txSetting.taxRate;
+    if(taxRate==undefined ||taxRate.length<1){
+        console.log('Enter tax Rate')
+    }else if(!taxRate.match(/^[0-9]+([,.][0-9]+)?$/g)){
+        console.log('Invalid tax Rate')
+        return false
+    }
+
+     var ind = $scope.GetTaxIndex(taxId);
+
+        if(ind >-1)//found index;;
+        {
+            $scope.taxSettings[ind].name = $scope.txSetting.name;
+            $scope.taxSettings[ind].taxRate = $scope.txSetting.taxRate;
+            //$scope.taxSettings[ind].id = ind;
+            $scope.SaveTaxSettingsToDB($scope.taxSettings);
+
+        }
+        else
+        {
+          console.log("Tax Settings Not Found");
+          $rootScope.ShowToast("Tax Settings Not Found",false);
+
+        }
+
+     
+    }
+
    $scope.view=function(tax){
 $scope.addView=false;
 $scope.txSetting.id=tax.id;
 $scope.txSetting.name=tax.name;
 $scope.txSetting.taxRate=tax.taxRate;
-$state.go('app.TaxSettings')
+//$state.go('app.TaxSettings')
    }
+
+
     
 }]).controller('printerSettings', function($scope, settingService, $rootScope) {
     $scope.printFormatSettings = {};
