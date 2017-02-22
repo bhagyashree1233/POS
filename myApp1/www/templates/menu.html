@@ -5,7 +5,7 @@
       </ion-nav-back-button>
 
 <ion-nav-buttons side="right">
-          <button class="button button-clear button-positive" style="position:absolute; right:35px; width:auto;display:inline;" ng-click="OnModeChangeClick()">
+          <button class="button button-clear button-positive" style="position:absolute; right:35px; width:auto;display:inline;" ng-click="ShowPopUpPassword()">
   <i class="ion-android-done" style="font-size:30px; padding-right:8px; position:absolute; color:white;text-align:center;top:0px;transform: rotate(0deg);"> </i>
 </button>
 
@@ -39,7 +39,7 @@
                                         <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
                                             <i class="{{rightItems[$index].icon}}" style="font-size:7vmin"></i>
                                         </button>
-                                        <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index].text}} </div>
+                                        <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index].name}} </div>
                                         
                                     </a>
                                 </div>
@@ -48,7 +48,7 @@
                                         <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
                                             <i class="{{rightItems[$index+1].icon}}" style="font-size:7vmin"></i>
                                         </button>
-                                        <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index+1].text}} </div>
+                                        <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index+1].name}} </div>
                                         
                                     </a>
                                 </div>
@@ -57,7 +57,7 @@
                                         <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
                                             <i class="{{rightItems[$index+2].icon}}" style="font-size:7vmin"></i>
                                         </button>
-                                        <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index+2].text}} </div>
+                                        <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index+2].name}} </div>
                    
                                     </a>
                                 </div>

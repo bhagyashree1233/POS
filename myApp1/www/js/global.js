@@ -1,36 +1,43 @@
-var printFormatSettings={
-addressLine1:"",
-addressLine2:"",
-billCopies:1,
-greeting:"",
-phNumber:null,
-shopName:"",
-strtBillNmbr:1,
-tin:"",
-tokNum:true,
-tokResetAftr:999,
-tokStartNmbr:1,
-wifiSsid:""}
 
+angular.module('starter.globalcontroller', [])
 
-var TaxSettings=[{
+.controller('global',function($rootScope,$scope,$cordovaSQLite,$state,$cordovaToast,$scope, $ionicLoading,$ionicPopup){
+  console.log('Hello hai');
+   $rootScope.Mode = 0;
+   $rootScope.SelCat ='0';
+   $rootScope.CreateMode = 0;
+   $rootScope.PrevSelCat='0';
+   $rootScope.CurrentProduct={};
+
+   $rootScope.password = "password123";
+
+   $rootScope.printFormatSettings = {
+      addressLine1:"",
+      addressLine2:"",
+      billCopies:1,
+      greeting:"",
+      phNumber:null,
+      shopName:"",
+      strtBillNmbr:1,
+      tin:"",
+      tokNum:true,
+      tokResetAftr:999,
+      tokStartNmbr:1,
+      wifiSsid:""
+};
+
+$rootScope.TaxSettings=[
+{
     id:0,
-    name:'Hai',
+    name:'sampleTax',
     taxRate:0.0
-}]
-
-var PaymentSettings={
-   currency:'USD ($)',
-   paymentOptions:[{
-   Cash:true,
-    Master: false,
-     Amex: false,
-     PayTM: false,
-     Visa: false
-  } ]
 }
+];
 
-var Reports={
+
+
+
+$rootScope.Reports={
         storeCloud: false,
         sendEmail:false,
         emailAddress:'',
@@ -38,19 +45,74 @@ var Reports={
         smsLowStock:false,
         smsDailyCollection:false,
         smsPhoneNo:''
-    }
+    };
 
 
+   $rootScope.PaymentSettings = 
+   {
+     CurrencyOptions:
+     {
+     id :0,
+     name :"Rupee",
+     symbol : "Ru",
+     },
+     PaymentMode:
+     [
+      {
+      id : 1,
+      name : "Cash",
+      desc : "Cash Payment Mode"
+      }
 
-angular.module('starter.globalcontroller', [])
+     ]
 
-.controller('global',function($rootScope,$scope,$cordovaSQLite,$state,$cordovaToast, $ionicLoading){
-  console.log('Hello hai');
-   $rootScope.Mode = 0;
-   $rootScope.SelCat ='0';
-   $rootScope.CreateMode = 0;
-   $rootScope.PrevSelCat='0';
-   $rootScope.CurrentProduct={};
+   }
+
+   $rootScope.ShowPopUpPassword = function()
+   {
+     if($rootScope.Mode ==1)//already in admin mode;;
+     {
+       $rootScope.OnModeChangeClick();
+       return;
+
+     }
+     $scope.result ={};
+     $scope.result.done=false;
+     $scope.result.text="";
+    $ionicPopup.prompt({
+              template: '<input type="password" ng-model="result.text">',
+              title: 'Password Check',
+              subTitle: 'Enter admin password',
+              inputType: 'password',
+              inputPlaceholder: 'Your password',
+              scope:$scope,
+
+              buttons: [
+              { text: 'Cancel', onTap: function(e) { return $scope.result; } },
+              {
+                  text: '<b>OK</b>',
+                  type: 'button-positive',
+                  onTap: function(e) { $scope.result.done=true; return $scope.result;}
+              }
+
+              ]
+   }).then(function(res) {
+              console.log('Your password is', res);
+              if(res.done ==true)
+              {
+                if(res.text=='payupad123' || res.text==$rootScope.password)
+                  $rootScope.OnModeChangeClick();
+                else
+                 {
+                 console.log("Wrong Password");
+                 $rootScope.ShowToast("Wrong Password",false);
+                 }
+              }
+
+});
+
+
+   }
 
    $rootScope.OnModeChangeClick = function()
    {

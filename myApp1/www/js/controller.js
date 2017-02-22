@@ -205,7 +205,16 @@ angular.module('starter.controller', [])
     //  $scope.quantity=0;
 
     $scope.save = function(product) {
-        console.log(product);
+        console.log("New Product"+product);
+        if($scope.productArr!=undefined && $scope.productArr.length<1){
+            for (var i=0;i<$scope.productArr.length;i++){
+                if(product.productId==$scope.productArr[i].productId){
+                   $scope.productArr[i].quantity=product.quantity+$scope.productArr[i].quantity;
+                    $scope.productArr[i].productTotalPrice=product.productTotalPrice+$scope.productArr[i].productTotalPrice;
+
+                }
+            }
+        }
         console.log($scope.typedCode);
         if ($scope.typedCode == null) {
             console.log('Type Code Null')
@@ -488,7 +497,7 @@ angular.module('starter.controller', [])
       }
       else
       {
-          $scope.openNumericModal(product);
+          $scope.openNumericModal(Product);
       }
 
 
@@ -497,11 +506,15 @@ angular.module('starter.controller', [])
 
 
     $scope.openNumericModal = function(product) {
+
         console.log(' Open Numeric Model')
         $scope.numericModal.show();
         $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
         $scope.typedCode = "1";
-        $scope.newProduct = product;
+        console.log(product.productId);
+        
+        $scope.newProduct=product
+        
     };
     $scope.closeNumericModal = function() {
         console.log(' Closing Numeric Model')
@@ -743,7 +756,12 @@ angular.module('starter.controller', [])
             $rootScope.hideDbLoading();
         })
     }
-    $scope.TaxSettings1 = [{
+
+    //gautham;;
+    $scope.TaxSettings1 = $rootScope.TaxSettings;
+
+
+    /*[{
         Id: '1',
         Name: 'tax1',
         TaxRate: '5'
@@ -759,11 +777,11 @@ angular.module('starter.controller', [])
         Id: '4',
         Name: 'tax4',
         TaxRate: '20'
-    }]
+    }]*/
 
     $scope.onTaxRateSelect = function(tax) {
-        $scope.newProduct.taxRate = tax.TaxRate;
-        $scope.newProduct.taxId = tax.Id;
+        $scope.newProduct.taxRate = tax.taxRate;
+        $scope.newProduct.taxId = tax.id;
         $scope.taxRatePopover.hide();
     }
     
@@ -806,14 +824,14 @@ angular.module('starter.controller', [])
 
     console.log($scope.newProduct);
     
-    $scope.$watch('newProduct.inStock', function(newValue, oldValue) {
+    /*$scope.$watch('newProduct.inStock', function(newValue, oldValue) {
         console.log($scope.newProduct);
         if (newValue) {
             if ($scope.newProduct.unit == 'pieces') {
                 $scope.newProduct.inStock = Math.round(newValue);
             }
         }
-    });
+    });*/
 
 
     function addNewProduct() {
@@ -1427,8 +1445,9 @@ $scope.itemclick = function(obj)
                 promise.then(function(data) {
                     $rootScope.TaxSettings = JSON.parse(data.rows[0].SettingsValue);
                     $scope.txSetting = {};
+                    $scope.addView = true;
                 })
-            } else {
+            } else { 
                 console.log('No TaxSettings Record Found');
             }
         })
@@ -1503,12 +1522,11 @@ $scope.deleteTaxSettings=function(taxId)
      
     }
 
-   $scope.view=function(tax){
+$scope.view=function(tax){
 $scope.addView=false;
 $scope.txSetting.id=tax.id;
 $scope.txSetting.name=tax.name;
 $scope.txSetting.taxRate=tax.taxRate;
-//$state.go('app.TaxSettings')
    }
 
 
@@ -1595,39 +1613,103 @@ $scope.txSetting.taxRate=tax.taxRate;
 
 
 .controller('paymentSettings', function($scope, settingService, $rootScope) {
+    $scope.Options ={};
+    $scope.Options.SelCurrency = {};
+    $scope.Options.SelPaymentMode=[];
+    //$scope.paymentSetting = {};
+    jQuery.getJSON('json/CurrencyOptions.json', function(data) {
+         $scope.paymentSetting = {};
+         $scope.paymentSetting.currency = data.CurrencyOptions;
+         $scope.paymentSetting.paymentOptions = data.PaymentMode;
+         console.log($rootScope.PaymentSettings);
+         $scope.Options.SelCurrency =   $rootScope.PaymentSettings.CurrencyOptions.id;
 
-    $scope.paymentSetting = {};
-    console.log($rootScope.PaymentSettings)
-    $scope.paymentSetting.currency = $rootScope.PaymentSettings.currency;
-    console.log($scope.paymentSetting)
-    $scope.paymentSetting.paymentOptions = $rootScope.PaymentSettings.paymentOptions;
+         console.log($scope.Options.SelCurrency);
+         console.log($scope.paymentSetting.currency);
+
+         console.log("$rootscope.paymentsettings : ",$rootScope.PaymentSettings);
+         //$scope.paymentSetting.paymentOptions[0].sel = true;
+
+         for(var i=0;i<$scope.paymentSetting.paymentOptions.length;i++)
+         {
+             for(var k=0;k<$rootScope.PaymentSettings.PaymentMode.length;k++)
+             {
+                 if($scope.paymentSetting.paymentOptions[i].id == $rootScope.PaymentSettings.PaymentMode[k].id)
+                  {
+                      $scope.paymentSetting.paymentOptions[i].sel = true;
+                      break;
+                  }
+             }
+           
+           
+         }
+
+         //$scope.Options.SelPaymentMode = $rootScope.PaymentSettings.PaymentMode;
+        });
+
+    
     $scope.savePaymentSettings = function() {
-        console.log($scope.paymentSetting)
+        console.log("Chosen Currency: ", $scope.Options.SelCurrency);
+        var tempPaymentSettings = {};
 
-        var paymentSetting = JSON.stringify($scope.paymentSetting);
-        var promise = settingService.set("PaymentSettings", paymentSetting);
-        promise.then(function(data) {
+        for(var j=0;j<$scope.paymentSetting.currency.length;j++)
+        {
+          if($scope.paymentSetting.currency[j].id == $scope.Options.SelCurrency)
+          {
+              tempPaymentSettings.CurrencyOptions = $scope.paymentSetting.currency[j];
+              break;
+          }
+
+        }
+
+        tempPaymentSettings.PaymentMode = [];
+        for(var i=0;i<$scope.paymentSetting.paymentOptions.length;i++)
+        {
+          if($scope.paymentSetting.paymentOptions[i].sel!=undefined && $scope.paymentSetting.paymentOptions[i].sel == true)
+          {
+            tempPaymentSettings.PaymentMode.push($scope.paymentSetting.paymentOptions[i]);
+
+          }
+
+        }
+         
+        if(tempPaymentSettings.PaymentMode.length<=0) //load defaults;;
+           {
+              tempPaymentSettings.PaymentMode = $rootScope.PaymentSettings.PaymentMode;
+               
+           }
+
+           console.log("Sel Pay Method: ", tempPaymentSettings);
+           var paymentSetting = JSON.stringify(tempPaymentSettings);
+
+            var promise = settingService.set("PaymentSettings", paymentSetting);
+            promise.then(function(data) {
             console.log(data.rows.length);
             console.log(data)
             if (data.rowsAffected >= 1) {
                 var promise = settingService.get("PaymentSettings", paymentSetting);
                 promise.then(function(data) {
                     $rootScope.PaymentSettings = JSON.parse(data.rows[0].SettingsValue);
-                    var currency = $rootScope.PaymentSettings.currency.split(' ');
-                    var currencyName = currency[0];
-                    var currencySymbol = currency[1];
-                    $rootScope.currencySymbol = currencySymbol;
+                    $rootScope.ShowToast("Payment Settings Updated",false);  
+                    console.log("Payment Settings Updated");
                 })
             } else {
                 console.log('No PayMent Setting Record Found')
-                var currency = $rootScope.PaymentSettings.currency.split(' ');
-                var currencyName = currency[0];
-                var currencySymbol = currency[1];
-                $rootScope.currencySymbol = currencySymbol;
+                $rootScope.ShowToast("Unable to update Payment Settings",false); 
             }
         })
+         //handle error in promise;;
+
+       // console.log("chosen Options:")
+        /*console.log($scope.paymentSetting);
+
+        
+       */
     }
-}).controller('reports', function($scope,$rootScope,settingService) {
+
+})
+
+.controller('reports', function($scope,$rootScope,settingService) {
     $scope.reportObj = {}
     $scope.reportObj.storeCloud=$rootScope.Reports.storeCloud;
     $scope.reportObj.sendEmail=$rootScope.Reports.sendEmail;
@@ -1682,4 +1764,17 @@ $scope.txSetting.taxRate=tax.taxRate;
         })
         console.log($scope.reportObj)
     }
+})
+
+.controller('salesReportCtrl', function($scope, salesService, $rootScope) {
+$scope.Dte={}
+$scope.salesReport=[]
+$scope.save=function(){
+
+ var promise = salesService.getSalesReport($scope.Dte.start.getTime(), $scope.Dte.end.getTime());
+        promise.then(function(data) {
+            console.log(data)
+            $scope.salesReport=data;
+        })
+}
 })

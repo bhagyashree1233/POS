@@ -5,7 +5,8 @@
     <ion-content>
      <ion-list>
        <ion-item ng-repeat="tax in TaxSettings1" ng-click="onTaxRateSelect(tax)">
-        <span> {{tax.TaxRate}}</span>
+        <span>{{tax.name}}</span>
+        <span> {{tax.taxRate}}</span>
        </ion-item>
      </ion-list>
     </ion-content>
