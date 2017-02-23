@@ -11,6 +11,12 @@ angular.module('starter.globalcontroller', [])
 
    $rootScope.password = "password123";
 
+   $rootScope.VolatileData =
+   {
+    CurrentBillNo: 1,
+    CurrentTokenNo:1
+   };
+
    $rootScope.printFormatSettings = {
       addressLine1:"",
       addressLine2:"",
@@ -65,6 +71,39 @@ $rootScope.Reports={
       }
 
      ]
+
+   }
+
+   $rootScope.showPaymentMode = function()
+   {
+     var AvailButtons = [];
+     console.log($rootScope.PaymentSettings.PaymentMode);
+     //$scope.returnvalues=[];
+     for(var i=0; i<$rootScope.PaymentSettings.PaymentMode.length;i++)
+     {
+         //$scope.returnvalues.push()
+         var name = $rootScope.PaymentSettings.PaymentMode[i].name;
+       var newbutton = 
+       {
+         text : $rootScope.PaymentSettings.PaymentMode[i].name,
+         onTap: function (e) { console.log(e); return e.originalEvent.target.childNodes[0];}
+       }
+      AvailButtons.push(newbutton);
+
+     }
+
+        $ionicPopup.show({
+              title: 'Payment Mode',
+              subTitle: 'Select Payment Mode',
+              scope:$scope,
+              buttons: AvailButtons
+
+   }).then(function(res) {
+              console.log('Sel Button is', res);
+             
+
+});
+
 
    }
 
