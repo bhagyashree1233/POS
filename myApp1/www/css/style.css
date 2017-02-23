@@ -338,3 +338,37 @@ input.printerSettingtext {
         overflow-y: scroll;
         white-space: nowrap;
     }
+
+    .salesReport{
+     font-style:italic;
+     font-size: 3vh;
+     font-weight: bold;
+    }
+    #salesReportHeading{
+        background-color:black;
+        color:white;
+    }
+    .salesReportFont{
+     font-style:italic;
+     font-size: 3vh;
+     font-weight: bold;
+     border:1px solid white;
+     padding:10vh;
+     margin:0;
+    
+    }
+    .salesReportitemFont{
+     font-style:italic;
+     font-size: 3vh;
+     border:1px solid black;
+     padding:10vh;
+     margin:0;
+
+    }
+    #salesReportHeader{
+        font-weight:bold;
+       background:black;
+       font-size: 3vh;
+       color:white;
+    }
+    

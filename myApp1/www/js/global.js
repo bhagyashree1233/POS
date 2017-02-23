@@ -100,6 +100,10 @@ $rootScope.Reports={
 
    }).then(function(res) {
               console.log('Sel Button is', res);
+              if(res=="Cash")
+              {
+                  
+              }
              
 
 });
