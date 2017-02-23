@@ -1,34 +1,49 @@
 <ion-view view-title="PaymentSettings">
 <ion-content ng-controller="paymentSettings">
-<form id="payMentSetting">
-<ion-list >
+
+
 
  <div class="item">
 
- Currency:<div id="currency"class="card">
- <ion-radio class="pySttg" ng-model="paymentSetting.currency" ng-value="'Inr (&#8377;)'" >Inr (&#8377;)</ion-radio>
- <ion-radio class="pySttg"  ng-model="paymentSetting.currency" ng-value="'USD ($)'">USD ($)</ion-radio>
+ Select Currency:<div id="currency"class="card">
+ <ion-list >
+ <ion-radio class="pySttg" ng-repeat= "Setting in paymentSetting.currency"  ng-value="Setting.id" ng-model="Options.SelCurrency" name="currency">{{Setting.name}} ({{Setting.symbol}})</ion-radio>
+ </ion-list>
+
+
+<!-- <ion-radio class="pySttg"  ng-model="paymentSetting.currency" ng-value="'USD ($)'">USD ($)</ion-radio>
  <ion-radio class="pySttg"ng-model="paymentSetting.currency" ng-value="'Pound (£)'"> Pound (£)</ion-radio>
  <ion-radio class="pySttg"ng-model="paymentSetting.currency" ng-value="'Ringgit RM'" >Ringgit RM</ion-radio>
- </div>
- 
- </div>
- <div class="item">
 
- Payment Option:<div class="card" id="payment">
+ -->
+ </div>
+ </div>
+
+
+ <div class="item">
  
+ Payment Option:<div class="card" id="payment">
+ <ion-list>
+ <ion-checkbox ng-repeat= "options in paymentSetting.paymentOptions" ng-true-value="true" ng-false-value="false" ng-model="options.sel" >{{options.name}}</ion-checkbox>
+ </ion-list>
+ 
+ <!--
  <ion-checkbox ng-click="click()" ng-model="paymentSetting.paymentOptions[0].PayTM" >PayTM</ion-checkbox>
  <ion-checkbox ng-click="click()"ng-model="paymentSetting.paymentOptions[0].Cash" >Cash</ion-checkbox>
  <ion-checkbox ng-click="click()"ng-model="paymentSetting.paymentOptions[0].Visa" >Visa</ion-checkbox>
  <ion-checkbox ng-model="paymentSetting.paymentOptions[0].Master" >Master</ion-checkbox>
  <ion-checkbox ng-model="paymentSetting.paymentOptions[0].Amex" >Amex</ion-checkbox>
+-->
+
 </div>
+
+
  </div>
  </div>
  <div class="padding">
   <button type="submit" ng-click="savePaymentSettings()" class="button button-block button-dark" style="margin:auto;width:70%">Submit</button>
   </div>
- </ion-list>
- </form>
+ 
+
  </ion-content>
  </ion-view>

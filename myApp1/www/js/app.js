@@ -34,19 +34,19 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         }
         $rootScope.editingProduct = {};
     //showdbloading;;
-        $rootScope.printFormatSettings = printFormatSettings;
-        $rootScope.TaxSettings = TaxSettings;
-        $rootScope.PaymentSettings = PaymentSettings;
-        $rootScope.Reports=Reports;
+        //$rootScope.printFormatSettings = printFormatSettings;
+        //$rootScope.TaxSettings = TaxSettings;
+        //$rootScope.PaymentSettings = PaymentSettings;
+        //$rootScope.Reports=Reports;
         //$cordovaSQLite.execute($rootScope.db, "DROP TABLE TransactionDetails ").then(console.log('Transaction table droped Successfully')); 
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Category (CategoryId text primary key, CategoryName text, CategoryDesc text)").then(console.log('Category table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Product (ProductId text primary key, ProductName text, ProductUnit text, ProductPrice real, TaxId integer, BuyingPrice real, TaxRate real, ItemsinStock real, Discount real, CategoryId text, CategoryName text, Image text, Favourite text)").then(console.log('Product table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS TransactionDetails (BillNo integer, DateTime text,DiscountAmount real, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, CategoryId text, CategoryName text)").then(console.log('TransactionDetails table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, 'CREATE TABLE IF NOT EXISTS Settings (SettingsName text PRIMARY KEY ,SettingsValue TEXT)').then(console.log('Settings table created Successfully'));
-        console.log($rootScope.printFormatSettings);
-        console.log($rootScope.PaymentSettings);
-        console.log($rootScope.TaxSettings);
+        //console.log($rootScope.printFormatSettings);
+        //console.log($rootScope.PaymentSettings);
+        //console.log($rootScope.TaxSettings);
         var promise = settingService.get("PrinterFormatSettings");
         promise.then(function(data) {
             console.log(data)
@@ -65,23 +65,20 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
                 console.log('No TaxSettings Record Found')
             }
         })
+
+        
         var promise = settingService.get("PaymentSettings");
         promise.then(function(data) {
             console.log(data)
             if (data.rows.length >= 1) {
                 $rootScope.PaymentSettings = JSON.parse(data.rows[0].SettingsValue);
-                var currency = $rootScope.PaymentSettings.currency.split(' ');
-                var currencyName = currency[0];
-                var currencySymbol = currency[1];
-                $rootScope.currencySymbol = currencySymbol;
+                
             } else {
                 console.log('No PayMent Setting Record Found')
-                var currency = $rootScope.PaymentSettings.currency.split(' ');
-                var currencyName = currency[0];
-                var currencySymbol = currency[1];
-                $rootScope.currencySymbol = currencySymbol;
             }
         })
+
+
         var promise = salesService.get("233", undefined, undefined);
         promise.then(function(data) {
             console.log(data)
