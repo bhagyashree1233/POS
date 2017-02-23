@@ -212,6 +212,7 @@ angular.module('starter.controller', [])
                    $scope.productArr[i].quantity=product.quantity+$scope.productArr[i].quantity;
                     $scope.productArr[i].productTotalPrice=product.productTotalPrice+$scope.productArr[i].productTotalPrice;
 
+
                 }
             }
         }
@@ -276,7 +277,8 @@ angular.module('starter.controller', [])
     //receipt function to store all transaction details in DB
     $scope.receipt = function() {
         $scope.paymentModal.hide();
-        $scope.transactionDate = (new Date()).getTime();
+        $scope.transactionDate = new Date().getTime();
+        console.log($scope.transactionDate);
         var promise = dbService.storeToTransaction($scope.productArr, $scope.transactionDate);
         promise.then(function(result) {
             console.log(result);
@@ -1649,12 +1651,42 @@ $state.go('app.TaxSettings')
 .controller('salesReportCtrl', function($scope, salesService, $rootScope) {
 $scope.Dte={}
 $scope.salesReport=[]
+$scope.totalAmount={
+avgBillAmount:0,
+taxAmount:0,
+billAmt:0,
+amountAftertax:0
+};
 $scope.save=function(){
-
- var promise = salesService.getSalesReport($scope.Dte.start.getTime(), $scope.Dte.end.getTime());
+    var startDate=$scope.Dte.start;
+    console.log(startDate);
+    var endDate=$scope.Dte.end;
+if((startDate==undefined && endDate==undefined)||(endDate==startDate)){
+    startDate=new Date().getTime()-43200*1000;
+    console.log(startDate)
+    console.log(startDate)
+    endDate=new Date().getTime()+43200*1000;
+    console.log(endDate)
+}else if(startDate==undefined ||endDate==undefined ){
+    console.log('Select Start and End Date');
+    $rootScope.ShowToast("Select Start and End Date", false);
+    return false
+}else{
+    startDate=$scope.Dte.start.getTime();
+    console.log(startDate)
+    endDate=$scope.Dte.end.getTime();
+}
+ var promise = salesService.getSalesReport(startDate,endDate );
         promise.then(function(data) {
             console.log(data)
             $scope.salesReport=data;
+           for(var i=0;i<$scope.salesReport.length;i++){
+           // $scope.totalAmount.avgBillAmount=($scope.salesReport[i].billAmt+$scope.totalAmount.avgBillAmount)/$scope.salesReport.length 
+            $scope.totalAmount.taxAmount=$scope.salesReport[i].taxAmount+$scope.totalAmount.taxAmount
+            $scope.totalAmount.billAmt=$scope.salesReport[i].billAmt+$scope.totalAmount.billAmt
+            $scope.totalAmount.amountAftertax=$scope.salesReport[i].amountAftertax+$scope.totalAmount.amountAftertax
+           }
+           $scope.totalAmount.avgBillAmount=$scope.totalAmount.billAmt/$scope.salesReport.length
         })
 }
 })
