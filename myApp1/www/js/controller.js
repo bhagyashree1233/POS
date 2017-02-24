@@ -3,7 +3,7 @@
 angular.module('starter.controller', [])
 
 
-.controller('homeCtrl', ['$scope', '$rootScope','$state', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', function($scope, $rootScope, $state, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading) {
+.controller('homeCtrl', ['$scope', '$rootScope','$state', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading','$ionicPopup', function($scope, $rootScope, $state, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading,$ionicPopup) {
 
     /*
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -341,6 +341,73 @@ angular.module('starter.controller', [])
         $scope.discountAmount = 0;
         $scope.totalChargeAmount = 0;
     }
+
+
+   $scope.showPaymentMode = function()
+   {
+
+       if ($scope.productArr.length<=0) {
+            return;
+       }
+
+       if($rootScope.PaymentSettings.PaymentMode.length <=0)
+       {
+          $scope.openPaymentModal();
+          return;
+
+       }
+
+       if($rootScope.PaymentSettings.PaymentMode.length ==1 && $rootScope.PaymentSettings.PaymentMode[0].name== "Cash")
+       {
+           $scope.openPaymentModal();
+          return;
+       }
+
+
+     var AvailButtons = [];
+     console.log($rootScope.PaymentSettings.PaymentMode);
+     //$scope.returnvalues=[];
+     for(var i=0; i<$rootScope.PaymentSettings.PaymentMode.length;i++)
+     {
+         //$scope.returnvalues.push()
+         var name = $rootScope.PaymentSettings.PaymentMode[i].name;
+       var newbutton = 
+       {
+         text : $rootScope.PaymentSettings.PaymentMode[i].name,
+         onTap: function (e) { console.log(e);  return e.currentTarget.childNodes[0].data;}
+       }
+      AvailButtons.push(newbutton);
+
+     }
+
+        $ionicPopup.show({
+              title: 'Payment Mode',
+              subTitle: 'Select Payment Mode',
+              scope:$scope,
+              buttons: AvailButtons
+
+   }).then(function(res) {
+              console.log('Sel Button is', res);
+
+              //var st = res.toString();
+              //console.log(typeof(res));
+
+              if(res =="Cash")
+              {
+                  //show keypad;;
+                  //showing Modal();
+                  console.log("In cash");
+                  $scope.openPaymentModal();
+              }
+             
+
+});
+
+
+   }
+
+
+
     //Numeric keypad for Quantity Start
     $scope.typedCode = 1;
     var count = 0
@@ -465,6 +532,7 @@ angular.module('starter.controller', [])
     }).then(function(modal) {
         $scope.paymentModal = modal;
     });
+
     $scope.openPaymentModal = function() {
         $scope.enterBtn = false;
         if ($scope.productArr.length) {
@@ -475,6 +543,8 @@ angular.module('starter.controller', [])
             $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
         }
     };
+
+
     $scope.closePaymentModal = function() {
         console.log('I am in close Model')
         $scope.typedAmount = "";
@@ -1290,7 +1360,11 @@ $scope.itemclick = function(obj)
 
 
 
-.controller('salesReportCtrl', function($scope, salesService, $rootScope) {
+.controller('salesReportCtrl', function($scope, salesService, $rootScope) 
+{
+
+
+
 $scope.Dte={}
 $scope.salesReport=[]
 $scope.totalAmount={
@@ -1299,26 +1373,88 @@ taxAmount:0,
 billAmt:0,
 amountAftertax:0
 };
+
+
 $scope.save=function(){
+
+    var stDate;
+    var edDate;
     var startDate=$scope.Dte.start;
-    console.log(startDate);
+    //console.log(startDate);
     var endDate=$scope.Dte.end;
-if((startDate==undefined && endDate==undefined)||(endDate==startDate)){
-    startDate=new Date().getTime()-43200*1000;
-    console.log(startDate)
-    console.log(startDate)
-    endDate=new Date().getTime()+43200*1000;
-    console.log(endDate)
-}else if(startDate==undefined ||endDate==undefined ){
+
+    if(endDate < startDate)
+    {
+      console.log("Invalid Date Selected");
+      $rootScope.ShowToast("Please select valid Date",false);
+      return;
+    }
+
+if(startDate==undefined && endDate==undefined) //no date entered;;
+{
+    console.log("start and End Date undefined");
+    startDate=new Date();
+    startDate.setHours(0);
+    startDate.setMinutes(0);
+    startDate.setSeconds(0);
+    startDate.setMilliseconds(0);
+
+
+    endDate=new Date();
+    endDate.setHours(23);
+    endDate.setMinutes(59);
+    endDate.setSeconds(59);
+    endDate.setMilliseconds(999);
+
+
+    console.log(startDate);
+    console.log(endDate);
+
+    stDate = startDate.getTime();
+    edDate = endDate.getTime();
+   
+    console.log(stDate);
+    console.log(edDate);
+  
+    //return;
+
+}
+else if(startDate==undefined ||endDate==undefined )
+{
     console.log('Select Start and End Date');
     $rootScope.ShowToast("Select Start and End Date", false);
     return false
-}else{
-    startDate=$scope.Dte.start.getTime();
-    console.log(startDate)
-    endDate=$scope.Dte.end.getTime();
 }
- var promise = salesService.getSalesReport(startDate,endDate );
+
+else
+{
+    startDate=$scope.Dte.start;
+    endDate=$scope.Dte.end;
+
+    startDate.setHours(0);
+    startDate.setMinutes(0);
+    startDate.setSeconds(0);
+    startDate.setMilliseconds(0);
+
+    endDate.setHours(23);
+    endDate.setMinutes(59);
+    endDate.setSeconds(59);
+    endDate.setMilliseconds(999);
+
+    console.log(startDate);
+    console.log(endDate);
+
+    stDate = startDate.getTime();
+    edDate = endDate.getTime();
+   
+    console.log(stDate);
+    console.log(edDate);
+
+   // return;
+
+}
+
+ var promise = salesService.getSalesReport(stDate,edDate);
         promise.then(function(data) {
             console.log(data)
             $scope.salesReport=data;

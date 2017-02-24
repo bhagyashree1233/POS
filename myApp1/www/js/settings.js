@@ -308,7 +308,7 @@ $scope.txSetting.taxRate=tax.taxRate;
          
         if(tempPaymentSettings.PaymentMode.length<=0) //load defaults;;
            {
-              tempPaymentSettings.PaymentMode = $rootScope.PaymentSettings.PaymentMode;
+              tempPaymentSettings.PaymentMode.push($scope.paymentSetting.paymentOptions[0]);
                
            }
 
