@@ -2,11 +2,123 @@
     <ion-content>
     <ion-list>
      <ion-item class="sam-input-item">
+      
        <span class="inputview" ng-model="quantity1">{{typedCode}}
-      <a ng-click="closeNumericModal()"  id="quantity-close"class="icon-right ion-close-circled"></a>
+      <a ng-click="closeNumericModal()"  id="quantity-close"class="icon-right ion-close-circled" style="  color: rgba(255,30,0,0.80);"></a>
+   
        </span>
      </ion-item>
     </ion-list>
+
+
+                   
+<div class="numbers-cont">
+    
+       
+        <div  ng-click="keyPressed(1)" class="grid">
+        <div class="number-circle">
+         
+        <div class="num">1</div>
+        <div class="abc"></div>
+        </div>
+        </div>
+        
+        <div ng-click="keyPressed(2)" class="grid">
+        <div class="number-circle">
+        <div class="num">2</div>
+        <div class="abc"></div>
+        </div>
+        </div>
+        
+        <div ng-click="keyPressed(3)"class="grid">
+        <div class="number-circle">
+        <div class="num">3</div>
+        <div class="abc"></div>
+        </div>
+        </div>
+        
+        <div ng-click="keyPressed(4)" class="grid">
+        <div class="number-circle">
+        <div class="num">4</div>
+        <div class="abc"></div>
+        </div>
+        </div>
+        
+        <div ng-click="keyPressed(5)" class="grid">
+        <div class="number-circle">
+        <div class="num">5</div>
+        <div class="abc"></div>
+        </div>
+        </div>
+        
+        <div ng-click="keyPressed(6)" class="grid">
+        <div class="number-circle">
+        <div class="num">6</div>
+        <div class="abc"></div>
+        </div>
+        </div>
+        
+        <div ng-click="keyPressed(7)" class="grid">
+        <div class="number-circle">
+        <div class="num">7</div>
+        <div class="abc"></div>
+        </div>
+        </div>
+        
+        <div ng-click="keyPressed(8)" class="grid">
+        <div class="number-circle">
+        <div class="num">8</div>
+        <div class="abc"></div>
+        </div>
+        </div>
+        
+        <div ng-click="keyPressed(9)" class="grid">
+        <div class="number-circle">
+        <div class="num">9</div>
+        <div class="abc"></div>
+        </div>
+        </div>
+        
+        <div ng-click="keyPressed('.')"class="grid">
+        <div class="number-circle">
+        <div class="num" >.</div>
+        </div>
+        </div>
+        
+        <div ng-click="keyPressed(0)"class="grid">
+        <div class="number-circle">
+        <div class="num">0</div>
+        <div class="abc"></div>
+        </div>
+        </div>
+        
+        <div ng-click="keyPressed(-3)" class="grid">
+        <div class="number-circle">
+        <div class="num">del</div>
+        </div>
+        </div>
+        
+        <div class="grid">
+        </div>
+        
+        <div ng-click="save(newProduct);inputShow==false;" class="grid">
+        <div class="number-circle">
+        <div class="num">✔</div>
+        </div>
+        </div>
+      
+    </div>
+    
+</div>                         
+                               
+
+</div>                                           
+
+                                                                                
+</div>
+</div>
+
+    <!--
     <div class="button-bar sam-cust-bar">
 
         <a ng-click="keyPressed(-3)" class="button button-block button-dark icon-left ion-backspace">Del</a>
@@ -37,5 +149,6 @@
 
         <a ng-click="save(newProduct);inputShow==false;" class="button button-block button-assertive icon-left ion-checkmark">Enter</a>
     </div>
+    -->
     </ion-content>
     </ion-modal-view>
