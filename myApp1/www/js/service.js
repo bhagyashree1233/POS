@@ -370,9 +370,11 @@ angular.module('starter.services', [])
 .factory("settingService", function($q, $cordovaSQLite, $rootScope) {
     function set(SettingsName, SettingsValue) {
         var dfd = $q.defer();
+        console.log("Setting Name: ", SettingsName);
+        console.log("Setting Value: ", SettingsValue);
         $cordovaSQLite.execute($rootScope.db, 'INSERT OR REPLACE INTO Settings (SettingsName,SettingsValue) VALUES (?,?) ', [SettingsName, SettingsValue]).then(function(result) {
-           console.log(result)
-            dfd.resolve(result);
+           console.log(result);
+           dfd.resolve(result);
 
         }, function(error) {
             dfd.resolve(error);
@@ -382,7 +384,8 @@ angular.module('starter.services', [])
     function get(SettingsName) {
         var dfd = $q.defer();
         //$rootScope.deviceReady = dfd.promise;
-        $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue  from Settings where SettingsName=?', [SettingsName]).then(function(result) {
+        $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue from Settings where SettingsName=?', [SettingsName]).then(function(result) {
+            console.log("select value: " ,result);
             dfd.resolve(result);
         }, function(error) {
             dfd.resolve(error);
@@ -419,12 +422,12 @@ angular.module('starter.services', [])
             console.log(result.rows.length)
             for (var i = 0; i < result.rows.length; i++) {
                 report.push({
-                    itemCode: result.rows[i].ProductId,
-                    itemName: result.rows[i].ProductName,
-                    qtySold: result.rows[i].Quantity,
-                    totalAmountwoTax: result.rows[i].TotalPrice,
-                    totalTax: result.rows[i].TaxAmount,
-                    totalAmount: result.rows[i].TotalAmount
+                    itemCode: result.rows.item(i).ProductId,
+                    itemName: result.rows.item(i).ProductName,
+                    qtySold: result.rows.item(i).Quantity,
+                    totalAmountwoTax: result.rows.item(i).TotalPrice,
+                    totalTax: result.rows.item(i).TaxAmount,
+                    totalAmount: result.rows.item(i).TotalAmount
                 })
             }
             console.log(report.length);
@@ -451,17 +454,17 @@ angular.module('starter.services', [])
         $cordovaSQLite.execute($rootScope.db, query).then(function(result) {
             console.log(result)
             for (var i = 0; i < result.rows.length; i++) {
-                var date=new Date(parseFloat(result.rows[i].DateTime));
+                var date=new Date(parseFloat(result.rows.item(i).DateTime));
                 
                 salesReport.push({
                     date:date.toString().substring(4, 15),
                     time:date.toString().substring(15, 25),
-                    billNo:result.rows[i].BillNo,
-                    totalBills: result.rows[i].TotalItems,
-                    avgBillAmt: result.rows[i].TotalPrice / result.rows[i].TotalItems,
-                    billAmt: result.rows[i].TotalPrice,
-                    taxAmount: result.rows[i].TaxAmount,
-                    amountAftertax: result.rows[i].TotalAmount,
+                    billNo:result.rows.item(i).BillNo,
+                    totalBills: result.rows.item(i).TotalItems,
+                    avgBillAmt: result.rows.item(i).TotalPrice / result.rows.item(i).TotalItems,
+                    billAmt: result.rows.item(i).TotalPrice,
+                    taxAmount: result.rows.item(i).TaxAmount,
+                    amountAftertax: result.rows.item(i).TotalAmount,
                 })
             }
             dfd.resolve(salesReport);
