@@ -78,7 +78,7 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
          if($rootScope.printerName!="")
                  {
          if($rootScope.PrinterStatus == false)
-         $rootScope.printerConnect($rootScope.printerName,$rootScope.connectCallBack);
+         $rootScope.printerConnect($rootScope.printerName,$rootScope.ConnectStatusFunc);
                  }
           else
            {

@@ -400,6 +400,9 @@ $scope.connect = function()
 $scope.testPrint = function()
 {
 
+$rootScope.Testing();
+     return;
+/*
 BTPrinter.printText(function(data){
     console.log("Success");
     $rootScope.ShowToast("Test Print Success");
@@ -408,7 +411,7 @@ BTPrinter.printText(function(data){
     console.log("Error");
      $rootScope.ShowToast("Failed to Test Print");
     console.log(err)
-}, "PayUPad Test Print\n")
+}, "PayUPad Test Print\n")*/
 
 }
 
