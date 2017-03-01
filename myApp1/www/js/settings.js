@@ -8,7 +8,7 @@ angular.module('starter.settingscontroller', [])
     $scope.txSetting = {};
     $scope.tax={}
     $scope.addView=true;
-    console.log($rootScope.TaxSettings.length)
+    console.log($rootScope.TaxSettings.length);
     for( var i=0;i<$rootScope.TaxSettings.length;i++){
     $scope.taxSettings[i] = {
         id: $rootScope.TaxSettings[i].id,
@@ -62,22 +62,22 @@ angular.module('starter.settingscontroller', [])
     }
 
 
-    $scope.SaveTaxSettingsToDB= function(taxsettings)
+    $scope.SaveTaxSettingsToDB= function(taxsettings1)
     {
 
-     var taxSettings = JSON.stringify(taxsettings);
+     var taxSettings = JSON.stringify(taxsettings1);
+
         var promise = settingService.set("TaxSettings", taxSettings);
         promise.then(function(data) {
             console.log(data);
             if (data.rowsAffected >= 1) {
-                var promise = settingService.get("TaxSettings", taxSettings);
-                promise.then(function(data) {
-                    $rootScope.TaxSettings = JSON.parse(data.rows[0].SettingsValue);
-                    $scope.txSetting = {};
-                    $scope.addView = true;
-                })
+                console.log("Data inserted");
+                 $scope.txSetting = {};
+                 $scope.addView = true;
+                 $rootScope.TaxSettings = taxSettings1;
+
             } else { 
-                console.log('No TaxSettings Record Found');
+                console.log('Unable to Save TaxSettings');
             }
         })
 
@@ -124,6 +124,7 @@ $scope.deleteTaxSettings=function(taxId)
 
 
     var taxRate=$scope.txSetting.taxRate;
+
     if(taxRate==undefined ||taxRate.length<1){
         console.log('Enter tax Rate')
     }else if(!taxRate.match(/^[0-9]+([,.][0-9]+)?$/g)){
@@ -244,6 +245,175 @@ $scope.txSetting.taxRate=tax.taxRate;
 })
 
 
+
+.controller('BlueToothCtrl', function($scope, settingService, $rootScope) {
+
+$scope.CurrentDevice = "";
+
+//$rootScope.InitPrinter();
+
+
+$scope.SaveBluetoothSettings = function(btsettings)
+{
+
+var promise = settingService.set("bluetoothSettings", JSON.stringify(btsettings));
+            promise.then(function(data) {
+            //console.log(data.rows.length);
+            console.log(data)
+            if (data.rowsAffected >= 1)
+            {
+                console.log("Settings Saved");
+                $rootScope.ShowToast("BT Settings Saved",false);
+                $rootScope.BluetoothSettings = btsettings;
+            }
+        })
+}
+
+function OnSuccessPairedList(data,status)
+{
+ if(status ==false)
+  {
+      console.log("Unable to Get Paired List");
+      $rootScope.ShowToast("Unable to Get Paired List");
+     
+  }
+  else
+  {
+      console.log("Success getting Paired List");
+       $scope.pairedDevices = [];
+       for(var i=0;i<data.length;i++)
+       {
+           $scope.pairedDevices[i] = {};
+           $scope.pairedDevices[i].name = data[i];
+           if(data[i] == $rootScope.printerName && $rootScope.PrinterStatus == true)
+           {
+            $scope.pairedDevices[i].status = "connected";
+           }
+           else
+           {
+            $scope.pairedDevices[i].status = "not connected";
+           }
+       }
+      //$rootScope.ShowToast("Unable to Get Paired List");
+  }
+
+}
+
+//$scope.getPairedList = function()
+//{
+    //$scope.CurrentDevice = "";
+
+    $rootScope.getPairedList(OnSuccessPairedList);
+//}
+
+$scope.selectDevice = function(device)
+{
+$scope.CurrentDevice = device;
+console.log("sel Device is: ", device);
+$rootScope.ShowToast("Sel Device: " + device, false);
+}
+
+
+
+function OnsuccessConnect(status,name)
+{
+   if(status == true)
+   {
+       console.log("Sucessfully Connected to Printer: ", $scope.CurrentDevice);
+       $rootScope.ShowToast("Sucessfully Connected to Printer: " + $scope.CurrentDevice, false);
+       $rootScope.printerName = name;
+       $rootScope.PrinterStatus = true;
+       var btsettings = {};
+       btsettings.PrinterName = name;
+       $scope.SaveBluetoothSettings(btsettings);
+       $rootScope.getPairedList(OnSuccessPairedList);
+
+   }
+   else
+   {
+       console.log("Failed to Connect to Printer: ", $scope.CurrentDevice);
+       $rootScope.ShowToast("Failed to Connect to Printer: "+ $scope.CurrentDevice,false);
+       $rootScope.printerName = "";
+       $rootScope.getPairedList(OnSuccessPairedList);
+   }
+
+}
+
+function OnDisconnectSuccess(ret)
+{
+   if(ret == true)
+   {
+       console.log($rootScope.printerName, " Printer Disconnected");
+       $rootScope.ShowToast($rootScope.printerName + " Printer Disconnected", false);
+       $rootScope.PrinterStatus = false;
+       $rootScope.getPairedList(OnSuccessPairedList);
+   }
+   else
+   {
+       console.log($rootScope.printerName, " Unable to Disconnect");
+       $rootScope.ShowToast($rootScope.printerName + ": Unable to Disconnect",false);
+       $rootScope.PrinterStatus = false;
+       $rootScope.getPairedList(OnSuccessPairedList);
+   }
+
+}
+
+$scope.disconnect = function()
+{
+    if($rootScope.printerName == "" || $rootScope.PrinterStatus == false)
+     {
+         console.log("Nothing to Disconnect");
+         $rootScope.ShowToast("Not Connected to Printer");
+         $rootScope.PrinterStatus = false;
+         return;
+     }
+
+    $rootScope.printerDisconnect($rootScope.printerName,OnDisconnectSuccess);
+}
+
+$scope.connect = function()
+{
+    if($scope.CurrentDevice == "")
+    {
+        console.log("No Device to Connect");
+        $rootScope.ShowToast("No device to Connect",false);
+        //toast;;
+        return;
+    }
+
+    if($rootScope.PrinterStatus == true)
+    {
+      console.log("printer Already Connected");
+      $rootScope.ShowToast("Please Disconnect before Reconnecting",false);
+      return;
+    }
+
+
+    console.log("connecting to device: ", $scope.CurrentDevice);
+
+    $rootScope.ShowToast("connecting to device: " + $scope.CurrentDevice ,false);
+
+   $rootScope.printerConnect($scope.CurrentDevice,OnsuccessConnect);
+
+}
+
+$scope.testPrint = function()
+{
+
+BTPrinter.printText(function(data){
+    console.log("Success");
+    $rootScope.ShowToast("Test Print Success");
+    console.log("data received:" ,data);
+},function(err){
+    console.log("Error");
+     $rootScope.ShowToast("Failed to Test Print");
+    console.log(err)
+}, "PayUPad Test Print\n")
+
+}
+
+
+})
 
 .controller('paymentSettings', function($scope, settingService, $rootScope) {
     $scope.Options ={};

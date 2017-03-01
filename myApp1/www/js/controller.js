@@ -15,10 +15,13 @@ angular.module('starter.controller', [])
 
 //ionicParentView
 
+     
+
    //load products list from DB
     $scope.OnCatClick = function(catId) {
         console.log(catId);
         $rootScope.SelCat = catId;
+
         
         //change background color;;
        // if($rootScope.PrevSelCat!='0')
@@ -345,6 +348,8 @@ angular.module('starter.controller', [])
 
    $scope.showPaymentMode = function()
    {
+
+       
 
        if ($scope.productArr.length<=0) {
             return;
@@ -1363,7 +1368,15 @@ $scope.itemclick = function(obj)
 .controller('salesReportCtrl', function($scope, salesService, $rootScope) 
 {
 
-
+/*
+BTPrinter.list(function(data){
+        console.log("Success");
+        console.log(data); //list of printer in data array
+    },function(err){
+        console.log("Error");
+        console.log(err);
+    })
+*/
 
 $scope.Dte={}
 $scope.salesReport=[]

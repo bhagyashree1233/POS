@@ -51,7 +51,7 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         promise.then(function(data) {
             console.log(data)
             if (data.rows.length >= 1) {
-                $rootScope.printFormatSettings = JSON.parse(data.rows[0].SettingsValue);
+                $rootScope.printFormatSettings = JSON.parse(data.rows.item(0).SettingsValue);
             } else {
                 console.log('No PrinterFormatSettings Record Found')
             }
@@ -60,18 +60,46 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         promise.then(function(data) {
             console.log(data)
             if (data.rows.length >= 1) {
-                $rootScope.TaxSettings = JSON.parse(data.rows[0].SettingsValue);
+                $rootScope.TaxSettings = JSON.parse(data.rows.item(0).SettingsValue);
             } else {
                 console.log('No TaxSettings Record Found')
             }
         })
 
+        var promise5 = settingService.get("bluetoothSettings");
+        promise5.then(function(data) {
+            console.log("bluetooth: " ,data)
+            if (data.rows.length >= 1) {
+                //console.log("Bluetooth Settings: ",  data.rows.item(0));
+                $rootScope.BluetoothSettings = JSON.parse(data.rows.item(0).SettingsValue);
+                $rootScope.printerName = $rootScope.BluetoothSettings.PrinterName;
+                $rootScope.InitPrinter();
+
+         if($rootScope.printerName!="")
+                 {
+         if($rootScope.PrinterStatus == false)
+         $rootScope.printerConnect($rootScope.printerName,$rootScope.connectCallBack);
+                 }
+          else
+           {
+        $rootScope.ShowToast("Please Configure Printer");
+           }
+
+
+
+            } else {
+                console.log('No bluetoothsettings Record Found');
+                $rootScope.ShowToast("Please Configure Printer");
+            }
+        })
+
+        
         
         var promise = settingService.get("PaymentSettings");
         promise.then(function(data) {
             console.log(data)
             if (data.rows.length >= 1) {
-                $rootScope.PaymentSettings = JSON.parse(data.rows[0].SettingsValue);
+                $rootScope.PaymentSettings = JSON.parse(data.rows.item(0).SettingsValue);
                 
             } else {
                 console.log('No PayMent Setting Record Found')
@@ -131,7 +159,7 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         url: '/TaxSettings',
         views: {
             'menuContent': {
-                controller: 'reports',
+                controller: 'taxSetting',
                 templateUrl: 'templates/TaxSettings.html'
             }
         }
@@ -180,14 +208,28 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
                 templateUrl: 'templates/productReport.html'
             }
         }
-    }).state('app.editProducts', {
+    })
+
+    .state('app.editProducts', {
         url: '/editProducts',
         views: {
             'menuContent': {
                 templateUrl: 'templates/editProducts.html'
             }
         }
-    }).state('Test1', {
+    })
+
+   .state('app.bluetoothsettings', {
+        url: '/bluetoothsettings',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/bluetoothSettings.html'
+            }
+        }
+    })
+
+
+    .state('Test1', {
         url: '/Test',
         templateUrl: 'templates/Keypad.html',
     }).state('Splash', {
