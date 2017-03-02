@@ -164,6 +164,7 @@ $scope.txSetting.taxRate=tax.taxRate;
 }])
 
 
+
 .controller('printerSettings', function($scope, settingService, $rootScope) {
     $scope.printFormatSettings = {};
     $scope.printFormatSettings['addressLine1'] = $rootScope.printFormatSettings.addressLine1;
@@ -180,45 +181,49 @@ $scope.txSetting.taxRate=tax.taxRate;
         $scope.printFormatSettings.wifiSsid = $rootScope.printFormatSettings.wifiSsid
     $scope.savePrinterSettings = function() {
         var shopName=$scope.printFormatSettings.shopName;
-        
+        var pattern= new RegExp(/^[a-z0-9]+$/i);
         if(shopName==undefined||shopName.length<2){
             $rootScope.ShowToast("Enter Shop Name", false);
                 console.log('Enter Shop Name')
                 return false
-            }else if(!shopName.match(/^[a-z0-9]+$/i)){
-                $rootScope.ShowToast("Invalid shopName", false);
-                console.log('Invalid shopName')
-              return false  
             }
         var number1=$scope.printFormatSettings.phNumber;
-        if(!number1.match('^[0-9\+\]+$')){
+        var pattern= new RegExp('^[0-9\+\]+$');
+        if(!pattern.test(number1)){
             $rootScope.ShowToast("Invalid Number", false);
             console.log('Invalid Number')
             return false 
         }
         var tinNum=$scope.printFormatSettings.tin;
-        if(!tinNum.match('^[0-9]+$')){
+        var pattern= new RegExp('^[0-9]+$');
+        if(!pattern.test(tinNum)){
             $rootScope.ShowToast("Invalid TIN Number", false);
            
         }
        
         var billNumber=$scope.printFormatSettings.strtBillNmbr;
+        var pattern= new RegExp('^[0-9]+$');
         if(billNumber==undefined||billNumber.length<1){
             document.getElementById('billNumber').value=1;
-        }else if(!billNumber.match('^[0-9]+$')){
+        }else if(!pattern.test(billNumber)){
             console.log('Invalid bill Number')
             return false
         }
         var trtTokenNum=$scope.printFormatSettings.tokStartNmbr;
+         var pattern= new RegExp('^[0-9]+$');
         console.log(trtTokenNum)
         if(trtTokenNum==undefined||trtTokenNum.length<1){
             document.getElementById('trtTokenNum').value=1;
+        }else if(!pattern.test(trtTokenNum)){
+            console.log('Invalid Token Number')
+            return false
         }
         
        var restTokenNum=$scope.printFormatSettings.tokResetAftr;
+           var pattern= new RegExp('^[0-9]+$');
         if(restTokenNum==undefined||restTokenNum.length<1){
             document.getElementById('restTokenNum').value=999;
-        }else if(!restTokenNum.match('^[0-9]+$')||restTokenNum<trtTokenNum){
+        }else if(!pattern.test(restTokenNum)||restTokenNum<trtTokenNum){
             console.log('Invalid Input or reset should be greater then start token number')
             return false
         }
@@ -235,7 +240,7 @@ $scope.txSetting.taxRate=tax.taxRate;
             if (data.rowsAffected >= 1) {
                 var promise = settingService.get("PrinterFormatSettings", printFormatSettings);
                 promise.then(function(data) {
-                    $rootScope.printFormatSettings = JSON.parse(data.rows[0].SettingsValue);
+                    $rootScope.printFormatSettings = JSON.parse(data.rows.item(0).SettingsValue);
                 })
             } else {
                 console.log('No PrinterFormatSettings Record Found')
@@ -243,6 +248,7 @@ $scope.txSetting.taxRate=tax.taxRate;
         })
     }
 })
+
 
 
 

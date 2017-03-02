@@ -278,9 +278,129 @@ angular.module('starter.controller', [])
         $scope.receiptBtnShow = false;
     }
     //receipt function to store all transaction details in DB
+   $scope.print = function() {
+       var d = new Date();
+
+       var date = d.toString().substring(4, 15);
+       var time = d.toString().substring(15, 25);
+       $scope.productArr;
+
+       console.log(date)
+       console.log(time)
+       console.log($rootScope.printFormatSettings);
+       var printerSettings = $rootScope.printFormatSettings;
+       $rootScope.PrintInit();
+       console.log(printerSettings.shopName + printerSettings.addressLine1)
+       if (printerSettings.shopName != undefined && printerSettings.shopName != "") {
+           console.log('I am in shop')
+           $rootScope.PrintEnableUnderline(true);
+           $rootScope.PrintEnableBold(true);
+           $rootScope.PrintAlign("center");
+           $rootScope.PrintChangeBigFont("both");
+           $rootScope.PrintText(printerSettings.shopName + "\n\n");
+
+
+       }
+
+       if (printerSettings.addressLine1 != undefined && printerSettings.addressLine1 != "") {
+           console.log('I am in addressline')
+           $rootScope.PrintEnableUnderline(false);
+           $rootScope.PrintEnableBold(false);
+           $rootScope.PrintAlign("center");
+           $rootScope.PrintChangeBigFont("normal");
+           $rootScope.PrintText(printerSettings.addressLine1);
+
+       }
+
+       if (printerSettings.addressLine2 != undefined && printerSettings.addressLine2 != "") {
+           $rootScope.PrintEnableUnderline(false);
+           $rootScope.PrintEnableBold(false);
+           $rootScope.PrintAlign("center");
+           $rootScope.PrintChangeBigFont("normal");
+           $rootScope.PrintText(printerSettings.addressLine2 + "\n\n");
+
+       }
+       if (printerSettings.phNumber != undefined) {
+           console.log('I am in PhNumber')
+           $rootScope.PrintEnableUnderline(false);
+           $rootScope.PrintEnableBold(false);
+           $rootScope.PrintAlign("center");
+           $rootScope.PrintChangeBigFont("normal");
+           $rootScope.PrintText(printerSettings.phNumber + "\n\n");
+
+       }
+
+       if (printerSettings.tin != undefined) {
+           $rootScope.PrintEnableUnderline(false);
+           $rootScope.PrintEnableBold(false);
+           $rootScope.PrintAlign("left");
+           $rootScope.PrintChangeBigFont("normal");
+           $rootScope.PrintText("Tin:" + printerSettings.tin + "\n\n");
+
+       }
+
+       $rootScope.PrintEnableUnderline(false);
+       $rootScope.PrintEnableBold(false);
+       $rootScope.PrintAlign("left");
+       $rootScope.PrintEnableBold(true);
+       $rootScope.PrintText("Date:");
+       $rootScope.PrintEnableBold(false);
+       $rootScope.PrintText(date);
+
+
+       $rootScope.PrintEnableUnderline(false);
+       $rootScope.PrintEnableBold(false);
+       $rootScope.PrintAlign("right");
+       $rootScope.PrintEnableBold(true)
+       $rootScope.PrintText("Time:");
+       $rootScope.PrintEnableBold(false)
+       $rootScope.PrintText(time + "\n\n");
+
+
+       $rootScope.PrintEnableUnderline(false);
+       $rootScope.PrintEnableBold(true);
+       $rootScope.PrintAlign("left");
+       $rootScope.PrintChangeBigFont("normal");
+       $rootScope.PrintText("item" + "\t");
+       $rootScope.PrintAlign("center");
+       $rootScope.PrintText("quantity" + "\t");
+       $rootScope.PrintAlign("right");
+       $rootScope.PrintText("totalPrice" + "\n\n");
+
+
+       for (var i = 0; i < $scope.productArr.length; i++) {
+           $rootScope.PrintEnableBold(false);
+           $rootScope.PrintChangeBigFont("normal");
+           $rootScope.PrintAlign("left");
+           $rootScope.PrintText($scope.productArr[i].name + "\t");
+           $rootScope.PrintAlign("center");
+           $rootScope.PrintText($scope.productArr[i].quantity + "\t");
+           $rootScope.PrintAlign("right");
+           $rootScope.PrintText($scope.productArr[i].productTotalPrice + "\n\n");
+       }
+       $rootScope.PrintEnableBold(true);
+       $rootScope.PrintText("Total Price:");
+       $rootScope.PrintEnableBold(false);
+       $rootScope.PrintText($scope.totalPrice + "\n\n");
+       $rootScope.PrintEnableBold(true);
+       $rootScope.PrintText("Total Tax Amount:");
+       $rootScope.PrintEnableBold(false);
+       $rootScope.PrintText($scope.totalTaxAmount + "\n\n");
+       $rootScope.PrintEnableBold(true);
+       $rootScope.PrintText("Total Amount:");
+       $rootScope.PrintEnableBold(false);
+       $rootScope.PrintText($scope.totalChargeAmount + "\n\n");
+       $rootScope.PrintEnableBold(true);
+       $rootScope.PrintText("Greeting:");
+       $rootScope.PrintEnableBold(false);
+       $rootScope.PrintText(printerSettings.greeting + "\n\n");
+
+       $rootScope.EndPrint($rootScope.testSuccess, $rootScope.testError);
+   }
+
     $scope.receipt = function() {
         $scope.paymentModal.hide();
-
+        $scope.print();
         $scope.transactionDate = (new Date()).getTime();  //check
 
         console.log($scope.transactionDate);
@@ -295,6 +415,8 @@ angular.module('starter.controller', [])
         }, function(result) {
             console.log(result);
         })
+        
+
     }
     //function to save bill details to database
     function toBillDetails() {
