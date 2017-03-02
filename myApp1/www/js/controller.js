@@ -271,7 +271,7 @@ angular.module('starter.controller', [])
         console.log($scope.typedAmount)
         var typedAmount = parseFloat($scope.typedAmount);
         $scope.paidAmount1 = typedAmount;
-        console.log(typedAmount)
+        console.log(typedAmount);
         $scope.Balance = typedAmount - $scope.totalChargeAmount;
         // document.getElementById("buttonPayment").disabled = true;
         $scope.enterBtn = true;
@@ -290,94 +290,88 @@ angular.module('starter.controller', [])
        console.log($rootScope.printFormatSettings);
        var printerSettings = $rootScope.printFormatSettings;
        $rootScope.PrintInit();
+
        console.log(printerSettings.shopName + printerSettings.addressLine1)
        if (printerSettings.shopName != undefined && printerSettings.shopName != "") {
            console.log('I am in shop')
            $rootScope.PrintEnableUnderline(true);
            $rootScope.PrintEnableBold(true);
            $rootScope.PrintAlign("center");
-           $rootScope.PrintChangeBigFont("both");
-           $rootScope.PrintText(printerSettings.shopName + "\n\n");
+           $rootScope.PrintChangeBigFont("vertical");
+           $rootScope.PrintText(printerSettings.shopName + "\n");
 
 
        }
 
-       if (printerSettings.addressLine1 != undefined && printerSettings.addressLine1 != "") {
-           console.log('I am in addressline')
            $rootScope.PrintEnableUnderline(false);
            $rootScope.PrintEnableBold(false);
-           $rootScope.PrintAlign("center");
            $rootScope.PrintChangeBigFont("normal");
-           $rootScope.PrintText(printerSettings.addressLine1);
+
+       if (printerSettings.addressLine1 != undefined && printerSettings.addressLine1 != "") {
+           console.log('I am in addressline')
+          
+           $rootScope.PrintText(printerSettings.addressLine1 +"\n");
 
        }
 
        if (printerSettings.addressLine2 != undefined && printerSettings.addressLine2 != "") {
-           $rootScope.PrintEnableUnderline(false);
-           $rootScope.PrintEnableBold(false);
-           $rootScope.PrintAlign("center");
-           $rootScope.PrintChangeBigFont("normal");
-           $rootScope.PrintText(printerSettings.addressLine2 + "\n\n");
+           
+           
+           $rootScope.PrintText(printerSettings.addressLine2 + "\n");
 
        }
+
        if (printerSettings.phNumber != undefined) {
-           console.log('I am in PhNumber')
-           $rootScope.PrintEnableUnderline(false);
-           $rootScope.PrintEnableBold(false);
-           $rootScope.PrintAlign("center");
-           $rootScope.PrintChangeBigFont("normal");
-           $rootScope.PrintText(printerSettings.phNumber + "\n\n");
+           console.log('I am in PhNumber');
+           $rootScope.PrintText("ph: " + printerSettings.phNumber + "\n");
 
        }
+
+        $rootScope.PrintText("\n\n");
+
+       $rootScope.PrintAlign("left");
 
        if (printerSettings.tin != undefined) {
-           $rootScope.PrintEnableUnderline(false);
-           $rootScope.PrintEnableBold(false);
-           $rootScope.PrintAlign("left");
-           $rootScope.PrintChangeBigFont("normal");
            $rootScope.PrintText("Tin:" + printerSettings.tin + "\n\n");
 
        }
 
-       $rootScope.PrintEnableUnderline(false);
-       $rootScope.PrintEnableBold(false);
-       $rootScope.PrintAlign("left");
-       $rootScope.PrintEnableBold(true);
-       $rootScope.PrintText("Date:");
-       $rootScope.PrintEnableBold(false);
+
+       //$rootScope.PrintAlign("left");
        $rootScope.PrintText(date);
 
 
-       $rootScope.PrintEnableUnderline(false);
-       $rootScope.PrintEnableBold(false);
-       $rootScope.PrintAlign("right");
-       $rootScope.PrintEnableBold(true)
-       $rootScope.PrintText("Time:");
-       $rootScope.PrintEnableBold(false)
-       $rootScope.PrintText(time + "\n\n");
+
+       //$rootScope.PrintAlign("right");
+
+       $rootScope.PrintText("\t" + time + "\n\n");
 
 
-       $rootScope.PrintEnableUnderline(false);
+      
        $rootScope.PrintEnableBold(true);
        $rootScope.PrintAlign("left");
-       $rootScope.PrintChangeBigFont("normal");
+  
        $rootScope.PrintText("item" + "\t");
        $rootScope.PrintAlign("center");
        $rootScope.PrintText("quantity" + "\t");
        $rootScope.PrintAlign("right");
-       $rootScope.PrintText("totalPrice" + "\n\n");
+       $rootScope.PrintText("Price" + "\n\n");
 
+      $rootScope.PrintEnableBold(false);
+      $rootScope.PrintAlign("left");
 
        for (var i = 0; i < $scope.productArr.length; i++) {
-           $rootScope.PrintEnableBold(false);
-           $rootScope.PrintChangeBigFont("normal");
-           $rootScope.PrintAlign("left");
+           
            $rootScope.PrintText($scope.productArr[i].name + "\t");
-           $rootScope.PrintAlign("center");
+           //$rootScope.PrintAlign("center");
            $rootScope.PrintText($scope.productArr[i].quantity + "\t");
-           $rootScope.PrintAlign("right");
-           $rootScope.PrintText($scope.productArr[i].productTotalPrice + "\n\n");
+           //$rootScope.PrintAlign("right");
+           $rootScope.PrintText($scope.productArr[i].productTotalPrice + "\n");
        }
+
+
+       $rootScope.PrintText("\n\n");
+
        $rootScope.PrintEnableBold(true);
        $rootScope.PrintText("Total Price:");
        $rootScope.PrintEnableBold(false);
@@ -390,9 +384,9 @@ angular.module('starter.controller', [])
        $rootScope.PrintText("Total Amount:");
        $rootScope.PrintEnableBold(false);
        $rootScope.PrintText($scope.totalChargeAmount + "\n\n");
-       $rootScope.PrintEnableBold(true);
-       $rootScope.PrintText("Greeting:");
+     
        $rootScope.PrintEnableBold(false);
+       $rootScope.PrintAlign("center");
        $rootScope.PrintText(printerSettings.greeting + "\n\n");
 
        $rootScope.EndPrint($rootScope.testSuccess, $rootScope.testError);

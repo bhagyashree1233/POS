@@ -438,11 +438,17 @@ $rootScope.PrintChangeBigFont = function(fontSize)
     else if(fontSize=="both")
     data = "1D 21 11";
     else
-    data = "1D 21 00";
+    data = "1D 21 00"; //normal;;
 
  $rootScope.PushToQueue("POS",data);
 
 
+}
+
+$rootScope.PrintTab = function()
+{
+    var data ="09";
+    $rootScope.PushToQueue("POS",data);
 }
 
 $rootScope.PrintAlign = function(side)
