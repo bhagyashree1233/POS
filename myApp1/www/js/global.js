@@ -270,6 +270,7 @@ BTPrinter.disconnect(function(data){
 
 }
 
+/*
 $rootScope.connectCallBack= function(status,PrinterName)
 {
     if(status == true)
@@ -285,7 +286,7 @@ $rootScope.connectCallBack= function(status,PrinterName)
         $rootScope.PrinterStatus = false;
 
     }
-}
+}*/
 
 $rootScope.printerConnect = function (name,callbackFunc)
 {
@@ -343,7 +344,7 @@ $rootScope.testSuccess=function()
 
 $rootScope.testError=function()
 {
-    console.log("Error Error");
+    console.log("Error Error called back");
 }
 
 $rootScope.PrintInit= function()
@@ -474,13 +475,113 @@ var data = "";
 
 }
 
+$rootScope.ConnectStatusFunc = function(status,name)
+{
+if(status ==false)
+{
+    console.log("Connection Failed to Printer: ", name);
+    $rootScope.ShowToast("Connection Failed to Printer: " + name,false);
+    $rootScope.PrinterStatus = false;
+    $rootScope.OnPrintError("Connect Failed");
+}
+else
+{
+    $rootScope.ShowToast("Connected to Printer: " + name,false);
+    console.log("Connected to Printer: " , name);
+    $rootScope.IsPrinting = false;
+    $rootScope.PrinterStatus = true;
+    //if($scope.OnSuccessPairedList != undefined)
+    //$rootScope.getPairedList($scope.OnSuccessPairedList);
+    $rootScope.StartPrintQueue();
+
+}
+
+}
 
 $rootScope.OnPrintError = function(err)
 {
 console.log("Error Occured while printing");
 console.log(err);
+
+
+
+$rootScope.PrinterStatus = false;
+
 //try to reconnect to printer, by using alert box;;
 //if user presses cancel, go back to user's errorfunction;;
+
+if($rootScope.printerName == "") //printer not configured;;
+{
+    console.log("please Configure Printer");
+    $rootScope.ShowToast("Please Configure Printer",true);
+    //call callback here;;
+    var CallbackFc = $rootScope.GetCallBackFuncs();
+           if(CallbackFc !=undefined)
+             CallbackFc();
+    return;
+}
+
+  $ionicPopup.show({
+              title: 'Printer Communication Failed',
+              subTitle: 'Make Sure Printer is On and Press Reconnect Button when ready',
+              scope:$scope,
+               buttons: [
+              { text: 'Cancel', onTap: function(e) { return "cancel"; } },
+              {
+                  text: '<b>Reconnect</b>',
+                  type: 'button-positive',
+                  onTap: function(e) { return "Reconnect";}
+              }
+
+              ]
+
+   }).then(function(res) {
+       if(res=="Reconnect")
+       {
+           console.log("printer Name is: ", $rootScope.printerName);
+           $rootScope.printerConnect($rootScope.printerName,$rootScope.ConnectStatusFunc);
+           return;
+           
+       }
+       else
+       {
+           //callback;;
+           var CallbackFc = $rootScope.GetCallBackFuncs();
+           $rootScope.PrintInit();
+           console.log("Will Call Callback Here");
+           if(CallbackFc !=undefined)
+             CallbackFc();
+           else
+           console.log("callback is null");
+           //$rootScope.ShowToast("Call back calling",false);
+       }
+
+
+   });
+
+
+
+}
+
+$rootScope.GetCallBackFuncs = function()
+{
+  if($rootScope.PrintQueue.length<=0)
+   return(undefined);
+
+   for(var i=0;i<$rootScope.PrintQueue.length;i++)
+    {
+        var item = $rootScope.PrintQueue[i];
+        if(item.type == "PRINTEND")
+        {
+            if(item.errorfunc !=undefined)
+             return(item.errorfunc);
+            else
+             return(undefined)
+        } 
+        
+    }
+
+    return(undefined);
 }
 
 $rootScope.StartPrintQueue = function()

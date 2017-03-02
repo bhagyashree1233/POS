@@ -521,12 +521,12 @@ body {
 
 }
 
-.number-circle .num {
+.number-circle:active {
     font-size: 6vmin;
     color:white;
-    -webkit-animation: neon2 1.5s ease-in-out infinite alternate;
-  -moz-animation: neon2 1.5s ease-in-out infinite alternate;
-  animation: neon2 1.5s ease-in-out infinite alternate;
+    -webkit-animation: neon2 2.5s ease-in-out infinite alternate;
+  -moz-animation: neon2 2.5s ease-in-out infinite alternate;
+  animation: neon2 4.5s ease-in-out infinite alternate;
 
 }
 
@@ -594,13 +594,13 @@ body {
 .number-circle-ladd .num {
     font-size: 30px;
 }
-
+/*
 .number-circle:hover,
 .number-circle-ladd:hover,
 .number-circle-star:hover {
     background: #D6CEC3;
     color: #fff;
-}
+}*/
 
 .call-cont {
     width: 100%;
