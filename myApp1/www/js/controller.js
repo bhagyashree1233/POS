@@ -344,33 +344,85 @@ angular.module('starter.controller', [])
 
        //$rootScope.PrintAlign("right");
 
-       $rootScope.PrintText("\t" + time + "\n\n");
-
+       $rootScope.PrintText("        " + time + "\n\n");
 
       
        $rootScope.PrintEnableBold(true);
        $rootScope.PrintAlign("left");
   
-       $rootScope.PrintText("item" + "\t");
-       $rootScope.PrintAlign("center");
-       $rootScope.PrintText("quantity" + "\t");
-       $rootScope.PrintAlign("right");
-       $rootScope.PrintText("Price" + "\n\n");
+       $rootScope.PrintText("item" + "   ");
+       $rootScope.PrintText("price" + "   ");
+       //$rootScope.PrintAlign("center");
+       $rootScope.PrintText("Qty" + "   ");
+       //$rootScope.PrintAlign("right");
+       $rootScope.PrintText("Amt" + "\n\n");
 
       $rootScope.PrintEnableBold(false);
-      $rootScope.PrintAlign("left");
+      //$rootScope.PrintAlign("left");
 
-       for (var i = 0; i < $scope.productArr.length; i++) {
-           
-           $rootScope.PrintText($scope.productArr[i].name + "\t");
+      // padding left
+function padRight(s,paddingChar, length) {
+
+//var s = new String(this);
+var ln = s.length;
+
+if ((s.length < length) && (paddingChar.toString().length > 0)) {
+    for (var i = 0; i < (length - ln) ; i++)
+    s = s.concat(paddingChar.toString().charAt(0));
+}
+
+return s;
+};
+
+
+function padLeft (s,paddingChar, length) {
+
+//var s = new String(this);
+var ln = s.length;
+
+if ((s.length < length) && (paddingChar.toString().length > 0))
+{            
+    for (var i = 0; i < (length - ln) ; i++)
+    s = paddingChar.toString().charAt(0).concat(s);
+}
+
+return s;
+};
+
+       for (var i = 0; i < $scope.productArr.length; i++) 
+       {
+           var proName = $scope.productArr[i].name;
+           if(proName.length > 12)
+              proName = proName.substring(0,12);
+           proName = padRight(proName," ",13);
+
+           console.log("Name:" ,proName.length);
+
+           var Qty = $scope.productArr[i].quantity.toString();
+
+           Qty = padLeft(Qty," ", 5);
+
+           console.log("Qty:" ,Qty.length);
+
+           var Price = $scope.productArr[i].productTotalPrice.toString();
+
+           Price = padLeft(Price," ", 8);
+
+           console.log("Price:" ,Price.length);
+
+           //$rootScope.PrintText($scope.productArr[i].name + "\t");
            //$rootScope.PrintAlign("center");
-           $rootScope.PrintText($scope.productArr[i].quantity + "\t");
+           //$rootScope.PrintText($scope.productArr[i].quantity + "\t");
            //$rootScope.PrintAlign("right");
-           $rootScope.PrintText($scope.productArr[i].productTotalPrice + "\n");
+           var test = proName + Qty + Price;
+           console.log("value is: ",test);
+           $rootScope.PrintText( proName + Qty + Price + "\n");
        }
 
 
        $rootScope.PrintText("\n\n");
+
+       $rootScope.PrintAlign("right");
 
        $rootScope.PrintEnableBold(true);
        $rootScope.PrintText("Total Price:");
@@ -856,7 +908,7 @@ angular.module('starter.controller', [])
         $rootScope.ShowToast("Enter Selling Price ", false);
         console.log("Enter Selling Price");
         return false
-    } else if (!$scope.newProduct.unitPrice.match(/^[0-9]+([,.][0-9]+)?$/g)) {
+    } else if (!productSellingPrice.toString().match(/^[0-9]+([,.][0-9]+)?$/g)) {
         $rootScope.ShowToast("Invalid Selling Price", false);
         console.log('Invalid product Selling')
         return false
@@ -873,7 +925,7 @@ angular.module('starter.controller', [])
     var buyingPrice = $scope.newProduct.actualPrice;
     if (buyingPrice==undefined || buyingPrice.length < 1) {
         document.getElementById('buyingPrice').value = 0;
-    } else if (!buyingPrice.match(/^[0-9]+([,.][0-9]+)?$/g)) {
+    } else if (!buyingPrice.toString().match(/^[0-9]+([,.][0-9]+)?$/g)) {
         $rootScope.ShowToast("Invalid buyingPrice", false);
         console.log('Invalid buyingPrice')
         return false
@@ -882,15 +934,15 @@ angular.module('starter.controller', [])
     if (itemInStock==undefined ||itemInStock.length < 1) {
         document.getElementById('itemsStock').value = 100000;
 
-    } else if (!itemInStock.match('^[0-9]+$') && $scope.newProduct.unit == 'pieces') {
+    } else if (!itemInStock.toString().match('^[0-9]+$') && $scope.newProduct.unit == 'pieces') {
         $rootScope.ShowToast("Invalid  itemInStock", false);
         console.log('Invalid  itemInStock');
         return false
-    } else if (!itemInStock.match(/^[0-9]+([,.][0-9]+)?$/g) && $scope.newProduct.unit == 'litres') {
+    } else if (!itemInStock.toString().match(/^[0-9]+([,.][0-9]+)?$/g) && $scope.newProduct.unit == 'litres') {
         $rootScope.ShowToast("Invalid  itemInStock", false);
         console.log('Invalid  itemInStock');
         return false
-    } else if (!itemInStock.match(/^[0-9]+([,.][0-9]+)?$/g) && $scope.newProduct.unit == 'kgs') {
+    } else if (!itemInStock.toString().match(/^[0-9]+([,.][0-9]+)?$/g) && $scope.newProduct.unit == 'kgs') {
         $rootScope.ShowToast("Invalid  itemInStock", false);
         console.log('Invalid  itemInStock');
         return false
@@ -900,7 +952,7 @@ angular.module('starter.controller', [])
     if (discount==undefined||discount.length < 1) {
         document.getElementById('discount').value = 0;
         
-    } else if (!discount.match(/^[0-9]+([,.][0-9]+)?$/g)) {
+    } else if (!discount.toString().match(/^[0-9]+([,.][0-9]+)?$/g)) {
         $rootScope.ShowToast("Invalid discount", false);
         console.log('Invalid discount')
         return false

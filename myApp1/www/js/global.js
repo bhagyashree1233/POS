@@ -77,7 +77,7 @@ $rootScope.Reports={
      {
      id :0,
      name :"Rupee",
-     symbol : "Ru",
+     symbol : "₹",
      },
      PaymentMode:
      [

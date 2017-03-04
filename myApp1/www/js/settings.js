@@ -501,7 +501,7 @@ BTPrinter.printText(function(data){
             if (data.rowsAffected >= 1) {
                 var promise = settingService.get("PaymentSettings", paymentSetting);
                 promise.then(function(data) {
-                    $rootScope.PaymentSettings = JSON.parse(data.rows[0].SettingsValue);
+                    $rootScope.PaymentSettings = JSON.parse(data.rows.item(0).SettingsValue);
                     $rootScope.ShowToast("Payment Settings Updated",false);  
                     console.log("Payment Settings Updated");
                 })
@@ -564,7 +564,7 @@ BTPrinter.printText(function(data){
             if (data.rowsAffected >= 1) {
                 var promise = settingService.get("Reports", reportsObj);
                 promise.then(function(data) {
-                    $rootScope.Reports = JSON.parse(data.rows[0].SettingsValue);
+                    $rootScope.Reports = JSON.parse(data.rows[0].item(0).SettingsValue);
                     console.log($rootScope.Reports)
                 })
             } else {
