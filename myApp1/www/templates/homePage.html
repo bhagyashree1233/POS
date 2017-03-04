@@ -8,14 +8,15 @@
             </div>
             <div id="product-billing">
                 <div id="product-billing-col1">
-                    <button ng-show="scrollTopBtn" ng-click="scrollTop()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:30%;border-radius:50%;width:5vh;height:5vh;">
+                  <!--  <button ng-show="scrollTopBtn" ng-click="scrollTop()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:30%;border-radius:50%;width:5vh;height:5vh;">
                         <i style="font-size:3vh;" class="icon ion-chevron-up"></i>
                     </button>
                     <button ng-show="scrollBottomBtn" ng-click="scrollBottom()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:58%;border-radius:50%;width:5vh;height:5vh;">
                         <i style="font-size:3vh;" class="icon ion-chevron-down"></i>
                     </button>
-                    <div class="card" style="height:45vmin;">
-                        <table style="width:100%;color:rbga(255,0,0,0.60);font-size:2vmin;font-weight:bold;line-height:5vmin;">
+                    -->
+                    <div class="card" style="height:35vmin;position:relative;top:0px;">
+                        <table style="width:100%;color:rbga(255,0,0,0.60);font-size:2vmin;font-weight:bold;line-height:4.5vmin;">
                             <tr style="">
                                 <th>
                                     <span>Item Name</span>
@@ -56,16 +57,18 @@
                             </table>
                         </ion-scroll>
                     </div>
-                    <div class="totalAmountCalculation" style="margin:1vmin;">
-                        <p style="font-size:2.2vmin;color:black;">Total Bill Amount{{currencySymbol}}:{{totalPrice}}</p>
-                        <p style="font-size:2.2vmin;color:black;">Tax{{currencySymbol}}:{{totalTaxAmount}}</p>
-                        <p style="font-size:2.2vmin;color:black;">Discount Amount{{currencySymbol}}:{{discountAmount}}</p>
-                        <p style="font-size:2.2vmin;color:black;">Paid Amount{{currencySymbol}}: {{typedAmount}}</p>
-                        <p style="font-size:2.2vmin;color:black;" ng-if="typedAmount>0">Balance{{currencySymbol}}: {{Balance}}</p> 
+
+                    <div class="totalAmountCalculation" style="margin:0.5vmin;">
+                        <p style="font-size:2vmin;color:black;line-height:1.5vmin;">Total Bill Amount{{currencySymbol}}:{{totalPrice}}</p>
+                        <p style="font-size:2vmin;color:black;line-height:1.5vmin;">Tax{{currencySymbol}}:{{totalTaxAmount}}</p>
+                        <p style="font-size:2vmin;color:black;line-height:1.5vmin;">Discount Amount{{currencySymbol}}:{{discountAmount}}</p>
+                        <p style="font-size:2vmin;color:black;line-height:1.5vmin;">Paid Amount{{currencySymbol}}: {{typedAmount}}</p>
+                        <p style="font-size:2vmin;color:black;line-height:1.5vmin;" ng-if="typedAmount>0">Balance{{currencySymbol}}: {{Balance}}</p>
+
                     </div>
-                    <div style="margin:2vh;height:20%;text-align:center;">
-                        <h3 style="float:right;">{{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</h3>
-                        <button style="border-radius:1%;width:30vw;font-size:2.5vmin" ng-click="showPaymentMode()" class="button button-block button-balanced">check out {{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</button>
+                    <div style="line-height:1vmin;">
+                        <p style="">{{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</p>
+                        <button style="border-radius:1%;width:100%;height-max:2vmin;padding-top:0px;line-height:4vmin;font-size:2vmin" ng-click="showPaymentMode()" class="button  button-balanced">check out {{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</button>
                     </div>
                 </div>
             </div>
