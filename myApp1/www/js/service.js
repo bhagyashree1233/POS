@@ -208,6 +208,23 @@ angular.module('starter.services', [])
         })
         return deferred.promise;
     }
+
+
+      function SetBillStatus(billNo,BillDateTime,status) {
+        var deferred = $q.defer();
+         //var query = "INSERT INTO  (BillNo, TotalPrice, DiscountAmount, TaxAmount, TotalAmount, PaymentMethod, DateTime, TotalItems, BillStatus) VALUES (?,?,?,?,?,?,?,?,?)";
+
+        var query = "update BillDetails Set BillStatus='" + status + "' where BillNo='" + billNo  + "' and DateTime='" + BillDateTime +"'";
+        console.log(query);
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            deferred.resolve(res);
+        }, function(err) {
+            console.error(err);
+            deferred.reject(err);
+        });
+        return deferred.promise;
+    }
+
     function getTransactionDetails(billNo) {
         var deferred = $q.defer();
         var transactionDetail = [];
@@ -362,6 +379,7 @@ angular.module('starter.services', [])
         deleteProduct: deleteProduct,
         deleteCategory: deleteCategory,
         deleteAllProductsInCat:deleteAllProductsInCat,
+        SetBillStatus:SetBillStatus,
         updateItemsInStock: updateItemsInStock
     }
 })

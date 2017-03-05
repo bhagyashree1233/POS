@@ -41,6 +41,21 @@
 "name": "Bluetooth-Settings",
 "icon": "ion-ios-compose-outline",
 "state": "app.bluetoothsettings"
+},
+{
+"name": "Change-Password",
+"icon": "ion-ios-compose-outline",
+"state": "app.passwordChange"
+},
+{
+"name": "Reprint-Bill",
+"icon": "ion-ios-compose-outline",
+"state": "app.billdetails"
+},
+{
+"name": "Cancel-Bill",
+"icon": "ion-ios-compose-outline",
+"state": "app.billdetails"
 }
 ]
 }

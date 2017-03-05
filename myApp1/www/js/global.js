@@ -10,6 +10,7 @@ angular.module('starter.globalcontroller', [])
    $rootScope.CurrentProduct={};
 
    $rootScope.password = "password123";
+   $rootScope.masterPassword = "payupad123";
    $rootScope.printerName = "";
    $rootScope.PrinterStatus = false; 
 
@@ -668,7 +669,176 @@ BTPrinter.printText(function(data){
     callbackError(err);
 }, text);
 
-}   
+}  
+
+
+ $rootScope.print = function(billSummary,billdetails) {
+       var d = new Date();
+
+       var date = billSummary.DateTime.toString().substring(4, 15);
+       var time = billSummary.DateTime.toString().substring(15, 25);
+       
+
+       console.log(date);
+       console.log(time);
+
+       console.log($rootScope.printFormatSettings);
+       var printerSettings = $rootScope.printFormatSettings;
+       $rootScope.PrintInit();
+
+       console.log(printerSettings.shopName + printerSettings.addressLine1)
+       if (printerSettings.shopName != undefined && printerSettings.shopName != "") {
+           console.log('I am in shop')
+           $rootScope.PrintEnableUnderline(true);
+           $rootScope.PrintEnableBold(true);
+           $rootScope.PrintAlign("center");
+           $rootScope.PrintChangeBigFont("vertical");
+           $rootScope.PrintText(printerSettings.shopName + "\n");
+
+
+       }
+
+           $rootScope.PrintEnableUnderline(false);
+           $rootScope.PrintEnableBold(false);
+           $rootScope.PrintChangeBigFont("normal");
+
+       if (printerSettings.addressLine1 != undefined && printerSettings.addressLine1 != "") {
+           console.log('I am in addressline')
+          
+           $rootScope.PrintText(printerSettings.addressLine1 +"\n");
+
+       }
+
+       if (printerSettings.addressLine2 != undefined && printerSettings.addressLine2 != "") {
+           
+           
+           $rootScope.PrintText(printerSettings.addressLine2 + "\n");
+
+       }
+
+       if (printerSettings.phNumber != undefined) {
+           console.log('I am in PhNumber');
+           $rootScope.PrintText("ph: " + printerSettings.phNumber + "\n");
+
+       }
+
+        $rootScope.PrintText("\n\n");
+
+       $rootScope.PrintAlign("left");
+
+       if (printerSettings.tin != undefined && printerSettings.tin != "") {
+           $rootScope.PrintText("Tin:" + printerSettings.tin + "\n\n");
+
+       }
+
+
+       //$rootScope.PrintAlign("left");
+       $rootScope.PrintText(date);
+
+
+
+       //$rootScope.PrintAlign("right");
+
+       $rootScope.PrintText("        " + time + "\n\n");
+
+      
+       $rootScope.PrintEnableBold(true);
+       $rootScope.PrintAlign("left");
+  
+       $rootScope.PrintText("item" + "   ");
+       $rootScope.PrintText("price" + "   ");
+       //$rootScope.PrintAlign("center");
+       $rootScope.PrintText("Qty" + "   ");
+       //$rootScope.PrintAlign("right");
+       $rootScope.PrintText("Amt" + "\n\n");
+
+      $rootScope.PrintEnableBold(false);
+      //$rootScope.PrintAlign("left");
+
+      // padding left
+function padRight(s,paddingChar, length) {
+
+//var s = new String(this);
+var ln = s.length;
+
+if ((s.length < length) && (paddingChar.toString().length > 0)) {
+    for (var i = 0; i < (length - ln) ; i++)
+    s = s.concat(paddingChar.toString().charAt(0));
+}
+
+return s;
+};
+
+
+function padLeft (s,paddingChar, length) {
+
+//var s = new String(this);
+var ln = s.length;
+
+if ((s.length < length) && (paddingChar.toString().length > 0))
+{            
+    for (var i = 0; i < (length - ln) ; i++)
+    s = paddingChar.toString().charAt(0).concat(s);
+}
+
+return s;
+};
+
+       for (var i = 0; i < billdetails.length; i++) 
+       {
+           var proName = billdetails[i].name;
+           if(proName.length > 12)
+              proName = proName.substring(0,12);
+           proName = padRight(proName," ",13);
+
+           console.log("Name:" ,proName.length);
+
+           var Qty = billdetails[i].quantity.toString();
+
+           Qty = padLeft(Qty," ", 5);
+
+           console.log("Qty:" ,Qty.length);
+
+           var Price = billdetails[i].productTotalPrice.toString();
+
+           Price = padLeft(Price," ", 8);
+
+           console.log("Price:" ,Price.length);
+
+           //$rootScope.PrintText($scope.productArr[i].name + "\t");
+           //$rootScope.PrintAlign("center");
+           //$rootScope.PrintText($scope.productArr[i].quantity + "\t");
+           //$rootScope.PrintAlign("right");
+           var test = proName + Qty + Price;
+           console.log("value is: ",test);
+           $rootScope.PrintText( proName + Qty + Price + "\n");
+       }
+
+
+       $rootScope.PrintText("\n\n");
+
+       $rootScope.PrintAlign("right");
+
+       $rootScope.PrintEnableBold(true);
+       $rootScope.PrintText("Total Price:");
+       $rootScope.PrintEnableBold(false);
+       $rootScope.PrintText(billSummary.totalPrice + "\n\n");
+       $rootScope.PrintEnableBold(true);
+       $rootScope.PrintText("Total Tax Amount:");
+       $rootScope.PrintEnableBold(false);
+       $rootScope.PrintText(billSummary.totalTaxAmount + "\n\n");
+       $rootScope.PrintEnableBold(true);
+       $rootScope.PrintText("Total Amount:");
+       $rootScope.PrintEnableBold(false);
+       $rootScope.PrintText(billSummary.totalChargeAmount + "\n\n");
+     
+       $rootScope.PrintEnableBold(false);
+       $rootScope.PrintAlign("center");
+       $rootScope.PrintText(printerSettings.greeting + "\n\n");
+
+       $rootScope.EndPrint($rootScope.testSuccess, $rootScope.testError);
+   }
+ 
    
 
 })

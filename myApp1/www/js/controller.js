@@ -227,6 +227,9 @@ angular.module('starter.controller', [])
             qty = $scope.typedCode;
         }
         $scope.itemsInStockObj[product.productId] = parseFloat(product.inStock) - parseFloat(qty);
+        if($scope.itemsInStockObj[product.productId]<0)
+        $scope.itemsInStockObj[product.productId] = 0;
+
         console.log($scope.itemsInStockObj);
         //  var qty =document.getElementById('quantity').value;
         console.log('I am in Save Function');
@@ -278,175 +281,20 @@ angular.module('starter.controller', [])
         $scope.receiptBtnShow = false;
     }
     //receipt function to store all transaction details in DB
-   $scope.print = function() {
-       var d = new Date();
-
-       var date = d.toString().substring(4, 15);
-       var time = d.toString().substring(15, 25);
-       $scope.productArr;
-
-       console.log(date)
-       console.log(time)
-       console.log($rootScope.printFormatSettings);
-       var printerSettings = $rootScope.printFormatSettings;
-       $rootScope.PrintInit();
-
-       console.log(printerSettings.shopName + printerSettings.addressLine1)
-       if (printerSettings.shopName != undefined && printerSettings.shopName != "") {
-           console.log('I am in shop')
-           $rootScope.PrintEnableUnderline(true);
-           $rootScope.PrintEnableBold(true);
-           $rootScope.PrintAlign("center");
-           $rootScope.PrintChangeBigFont("vertical");
-           $rootScope.PrintText(printerSettings.shopName + "\n");
-
-
-       }
-
-           $rootScope.PrintEnableUnderline(false);
-           $rootScope.PrintEnableBold(false);
-           $rootScope.PrintChangeBigFont("normal");
-
-       if (printerSettings.addressLine1 != undefined && printerSettings.addressLine1 != "") {
-           console.log('I am in addressline')
-          
-           $rootScope.PrintText(printerSettings.addressLine1 +"\n");
-
-       }
-
-       if (printerSettings.addressLine2 != undefined && printerSettings.addressLine2 != "") {
-           
-           
-           $rootScope.PrintText(printerSettings.addressLine2 + "\n");
-
-       }
-
-       if (printerSettings.phNumber != undefined) {
-           console.log('I am in PhNumber');
-           $rootScope.PrintText("ph: " + printerSettings.phNumber + "\n");
-
-       }
-
-        $rootScope.PrintText("\n\n");
-
-       $rootScope.PrintAlign("left");
-
-       if (printerSettings.tin != undefined) {
-           $rootScope.PrintText("Tin:" + printerSettings.tin + "\n\n");
-
-       }
-
-
-       //$rootScope.PrintAlign("left");
-       $rootScope.PrintText(date);
-
-
-
-       //$rootScope.PrintAlign("right");
-
-       $rootScope.PrintText("        " + time + "\n\n");
-
-      
-       $rootScope.PrintEnableBold(true);
-       $rootScope.PrintAlign("left");
   
-       $rootScope.PrintText("item" + "   ");
-       $rootScope.PrintText("price" + "   ");
-       //$rootScope.PrintAlign("center");
-       $rootScope.PrintText("Qty" + "   ");
-       //$rootScope.PrintAlign("right");
-       $rootScope.PrintText("Amt" + "\n\n");
-
-      $rootScope.PrintEnableBold(false);
-      //$rootScope.PrintAlign("left");
-
-      // padding left
-function padRight(s,paddingChar, length) {
-
-//var s = new String(this);
-var ln = s.length;
-
-if ((s.length < length) && (paddingChar.toString().length > 0)) {
-    for (var i = 0; i < (length - ln) ; i++)
-    s = s.concat(paddingChar.toString().charAt(0));
-}
-
-return s;
-};
-
-
-function padLeft (s,paddingChar, length) {
-
-//var s = new String(this);
-var ln = s.length;
-
-if ((s.length < length) && (paddingChar.toString().length > 0))
-{            
-    for (var i = 0; i < (length - ln) ; i++)
-    s = paddingChar.toString().charAt(0).concat(s);
-}
-
-return s;
-};
-
-       for (var i = 0; i < $scope.productArr.length; i++) 
-       {
-           var proName = $scope.productArr[i].name;
-           if(proName.length > 12)
-              proName = proName.substring(0,12);
-           proName = padRight(proName," ",13);
-
-           console.log("Name:" ,proName.length);
-
-           var Qty = $scope.productArr[i].quantity.toString();
-
-           Qty = padLeft(Qty," ", 5);
-
-           console.log("Qty:" ,Qty.length);
-
-           var Price = $scope.productArr[i].productTotalPrice.toString();
-
-           Price = padLeft(Price," ", 8);
-
-           console.log("Price:" ,Price.length);
-
-           //$rootScope.PrintText($scope.productArr[i].name + "\t");
-           //$rootScope.PrintAlign("center");
-           //$rootScope.PrintText($scope.productArr[i].quantity + "\t");
-           //$rootScope.PrintAlign("right");
-           var test = proName + Qty + Price;
-           console.log("value is: ",test);
-           $rootScope.PrintText( proName + Qty + Price + "\n");
-       }
-
-
-       $rootScope.PrintText("\n\n");
-
-       $rootScope.PrintAlign("right");
-
-       $rootScope.PrintEnableBold(true);
-       $rootScope.PrintText("Total Price:");
-       $rootScope.PrintEnableBold(false);
-       $rootScope.PrintText($scope.totalPrice + "\n\n");
-       $rootScope.PrintEnableBold(true);
-       $rootScope.PrintText("Total Tax Amount:");
-       $rootScope.PrintEnableBold(false);
-       $rootScope.PrintText($scope.totalTaxAmount + "\n\n");
-       $rootScope.PrintEnableBold(true);
-       $rootScope.PrintText("Total Amount:");
-       $rootScope.PrintEnableBold(false);
-       $rootScope.PrintText($scope.totalChargeAmount + "\n\n");
-     
-       $rootScope.PrintEnableBold(false);
-       $rootScope.PrintAlign("center");
-       $rootScope.PrintText(printerSettings.greeting + "\n\n");
-
-       $rootScope.EndPrint($rootScope.testSuccess, $rootScope.testError);
-   }
-
     $scope.receipt = function() {
         $scope.paymentModal.hide();
-        $scope.print();
+
+         var billSummary={};
+
+     billSummary.totalPrice= $scope.totalPrice;
+     billSummary.discountAmount=  $scope.discountAmount;
+     billSummary.totalTaxAmount= $scope.totalTaxAmount;
+     billSummary.totalChargeAmount=  $scope.totalChargeAmount;
+     billSummary.BillStatus=  "Active";
+     billSummary.DateTime = new Date();
+     
+        $rootScope.print(billSummary,$scope.productArr);
         $scope.transactionDate = (new Date()).getTime();  //check
 
         console.log($scope.transactionDate);
@@ -911,7 +759,14 @@ return s;
     } else if (!productSellingPrice.toString().match(/^[0-9]+([,.][0-9]+)?$/g)) {
         $rootScope.ShowToast("Invalid Selling Price", false);
         console.log('Invalid product Selling')
-        return false
+        return false;
+    }
+
+    if(productSellingPrice > 9999.99)
+    {
+        $rootScope.ShowToast("Invalid Selling Price", false);
+        console.log('Invalid product Selling')
+        return false;
     }
 
     var taxRate = $scope.newProduct.taxRate;
@@ -927,12 +782,27 @@ return s;
         document.getElementById('buyingPrice').value = 0;
     } else if (!buyingPrice.toString().match(/^[0-9]+([,.][0-9]+)?$/g)) {
         $rootScope.ShowToast("Invalid buyingPrice", false);
-        console.log('Invalid buyingPrice')
+        console.log('Invalid buyingPrice');
         return false
     }
+     if(buyingPrice > 9999.99)
+    {
+        $rootScope.ShowToast("Invalid Buying Price", false);
+        console.log('Invalid buying price');
+        return false;
+    }
+
+    if(productSellingPrice < buyingPrice)
+    {
+        $rootScope.ShowToast("Invalid Buying Price", false);
+        console.log('Invalid buying price');
+        return false;
+
+    }
+
     var itemInStock = $scope.newProduct.inStock;
-    if (itemInStock==undefined ||itemInStock.length < 1) {
-        document.getElementById('itemsStock').value = 100000;
+    if (itemInStock==undefined ||itemInStock < 0) {
+        document.getElementById('itemsStock').value = 1000000;
 
     } else if (!itemInStock.toString().match('^[0-9]+$') && $scope.newProduct.unit == 'pieces') {
         $rootScope.ShowToast("Invalid  itemInStock", false);
@@ -947,6 +817,9 @@ return s;
         console.log('Invalid  itemInStock');
         return false
     }
+
+     console.log("Item in Stock is : ", itemInStock);
+    
     var discount = $scope.newProduct.discount;
 
     if (discount==undefined||discount.length < 1) {

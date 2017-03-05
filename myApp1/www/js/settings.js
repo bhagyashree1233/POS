@@ -521,6 +521,238 @@ BTPrinter.printText(function(data){
 
 })
 
+.controller('BillDetails', function($scope,$rootScope,settingService,dbService) {
+
+    $scope.BillDetails = {};
+    $scope.BillDetails.BillNo = 0;
+    $scope.showTran = false;
+    $scope.showBill=false;
+
+    $scope.ShowBill= function(BillNo)
+    {
+
+    $scope.showTran = false;
+    $scope.showBill=false;
+        if(BillNo == 0 || BillNo == "")
+        {
+        $rootScope.ShowToast("Please Enter Bill No",false);    
+        console.log("Bill Number Empty");
+        return;
+        }
+      console.log("Entered Bill No is: ", BillNo);
+
+      $scope.productArr = [];
+      /*var product = {};
+      product.name = "new Item";
+      product.quantity = "45";
+      product.productTotalPrice = "555";
+      var product2 ={};
+      product2.name = "new Item";
+      product2.quantity = "45";
+      product2.productTotalPrice = "555";
+      $scope.productArr.push(product);
+      $scope.productArr.push(product2);
+
+      getBillDetails(billNo);
+      getTransactionDetails(billNo);*/
+
+      var promise = dbService.getTransactionDetails(BillNo);
+                promise.then(function(data) {
+                    if(data.length<=0)
+                    return;
+
+                    $scope.showTran = true;
+    
+                     console.log(data);
+                     for(var i=0;i<data.length;i++)
+                     {
+                    var product = {};
+                    product.name= data[i].ProductName;
+                    product.quantity= data[i].Quantity;
+                    product.productTotalPrice= data[i].ProductPrice;
+                    $scope.productArr.push(product);
+                     }
+                })
+
+
+
+                 var promise = dbService.getBillDetails(BillNo);
+                    promise.then(function(data) {
+                     console.log(data);
+
+                    if(data.length <=0)
+                    return;
+
+                    $scope.showBill=true;
+                    $scope.totalPrice= data[0].TotalPrice;
+                    $scope.discountAmount=  data[0].DiscountAmount;
+                    $scope.totalTaxAmount= data[0].TaxAmount;
+                    $scope.totalChargeAmount=  data[0].TotalAmount;
+                    $scope.BillStatus=  data[0].BillStatus;
+                    $scope.DateTime = data[0].DateTime;
+                    //PaymentMethod:  data[0].PaymentMethod,
+                    //TotalItems:  data[0].TotalItems,
+                    //BillStatus:  data[0].BillStatus
+                })
+     
+    }
+
+
+$scope.ReprintBill = function(BillNo)
+{
+    console.log("Reprint Bill");
+
+    if($scope.BillStatus == "Cancelled")
+    {
+        console.log("Reprinting cancelled bill not permitted");
+        $rootScope.ShowToast("Cannot print Cancelled Bill",false);
+        return;
+    }
+
+    var billSummary={};
+     var d = new Date($scope.DateTime);
+
+     console.log($scope.DateTime);
+     console.log(d);
+     billSummary.totalPrice= $scope.totalPrice;
+     billSummary.discountAmount=  $scope.discountAmount;
+     billSummary.totalTaxAmount= $scope.totalTaxAmount;
+     billSummary.totalChargeAmount=  $scope.totalChargeAmount;
+     billSummary.BillStatus=  $scope.BillStatus;
+     billSummary.DateTime = d;
+
+     var billdetails = $scope.productArr;
+
+      $rootScope.print(billSummary,billdetails);
+
+}
+
+
+$scope.CancelBill=function(BillNo)
+{
+    if($scope.BillStatus == "Cancelled")
+    {
+        console.log("Bill already cancelled");
+        $rootScope.ShowToast("Bill Already Cancelled",false);
+        return;
+    }
+    console.log("Cancel Bill");
+    //(billNo,BillDateTime,status)
+    var promise = dbService.SetBillStatus(BillNo,$scope.DateTime,"Cancelled");
+
+       promise.then(function(data) {
+                     console.log(data);
+
+                    if (data.rowsAffected >= 1) {
+                    console.log("Cancel Bill Success: ");
+                    $rootScope.ShowToast("Bill Cancelled");
+                    return;
+                    }
+
+                    
+                },function(err)
+                {
+                    console.log("Unable to Cancel Bill: ", err);
+                    $rootScope.ShowToast("Unable to Cancel Bill");
+
+
+                })
+
+}
+
+  
+})
+
+.controller('passwordSettings', function($scope,$rootScope,settingService) {
+
+    
+    console.log("Change Password");
+    $scope.password = {};
+
+     $scope.password.oldPassw="";
+     $scope.password.newPassw="";
+     $scope.password.repeatNewPassw="";
+
+$scope.ChangePassword = function(oldpassword,newpassword,repeatpassword)
+{
+
+
+if(oldpassword==undefined||oldpassword=="")
+{
+  console.log('Enter Old Password');
+  $rootScope.ShowToast("Please Enter Old Password",false);
+  return;
+}
+
+if(newpassword==undefined||newpassword==""){
+  console.log('Enter New Password');
+  $rootScope.ShowToast("Please Enter New Password",false);
+  return;
+}
+else if(newpassword.length<3)
+{
+  console.log("New Password Length should be greater then 3 char");
+  $rootScope.ShowToast("New Password Length should be greater then 3 char",false);
+  return;
+}
+
+if(repeatpassword==undefined||repeatpassword=="")
+{
+   console.log('Enter Repeat New  Password');
+   $rootScope.ShowToast("Please Confirm New  Password",false);
+  return;
+
+}else if(repeatpassword.length<3){
+     $rootScope.ShowToast("Confirm Password Length should be greater then 3 char",false);
+    return;
+}
+
+
+  if(newpassword !=repeatpassword)
+    {
+        console.log("new and repeat password different");
+         $rootScope.ShowToast("New Password and Confirm Password doesnt match",false);
+         return;
+    }
+
+
+
+   if(oldpassword != $rootScope.password)// && ))
+    {
+        if(oldpassword != $rootScope.masterPassword)
+         {
+      console.log("Invalid Old Password");
+      $rootScope.ShowToast("Wrong Old Password",false);
+      return;
+         }
+    }
+
+  
+
+    var promise = settingService.set("PasswordSettings", newpassword);
+        promise.then(function(data) {
+            if (data.rowsAffected >= 1) {
+                console.log("Password Change Success");
+                $rootScope.ShowToast("Password Updated",false);
+                $rootScope.password = newpassword;
+            } else {
+                
+                console.log("Password Change Failed");
+                $rootScope.ShowToast("Unable to Password",false);
+            }
+        },function(err)
+        {
+            console.log("Password Change Failed: ", err);
+            $rootScope.ShowToast("Unable to Password",false);
+        })
+
+
+
+}
+     
+
+})
+
 
 .controller('reportSettings', function($scope,$rootScope,settingService) {
     $scope.reportObj = {}

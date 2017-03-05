@@ -106,6 +106,17 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
             }
         })
 
+         var promise = settingService.get("PasswordSettings");
+        promise.then(function(data) {
+            console.log(data)
+            if (data.rows.length >= 1) {
+                $rootScope.password = data.rows.item(0).SettingsValue;
+                
+            } else {
+                console.log('No Password Setting Record Found');
+            }
+        })
+
 
         var promise = salesService.get("233", undefined, undefined);
         promise.then(function(data) {
@@ -215,6 +226,24 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         views: {
             'menuContent': {
                 templateUrl: 'templates/editProducts.html'
+            }
+        }
+    })
+
+      .state('app.passwordChange', {
+        url: '/passwordChange',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/passwordChange.html'
+            }
+        }
+    })
+
+    .state('app.billdetails', {
+        url: '/billdetails',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/BillDetails.html'
             }
         }
     })
