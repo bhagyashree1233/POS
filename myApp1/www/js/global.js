@@ -672,7 +672,7 @@ BTPrinter.printText(function(data){
 }  
 
 
- $rootScope.print = function(billSummary,billdetails) {
+ $rootScope.print = function(billSummary,billdetails,callbackfc) {
        var d = new Date();
 
        var date = billSummary.DateTime.toString().substring(4, 15);
@@ -836,7 +836,7 @@ return s;
        $rootScope.PrintAlign("center");
        $rootScope.PrintText(printerSettings.greeting + "\n\n");
 
-       $rootScope.EndPrint($rootScope.testSuccess, $rootScope.testError);
+       $rootScope.EndPrint(callbackfc, $rootScope.testError);
    }
  
    

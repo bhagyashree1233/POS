@@ -424,7 +424,7 @@ angular.module('starter.services', [])
         var query = '';
         console.log(itemCode + "itemCode" + strt + '' + end)
         if (strt == undefined && end == undefined) {
-            console.log('I am in First query')
+            console.log('I am in First query');
             query = 'Select * from TransactionDetails WHERE ProductId=' + itemCode + ''
         } else if (itemCode == undefined && strt == undefined) {
             console.log('I am in Second query')
