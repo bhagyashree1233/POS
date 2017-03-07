@@ -1,4 +1,22 @@
 angular.module('starter.controller', [])
+
+.controller('MyCtrl', function($scope) {
+  $scope.tabExpand = function(index) {
+    console.log('Tab ' + index + ' expanded');
+  };
+  $scope.tabCollapse = function(index) {
+    console.log('Tab ' + index + ' collapsed');
+  };
+
+   $scope.tab1 = {
+    expand: false   // initial state  
+  };
+      
+  $scope.toggleTab1 = function() {
+    $scope.tab1.expand = !$scope.tab1.expand;
+  };
+})
+
 .controller('homeCtrl', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', '$ionicPopup', function($scope, $rootScope, $state, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading, $ionicPopup) {
 
     /*

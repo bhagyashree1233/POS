@@ -50,13 +50,29 @@
     width:36vw;
     height:8vmin;
 }
+.icon_text
+{
+
+position:relative;
+text-align:center; 
+color:white;
+top: 8px;
+font-size:2vmin;
+}
+
+.element{
+text-align:center; 
+text-decoration: none;
+color:white;
+}
+
 .button-circle {
     width: 13vmin;
     height: 13vmin;
-    color: black;
+    color: white;
     border-radius: 50%;
     background-color: transparent;
-    border: .8vmin solid rgba(255, 255, 255, .5);
+    border: .5vmin solid rgba(255, 255, 255, .5);
     -webkit-transition: all 0.2s ease-in;
     transition: all 0.2s ease-in;
 }
@@ -73,13 +89,13 @@
     border: 1px solid black;
     width: 64vw;
     height: 10vh;
-    display: inline-flex;
-    padding: auto;
-    position: fixed;
+    display: inline-block;
+    bottom:0px;
+    
 }
 #product-cat-slide {
-    width: 100%;
-    height: 100%;
+height:9vh;
+ 
 }
 .product-slide {
     width: 100%;
@@ -222,7 +238,7 @@
     width:100%;
     text-align:center;
     color: white;
-    z-index:2;
+    z-index:0;
     position:absolute;
     background-color:rgba(10,10,10,0.8);
     font-size:2.5vmin;
@@ -730,4 +746,9 @@ body {
   to {
     text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #228DFF, 0 0 35px #228DFF, 0 0 40px #228DFF, 0 0 50px #228DFF, 0 0 75px #228DFF;
   }
+}
+
+
+.big-icon {
+  font-size: 150%;
 }
