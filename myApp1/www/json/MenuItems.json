@@ -4,68 +4,68 @@
 {
 "name": "Home",
 "icon": "ion-ios-home-outline",
-"state": "app.home"
+"state": "home"
 },
 
 {
 "name": "Printer-Setting",
 "icon": "ion-ios-printer-outline",
-"state": "app.PrinterSetting"
+"state": "PrinterSetting"
 },
 {
 "name": "Payment-Settings",
 "icon": "ion-cash",
-"state": "app.PaymentSetting"
+"state": "PaymentSetting"
 },
 {
 "name": "Tax-Settings",
 "icon": "ion-ios-compose-outline",
-"state": "app.TaxSettings"
+"state": "TaxSettings"
 },
 {
 "name": "Report-Setting",
 "icon": "ion-ios-compose-outline",
-"state": "app.Reports"
+"state": "Reports"
 },
 {
 "name": "BillWise-Report",
 "icon": "ion-ios-compose-outline",
-"state": "app.billWiseReport"
+"state": "billWiseReport"
 },
 {
 "name": "Product-Report",
 "icon": "ion-ios-compose-outline",
-"state": "app.productReport"
+"state": "productReport"
 },
 {
 "name": "Bluetooth-Settings",
 "icon": "ion-ios-compose-outline",
-"state": "app.bluetoothsettings"
+"state": "bluetoothsettings"
 },
 {
 "name": "Change-Password",
 "icon": "ion-ios-compose-outline",
-"state": "app.passwordChange"
+"state": "passwordChange"
 },
 {
 "name": "Reprint-Bill",
 "icon": "ion-ios-compose-outline",
-"state": "app.billdetails"
+"state": "billdetails"
 },
 {
 "name": "Cancel-Bill",
 "icon": "ion-ios-compose-outline",
-"state": "app.billdetails"
+"state": "billdetails"
 },
 {
 "name": "Sales-Report",
 "icon": "ion-ios-compose-outline",
-"state": "app.salesReport"
+"state": "salesReport"
 },
 {
 "name": "ItemWise-Report",
 "icon": "ion-ios-compose-outline",
-"state": "app.itemReport"
+"state": "itemReport"
 }
 
 ]

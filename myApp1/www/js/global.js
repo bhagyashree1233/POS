@@ -171,7 +171,7 @@ $rootScope.Reports={
     $rootScope.CreateMode =0;
      
     if($rootScope.SelCat !='favourite')
-    $state.go('app.category');
+    $state.go('category');
 
    }
 
@@ -180,7 +180,7 @@ $rootScope.AddNewCat = function()
    { 
     console.log("On Add Category");
     $rootScope.CreateMode =1;
-    $state.go('app.category');
+    $state.go('category');
 
    }
 
@@ -188,7 +188,7 @@ $rootScope.AddNewPro = function()
    {
     console.log("On Add Product");
     $rootScope.CreateMode =1;
-    $state.go('app.product');
+    $state.go('product');
 
    }
 
@@ -197,7 +197,7 @@ $rootScope.EditPro = function()
    {
     console.log("On Edit Product");
     $rootScope.CreateMode =0;
-    $state.go('app.product');
+    $state.go('product');
 
    }
 

@@ -588,7 +588,7 @@ angular.module('starter.controller', [])
             $rootScope.CreateMode = 0;
             //edit mode;;
             $rootScope.CurrentProduct = Product;
-            $state.go('app.product');
+            $state.go('product');
 
         } else {
             $rootScope.CurrentProduct = Product;
@@ -1093,7 +1093,7 @@ angular.module('starter.controller', [])
     }
     $scope.addNewCategary = function(newCategaryName) {
         $rootScope.cameFromProduct = true;
-        $state.go('app.category');
+        $state.go('category');
         $scope.categoryModal.hide();
     }
     $scope.openCamera = function() {
@@ -1247,7 +1247,7 @@ angular.module('starter.controller', [])
             $rootScope.hideDbLoading();
             //$ionicHistory.goBack();
             $rootScope.SelCat = 'favourite';
-            $state.go('app.home');
+            $state.go('home');
         }, function() {
             console.log(res);
             $rootScope.ShowToast("Failed to Delete Category", false);

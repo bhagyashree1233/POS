@@ -120,155 +120,129 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'n
         })
 
 
-        $state.go('app.home');
+        $state.go('home');
     });
 })
 
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('top');
-    $stateProvider.state('app', {
-        url: '/app',
-        abstract: true,
-        templateUrl: 'templates/menu.html'
-    }).state('app.Payments', {
+    
+    $stateProvider.state('Payments', {
         url: '/Settings',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/Settings.html'
-            }
-        }
-    }).state('app.PrinterSetting', {
+        templateUrl: 'templates/Settings.html'
+            
+        
+    }).state('PrinterSetting', {
         url: '/printerSettings',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/PrinterSettings.html'
-            }
-        }
-    }).state('app.PaymentSetting', {
+        templateUrl: 'templates/PrinterSettings.html'
+            
+        
+    }).state('PaymentSetting', {
         url: '/paymentSettings',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/PaymentSettings.html'
-            }
-        }
-    }).state('app.Reports', {
+        templateUrl: 'templates/PaymentSettings.html'
+            
+        
+    }).state('Reports', {
         url: '/Reports',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/Reports.html'
-            }
-        }
-    }).state('app.TaxSettings', {
+        templateUrl: 'templates/Reports.html'
+            
+        
+    }).state('TaxSettings', {
         url: '/TaxSettings',
-        views: {
-            'menuContent': {
-                controller: 'taxSetting',
-                templateUrl: 'templates/TaxSettings.html'
-            }
-        }
-    }).state('app.inventory', {
+       controller: 'taxSetting',
+       templateUrl: 'templates/TaxSettings.html'
+            
+        
+    }).state('inventory', {
         url: '/inventory',
-        views: {
-            'menuContent': {
+        
                 templateUrl: 'templates/inventoryPage.html'
-            }
-        }
-    }).state('app.category', {
+            
+        
+    }).state('category', {
         url: '/category',
-        views: {
-            'menuContent': {
+       
                 templateUrl: 'templates/categoryPage.html'
-            }
-        }
-    }).state('app.product', {
+            
+        
+    }).state('product', {
         url: '/product',
-        views: {
-            'menuContent': {
+        
                 templateUrl: 'templates/productPage.html'
-            }
-        }
-    }).state('app.home', {
+            
+        
+    }).state('home', {
         url: '/home',
-        views: {
-            'menuContent': {
+        
                 templateUrl: 'templates/homePage.html'
-            }
-        }
+            
+        
     })
-    .state('app.billWiseReport', {
+    .state('billWiseReport', {
         url: '/billWiseReport',
-        views: {
-            'menuContent': {
+       
                 
                 templateUrl: 'templates/billWiseReport.html'
-            }
-        }
+            
+        
     })
 
-     .state('app.salesReport', {
+     .state('salesReport', {
         url: '/salesReport',
-        views: {
-            'menuContent': {
+       
                 
                 templateUrl: 'templates/salesReport.html'
-            }
-        }
+            
+        
     })
-    .state('app.productReport', {
+    .state('productReport', {
         url: '/productReport',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/productReport.html'
-            }
-        }
+       templateUrl: 'templates/productReport.html'
+            
+        
     })
 
-    .state('app.itemReport', {
+    .state('itemReport', {
         url: '/itemReport',
-        views: {
-            'menuContent': {
+       
                 templateUrl: 'templates/itemReport.html'
-            }
-        }
+            
+        
     })
 
     
 
-    .state('app.editProducts', {
+    .state('editProducts', {
         url: '/editProducts',
-        views: {
-            'menuContent': {
+        
                 templateUrl: 'templates/editProducts.html'
-            }
-        }
+            
+        
     })
 
-      .state('app.passwordChange', {
+      .state('passwordChange', {
         url: '/passwordChange',
-        views: {
-            'menuContent': {
+        
                 templateUrl: 'templates/passwordChange.html'
-            }
-        }
+            
+        
     })
 
-    .state('app.billdetails', {
+    .state('billdetails', {
         url: '/billdetails',
-        views: {
-            'menuContent': {
+        
                 templateUrl: 'templates/BillDetails.html'
-            }
-        }
+            
+        
     })
 
-   .state('app.bluetoothsettings', {
+   .state('bluetoothsettings', {
         url: '/bluetoothsettings',
-        views: {
-            'menuContent': {
+        
                 templateUrl: 'templates/bluetoothSettings.html'
-            }
-        }
+            
+        
     })
 
 
