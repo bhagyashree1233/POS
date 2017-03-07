@@ -417,24 +417,34 @@ angular.module('starter.services', [])
 })
 
 .factory("salesService", function($q, $cordovaSQLite, $rootScope) {
-    var report = []
-    function get(itemCode, strt, end) {
+    
+    function getItemWiseReport( strt, end) {
+        var report = [];
+        var strtdate=new Date(strt)
+        var enddate=new Date(end)
+        console.log(strtdate)
+        console.log(enddate)
         var dfd = $q.defer();
         // BillNo integer, DateTime text, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, CategoryId text, CategoryName text
-        var query = '';
-        console.log(itemCode + "itemCode" + strt + '' + end)
-        if (strt == undefined && end == undefined) {
-            console.log('I am in First query');
-            query = 'Select * from TransactionDetails WHERE ProductId=' + itemCode + ''
+       
+        if (end == undefined && strt == undefined) {
+            var query = 'Select ProductId, ProductName,Sum(Quantity)  as Quantity,Sum(TotalPrice) as TotalPrice from TransactionDetails Where DateTime=' + strt + ' Group by ProductId ';
+        } else {
+
+           var query = 'Select ProductId,ProductName,Sum(Quantity) as Quantity,Sum(TotalPrice) as TotalPrice from TransactionDetails WHERE DateTime BETWEEN ' + strt + ' AND ' + end + ' Group by ProductId  '
+        }
+       /* if (strt == undefined && end == undefined) {
+            console.log('I am in First query')
+            query = 'Select ProductId, ProductName,Sum(Quantity),Sum(TotalPrice) from TransactionDetails WHERE ProductId=' + itemCode + ' Group by ProductId '
         } else if (itemCode == undefined && strt == undefined) {
             console.log('I am in Second query')
-            query = 'Select * from TransactionDetails WHERE DateTime=' + end + ''
+            query = 'Select ProductId, ProductName,Sum(Quantity),Sum(TotalPrice) from TransactionDetails WHERE DateTime=' + end + ' Group by ProductId '
         } else if (itemCode == undefined && end == undefined) {
             console.log('I am in third query')
-            query = 'Select * from TransactionDetails WHERE DateTime=' + strt + ''
+            query = 'Select ProductId,ProductName,Sum(Quantity),Sum(TotalPrice) from TransactionDetails WHERE DateTime=' + strt + ' Group by ProductId '
         } else {
-            query = 'Select * from TransactionDetails WHERE (DateTime BETWEEN ' + strt + 'AND ' + end + ')'
-        }
+            query = 'Select ProductId,ProductName,Sum(Quantity) as Qantity,Sum(TotalPrice) as TotalPrice from TransactionDetails WHERE DateTime BETWEEN ' + strt + ' AND ' + end + ' Group by ProductId  '
+        }*/
         $cordovaSQLite.execute($rootScope.db, query).then(function(result) {
             console.log(result)
             console.log(result.rows.length)
@@ -443,9 +453,9 @@ angular.module('starter.services', [])
                     itemCode: result.rows.item(i).ProductId,
                     itemName: result.rows.item(i).ProductName,
                     qtySold: result.rows.item(i).Quantity,
-                    totalAmountwoTax: result.rows.item(i).TotalPrice,
-                    totalTax: result.rows.item(i).TaxAmount,
-                    totalAmount: result.rows.item(i).TotalAmount
+                    totalAmount: result.rows.item(i).TotalPrice,
+                   // totalTax: result.rows.item(i).TaxAmount,
+                   // totalAmount: result.rows.item(i).TotalAmount
                 })
             }
             console.log(report.length);
@@ -457,7 +467,49 @@ angular.module('starter.services', [])
     }
 
 
-    function getSalesReport(strt, end) {
+    /////////////////
+
+     function getSalesReport(strt, end) {
+        var salesReport = []
+        //$cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
+        var dfd = $q.defer();
+        //modify to get only "Success" bills
+
+        if (end == undefined && strt == undefined) {
+            var query = "Select COUNT(*)as TotalBills, SUM(TotalPrice) as TotalPrice, SUM(TaxAmount) as TaxAmount, SUM(TotalAmount) as TotalAmount from BillDetails Where DateTime=" + strt + ' And BillStatus = ' + "'success'" + '';
+        } else {
+
+            var query = "Select COUNT(*)as TotalBills, SUM(TotalPrice) as TotalPrice, SUM(TaxAmount) as TaxAmount, SUM(TotalAmount) as TotalAmount from BillDetails Where DateTime Between " + strt + ' and ' + end + ' And BillStatus = ' +  "'success'" + '';
+
+        }
+        $cordovaSQLite.execute($rootScope.db, query).then(function(result) {
+            console.log(result); 
+            salesReport =[];
+            for (var i = 0; i < result.rows.length; i++) {
+                var date=new Date(parseFloat(result.rows.item(i).DateTime));
+                
+                salesReport.push({
+                    
+                    totalPrice: result.rows.item(i).TotalPrice,
+                    taxAmount: result.rows.item(i).TaxAmount,
+                    totalAmount: result.rows.item(i).TotalAmount,
+                    totalBills: result.rows.item(i).TotalBills,
+                })
+            }
+            dfd.resolve(salesReport);
+        }, function(error) {
+            dfd.resolve(error);
+        })
+        return dfd.promise;
+    }
+
+
+    //////////////
+
+
+
+
+    function getBillWiseReport(strt, end) {
         var salesReport = []
         //$cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
         var dfd = $q.defer();
@@ -471,6 +523,7 @@ angular.module('starter.services', [])
         }
         $cordovaSQLite.execute($rootScope.db, query).then(function(result) {
             console.log(result)
+            salesReport=[];
             for (var i = 0; i < result.rows.length; i++) {
                 var date=new Date(parseFloat(result.rows.item(i).DateTime));
                 
@@ -483,6 +536,7 @@ angular.module('starter.services', [])
                     billAmt: result.rows.item(i).TotalPrice,
                     taxAmount: result.rows.item(i).TaxAmount,
                     amountAftertax: result.rows.item(i).TotalAmount,
+                    billStatus: result.rows.item(i).BillStatus
                 })
             }
             dfd.resolve(salesReport);
@@ -492,7 +546,8 @@ angular.module('starter.services', [])
         return dfd.promise;
     }
     return {
-        get: get,
-        getSalesReport: getSalesReport
+        getItemWiseReport: getItemWiseReport,
+        getBillWiseReport: getBillWiseReport,
+        getSalesReport:getSalesReport
     }
 })

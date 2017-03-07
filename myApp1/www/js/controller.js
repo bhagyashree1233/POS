@@ -263,9 +263,13 @@ angular.module('starter.controller', [])
         billSummary.BillStatus = "Active";
         billSummary.DateTime = new Date();
 
-        $rootScope.print(billSummary, $scope.productArr,SaveTransactionDetailstoDB);
+        $rootScope.print(billSummary, $scope.productArr,SaveTransactionDetailstoDB,PrintReceiptError);
 
-     
+    }
+
+    function PrintReceiptError()
+    {
+      console.log("Print Receipt Error");
 
     }
 
@@ -286,7 +290,7 @@ angular.module('starter.controller', [])
         }, function(result) {
             console.log(result);
         })
-        
+
     }
 
 
@@ -326,7 +330,7 @@ angular.module('starter.controller', [])
             transactionDetail = res;
             console.log(transactionDetail);
         }, function(res) {
-            console.log(res)
+            console.log(res);
         })
     }
     $scope.void = function() {
@@ -351,7 +355,7 @@ angular.module('starter.controller', [])
             console.log("Collected Amount less than Bill Amount");
             return ( false) ;
         }
-
+        
         $scope.paidAmount1 = typedAmount;
         console.log(typedAmount);
 
@@ -362,18 +366,21 @@ angular.module('starter.controller', [])
         //confirm to print receipt;;
 
 
-
-
          $ionicPopup.show({
               title: 'Print Receipt',
               subTitle: 'Print Receipt to Complete Transaction',
               scope:$scope,
                buttons: [
-              { text: 'Cancel', onTap: function(e) { return "cancel"; } },
+              { text: 'Close', onTap: function(e) { return "cancel"; } },
               {
                   text: '<b>Print</b>',
                   type: 'button-positive',
                   onTap: function(e) { return "Print";}
+              },
+              {
+                  text: '<b>Save</b>',
+                  type: 'button-positive',
+                  onTap: function(e) { return "Save";}
               }
 
               ]
@@ -387,6 +394,10 @@ angular.module('starter.controller', [])
            $scope.receipt();
            return;
            
+       }
+       else if(res=="Save")
+       {
+           SaveTransactionDetailstoDB();
        }
        else
        {
@@ -606,7 +617,44 @@ angular.module('starter.controller', [])
         $scope.recallModal.hide();
     }
     ;
+
+
     $scope.holdItems = function() {
+
+
+       if($rootScope.holdItemArr.length== 0 && $scope.productArr.length != 0) //hold;;
+      {
+         $rootScope.holdItemArr = $scope.productArr; //deepcopy;;
+         $scope.totalPrice =0;
+         $scope.productArr = [];
+         $scope.totalPrice = 0;
+         $scope.totalTaxAmount = 0;
+         $scope.discountAmount = 0;
+         $scope.totalChargeAmount = 0;
+         $scope.Balance = undefined;
+         $scope.typedAmount =undefined;
+         console.log("Current Bill put on hold");
+         $rootScope.ShowToast("Current Bill put on hold",false);
+         return;
+      }
+      else if($rootScope.holdItemArr.length!= 0 && $scope.productArr.length == 0) //recall;;
+      {
+
+         $scope.productArr = $rootScope.holdItemArr; //deepcopy;;
+         $rootScope.holdItemArr = [];
+         calculateProductCost();
+         console.log("Saved Bill Recalled");
+         $rootScope.ShowToast("Saved Bill Recalled",false);
+         return;
+      }
+      else
+      {
+          console.log("Else case");
+          $rootScope.ShowToast("Current Bill Not Empty or Hold Item already Exists",false);
+      }
+
+
+ /*
         if ($scope.productArr.length != 0) {
             var itemsDetails = {};
             var d = new Date();
@@ -629,7 +677,12 @@ angular.module('starter.controller', [])
             $scope.productArr = [];
             $scope.totalPrice = null;
         }
+   */
+
+
     }
+
+
 
     $rootScope.recallItems = function() {
         var itemsJsonObj = window.localStorage.getItem('holdEvents');
@@ -1323,110 +1376,5 @@ angular.module('starter.controller', [])
     }
 
 })
-.controller('salesReportCtrl', function($scope, salesService, $rootScope) {
 
-    /*
-BTPrinter.list(function(data){
-        console.log("Success");
-        console.log(data); //list of printer in data array
-    },function(err){
-        console.log("Error");
-        console.log(err);
-    })
-*/
 
-    $scope.Dte = {}
-    $scope.salesReport = []
-    $scope.totalAmount = {
-        avgBillAmount: 0,
-        taxAmount: 0,
-        billAmt: 0,
-        amountAftertax: 0
-    };
-
-    $scope.save = function() {
-
-        var stDate;
-        var edDate;
-        var startDate = $scope.Dte.start;
-        //console.log(startDate);
-        var endDate = $scope.Dte.end;
-
-        if (endDate < startDate) {
-            console.log("Invalid Date Selected");
-            $rootScope.ShowToast("Please select valid Date", false);
-            return;
-        }
-
-        if (startDate == undefined && endDate == undefined) //no date entered;;
-        {
-            console.log("start and End Date undefined");
-            startDate = new Date();
-            startDate.setHours(0);
-            startDate.setMinutes(0);
-            startDate.setSeconds(0);
-            startDate.setMilliseconds(0);
-
-            endDate = new Date();
-            endDate.setHours(23);
-            endDate.setMinutes(59);
-            endDate.setSeconds(59);
-            endDate.setMilliseconds(999);
-
-            console.log(startDate);
-            console.log(endDate);
-
-            stDate = startDate.getTime();
-            edDate = endDate.getTime();
-
-            console.log(stDate);
-            console.log(edDate);
-
-            //return;
-
-        } else if (startDate == undefined || endDate == undefined) {
-            console.log('Select Start and End Date');
-            $rootScope.ShowToast("Select Start and End Date", false);
-            return false
-        }
-        else {
-            startDate = $scope.Dte.start;
-            endDate = $scope.Dte.end;
-
-            startDate.setHours(0);
-            startDate.setMinutes(0);
-            startDate.setSeconds(0);
-            startDate.setMilliseconds(0);
-
-            endDate.setHours(23);
-            endDate.setMinutes(59);
-            endDate.setSeconds(59);
-            endDate.setMilliseconds(999);
-
-            console.log(startDate);
-            console.log(endDate);
-
-            stDate = startDate.getTime();
-            edDate = endDate.getTime();
-
-            console.log(stDate);
-            console.log(edDate);
-
-            // return;
-
-        }
-
-        var promise = salesService.getSalesReport(stDate, edDate);
-        promise.then(function(data) {
-            console.log(data)
-            $scope.salesReport = data;
-            for (var i = 0; i < $scope.salesReport.length; i++) {
-                // $scope.totalAmount.avgBillAmount=($scope.salesReport[i].billAmt+$scope.totalAmount.avgBillAmount)/$scope.salesReport.length 
-                $scope.totalAmount.taxAmount = $scope.salesReport[i].taxAmount + $scope.totalAmount.taxAmount
-                $scope.totalAmount.billAmt = $scope.salesReport[i].billAmt + $scope.totalAmount.billAmt
-                $scope.totalAmount.amountAftertax = $scope.salesReport[i].amountAftertax + $scope.totalAmount.amountAftertax
-            }
-            $scope.totalAmount.avgBillAmount = $scope.totalAmount.billAmt / $scope.salesReport.length
-        })
-    }
-})

@@ -28,9 +28,9 @@
 "state": "app.Reports"
 },
 {
-"name": "Sales-Report",
+"name": "BillWise-Report",
 "icon": "ion-ios-compose-outline",
-"state": "app.salesReport"
+"state": "app.billWiseReport"
 },
 {
 "name": "Product-Report",
@@ -56,7 +56,18 @@
 "name": "Cancel-Bill",
 "icon": "ion-ios-compose-outline",
 "state": "app.billdetails"
+},
+{
+"name": "Sales-Report",
+"icon": "ion-ios-compose-outline",
+"state": "app.salesReport"
+},
+{
+"name": "ItemWise-Report",
+"icon": "ion-ios-compose-outline",
+"state": "app.itemReport"
 }
+
 ]
 }
 

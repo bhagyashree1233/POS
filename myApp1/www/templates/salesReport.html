@@ -1,5 +1,5 @@
 <ion-view view-title="Sales Report">
-<ion-content style="text-align:center;" ng-controller="salesReportCtrl" scroll=false>
+<ion-content style="text-align:center;" ng-controller="SalesReportCtrl" scroll=false>
 <label class="item item-input">
   <span class="input-label" style="font-style:italic;font-size: 3vh;font-weight: bold;">Start</span>
   <input type="date" ng-model="Dte.start">
@@ -9,38 +9,16 @@
   <input type="date" ng-model="Dte.end">
 </label>
 <button ion-button ng-click=save()>Get Report</button>
+
+<div ng-if="showreport==true">
 <div class="card">
-  <p><span class="salesReport" >Average Bill Amount:</span>{{totalAmount.avgBillAmount}}</p>
-  <p><span class="salesReport" >Total Tax Amount:</span>{{totalAmount.taxAmount}}</p>
-  <p><span class="salesReport" >Total Bill Amount:</span>{{totalAmount.billAmt}}</p>
-  <p><span class="salesReport" >Total Amount After Tax:</span>{{totalAmount.amountAftertax}}</p>
+  <p><span class="salesReport" >Total Number of Bills:</span>{{salesReport.totalBills}}</p>
+  <p><span class="salesReport" >Total Amount:</span>{{salesReport.totalPrice}}</p>
+  <p><span class="salesReport" >Total Tax Amount:</span>{{salesReport.taxAmount}}</p>
+  <p><span class="salesReport" >Total Amount After Tax:</span>{{salesReport.totalAmount}}</p>
 </div>
-<ion-list >
 
-<ion-item >
-<div class="row header" id="salesReportHeader">
-          <div class="col">Date</div>
-          <div class="col">Time</div>
-          <div class="col">Bill Number</div>
-          <div class="col">Bill Amount</div>
-          <div class="col">Tax Amount</div>
-          <div class="col">Total Amount</div>
-        </div>
-</ion-item>
-<ion-scroll direction="y" id="productsViewSlideBox" style="width:100%;height:90%;" scrollbar-x = false scrollbar-y= false>
-
- <ion-item ng-repeat="sales in salesReport">      
-        <div class="row" >
-          <div class="col">{{sales.date}}</div>
-          <div class="col">{{sales.time}}</div>
-          <div class="col">{{sales.billNo}}</div>
-          <div class="col">{{sales.billAmt}}</div>
-          <div class="col">{{sales.taxAmount}}</div>
-          <div class="col">{{sales.amountAftertax}}</div>
-        </div>
-   </ion-item>
-</ion-scroll>
-</ion-list>
+</div>
 
 </ion-content>
 </ion-view>

@@ -3,7 +3,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ion-digit-keyboard', 'ngCordova', 'starter.globalcontroller','starter.keypad','ion-floating-menu','starter.settingscontroller']).run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q, $ionicLoading, settingService, salesService, dbService,$state) {
+angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ion-digit-keyboard', 'ngCordova', 'starter.globalcontroller','starter.keypad','ion-floating-menu','starter.reportscontroller','starter.settingscontroller']).run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q, $ionicLoading, settingService, salesService, dbService,$state) {
 
     var dfd = $q.defer();
     $rootScope.deviceReady = dfd.promise;
@@ -118,15 +118,6 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
         })
 
 
-        var promise = salesService.get("233", undefined, undefined);
-        promise.then(function(data) {
-            console.log(data)
-        })
-        var promise = salesService.getSalesReport("1485937937792.0", undefined);
-        promise.then(function(data) {
-            console.log(data)
-        })
-
         $state.go('app.home');
     });
 })
@@ -203,7 +194,17 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
             }
         }
     })
-    .state('app.salesReport', {
+    .state('app.billWiseReport', {
+        url: '/billWiseReport',
+        views: {
+            'menuContent': {
+                
+                templateUrl: 'templates/billWiseReport.html'
+            }
+        }
+    })
+
+     .state('app.salesReport', {
         url: '/salesReport',
         views: {
             'menuContent': {
@@ -220,6 +221,17 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'i
             }
         }
     })
+
+    .state('app.itemReport', {
+        url: '/itemReport',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/itemReport.html'
+            }
+        }
+    })
+
+    
 
     .state('app.editProducts', {
         url: '/editProducts',

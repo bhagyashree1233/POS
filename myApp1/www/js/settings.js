@@ -623,8 +623,19 @@ $scope.ReprintBill = function(BillNo)
 
      var billdetails = $scope.productArr;
 
-      $rootScope.print(billSummary,billdetails);
+      $rootScope.print(billSummary,billdetails,$scope.ReprintComplete,$scope.ReprintError);
 
+}
+
+$scope.ReprintComplete()
+{
+console.log("Reprint Complete");
+
+}
+
+$scope.ReprintError()
+{
+console.log("Reprint Error");
 }
 
 
@@ -780,7 +791,7 @@ if(repeatpassword==undefined||repeatpassword=="")
         if(sendSMSAlert==true){
          if(phNo==undefined || phNo<7){
            $rootScope.ShowToast("Enter Phone Number or Valid Phone Number", false);
-             console.log('Enter Phone Number or Valid Phone Number')
+             console.log('Enter Phone Number or Valid Phone Number');
              return false  
          }else if(!phNo.match('^[0-9\+\]+$')){
             $rootScope.ShowToast("Enter Valid Phone Number", false);
@@ -800,7 +811,7 @@ if(repeatpassword==undefined||repeatpassword=="")
                     console.log($rootScope.Reports)
                 })
             } else {
-                console.log('No PayMent Setting Record Found')
+                console.log('No PayMent Setting Record Found');
                 var currency = $rootScope.PaymentSettings.currency.split(' ');
                 var currencyName = currency[0];
                 var currencySymbol = currency[1];

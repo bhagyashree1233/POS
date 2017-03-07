@@ -14,6 +14,8 @@ angular.module('starter.globalcontroller', [])
    $rootScope.printerName = "";
    $rootScope.PrinterStatus = false; 
 
+   $rootScope.holdItemArr = [];
+
    $rootScope.PrintElement = 
    {
        type : "",
@@ -672,7 +674,7 @@ BTPrinter.printText(function(data){
 }  
 
 
- $rootScope.print = function(billSummary,billdetails,callbackfc) {
+ $rootScope.print = function(billSummary,billdetails,callbackfcSuccess,callbackfcFailure) {
        var d = new Date();
 
        var date = billSummary.DateTime.toString().substring(4, 15);
@@ -836,7 +838,7 @@ return s;
        $rootScope.PrintAlign("center");
        $rootScope.PrintText(printerSettings.greeting + "\n\n");
 
-       $rootScope.EndPrint(callbackfc, $rootScope.testError);
+       $rootScope.EndPrint(callbackfcSuccess, callbackfcFailure);
    }
  
    
