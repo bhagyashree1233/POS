@@ -95,12 +95,15 @@ $rootScope.Reports={
 
    $rootScope.ShowPopUpPassword = function()
    {
+       console.log("now mode is");
+      console.log($rootScope.Mode);
 
      //$rootScope.Testing();
      //return;
 
      if($rootScope.Mode ==1)//already in admin mode;;
      {
+
        $rootScope.OnModeChangeClick();
        return;
 
@@ -146,7 +149,7 @@ $rootScope.Reports={
    $rootScope.OnModeChangeClick = function()
    {
      console.log("Toggle Clicked");
-     if($rootScope.Mode == 0)
+    /* if($rootScope.Mode == 0)
        $rootScope.Mode =1;
      else
      $rootScope.Mode =0;
@@ -156,7 +159,7 @@ $rootScope.Reports={
      {
        
 
-     }
+     }*/
 
    }
 

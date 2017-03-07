@@ -1,4 +1,5 @@
-<ion-view view-title="PayUPad" class="has-footer">
+<!--<ion-view view-title="PayUPad" class="has-footer">-->
+<ion-view ng-controller="MyCtrl" hide-nav-bar="true">
     <ion-content ng-controller="homeCtrl" scroll="false">
         <div class="row" id="product">
             <div class="row" id="product-billing-head" style="height:3vmin;color:black;">
@@ -8,7 +9,7 @@
             </div>
             <div id="product-billing">
                 <div id="product-billing-col1">
-                  <!--  <button ng-show="scrollTopBtn" ng-click="scrollTop()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:30%;border-radius:50%;width:5vh;height:5vh;">
+                    <!--  <button ng-show="scrollTopBtn" ng-click="scrollTop()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:30%;border-radius:50%;width:5vh;height:5vh;">
                         <i style="font-size:3vh;" class="icon ion-chevron-up"></i>
                     </button>
                     <button ng-show="scrollBottomBtn" ng-click="scrollBottom()" style="opacity:0.4;position:fixed;z-index:2;left:20%;top:58%;border-radius:50%;width:5vh;height:5vh;">
@@ -32,10 +33,10 @@
                         <ion-scroll delegate-handle="scrollSmall" on-scroll="onScroll()" direction="y" class="product-billing-tableScroll">
                             <table id="product-billing-table" style="color:black;text-align:center;font-weight:bolder;line-height:6vmin;">
                                 <tr ng-repeat="product in productArr" on-hold="onPressHold()">
-                                    <td ng-show="showDelete" ng-click="deleteItem($index)">
-                                        <button class="button button-assertive">Delete</button>
-                                    </td>
-                                    <td style="text-align:left;padding-left:1vw;">{{product.name}}
+                                
+                                       <td style="text-align:left;padding-left:1vw;">
+                                        <button style="display:inline;position:absolute;z-index:1;right:3px;font-size:3.5vmin;color:red;"  ng-show="showDelete" ng-click="deleteItem($index)" class="clear icon ion-minus-circled"></button>
+                                    {{product.name}}
                                     </td>
                                     <td style="text-align:right;padding-right:1vw;">{{product.quantity}}
                                     </td>
@@ -57,21 +58,23 @@
                             </table>
                         </ion-scroll>
                     </div>
-
                     <div class="totalAmountCalculation" style="margin:0.5vmin;">
                         <p style="font-size:2vmin;color:black;line-height:1.5vmin;">Total Bill Amount{{currencySymbol}}:{{totalPrice}}</p>
                         <p style="font-size:2vmin;color:black;line-height:1.5vmin;">Tax{{currencySymbol}}:{{totalTaxAmount}}</p>
                         <p style="font-size:2vmin;color:black;line-height:1.5vmin;">Discount Amount{{currencySymbol}}:{{discountAmount}}</p>
                         <p style="font-size:2vmin;color:black;line-height:1.5vmin;">Paid Amount{{currencySymbol}}: {{typedAmount}}</p>
                         <p style="font-size:2vmin;color:black;line-height:1.5vmin;" ng-if="typedAmount>0">Balance{{currencySymbol}}: {{Balance}}</p>
-
                     </div>
                     <div style="line-height:1vmin;">
                         <p style="">{{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</p>
-                        <button style="border-radius:1%;width:100%;height-max:2vmin;padding-top:0px;line-height:4vmin;font-size:2vmin" ng-click="showPaymentMode()" class="button  button-balanced">check out {{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</button>
-                    </div>
+                      <button style="border-radius:1%;width:36vw;height-max:2vmin;padding-top:0px;line-height:6vmin;font-size:2vmin;position:absolute;bottom:1vh;" ng-click="showPaymentMode()" class="button  button-balanced">check out {{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</button>
+                
+                      </div>
+                       
                 </div>
+                    
             </div>
+
             <!-- 
                 <div class="col-70" id="product-display">
                     <div id="product-display-col1" class="card" ng-click="openNumericModal(Product)" ng-repeat="Product in Products">
@@ -93,23 +96,25 @@
                         -->
             <div id="productsView">
                 <ion-scroll direction="y" id="productsViewSlideBox" style="width:100%;height:90%;" scrollbar-x=false scrollbar-y=false>
-                    <div class="card" ng-show="Mode == 1" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="AddNewPro()">
-                        <div id="product-image" align="right">
-                            <img ng-src="img/add-product.png" style="padding:auto;margin:auto;height:100%;width:100%;"></img>
-                        </div>
-                    </div>
-                    <div class="card" style="width:20vw;max-height:30vh;border:1px solid grey;" ng-click="OnProductClick(Product)" ng-repeat="Product in Products">
-                        <div id="product-image">
-                            <img ng-src={{Product.image}} style="width:100%; height:100%"></img>
-                            <div id="product-stock">
-                                <div id="product-stock-text">Stock: {{Product.inStock}} </div>
+                    <div style="width:100%;">
+                        <div class="card" ng-show="Mode == 1" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="AddNewPro()">
+                            <div id="product-image" align="right">
+                                <img ng-src="img/add-product.png" style="padding:auto;margin:auto;height:100%;width:100%;"></img>
                             </div>
-                            <div id="product-price">
-                                <a style="font-weight:bold;color:lightblue;">{{PaymentSettings.CurrencyOptions.symbol}}{{Product.unitPrice}}</a>
-                            </div>
-                            <div id="product-name">
-                            <p>{{Product.name}}</p>
                         </div>
+                        <div class="card" style="width:20vw;max-height:30vh;border:1px solid grey;" ng-click="OnProductClick(Product)" ng-repeat="Product in Products">
+                            <div id="product-image">
+                                <img ng-src={{Product.image}} style="width:100%; height:100%"></img>
+                                <div id="product-stock">
+                                    <div id="product-stock-text">Stock: {{Product.inStock}} </div>
+                                </div>
+                                <div id="product-price">
+                                    <a style="font-weight:bold;color:lightblue;">{{PaymentSettings.CurrencyOptions.symbol}}{{Product.unitPrice}}</a>
+                                </div>
+                                <div id="product-name">
+                                    <p>{{Product.name}}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </ion-scroll>
@@ -141,10 +146,10 @@
                         </div>-->
                 <!--</ion-slide>-->
                 <!--</ion-slide-box>-->
-                <div id="product-categary">
-                    <ion-scroll direction="x" id="product-categary-scroll" scrollbar-x=false scrollbar-y=false>
-                        <button class="product-categary-button" ng-show="Mode == 1" ng-click="AddNewCat()">Add New</button>
-                        <button class="product-categary-button" ng-repeat="categoryObj in categoryArr" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
+                <div id="product-categary" style="position:absolute;bottom:-10px;display:block;height:10vh">
+                    <ion-scroll direction="x" id="product-categary-scroll" scrollbar-x=false scrollbar-y=false style="height:100%;">
+                        <button style="height:100%;font-size:2.5vmin;" class="product-categary-button" ng-show="Mode == 1" ng-click="AddNewCat()">Add New</button>
+                        <button style="height:100%;font-size:2.5vmin;" class="product-categary-button" ng-repeat="categoryObj in categoryArr" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
                     </ion-scroll>
                 </div>
             </div>
@@ -158,4 +163,61 @@
       -->
     </ion-content>
     <ion-floating-button ng-show="Mode == 1" click="OnEditCategory()" has-footer="false" button-color="#2AC9AA" icon="ion-edit" icon-color="#fff"></ion-floating-button>
+    <ion-side-tabs on-expand="tabExpand(index)" on-collapse="tabCollapse(index)">
+        <!--<ion-side-tab  tab.expand="tabs.tab1" style="border-radius: 10px; width:10vw;background-color:rgba(8,8,8,0.9);" >
+ -->
+        <ion-side-tab positive-bg style="border-radius: 10px;border-radius: 10px; width:10vw;background-color:rgba(8,8,8,0.9);" expand="tabs.tab1">
+            <ion-side-tab-handle width="70" height="130" toggle="ion-chevron-left ion-ios-gear-outline" class="dark-bg stable" style="border-radius: 40px 0 0 40px; background-color:rgba(8,8,8,0.9);">
+                <i style="font-size:5vmin;" class="icon ion-ios-gear-outline"></i>
+            </ion-side-tab-handle>
+            <div style="position:relative;top:5vmin" ng-controller="MenuCtrl">
+                <div>
+                    <div ng-repeat="items in rightItems">
+                        <div class="row" ng-if="$index%3==0">
+                            <div style="position:relative;" class="col col-33 col-center">
+                                <a class="element" ng-if="rightItems[$index]!=undefined" ng-click="itemclick(rightItems[$index])" menu-close>
+                                    <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
+                                        <i class="{{rightItems[$index].icon}}" style="font-size:7vmin"></i>
+                                    </button>
+                                    <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index].name}} </div>
+                                </a>
+                            </div>
+                            <div style="position:relative;" class="col col-30 col-center">
+                                <a class="element" ng-if="rightItems[$index+1]!=undefined" ng-click="itemclick(rightItems[$index+1])" menu-close>
+                                    <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
+                                        <i class="{{rightItems[$index+1].icon}}" style="font-size:7vmin"></i>
+                                    </button>
+                                    <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index+1].name}} </div>
+                                </a>
+                            </div>
+                            <div style="position:relative;" class="col col-30 col-center">
+                                <a class="element" ng-if="rightItems[$index+2]!=undefined" ng-click="itemclick(rightItems[$index+2])" menu-close>
+                                    <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
+                                        <i class="{{rightItems[$index+2].icon}}" style="font-size:7vmin"></i>
+                                    </button>
+                                    <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index+2].name}} </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ion-side-tab>
+        <ion-side-tab class="positive-bg" style="border-radius: 10px;" expand="tabs.tab2">
+            <ion-side-tab-handle width="70" height="130" toggle="ion-chevron-left ion-chevron-right" class="positive-bg" style="border-radius: 40px 0 0 40px;">
+                <i style="font-size:3vmin;color:white;" class="icon ion-edit"></i>
+            </ion-side-tab-handle>
+            <div class="list card">
+                <div class="item item-divider">Administrative rights to Add, Remove Products</div>
+                <div class="item item-body item-stable">
+                    <div>
+                   
+                      <ion-toggle ng-model="$root.Mode" toggle-class="toggle-calm" ng-change="ShowPopUpPassword()">Enable Edit</ion-toggle>
+          
+                    </div>
+                </div>
+            </div>
+            
+        </ion-side-tab>
+    </ion-side-tabs>
 </ion-view>

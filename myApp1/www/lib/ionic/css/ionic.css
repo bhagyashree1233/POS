@@ -4078,7 +4078,10 @@ a.subdued {
   .bar > .button.pull-right,
   .bar .buttons.pull-right,
   .bar .title + .buttons {
-     }
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    bottom: 5px; }
 
 .platform-android .nav-bar-has-subheader .bar {
   background-image: none; }

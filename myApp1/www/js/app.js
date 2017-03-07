@@ -3,7 +3,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ion-digit-keyboard', 'ngCordova', 'starter.globalcontroller','starter.keypad','ion-floating-menu','starter.settingscontroller']).run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q, $ionicLoading, settingService, salesService, dbService,$state) {
+angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ngCordova', 'starter.globalcontroller','starter.keypad','ion-floating-menu','starter.settingscontroller','ionic-sidetabs']).run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q, $ionicLoading, settingService, salesService, dbService,$state) {
 
     var dfd = $q.defer();
     $rootScope.deviceReady = dfd.promise;
