@@ -234,7 +234,7 @@ height:9vh;
 }
 #product-name{
     left:0;
-    top:23vmin;
+    bottom:0vmin;
     width:100%;
     text-align:center;
     color: white;
@@ -322,8 +322,7 @@ body {
 #model-view {
 top:0px;
 left:36vmax;
-   
-    min-height: 300px;
+  
     width: 64vmax;
     height: 100vmin;
     background: rgba(34,34,34,0.90);
@@ -751,4 +750,8 @@ body {
 
 .big-icon {
   font-size: 150%;
+}
+
+.has-header {
+    top: 0px;
 }

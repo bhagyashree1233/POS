@@ -95,13 +95,21 @@ angular.module('ionic-sidetabs', [])
                           $element.css({transition:'none'});
                           break;
                       case 'drag':
+                      //console.log(Math.round(e.gesture.deltaX));
                           posX = Math.round(e.gesture.deltaX) + lastPosX;
+                       //   console.log(posX);
                           if (posX < handleWidth || posX > expandedWidth) return;
                           $element.css({'-webkit-transform': 'translate3d(' + posX + 'px, 0, 0)', transform: 'translate3d(' + posX + 'px, 0, 0)'});
                           break;
                       case 'dragend':
                           $element.css({transition: '300ms ease-in-out'});
                           lastPosX = posX;
+                           e.gesture.srcEvent.preventDefault();
+                  e.gesture.preventDefault();
+                  
+                  $timeout(function() {
+                    $scope.expand = !$scope.expand;
+                  });
                           break;
                   }
               };
