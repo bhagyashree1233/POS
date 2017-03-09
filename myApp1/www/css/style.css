@@ -234,7 +234,8 @@ height:9vh;
 }
 #product-name{
     left:0;
-    bottom:0vmin;
+
+    bottom:5px;
     width:100%;
     text-align:center;
     color: white;
@@ -243,8 +244,8 @@ height:9vh;
     background-color:rgba(10,10,10,0.8);
     font-size:2.5vmin;
     font-weight:bold;
-    line-height:3.5vmin;
-    height:3.5vh;
+    line-height:2.5vmin;
+    height:4vmin;
     border-radius:0.5vmin;
 }
 #product-image {
@@ -754,4 +755,33 @@ body {
 
 .has-header {
     top: 0px;
+}
+
+
+
+.jiggle {
+    -webkit-animation: jiggle 0.2s infinite;
+    -moz-animation-duration: 0.2s;
+    -moz-animation-name: jiggle;
+    -moz-animation-iteration-count: infinite;
+    -webkit-transform: rotate(-3deg);
+    -moz-transform: rotate(-3deg);
+}
+
+@-moz-keyframes jiggle {
+    0% {
+        -moz-transform: rotate(-1deg);
+    }
+    50% {
+        -moz-transform: rotate(1deg);
+    }
+}
+
+@-webkit-keyframes jiggle {
+    0% {
+        -webkit-transform: rotate(-1deg);
+        }
+    50% {
+        -webkit-transform: rotate(1deg);
+    }
 }
