@@ -1,6 +1,14 @@
 angular.module('starter.controller', [])
 
 .controller('MyCtrl', function($scope) {
+$(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggleClass('jiggle');  
+        return false; 
+    });
+});$(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggleClass('jiggle');  
+        return false; 
+    });
+});
+    
   $scope.tabExpand = function(index) {
     console.log('Tab ' + index + ' expanded');
   };

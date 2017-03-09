@@ -98,16 +98,16 @@
                         -->
             <div id="productsView">
                 <ion-scroll direction="y" id="productsViewSlideBox" style="width:100%;height:90%;" scrollbar-x=false scrollbar-y=false>
-                    <div style="width:94%;">
-                        <div class="card" ng-show="Mode == 1" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="AddNewPro()">
+                    <div style="width:94%;" >
+                        <div  ng-show="Mode == 1" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="AddNewPro()">
                             <div id="product-image" align="right">
                                 <img ng-src="img/add-product.png" style="padding:auto;margin:auto;height:100%;width:100%;"></img>
                             </div>
                         </div>
-                        <div ng-repeat="Product in Products">
-                            <div class="row" ng-if="$index%3==0">
+                        <div ng-repeat="Product in Products" >
+                            <div class="row" ng-if="$index%3==0" >
                                 <div style="position:relative;" class="col col-30 col-center">
-                                    <div class="card" style="width:15vw;max-height:25vh;border:1px solid grey;" ng-click="OnProductClick(Product)">
+                                    <div  class="click-to-jiggle jiggle" style="width:15vw;max-height:25vh;border:1px solid grey;" ng-click="OnProductClick(Product)">
                                         <div id="product-image">
                                             <img ng-src={{Product.image}} style="width:100%; height:100%"></img>
                                             <div id="product-stock">
@@ -123,7 +123,7 @@
                                     </div>
                                 </div>
                                 <div style="position:relative;" class="col col-30 col-center">
-                                    <div class="card" style="width:15vw;max-height:25vh;border:1px solid grey;" ng-click="OnProductClick(Product)">
+                                    <div class="click-to-jiggle jiggle" style="width:15vw;max-height:25vh;border:1px solid grey;" ng-click="OnProductClick(Product)">
                                         <div id="product-image">
                                             <img ng-src={{Product.image}} style="width:100%; height:100%"></img>
                                             <div id="product-stock">
@@ -139,7 +139,7 @@
                                     </div>
                                 </div>
                                 <div style="position:relative;" class="col col-30 col-center">
-                                    <div class="card" style="width:15vw;max-height:25vh;border:1px solid grey;" ng-click="OnProductClick(Product)">
+                                    <div  style="width:15vw;max-height:25vh;border:1px solid grey;" ng-click="OnProductClick(Product)">
                                         <div id="product-image">
                                             <img ng-src={{Product.image}} style="width:100%; height:100%"></img>
                                             <div id="product-stock">
@@ -189,7 +189,7 @@
                 <div id="product-categary" style="position:absolute;bottom:-10px;display:block;height:10vh">
                     <ion-scroll direction="x" id="product-categary-scroll" scrollbar-x=false scrollbar-y=false style="height:100%;">
                         <button style="height:100%;font-size:2.5vmin;" class="product-categary-button" ng-show="Mode == 1" ng-click="AddNewCat()">Add New</button>
-                        <button style="height:100%;font-size:2.5vmin;" class="product-categary-button" ng-repeat="categoryObj in categoryArr" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
+                        <button  style="height:100%;font-size:2.5vmin;" class="product-categary-button click-to-jiggle jiggle" ng-repeat="categoryObj in categoryArr" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
                     </ion-scroll>
                 </div>
             </div>
