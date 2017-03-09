@@ -1,4 +1,4 @@
-<ion-view view-title="PrinterSettings">
+<ion-view view-title="PrinterSettings" cache-view="false">
     <ion-content ng-controller="printerSettings">
         
         <form id="prinrSettings" name="myForm" >
@@ -63,7 +63,7 @@
             </div>
             <label class="item item-input">
                 <span class="input-label">Bill Copies:</span>
-                <input type="tel"  id="billCopies" name="billCopies"class="printerSettingtext" ng-model="printFormatSettings.billCopies" maxlength=2 required></input>
+                <input type="tel"  id="billCopies" name="billCopies"class="printerSettingtext" ng-model="printFormatSettings.billCopies" maxlength=1 required></input>
             </label>
             
             <label class="item item-input">

@@ -168,17 +168,19 @@ $scope.txSetting.taxRate=tax.taxRate;
 .controller('printerSettings', function($scope, settingService, $rootScope) {
     $scope.printFormatSettings = {};
     $scope.printFormatSettings['addressLine1'] = $rootScope.printFormatSettings.addressLine1;
-    $scope.printFormatSettings.addressLine2 = $rootScope.printFormatSettings.addressLine2,
-        $scope.printFormatSettings.billCopies = $rootScope.printFormatSettings.billCopies,
-        $scope.printFormatSettings.greeting = $rootScope.printFormatSettings.greeting,
-        $scope.printFormatSettings.phNumber = $rootScope.printFormatSettings.phNumber,
-        $scope.printFormatSettings.shopName = $rootScope.printFormatSettings.shopName,
-        $scope.printFormatSettings.strtBillNmbr = $rootScope.printFormatSettings.strtBillNmbr,
-        $scope.printFormatSettings.tin = $rootScope.printFormatSettings.tin,
-        $scope.printFormatSettings.tokNum = $rootScope.printFormatSettings.tokNum,
-        $scope.printFormatSettings.tokResetAftr = $rootScope.printFormatSettings.tokResetAftr,
-        $scope.printFormatSettings.tokStartNmbr = $rootScope.printFormatSettings.tokStartNmbr,
-        $scope.printFormatSettings.wifiSsid = $rootScope.printFormatSettings.wifiSsid
+    $scope.printFormatSettings.addressLine2 = $rootScope.printFormatSettings.addressLine2;
+        $scope.printFormatSettings.billCopies = $rootScope.printFormatSettings.billCopies;
+        $scope.printFormatSettings.greeting = $rootScope.printFormatSettings.greeting;
+        $scope.printFormatSettings.phNumber = $rootScope.printFormatSettings.phNumber;
+        $scope.printFormatSettings.shopName = $rootScope.printFormatSettings.shopName;
+        $scope.printFormatSettings.strtBillNmbr = $rootScope.printFormatSettings.strtBillNmbr;
+        $scope.printFormatSettings.tin = $rootScope.printFormatSettings.tin;
+        $scope.printFormatSettings.tokNum = $rootScope.printFormatSettings.tokNum;
+        $scope.printFormatSettings.tokResetAftr = $rootScope.printFormatSettings.tokResetAftr;
+        $scope.printFormatSettings.tokStartNmbr = $rootScope.printFormatSettings.tokStartNmbr;
+        $scope.printFormatSettings.wifiSsid = $rootScope.printFormatSettings.wifiSsid;
+    
+
     $scope.savePrinterSettings = function() {
         var shopName=$scope.printFormatSettings.shopName;
         var pattern= new RegExp(/^[a-z0-9]+$/i);
@@ -189,16 +191,28 @@ $scope.txSetting.taxRate=tax.taxRate;
             }
         var number1=$scope.printFormatSettings.phNumber;
         var pattern= new RegExp('^[0-9\+\]+$');
-        if(!pattern.test(number1)){
+        if(number1 == undefined || number1 == "")
+           {
+               console.log("Phone Number not entered");
+               $scope.printFormatSettings.phNumber == "";
+           }
+        else if(!pattern.test(number1)){
             $rootScope.ShowToast("Invalid Number", false);
             console.log('Invalid Number')
             return false 
         }
+
+
         var tinNum=$scope.printFormatSettings.tin;
         var pattern= new RegExp('^[0-9]+$');
-        if(!pattern.test(tinNum)){
+        if(tinNum == undefined || tinNum == "")
+           {
+               console.log("Tin Number not entered");
+               $scope.printFormatSettings.tin == "";
+           }
+        else if(!pattern.test(tinNum)){
             $rootScope.ShowToast("Invalid TIN Number", false);
-           
+            return(false);
         }
        
         var billNumber=$scope.printFormatSettings.strtBillNmbr;
@@ -228,9 +242,25 @@ $scope.txSetting.taxRate=tax.taxRate;
             return false
         }
        var billCopies=$scope.printFormatSettings.billCopies;
-       if(billCopies==undefined||billCopies.length<1){
-            document.getElementById('billCopies').value=1;
+       var pattern= new RegExp('^[0-9\+\]+$');
+
+       if(billCopies==undefined||billCopies.length<1 || billCopies < 1){
+            $scope.printFormatSettings.billCopies=1;
         }
+        else if(billCopies > 3)
+        {
+
+            $rootScope.ShowToast("Max Bill Copies allowed is 3",false);
+            console.log("Bill copies greater than 3");
+            return(false);
+        }
+        else if(!pattern.test(billCopies))
+        {
+             $rootScope.ShowToast("Invalid Max Bill Copies",false);
+            console.log("Invalid Max Bill Copies");
+            return(false);
+        }
+
        
         console.log($scope.printFormatSettings)
         var printFormatSettings = JSON.stringify($scope.printFormatSettings);
@@ -238,13 +268,17 @@ $scope.txSetting.taxRate=tax.taxRate;
         promise.then(function(data) {
             console.log(data)
             if (data.rowsAffected >= 1) {
-                var promise = settingService.get("PrinterFormatSettings", printFormatSettings);
-                promise.then(function(data) {
-                    $rootScope.printFormatSettings = JSON.parse(data.rows.item(0).SettingsValue);
-                })
+                $rootScope.printFormatSettings = $scope.printFormatSettings;
+                $rootScope.ShowToast("Settings Saved",false);
+                //close here;;
             } else {
-                console.log('No PrinterFormatSettings Record Found')
+                console.log("Failed to Save Settings");
+                $rootScope.ShowToast("Failed to Save Settings",false);
             }
+        },function(err){
+
+            console.log("Failed to Save Settings");
+            $rootScope.ShowToast("Failed to Save Settings",false);
         })
     }
 })

@@ -3,7 +3,7 @@ angular.module('starter.globalcontroller', [])
 
 .controller('global',function($rootScope,$scope,$cordovaSQLite,$state,$cordovaToast,$scope, $ionicLoading,$ionicPopup){
   console.log('Hello hai');
-   $rootScope.Mode = 0;
+   $rootScope.Mode = false;
    $rootScope.SelCat ='0';
    $rootScope.CreateMode = 0;
    $rootScope.PrevSelCat='0';
@@ -103,7 +103,7 @@ $rootScope.Reports={
      //$rootScope.Testing();
      //return;
 
-     if($rootScope.Mode ==1)//already in admin mode;;
+     if($rootScope.Mode ==false)//already in admin mode;;
      {
 
        $rootScope.OnModeChangeClick();
@@ -140,7 +140,12 @@ $rootScope.Reports={
                  {
                  console.log("Wrong Password");
                  $rootScope.ShowToast("Wrong Password",false);
+                 $rootScope.Mode = false;
                  }
+              }
+              else
+              {
+                  $rootScope.Mode = false;
               }
 
 });
@@ -389,6 +394,21 @@ $rootScope.PrintEnableBold = function(bold)
 $rootScope.PushToQueue("POS",data);
 
 }
+
+
+$rootScope.PrintChangeFont = function(large)
+{
+ //allow : 1B 45 01
+ //ban :   1B 45 00
+  var data = "";
+  if(large ==true)
+   data = "1B 4D 00";
+   else
+   data = "1B 4D 01";
+$rootScope.PushToQueue("POS",data);
+
+}
+
 
 $rootScope.PushToQueue= function(type,data)
 {
@@ -691,12 +711,14 @@ BTPrinter.printText(function(data){
        var printerSettings = $rootScope.printFormatSettings;
        $rootScope.PrintInit();
 
+       $rootScope.PrintChangeFont(true); //large font;;
+       $rootScope.PrintAlign("center");
+
        console.log(printerSettings.shopName + printerSettings.addressLine1)
        if (printerSettings.shopName != undefined && printerSettings.shopName != "") {
            console.log('I am in shop')
            $rootScope.PrintEnableUnderline(true);
            $rootScope.PrintEnableBold(true);
-           $rootScope.PrintAlign("center");
            $rootScope.PrintChangeBigFont("vertical");
            $rootScope.PrintText(printerSettings.shopName + "\n");
 
@@ -721,18 +743,17 @@ BTPrinter.printText(function(data){
 
        }
 
-       if (printerSettings.phNumber != undefined) {
+       if (printerSettings.phNumber != undefined && printerSettings.phNumber !="") {
            console.log('I am in PhNumber');
            $rootScope.PrintText("ph: " + printerSettings.phNumber + "\n");
-
        }
 
-        $rootScope.PrintText("\n\n");
+        $rootScope.PrintText("\n");
 
        $rootScope.PrintAlign("left");
 
        if (printerSettings.tin != undefined && printerSettings.tin != "") {
-           $rootScope.PrintText("Tin:" + printerSettings.tin + "\n\n");
+           $rootScope.PrintText("Tin:" + printerSettings.tin + "\n");
 
        }
 
@@ -740,27 +761,7 @@ BTPrinter.printText(function(data){
        //$rootScope.PrintAlign("left");
        $rootScope.PrintText(date);
 
-
-
-       //$rootScope.PrintAlign("right");
-
-       $rootScope.PrintText("        " + time + "\n\n");
-
-      
-       $rootScope.PrintEnableBold(true);
-       $rootScope.PrintAlign("left");
-  
-       $rootScope.PrintText("item" + "   ");
-       $rootScope.PrintText("price" + "   ");
-       //$rootScope.PrintAlign("center");
-       $rootScope.PrintText("Qty" + "   ");
-       //$rootScope.PrintAlign("right");
-       $rootScope.PrintText("Amt" + "\n\n");
-
-      $rootScope.PrintEnableBold(false);
-      //$rootScope.PrintAlign("left");
-
-      // padding left
+             // padding left
 function padRight(s,paddingChar, length) {
 
 //var s = new String(this);
@@ -789,57 +790,120 @@ if ((s.length < length) && (paddingChar.toString().length > 0))
 return s;
 };
 
+
+
+       //$rootScope.PrintAlign("right");
+
+       $rootScope.PrintText("          " + time + "\n");
+
+       $rootScope.PrintChangeFont(false); //small font;;
+       $rootScope.PrintEnableBold(true);
+
+       $rootScope.PrintText("-----------------------------------------\n");
+
+      
+       
+       $rootScope.PrintAlign("left");
+       
+       $rootScope.PrintChangeBigFont("vertical");
+
+       var itemHeader = "item";
+
+       itemHeader = padRight(itemHeader," ",13);
+
+       console.log("itemHeader:", itemHeader.length);
+
+       var qtyHeader = "Qty";
+       qtyHeader = padLeft(qtyHeader," ",8);
+
+       var priceHeader = "Price";
+       priceHeader = padLeft(priceHeader," ",7);
+
+        var AmountHeader = "Amt";
+       AmountHeader = padLeft(AmountHeader," ",8);
+
+
+  
+
+      $rootScope.PrintText(itemHeader + "  " + qtyHeader + "  " + priceHeader + "  " + AmountHeader +"\n");
+
+      $rootScope.PrintText("-----------------------------------------\n");
+
+      $rootScope.PrintEnableBold(false);
+     
+      //$rootScope.PrintAlign("left");
+
+
+
        for (var i = 0; i < billdetails.length; i++) 
        {
            var proName = billdetails[i].name;
-           if(proName.length > 12)
-              proName = proName.substring(0,12);
+           if(proName.length > 13)
+              proName = proName.substring(0,13);
            proName = padRight(proName," ",13);
 
            console.log("Name:" ,proName.length);
 
            var Qty = billdetails[i].quantity.toString();
 
-           Qty = padLeft(Qty," ", 5);
+           Qty = padLeft(Qty," ", 8);
 
            console.log("Qty:" ,Qty.length);
 
-           var Price = billdetails[i].productTotalPrice.toString();
+           var price1 = parseFloat(billdetails[i].productPrice).toFixed(2);
+           var Price = price1.toString();
 
-           Price = padLeft(Price," ", 8);
+           Price = padLeft(Price," ", 7);
 
            console.log("Price:" ,Price.length);
+
+           var Amount1 =parseFloat(billdetails[i].productTotalPrice).toFixed(2);
+           var Amount = Amount1.toString();
+           
+            Amount = padLeft(Amount," ", 8);
+            console.log("Amount:" ,Amount.length);
 
            //$rootScope.PrintText($scope.productArr[i].name + "\t");
            //$rootScope.PrintAlign("center");
            //$rootScope.PrintText($scope.productArr[i].quantity + "\t");
            //$rootScope.PrintAlign("right");
-           var test = proName + Qty + Price;
-           console.log("value is: ",test);
-           $rootScope.PrintText( proName + Qty + Price + "\n");
+           //var test = proName + Qty + Price;
+           //console.log("value is: ",test);
+           $rootScope.PrintText( proName + "  "+ Qty + "  " + Price + "  " + Amount + "\n");
        }
 
 
-       $rootScope.PrintText("\n\n");
+      // $rootScope.PrintText("\n");
+
+       $rootScope.PrintText("-----------------------------------------\n");
 
        $rootScope.PrintAlign("right");
 
+      $rootScope.PrintChangeFont(true); //large font;;
+      $rootScope.PrintChangeBigFont("none");
+
        $rootScope.PrintEnableBold(true);
-       $rootScope.PrintText("Total Price:");
+       $rootScope.PrintText("Total:");
        $rootScope.PrintEnableBold(false);
-       $rootScope.PrintText(billSummary.totalPrice + "\n\n");
+       $rootScope.PrintText(billSummary.totalPrice + "\n");
        $rootScope.PrintEnableBold(true);
-       $rootScope.PrintText("Total Tax Amount:");
+       $rootScope.PrintText("Total Tax:");
        $rootScope.PrintEnableBold(false);
-       $rootScope.PrintText(billSummary.totalTaxAmount + "\n\n");
+       $rootScope.PrintText(billSummary.totalTaxAmount + "\n");
        $rootScope.PrintEnableBold(true);
        $rootScope.PrintText("Total Amount:");
        $rootScope.PrintEnableBold(false);
-       $rootScope.PrintText(billSummary.totalChargeAmount + "\n\n");
-     
+       $rootScope.PrintText(billSummary.totalChargeAmount + "\n");
+       $rootScope.PrintChangeFont(false);
+       $rootScope.PrintEnableBold(true);
+       $rootScope.PrintText("-----------------------------------------\n");
+       $rootScope.PrintChangeFont(true);
        $rootScope.PrintEnableBold(false);
        $rootScope.PrintAlign("center");
+       if(printerSettings.greeting !=undefined && printerSettings.greeting !="")
        $rootScope.PrintText(printerSettings.greeting + "\n\n");
+       else
+        $rootScope.PrintText("\n\n");
 
        $rootScope.EndPrint(callbackfcSuccess, callbackfcFailure);
    }

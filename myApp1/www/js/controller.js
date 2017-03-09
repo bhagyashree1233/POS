@@ -273,6 +273,7 @@ angular.module('starter.controller', [])
         //$scope.paymentModal.hide();
 
         var billSummary = {};
+       // $scope.NoCopies = $rootScope.printFormatSettings.billCopies;
 
         billSummary.totalPrice = $scope.totalPrice;
         billSummary.discountAmount = $scope.discountAmount;
@@ -281,13 +282,60 @@ angular.module('starter.controller', [])
         billSummary.BillStatus = "Active";
         billSummary.DateTime = new Date();
 
-        $rootScope.print(billSummary, $scope.productArr,SaveTransactionDetailstoDB,PrintReceiptError);
+        $rootScope.print(billSummary, $scope.productArr,onPrintReceiptSuccess,PrintReceiptError);
+
+    }
+
+    function onPrintReceiptSuccess()
+    {
+        $scope.billCopies++;
+
+      if($scope.billCopies < $rootScope.printFormatSettings.billCopies)
+      {
+         
+       $ionicPopup.show({
+              title: 'Print another copy',
+              subTitle: 'Click Print to get another bill copy',
+              scope:$scope,
+               buttons: [
+              { text: 'Cancel', onTap: function(e) { return "cancel"; } },
+              {
+                  text: '<b>Print</b>',
+                  type: 'button-positive',
+                  onTap: function(e) { return "Print";}
+              }
+
+              ]
+
+   }).then(function(res) {
+       
+        if(res == "Print")
+        {
+            $scope.receipt();
+        }
+        else
+        {
+            SaveTransactionDetailstoDB();
+            $scope.billCopies = $rootScope.printFormatSettings.billCopies;
+        }
+
+
+        });
+         
+      }
+      else
+        SaveTransactionDetailstoDB();
 
     }
 
     function PrintReceiptError()
     {
       console.log("Print Receipt Error");
+
+      if($scope.billCopies > 0) //atleast one copy printed;;
+      {
+          SaveTransactionDetailstoDB();
+      }
 
     }
 
@@ -409,6 +457,7 @@ angular.module('starter.controller', [])
            //console.log("printer Name is: ", $rootScope.printerName);
            //$rootScope.printerConnect($rootScope.printerName,$rootScope.ConnectStatusFunc);
            console.log("Print Receipt Invoked");
+           $scope.billCopies = 0;
            $scope.receipt();
            return;
            
@@ -612,6 +661,13 @@ angular.module('starter.controller', [])
             console.log("Total Amount too large, Please split Quantity");
             $rootScope.ShowToast("Total Amount too large, Please split Quantity", false);
             return ( false) ;
+        }
+
+        if(value > 9999.99)
+        {
+           console.log("Quantity greater than 9999.99");
+            $rootScope.ShowToast("Quantity cannot be greater than 9999.99", false);
+            return ( false) ;   
         }
 
         $scope.save($rootScope.CurrentProduct, value);
