@@ -1,11 +1,11 @@
 angular.module('starter.services', [])
 
 .factory("dbService", function($q, $cordovaSQLite, $rootScope) {
-    function addNewCategory(id, name, desc) {
+    function addNewCategory(name, desc) {
         var deferred = $q.defer();
         console.log('entered add newCategory service..');
-        var query = "INSERT INTO Category (CategoryId, CategoryName, CategoryDesc) VALUES (?,?,?)";
-        $cordovaSQLite.execute($rootScope.db, query, [id, name, desc]).then(function(res) {
+        var query = "INSERT INTO Category (CategoryName, CategoryDesc) VALUES (?,?)";
+        $cordovaSQLite.execute($rootScope.db, query, [name, desc]).then(function(res) {
             console.log("INSERT ID -> " + res.insertId);
             console.log("new category added successfully...");
             deferred.resolve('success');
@@ -15,6 +15,7 @@ angular.module('starter.services', [])
         });
         return deferred.promise;
     }
+    
     function loadProductFromDB(tableName) {
         var deferred = $q.defer();
         //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
@@ -129,10 +130,11 @@ angular.module('starter.services', [])
         })
         return deferred.promise;
     }
-    function addNewProduct(productId, name, unit, unitPrice, taxId, actualPrice, taxRate, inStock, discount, categoryId, categoryName, image, favourite) {
+    function addNewProduct(name, unit, unitPrice, taxId, actualPrice, taxRate, inStock, discount, categoryId, categoryName, image, favourite) {
         var deferred = $q.defer();
-        var query = "INSERT INTO Product (ProductId, ProductName, ProductUnit, ProductPrice, TaxId, BuyingPrice, TaxRate, ItemsinStock, Discount, CategoryId, CategoryName, Image, Favourite) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        $cordovaSQLite.execute($rootScope.db, query, [productId, name, unit, unitPrice, taxId, actualPrice, taxRate, inStock, discount, categoryId, categoryName, image, favourite]).then(function(res) {
+        console.log("From Query : ", categoryId);
+        var query = "INSERT INTO Product (ProductName, ProductUnit, ProductPrice, TaxId, BuyingPrice, TaxRate, ItemsinStock, Discount, CategoryId, CategoryName, Image, Favourite) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        $cordovaSQLite.execute($rootScope.db, query, [name, unit, unitPrice, taxId, actualPrice, taxRate, inStock, discount, categoryId, categoryName, image, favourite]).then(function(res) {
             console.log("INSERT ID -> " + res.insertId);
             console.log("new Product added successfully...");
             deferred.resolve('success');

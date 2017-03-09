@@ -87,6 +87,11 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
     // $scope.OnCatClick('favourite');
 
     })
+
+    
+
+
+
     $scope.Products = [];
     $scope.categoryArr = [];
     $scope.allSlideCatArr = [];
@@ -678,6 +683,19 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
             return ( false) ;   
         }
 
+        if($rootScope.CurrentProduct.unit == "pieces")
+        {
+            var n = Math.abs(value); // Change to positive
+            var decimal = n - Math.floor(n);
+            if(decimal > 0)
+            {
+            console.log("Quantity cannot be decimal for peices type product");
+            $rootScope.ShowToast("Quantity cannot be decimal for this product", false);
+            return(false);
+            }
+
+        }
+
         $scope.save($rootScope.CurrentProduct, value);
         return ( true) ;
     }
@@ -839,13 +857,7 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
 
     $scope.addEditProduct = function() {
 
-        var productId = $scope.newProduct.productId;
-        if (productId == undefined || productId.length < 1) {
-
-            $rootScope.ShowToast("Enter productId ", false);
-            console.log('Enter Product Id')
-            return false
-        }
+       
 
         var productName = $scope.newProduct.name;
         if (productName == undefined || productName.length < 2) {
@@ -894,7 +906,10 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
             return false;
         }
 
-        if (productSellingPrice < buyingPrice) {
+        console.log(productSellingPrice);
+        console.log(buyingPrice);
+
+        if (parseFloat(productSellingPrice) < parseFloat(buyingPrice)) {
             $rootScope.ShowToast("Invalid Buying Price", false);
             console.log('Invalid buying price');
             return false;
@@ -1011,27 +1026,7 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
         $scope.taxRatePopover.show($event);
     }
     ;
-    $scope.$watch('newProduct.productId', function(newpId, oldpId) {
-        console.log(newpId);
-        if (newpId) {
-            // to hide success message
-            $scope.productSuccessMessage = false;
-            //   $scope.categoryForm.catIdInput.$setUntouched();
-        }
-        if ($scope.notEditingProduct) {
-            query = "SELECT * FROM Product where ProductId = '" + newpId + "'";
-            $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
-                console.log(res);
-                if (res.rows.length == 0) {
-                    console.log('Id not exists..');
-                    $scope.idExistsError = false;
-                } else {
-                    console.log('Id already exists..');
-                    $scope.idExistsError = true;
-                }
-            })
-        }
-    });
+   
 
     $scope.newProduct = {
         unit: 'pieces',
@@ -1055,17 +1050,19 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
         //$scope.newProduct.image = "/img/icedcoffee.jpg";
         console.log($scope.newProduct);
 
-        if (!($scope.idExistsError)) {
+        
             /* if (!(angular.isDefined($scope.newProduct.discount))) {
                     $scope.newProduct.discount = 0;
                 }
                  if (!(angular.isDefined($scope.newProduct.inStock))) {
                     $scope.newProduct.inStock = 1000000;
                 }*/
+
+                console.log("Cat ID: ",$scope.newProduct.categoryId);
             console.log('validation success and entered if');
             console.log($scope.newProduct);
             $rootScope.showDbLoading();
-            var promise = dbService.addNewProduct($scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite);
+            var promise = dbService.addNewProduct($scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite);
             promise.then(function(result) {
                 console.log(result);
                 console.log("Product Added Sucessfully");
@@ -1097,7 +1094,7 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
                 $rootScope.ShowToast("Unable to add product", false);
                 $rootScope.hideDbLoading();
             })
-        }
+        
 
     }
 
@@ -1334,12 +1331,12 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
     }
 
     $scope.saveEditedCategory = function() {
-        if ($scope.newCategory.name != '' && $scope.newCategory.categoryId != '') {
+        if ($scope.newCategory.name != '' ) {
             console.log($scope.newCategory.categoryName);
-            console.log($scope.newCategory.categoryId);
+           
             console.log($scope.newCategory.categoryDescription);
             $rootScope.showDbLoading();
-            var promise = dbService.editCategory($scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
+            var promise = dbService.editCategory($scope.newCategory.categoryId,$scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
             promise.then(function(res) {
                 console.log(res);
                 $rootScope.hideDbLoading();
@@ -1379,7 +1376,7 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
 
         if (!($scope.catIdErrorMsg)) {
             $rootScope.showDbLoading();
-            var promise = dbService.addNewCategory($scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
+            var promise = dbService.addNewCategory($scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
             promise.then(function(result) {
                 console.log(result);
                 $rootScope.hideDbLoading();
@@ -1417,25 +1414,7 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
         }
     }
 
-    $scope.$watch('newCategory.categoryId', function(newcId, oldcId) {
-        if (newcId) {
-            $scope.succesMessage = false;
-            // to hide success message
-            //     $scope.categoryForm.catIdInput.$setUntouched();
-        }
-        console.log(newcId);
-        query = "SELECT * FROM Category where CategoryId = '" + newcId + "'";
-        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
-            console.log(res);
-            if (res.rows.length == 0) {
-                console.log('Id not exists..');
-                $scope.catIdErrorMsg = false;
-            } else {
-                console.log('Id already exists..');
-                $scope.catIdErrorMsg = true;
-            }
-        })
-    });
+   
 
 })
 .controller('MenuCtrl', function($scope, settingService, $rootScope, $state) {
