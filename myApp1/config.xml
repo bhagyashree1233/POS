@@ -18,7 +18,7 @@
     <preference name="android-minSdkVersion" value="16" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashScreen" value="screen" />
-    <preference name="Fullscreen" value="true" /> 
+    <preference name="Fullscreen" value="true" />
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
@@ -49,4 +49,6 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <plugin name="cordova-plugin-x-toast" spec="~2.5.2" />
+    <plugin name="cordova-sqlite-storage" spec="~2.0.2" />
+    <plugin name="cordova-plugin-bluetooth-printer" spec="https://github.com/srehanuddin/Cordova-Plugin-Bluetooth-Printer.git" />
 </widget>

@@ -36,8 +36,10 @@
                             <table id="product-billing-table" style="color:black;text-align:center;font-weight:bolder;line-height:6vmin;">
                                 <tr ng-repeat="product in productArr" on-hold="onPressHold()">
                                     <td style="text-align:left;padding-left:1vw;">
-                                        <button style="display:inline;position:absolute;z-index:1;right:3px;font-size:3.5vmin;color:red;" ng-show="showDelete" ng-click="deleteItem($index)" class="button clear icon ion-minus-circled"></button>
+                                        <button detect-outside-click perform="" style="display:inline;position:absolute;z-index:1;right:3px;font-size:3.5vmin;color:red;" ng-show="showDelete" ng-click="deleteItem($index)" class="button clear icon ion-minus-circled"></button>
                                         {{product.name}}
+                                    
+                                    
                                     
                                     
                                     
@@ -98,30 +100,20 @@
                         -->
             <div id="productsView">
                 <ion-scroll direction="y" id="productsViewSlideBox" style="width:100%;height:90%;" scrollbar-x=false scrollbar-y=false>
-                    <div style="width:94%;" >
-                        <div  ng-show="Mode == 1" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="AddNewPro()">
-                            <div id="product-image" align="right">
-                                <img ng-src="img/add-product.png" style="padding:auto;margin:auto;height:100%;width:100%;"></img>
-                            </div>
-                        </div>
-                        <div ng-repeat="Product in Products" >
-                            <div class="row" ng-if="$index%3==0" >
+                    <div style="width:94%;">
+                        <div ng-show="Mode == 1" style="width:20%;height:20%;margin:1vh;border:1px solid black;" ng-click="AddNewPro()">
+                            <div class="row">
                                 <div style="position:relative;" class="col col-30 col-center">
-                                    <div  class="click-to-jiggle jiggle" style="width:15vw;max-height:25vh;border:1px solid grey;" ng-click="OnProductClick(Product)">
-                                        <div id="product-image">
-                                            <img ng-src={{Product.image}} style="width:100%; height:100%"></img>
-                                            <div id="product-stock">
-                                                <div id="product-stock-text">Stock: {{Product.inStock}} </div>
-                                            </div>
-                                            <div id="product-price">
-                                                <a style="font-weight:bold;color:lightblue;">{{PaymentSettings.CurrencyOptions.symbol}}{{Product.unitPrice}}</a>
-                                            </div>
-                                            <div id="product-name">
-                                                <p>{{Product.name}}</p>
-                                            </div>
+                                    <div style="width:15vw;max-height:25vh;border:1px solid grey;">
+                                        <div id="product-image" style="width:100%; height:100%" align="right">
+                                            <img ng-src="img/add-product.png" style="padding:auto;margin:auto;height:100%;width:100%;"></img>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div ng-repeat="Product in Products">
+                            <div class="row" ng-if="$index%3==0">
                                 <div style="position:relative;" class="col col-30 col-center">
                                     <div class="click-to-jiggle jiggle" style="width:15vw;max-height:25vh;border:1px solid grey;" ng-click="OnProductClick(Product)">
                                         <div id="product-image">
@@ -139,17 +131,33 @@
                                     </div>
                                 </div>
                                 <div style="position:relative;" class="col col-30 col-center">
-                                    <div  style="width:15vw;max-height:25vh;border:1px solid grey;" ng-click="OnProductClick(Product)">
+                                    <div class="click-to-jiggle jiggle" ng-if="Products[$index+1]!=undefined" style="width:15vw;max-height:25vh;border:1px solid grey;" ng-click="OnProductClick(Product)">
                                         <div id="product-image">
-                                            <img ng-src={{Product.image}} style="width:100%; height:100%"></img>
+                                            <img ng-src={{Products[$index+1].image}} style="width:100%; height:100%"></img>
                                             <div id="product-stock">
-                                                <div id="product-stock-text">Stock: {{Product.inStock}} </div>
+                                                <div id="product-stock-text">Stock: {{Products[$index+1].inStock}} </div>
                                             </div>
                                             <div id="product-price">
-                                                <a style="font-weight:bold;color:lightblue;">{{PaymentSettings.CurrencyOptions.symbol}}{{Product.unitPrice}}</a>
+                                                <a style="font-weight:bold;color:lightblue;">{{PaymentSettings.CurrencyOptions.symbol}}{{Products[$index+1].unitPrice}}</a>
                                             </div>
                                             <div id="product-name">
-                                                <p>{{Product.name}}</p>
+                                                <p>{{Products[$index+1].name}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="position:relative;" class="col col-30 col-center">
+                                    <div ng-if="Products[$index+2]!=undefined" style="width:15vw;max-height:25vh;border:1px solid grey;" ng-click="OnProductClick(Product)">
+                                        <div id="product-image">
+                                            <img ng-src={{Products[$index+2].image}} style="width:100%; height:100%"></img>
+                                            <div id="product-stock">
+                                                <div id="product-stock-text">Stock: {{Products[$index+2].inStock}} </div>
+                                            </div>
+                                            <div id="product-price">
+                                                <a style="font-weight:bold;color:lightblue;">{{PaymentSettings.CurrencyOptions.symbol}}{{Products[$index+2].unitPrice}}</a>
+                                            </div>
+                                            <div id="product-name">
+                                                <p>{{Products[$index+2].name}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -189,7 +197,7 @@
                 <div id="product-categary" style="position:absolute;bottom:-10px;display:block;height:10vh">
                     <ion-scroll direction="x" id="product-categary-scroll" scrollbar-x=false scrollbar-y=false style="height:100%;">
                         <button style="height:100%;font-size:2.5vmin;" class="product-categary-button" ng-show="Mode == 1" ng-click="AddNewCat()">Add New</button>
-                        <button  style="height:100%;font-size:2.5vmin;" class="product-categary-button click-to-jiggle jiggle" ng-repeat="categoryObj in categoryArr" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
+                        <button style="height:100%;font-size:2.5vmin;padding:5px;" class="product-categary-button click-to-jiggle jiggle" ng-repeat="categoryObj in categoryArr" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
                     </ion-scroll>
                 </div>
             </div>
@@ -243,7 +251,7 @@
                 </div>
             </div>
         </ion-side-tab>
-        <ion-side-tab class="positive-bg" style="border-radius: 10px;"  expand="tabs.tab2">
+        <ion-side-tab class="positive-bg" style="border-radius: 10px;" expand="tabs.tab2">
             <ion-side-tab-handle width="60" height="100" toggle="ion-chevron-left ion-chevron-right" class="positive-bg" style="border-radius: 40px 0 0 40px;">
                 <i style="font-size:3vmin;color:white;" class="icon ion-edit"></i>
             </ion-side-tab-handle>

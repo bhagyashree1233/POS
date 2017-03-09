@@ -123,11 +123,12 @@ height:9vh;
 }
 .product-categary-button {
     background: black;
-    color: white;
+    color: #ffffff;
     width: 20%;
     line-height: 8vh!important;
-    border-radius: 0.4;
+    border-radius: 5px;
     height: 100%;
+    
 }
 .bar-light .button {
     padding: 3vh;
