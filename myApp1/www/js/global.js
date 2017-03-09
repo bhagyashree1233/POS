@@ -156,6 +156,7 @@ $rootScope.Reports={
    $rootScope.OnModeChangeClick = function()
    {
      console.log("Toggle Clicked");
+     //$rootScope.$broadcast('ModeChangeEvent',$rootScope.Mode);
     /* if($rootScope.Mode == 0)
        $rootScope.Mode =1;
      else

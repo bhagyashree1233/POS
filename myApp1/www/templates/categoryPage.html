@@ -2,12 +2,7 @@
     <ion-content id="categoryContentDiv">
         <form name="categoryForm">
             <div class="list">
-                <label class="item item-input">
-                    <span class="input-label">Category Id :</span>
-                    <input type="text" ng-readonly="CreateMode==1 ?false:true" name="catIdInput" ng-minlength="1" ng-maxlength="20" ng-model="newCategory.categoryId" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2000, 'blur': 1 }}" placeholder="Enter category Id" required></input>
-                   <!-- <p style="color:red;" ng-show="categoryForm.catIdInput.$touched && categoryForm.catIdInput.$invalid">Required and length should be 0-20 characters</p> -->
-                    <!--<p style="color:red;" ng-show="catIdErrorMsg">Id already exists</p>-->
-                </label>
+               
                 <label class="item item-input">
                     <span class="input-label">Category Name :</span>
                     <input type="text" name="catNameInput" ng-minlength="1" ng-maxlength="25" ng-model="newCategory.categoryName" placeholder="Enter category Name" required></input>

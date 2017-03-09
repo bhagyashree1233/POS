@@ -45,7 +45,7 @@ angular.module('starter.settingscontroller', [])
     var taxRate=$scope.txSetting.taxRate;
     if(taxRate==undefined ||taxRate.length<1){
         console.log('Enter tax Rate')
-    }else if(!taxRate.match(/^[0-9]+([,.][0-9]+)?$/g)){
+    }else if(!taxRate.toString().match(/^[0-9]+([,.][0-9]+)?$/g)){
         console.log('Invalid tax Rate')
         return false
     }
@@ -74,7 +74,7 @@ angular.module('starter.settingscontroller', [])
                 console.log("Data inserted");
                  $scope.txSetting = {};
                  $scope.addView = true;
-                 $rootScope.TaxSettings = taxSettings1;
+                 $rootScope.TaxSettings = taxsettings1;
 
             } else { 
                 console.log('Unable to Save TaxSettings');
