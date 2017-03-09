@@ -9,6 +9,12 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
     });
 });
     
+
+   $scope.testDivBlurFunc = function()
+   {
+
+       console.log('clicked outside');
+   }
   $scope.tabExpand = function(index) {
     console.log('Tab ' + index + ' expanded');
   };
