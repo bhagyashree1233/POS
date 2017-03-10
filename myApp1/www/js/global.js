@@ -924,7 +924,80 @@ return s;
 
        $rootScope.EndPrint(callbackfcSuccess, callbackfcFailure);
    }
- 
-   
+
+
+
+   $rootScope.PrintCollectionReport = function(collectionObj,frmDate, toDate)
+   {
+                    
+
+       var d = new Date();
+
+       var date = d.toString().substring(4, 15);
+       var time = d.toString().substring(15, 25);
+       
+
+       console.log(date);
+       console.log(time);
+
+       var printerSettings = $rootScope.printFormatSettings;
+       $rootScope.PrintInit();
+
+       $rootScope.PrintChangeFont(true); //large font;;
+       $rootScope.PrintAlign("center");
+
+       
+       if (printerSettings.shopName != undefined && printerSettings.shopName != "") {
+           console.log('I am in shop')
+           $rootScope.PrintEnableUnderline(true);
+           $rootScope.PrintEnableBold(true);
+           $rootScope.PrintChangeBigFont("vertical");
+           $rootScope.PrintText(printerSettings.shopName + "\n");
+
+       }
+
+        $rootScope.PrintText("Sales Report" + "\n\n");
+        $rootScope.PrintChangeBigFont("normal");
+        $rootScope.PrintAlign("left");
+        $rootScope.PrintEnableUnderline(false);
+        $rootScope.PrintEnableBold(true);
+
+        $rootScope.PrintText("Date: " + date + "\n");
+
+        $rootScope.PrintText("Time: " + time + "\n");
+
+        $rootScope.PrintText("------------------------------\n");
+
+        $rootScope.PrintText("FromDate: " + frmDate.toString().substring(4, 15) + "\n");
+        $rootScope.PrintText("ToDate: " + toDate.toString().substring(4, 15) + "\n");
+
+        $rootScope.PrintText("------------------------------\n");
+
+        $rootScope.PrintText("Total Bills: " + collectionObj.totalBills + "\n");
+
+        $rootScope.PrintText("Total Amount: " + collectionObj.totalPrice + "\n");
+
+        $rootScope.PrintText("Tax Amount: " + collectionObj.taxAmount + "\n");
+
+        $rootScope.PrintText("Total Amount inc Tax: " + collectionObj.totalAmount + "\n");
+
+        $rootScope.PrintText("------------------------------\n\n");
+
+        $rootScope.EndPrint(OnReportPrintSuccess, OnReportPrintFailure);
+
+   }
+
+   $rootScope.OnReportPrintSuccess = function()
+   {
+       console.log("Report Print Success");
+       $rootScope.ShowToast("Report Print Done",false);
+
+   }
+
+   $rootScope.OnReportPrintFailure = function()
+   {
+       console.log("Report Print Failed");
+       $rootScope.ShowToast("Report Print Failed",false);
+   }
 
 })

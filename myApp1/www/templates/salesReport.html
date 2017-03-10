@@ -11,12 +11,16 @@
 <button ion-button ng-click=save()>Get Report</button>
 
 <div ng-if="showreport==true">
+<button ion-button ng-click=onPrintSalesReport()>Print Report</button>
+
 <div class="card">
   <p><span class="salesReport" >Total Number of Bills:</span>{{salesReport.totalBills}}</p>
   <p><span class="salesReport" >Total Amount:</span>{{salesReport.totalPrice}}</p>
   <p><span class="salesReport" >Total Tax Amount:</span>{{salesReport.taxAmount}}</p>
   <p><span class="salesReport" >Total Amount After Tax:</span>{{salesReport.totalAmount}}</p>
 </div>
+
+
 
 </div>
 
