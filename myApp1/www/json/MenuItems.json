@@ -1,11 +1,6 @@
 {
 
 "MenuItems" : [
-{
-"name": "Home",
-"icon": "ion-ios-home-outline",
-"state": "home"
-},
 
 {
 "name": "Printer-Setting",
