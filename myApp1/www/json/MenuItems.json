@@ -8,7 +8,7 @@
 },
 
 {
-"name": "Printer-Setting",
+"name": "Bill-Settings",
 "icon": "ion-ios-printer-outline",
 "state": "PrinterSetting"
 },
@@ -38,7 +38,7 @@
 "state": "productReport"
 },
 {
-"name": "Bluetooth-Settings",
+"name": "Printer-Settings",
 "icon": "ion-ios-compose-outline",
 "state": "bluetoothsettings"
 },

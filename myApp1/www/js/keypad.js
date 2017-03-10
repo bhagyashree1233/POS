@@ -37,8 +37,11 @@ $rootScope.keypadOk = function()
 $rootScope.keypadCancel = function()
 {
     //if($rootScope.okCallback() == true)
+      
       $rootScope.closeNumericModal();
+      console.log("Calling back Cancel");
       $rootScope.cancelCallback();
+     
 } 
 
 

@@ -223,24 +223,44 @@ $scope.txSetting.taxRate=tax.taxRate;
             console.log('Invalid bill Number')
             return false
         }
-        var trtTokenNum=$scope.printFormatSettings.tokStartNmbr;
+
+
+         var trtTokenNum = 0;
+         var restTokenNum =0;
+
+        if($scope.printFormatSettings.tokNum == "Auto")
+
+     {
+        trtTokenNum=$scope.printFormatSettings.tokStartNmbr;
+        restTokenNum=$scope.printFormatSettings.tokResetAftr;
+
+
          var pattern= new RegExp('^[0-9]+$');
         console.log(trtTokenNum)
-        if(trtTokenNum==undefined||trtTokenNum.length<1){
-            document.getElementById('trtTokenNum').value=1;
+        if(trtTokenNum==undefined||trtTokenNum == ""){
+            $scope.printFormatSettings.tokStartNmbr=1;
         }else if(!pattern.test(trtTokenNum)){
             console.log('Invalid Token Number')
             return false
         }
         
-       var restTokenNum=$scope.printFormatSettings.tokResetAftr;
+      
            var pattern= new RegExp('^[0-9]+$');
-        if(restTokenNum==undefined||restTokenNum.length<1){
-            document.getElementById('restTokenNum').value=999;
+        if(restTokenNum==undefined||restTokenNum == ""){
+            $scope.printFormatSettings.tokResetAftr=999;
         }else if(!pattern.test(restTokenNum)||restTokenNum<trtTokenNum){
             console.log('Invalid Input or reset should be greater then start token number')
             return false
         }
+
+    }
+    else
+    {
+        $scope.printFormatSettings.tokStartNmbr = 1;
+        $scope.printFormatSettings.tokResetAftr=999;
+    }
+
+
        var billCopies=$scope.printFormatSettings.billCopies;
        var pattern= new RegExp('^[0-9\+\]+$');
 
@@ -661,13 +681,13 @@ $scope.ReprintBill = function(BillNo)
 
 }
 
-$scope.ReprintComplete()
+$scope.ReprintComplete = function()
 {
 console.log("Reprint Complete");
 
 }
 
-$scope.ReprintError()
+$scope.ReprintError = function()
 {
 console.log("Reprint Error");
 }

@@ -14,6 +14,8 @@ angular.module('starter.globalcontroller', [])
    $rootScope.printerName = "";
    $rootScope.PrinterStatus = false; 
 
+   $rootScope.reprintBillButtonEnable = 0;
+
    $rootScope.holdItemArr = [];
 
    $rootScope.PrintElement = 
@@ -41,7 +43,7 @@ angular.module('starter.globalcontroller', [])
       shopName:"",
       strtBillNmbr:1,
       tin:"",
-      tokNum:true,
+      tokNum:"Disable",
       tokResetAftr:999,
       tokStartNmbr:1,
       wifiSsid:""
@@ -698,7 +700,7 @@ BTPrinter.printText(function(data){
 }  
 
 
- $rootScope.print = function(billSummary,billdetails,callbackfcSuccess,callbackfcFailure) {
+ $rootScope.print = function(billSummary,billdetails,callbackfcSuccess,callbackfcFailure,tokenNo,billNo) {
        var d = new Date();
 
        var date = billSummary.DateTime.toString().substring(4, 15);
@@ -750,6 +752,13 @@ BTPrinter.printText(function(data){
        }
 
         $rootScope.PrintText("\n");
+
+        $rootScope.PrintAlign("right");
+
+       if(billNo!=undefined)
+       {
+           $rootScope.PrintText("BillNo:" + billNo + "\n");
+       }
 
        $rootScope.PrintAlign("left");
 
@@ -902,8 +911,15 @@ return s;
        $rootScope.PrintEnableBold(false);
        $rootScope.PrintAlign("center");
        if(printerSettings.greeting !=undefined && printerSettings.greeting !="")
-       $rootScope.PrintText(printerSettings.greeting + "\n\n");
-       else
+       $rootScope.PrintText(printerSettings.greeting );
+      
+
+
+        if(tokenNo != undefined)
+        {
+            $rootScope.PrintText("Token No: " + tokenNo + "\n");
+        }
+
         $rootScope.PrintText("\n\n");
 
        $rootScope.EndPrint(callbackfcSuccess, callbackfcFailure);

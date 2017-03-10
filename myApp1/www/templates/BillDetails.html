@@ -66,8 +66,8 @@
 
                    
 
-      <button class="button button-positive"  ng-click="ReprintBill(BillDetails.BillNo)">Reprint Bill</button>
-      <button class="button button-positive"  ng-click="CancelBill(BillDetails.BillNo)">Cancel Bill</button>
+      <button ng-if="reprintBillButtonEnable == 1" class="button button-positive"  ng-click="ReprintBill(BillDetails.BillNo)">Reprint Bill</button>
+      <button ng-if="reprintBillButtonEnable == 0" class="button button-positive"  ng-click="CancelBill(BillDetails.BillNo)">Cancel Bill</button>
    </div>
 
  </ion-content>
