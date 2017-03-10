@@ -119,6 +119,19 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'n
             }
         })
 
+         var promise = settingService.get("VolatileData");
+        promise.then(function(data) {
+            console.log(data)
+            if (data.rows.length >= 1) {
+                $rootScope.VolatileData = JSON.parse(data.rows.item(0).SettingsValue);
+                console.log("volatile data is: ", $rootScope.VolatileData);
+            } else {
+                console.log('No Data Setting Record Found');
+                $rootScope.VolatileData.CurrentBillNo=1;
+                $rootScope.VolatileData.CurrentTokenNo= $rootScope.printFormatSettings.tokStartNmbr;
+            }
+        })
+
 
         $state.go('home');
     });

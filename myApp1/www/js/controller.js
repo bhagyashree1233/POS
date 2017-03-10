@@ -28,7 +28,7 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
   };
 })
 
-.controller('homeCtrl', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', '$ionicPopup', function($scope, $rootScope, $state, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading, $ionicPopup) {
+.controller('homeCtrl', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', '$ionicPopup','settingService', function($scope, $rootScope, $state, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading, $ionicPopup, settingService) {
 
     /*
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -308,9 +308,9 @@ $scope.onPressHoldProduct = function()
 
     //receipt function to store all transaction details in DB
 
-    $scope.receipt = function() {
+    $scope.receipt = function(tokenNo) {
         //$scope.paymentModal.hide();
-
+       console.log("Print Receipt");
         var billSummary = {};
        // $scope.NoCopies = $rootScope.printFormatSettings.billCopies;
 
@@ -321,9 +321,12 @@ $scope.onPressHoldProduct = function()
         billSummary.BillStatus = "Active";
         billSummary.DateTime = new Date();
 
-        $rootScope.print(billSummary, $scope.productArr,onPrintReceiptSuccess,PrintReceiptError);
+        $scope.CurrentTokenNumber = tokenNo;
 
-    }
+        $rootScope.print(billSummary, $scope.productArr,onPrintReceiptSuccess,PrintReceiptError,tokenNo,$rootScope.VolatileData.CurrentBillNo);
+        return(true);
+    
+    }  
 
     function onPrintReceiptSuccess()
     {
@@ -350,11 +353,12 @@ $scope.onPressHoldProduct = function()
        
         if(res == "Print")
         {
-            $scope.receipt();
+            $scope.receipt($scope.CurrentTokenNumber);
         }
         else
         {
             SaveTransactionDetailstoDB();
+            //UpdateVolatileDataToDB();
             $scope.billCopies = $rootScope.printFormatSettings.billCopies;
         }
 
@@ -363,8 +367,33 @@ $scope.onPressHoldProduct = function()
          
       }
       else
+      {
         SaveTransactionDetailstoDB();
+        //UpdateVolatileDataToDB();
+      }
 
+
+
+    }
+
+    function UpdateVolatileDataToDB()
+    {
+          var promise = settingService.set("VolatileData", JSON.stringify($rootScope.VolatileData));
+        promise.then(function(data) {
+            if (data.rowsAffected >= 1) {
+                console.log("Data update Success");
+                //$rootScope.ShowToast("Data update Success",false);
+               // $rootScope.password = newpassword;
+            } else {
+                
+                console.log("Data update Failed");
+                //$rootScope.ShowToast("Unable to Password",false);
+            }
+        },function(err)
+        {
+            console.log("Data update Failed: ", err);
+            //$rootScope.ShowToast("Unable to Password",false);
+        })
     }
 
     function PrintReceiptError()
@@ -374,6 +403,8 @@ $scope.onPressHoldProduct = function()
       if($scope.billCopies > 0) //atleast one copy printed;;
       {
           SaveTransactionDetailstoDB();
+          //UpdateVolatileDataToDB();
+
       }
 
     }
@@ -384,7 +415,7 @@ $scope.onPressHoldProduct = function()
         //check
 
         console.log($scope.transactionDate);
-        var promise = dbService.storeToTransaction($scope.productArr, $scope.transactionDate);
+        var promise = dbService.storeToTransaction($scope.productArr, $scope.transactionDate,$rootScope.VolatileData.CurrentBillNo);
         promise.then(function(result) {
             console.log(result);
             $scope.paymentMethod = "cash";
@@ -401,7 +432,7 @@ $scope.onPressHoldProduct = function()
 
     //function to save bill details to database
     function SaveBillDetails() {
-        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.transactionDate);
+        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.transactionDate,$rootScope.VolatileData.CurrentBillNo);
         promise.then(function(result) {
             console.log(result);
             //clear all values
@@ -412,8 +443,25 @@ $scope.onPressHoldProduct = function()
             $scope.totalTaxAmount = 0;
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
+
+            console.log("updating volatile Data" ,result);
+
+            $rootScope.VolatileData.CurrentBillNo =  Number($rootScope.VolatileData.CurrentBillNo) + 1;
+            if(Number($rootScope.VolatileData.CurrentBillNo) > 99999999)
+            $rootScope.VolatileData.CurrentBillNo = 1;
+
+          if($rootScope.printFormatSettings.tokNum == "Auto")
+           {
+            $rootScope.VolatileData.CurrentTokenNo = Number($rootScope.VolatileData.CurrentTokenNo) + 1;
+            if(Number($rootScope.VolatileData.CurrentTokenNo) > $rootScope.printFormatSettings.tokResetAftr)
+            {
+                $rootScope.VolatileData.CurrentTokenNo = $rootScope.printFormatSettings.tokStartNmbr;
+            }
+           }
+
+            UpdateVolatileDataToDB();
         }, function(result) {
-            console.log(result);
+            console.log("Error: ", result);
         })
     }
     //function to get bill details
@@ -448,8 +496,12 @@ $scope.onPressHoldProduct = function()
         $scope.totalChargeAmount = 0;
     }
 
+
+
     $scope.onPaymentOk = function(value) {
         console.log("Payment Ok");
+
+        
 
         console.log('I am in Paid Function')
         console.log(value)
@@ -468,10 +520,7 @@ $scope.onPressHoldProduct = function()
         $scope.Balance = parseFloat(balance).toFixed(2);
         $scope.typedAmount = typedAmount;
 
-        //confirm to print receipt;;
-
-
-         $ionicPopup.show({
+          $ionicPopup.show({
               title: 'Print Receipt',
               subTitle: 'Print Receipt to Complete Transaction',
               scope:$scope,
@@ -497,13 +546,32 @@ $scope.onPressHoldProduct = function()
            //$rootScope.printerConnect($rootScope.printerName,$rootScope.ConnectStatusFunc);
            console.log("Print Receipt Invoked");
            $scope.billCopies = 0;
-           $scope.receipt();
+        if($rootScope.printFormatSettings.tokNum == "Manual")
+        {
+             $rootScope.openNumericModal($scope, $scope.receipt, $scope.receipt);
+
+        }
+        else if($rootScope.printFormatSettings.tokNum == "Auto")
+        {
+            $scope.receipt($rootScope.VolatileData.CurrentTokenNo);
+           // $rootScope.VolatileData.CurrentTokenNo = $rootScope.VolatileData.CurrentTokenNo + 1;
+           // if($rootScope.VolatileData.CurrentTokenNo > $rootScope.printFormatSettings.tokResetAftr)
+            //{
+              //  $rootScope.VolatileData.CurrentTokenNo = $rootScope.printFormatSettings.tokStartNmbr;
+            //}
+        }
+        else //disable;;
+        {
+            $scope.receipt(undefined);
+        }
+           //();
            return;
            
        }
        else if(res=="Save")
        {
            SaveTransactionDetailstoDB();
+           //UpdateVolatileDataToDB();
        }
        else
        {
@@ -512,6 +580,7 @@ $scope.onPressHoldProduct = function()
 
 
    });
+
 
     return (true);
 
@@ -694,7 +763,15 @@ $scope.onPressHoldProduct = function()
             return ( false) ;
         }
 
+        console.log("value is: ",value);
         value = Number(value);
+
+        if(isNaN(value))
+        {
+            console.log("please Enter Valid Qty");
+             $rootScope.ShowToast("please Enter Valid Qty",false);
+             return(false);
+        }
 
         if ((value * $rootScope.CurrentProduct.unitPrice) > 99999.99) {
             console.log("Total Amount too large, Please split Quantity");
@@ -1459,6 +1536,10 @@ $scope.onPressHoldProduct = function()
 
     $scope.itemclick = function(obj) {
         console.log("OnClick");
+        if(obj.name == "Reprint-Bill")
+        $rootScope.reprintBillButtonEnable = 1;
+        else
+        $rootScope.reprintBillButtonEnable = 0;
         $state.go(obj.state);
     }
 

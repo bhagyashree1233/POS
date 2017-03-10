@@ -14,6 +14,8 @@ angular.module('starter.globalcontroller', [])
    $rootScope.printerName = "";
    $rootScope.PrinterStatus = false; 
 
+   $rootScope.reprintBillButtonEnable = 0;
+
    $rootScope.holdItemArr = [];
 
    $rootScope.PrintElement = 
@@ -41,7 +43,7 @@ angular.module('starter.globalcontroller', [])
       shopName:"",
       strtBillNmbr:1,
       tin:"",
-      tokNum:true,
+      tokNum:"Disable",
       tokResetAftr:999,
       tokStartNmbr:1,
       wifiSsid:""
@@ -698,7 +700,7 @@ BTPrinter.printText(function(data){
 }  
 
 
- $rootScope.print = function(billSummary,billdetails,callbackfcSuccess,callbackfcFailure) {
+ $rootScope.print = function(billSummary,billdetails,callbackfcSuccess,callbackfcFailure,tokenNo,billNo) {
        var d = new Date();
 
        var date = billSummary.DateTime.toString().substring(4, 15);
@@ -750,6 +752,13 @@ BTPrinter.printText(function(data){
        }
 
         $rootScope.PrintText("\n");
+
+        $rootScope.PrintAlign("right");
+
+       if(billNo!=undefined)
+       {
+           $rootScope.PrintText("BillNo:" + billNo + "\n");
+       }
 
        $rootScope.PrintAlign("left");
 
@@ -902,13 +911,93 @@ return s;
        $rootScope.PrintEnableBold(false);
        $rootScope.PrintAlign("center");
        if(printerSettings.greeting !=undefined && printerSettings.greeting !="")
-       $rootScope.PrintText(printerSettings.greeting + "\n\n");
-       else
+       $rootScope.PrintText(printerSettings.greeting );
+      
+
+
+        if(tokenNo != undefined)
+        {
+            $rootScope.PrintText("Token No: " + tokenNo + "\n");
+        }
+
         $rootScope.PrintText("\n\n");
 
        $rootScope.EndPrint(callbackfcSuccess, callbackfcFailure);
    }
- 
-   
+
+
+
+   $rootScope.PrintCollectionReport = function(collectionObj,frmDate, toDate)
+   {
+                    
+
+       var d = new Date();
+
+       var date = d.toString().substring(4, 15);
+       var time = d.toString().substring(15, 25);
+       
+
+       console.log(date);
+       console.log(time);
+
+       var printerSettings = $rootScope.printFormatSettings;
+       $rootScope.PrintInit();
+
+       $rootScope.PrintChangeFont(true); //large font;;
+       $rootScope.PrintAlign("center");
+
+       
+       if (printerSettings.shopName != undefined && printerSettings.shopName != "") {
+           console.log('I am in shop')
+           $rootScope.PrintEnableUnderline(true);
+           $rootScope.PrintEnableBold(true);
+           $rootScope.PrintChangeBigFont("vertical");
+           $rootScope.PrintText(printerSettings.shopName + "\n");
+
+       }
+
+        $rootScope.PrintText("Sales Report" + "\n\n");
+        $rootScope.PrintChangeBigFont("normal");
+        $rootScope.PrintAlign("left");
+        $rootScope.PrintEnableUnderline(false);
+        $rootScope.PrintEnableBold(true);
+
+        $rootScope.PrintText("Date: " + date + "\n");
+
+        $rootScope.PrintText("Time: " + time + "\n");
+
+        $rootScope.PrintText("------------------------------\n");
+
+        $rootScope.PrintText("FromDate: " + frmDate.toString().substring(4, 15) + "\n");
+        $rootScope.PrintText("ToDate: " + toDate.toString().substring(4, 15) + "\n");
+
+        $rootScope.PrintText("------------------------------\n");
+
+        $rootScope.PrintText("Total Bills: " + collectionObj.totalBills + "\n");
+
+        $rootScope.PrintText("Total Amount: " + collectionObj.totalPrice + "\n");
+
+        $rootScope.PrintText("Tax Amount: " + collectionObj.taxAmount + "\n");
+
+        $rootScope.PrintText("Total Amount inc Tax: " + collectionObj.totalAmount + "\n");
+
+        $rootScope.PrintText("------------------------------\n\n");
+
+        $rootScope.EndPrint(OnReportPrintSuccess, OnReportPrintFailure);
+
+   }
+
+   $rootScope.OnReportPrintSuccess = function()
+   {
+       console.log("Report Print Success");
+       $rootScope.ShowToast("Report Print Done",false);
+
+   }
+
+   $rootScope.OnReportPrintFailure = function()
+   {
+       console.log("Report Print Failed");
+       $rootScope.ShowToast("Report Print Failed",false);
+   }
 
 })

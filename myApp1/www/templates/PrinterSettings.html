@@ -4,6 +4,8 @@
         <h2 style="text-align:center;"> Printer Settings </h2>
     </div>
         <form id="prinrSettings" name="myForm" >
+
+             
             <label class="item item-input">
                 <span class="input-label">Shop Name:</span>
                 <input type="text" name="shopName" id="shopName" class="printerSettingtext"  maxlength=20 ng-model="printFormatSettings.shopName" required></input>
@@ -42,7 +44,7 @@
             </label>
             
             
-            <label class="item item-input">
+           <!-- <label class="item item-input">
                 <span class="input-label">Token Number:</span>
                 <label class="toggle">
                     <input type="checkbox" ng-model="printFormatSettings.tokNum">
@@ -50,8 +52,18 @@
                         <div class="handle"></div>
                     </div>
                 </label>
-            </label>
-            <div ng-show="printFormatSettings.tokNum">
+            </label>-->
+
+
+               <label class="item item-input">
+                    <span class="input-label">Token Number :</span>
+                    <ion-radio ng-model="printFormatSettings.tokNum" ng-value="'Disable'">Disable</ion-radio>
+                    <ion-radio ng-model="printFormatSettings.tokNum" ng-value="'Auto'">Auto</ion-radio>
+                    <ion-radio ng-model="printFormatSettings.tokNum" ng-value="'Manual'">Manual</ion-radio>
+                </label>
+
+
+            <div ng-show="printFormatSettings.tokNum == 'Auto'">
                 <label class="item item-input">
                     <span class="input-label">Token Start No:</span>
                     <input type="tel" id="trtTokenNum" name="strtTokenNum"class="printerSettingtext" ng-model="printFormatSettings.tokStartNmbr"  maxlength=4 required></input>

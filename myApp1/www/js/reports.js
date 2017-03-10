@@ -224,6 +224,13 @@ BTPrinter.list(function(data){
         })
     }
 
+    $scope.onPrintSalesReport = function()
+    {
+
+    $rootScope.PrintCollectionReport($scope.salesReport,$scope.Dte.start, $scope.Dte.end);
+
+    }
+
 
    })
 
