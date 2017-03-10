@@ -10,11 +10,8 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
 });
     
 
-   $scope.testDivBlurFunc = function()
-   {
 
-       console.log('clicked outside');
-   }
+
   $scope.tabExpand = function(index) {
     console.log('Tab ' + index + ' expanded');
   };
@@ -44,6 +41,13 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
     //ionicParentView
 
     //load products list from DB
+$scope.productHold = function()
+{
+
+    $scope.productHoldFlag = true;
+    console.log("productHold occured");
+}
+
     $scope.OnCatClick = function(catId) {
         console.log(catId);
         $rootScope.SelCat = catId;
@@ -160,17 +164,33 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
         console.log($scope.allSlideCatArr);
     }
 */
+$scope.onPressHoldProduct = function()
+{
 
-    $scope.onPressHold = function() {
+    $scope.jiggleProduct = true;
+    
+}
+
+    $scope.onPressHold = function(index) {
         console.log('enterd on hold');
         $scope.showDelete = true;
+        $scope.holdIndex = index;
     }
+
     $scope.deleteItem = function(index) {
         $scope.productArr.splice(index, 1);
         $scope.showDelete = false;
         delete $scope.itemsInStockObj[product.productId];
         calculateProductCost();
     }
+
+       $scope.testDivBlurFunc = function()
+   {
+        $scope.showDelete = false;
+
+       console.log('clicked outside');
+   };
+
 
     function calculateProductCost() {
         $scope.totalPrice = 0;
