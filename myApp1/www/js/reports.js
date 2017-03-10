@@ -116,6 +116,102 @@ BTPrinter.list(function(data){
             $scope.totalAmount.avgBillAmount = $scope.totalAmount.billAmt / $scope.salesReport.length
         })
     }
+
+    $scope.saveReport = function()
+    {
+        $scope.saveBillWiseReport($scope.Dte.start,$scope.Dte.end);
+    }
+
+$scope.saveBillWiseReport=function(frmDate,toDate){
+ 
+// print the PDF
+// download the PDF
+var d=new Date();
+var date=d.toString().substring(4, 15);
+var time=d.toString().substring(15, 25);   
+
+frmDate = frmDate.toString().substring(4, 15);
+toDate = toDate.toString().substring(4, 15);
+
+var body=[]
+var text=[]
+body[0]=['Date','Time','Bill Status','Bill Number','Bill Amount','Tax Amount','Total Amount'];
+
+//$scope.totalAmount.taxAmount = 0;
+//$scope.totalAmount.billAmt=0;
+//$scope.totalAmount.amountAftertax=0;
+//$scope.totalAmount.avgBillAmount=0;
+
+for (var i=0;i<$scope.salesReport.length;i++){
+  console.log($scope.salesReport[i].billAmt);
+
+// $scope.totalAmount.taxAmount=$scope.salesReport[i].taxAmount+$scope.totalAmount.taxAmount
+//  $scope.totalAmount.billAmt=$scope.salesReport[i].billAmt+$scope.totalAmount.billAmt
+// $scope.totalAmount.amountAftertax=$scope.salesReport[i].amountAftertax+$scope.totalAmount.amountAftertax
+ 
+
+ body[i+1]=[$scope.salesReport[i].date,$scope.salesReport[i].time,$scope.salesReport[i].billStatus,$scope.salesReport[i].billNo,$scope.salesReport[i].billAmt,$scope.salesReport[i].taxAmount,$scope.salesReport[i].amountAftertax]
+  //body[i+1]=[$scope.sales[i].date,$scope.sales[i].time,$scope.sales[i].billNo,$scope.sales[i].totalBills]
+}
+ //$scope.totalAmount.avgBillAmount=$scope.totalAmount.billAmt/$scope.salesReport.length
+console.log(body[0])
+console.log(body);
+console.log($scope.totalAmount.billAmt);
+
+var docDefinition = {
+    
+  content: [
+  { text:'Bill Wise Report \n'+$rootScope.printFormatSettings.shopName+'\n\n',style: 'header' },
+    { text:'Date:'+date +'\nTime:'+time+'\nFrom Date:'+frmDate+'\nTo Date:'+toDate+'\n\n\n',style: 'dateAlignment' },
+
+    {
+      layout: 'lightHorizontalLines', // optional
+      table: {
+        // headers are automatically repeated if the table spans over multiple pages
+        // you can declare how many rows should be treated as headers
+        headerRows: 1,
+        widths: [ '*', '*', '*', '*','*','*' ,'*'],
+
+        body:body
+       /* [
+          [ 'First', 'Second', 'Third', 'The last one' ],
+           [,$scope.sales.time,$scope.sales.billNo,$scope.sales.totalBills],
+         [ $scope.sales[i].date, $scope.sales[i].time, $scope.sales[i].billNo, $scope.sales[i].totalBills ]
+          [ 'First', 'Second', 'Third', 'The last one' ],
+           [ 'First', 'Second', 'Third', 'The last one' ]        
+
+        ]*/
+        }
+        },
+        {
+      text: 
+        '\n\n Average Bill Amount:'+$scope.totalAmount.avgBillAmount+'\n'+
+        'Total Tax Amount:'+$scope.totalAmount.taxAmount+'\n'+
+        'Total Bill Amount:'+$scope.totalAmount.billAmt+'\n'+
+        'Total Amount After Tax:'+$scope.totalAmount.amountAftertax
+     
+    }
+      
+    
+  ],styles: {
+    header: {
+      fontSize: 17,
+      bold: true,
+      alignment: 'center'
+    },
+    dateAlignment:{
+      fontSize:12,
+      alignment: 'left'
+    }
+    
+  }
+    }
+   
+
+//pdfMake.createPdf(docDefinition).print();
+pdfMake.createPdf(docDefinition).download();
+ 
+}
 })
 
 
@@ -148,12 +244,14 @@ BTPrinter.list(function(data){
         {
             console.log("start and End Date undefined");
             startDate = new Date();
+            $scope.Dte.start = startDate;
             startDate.setHours(0);
             startDate.setMinutes(0);
             startDate.setSeconds(0);
             startDate.setMilliseconds(0);
 
             endDate = new Date();
+            $scope.Dte.end = endDate;
             endDate.setHours(23);
             endDate.setMinutes(59);
             endDate.setSeconds(59);
@@ -258,12 +356,15 @@ BTPrinter.list(function(data){
         {
             console.log("start and End Date undefined");
             startDate = new Date();
+            $scope.Dte.start = startDate;
+             
             startDate.setHours(0);
             startDate.setMinutes(0);
             startDate.setSeconds(0);
             startDate.setMilliseconds(0);
 
             endDate = new Date();
+            $scope.Dte.end = endDate;
             endDate.setHours(23);
             endDate.setMinutes(59);
             endDate.setSeconds(59);
@@ -320,4 +421,76 @@ BTPrinter.list(function(data){
               $scope.showreport = true;
         })
     }
+
+    $scope.saveReport = function()
+    {
+       $scope.saveItemWiseReport($scope.Dte.start, $scope.Dte.end);
+    }
+
+$scope.saveItemWiseReport=function(frmDate,toDate)
+{
+// print the PDF
+// download the PDF
+var d=new Date();
+var date=d.toString().substring(4, 15);
+var time=d.toString().substring(15, 25);  
+
+frmDate = frmDate.toString().substring(4, 15);
+toDate = toDate.toString().substring(4, 15);
+ 
+var body=[]
+var text=[]
+body[0]=['Item Name','Quantity','Total Amount']
+for (var i=0;i<$scope.productReport.length;i++){
+  console.log($scope.productReport[i]);
+ body[i+1]=[$scope.productReport[i].itemName,$scope.productReport[i].qtySold,$scope.productReport[i].totalAmount]
+  //body[i+1]=[$scope.sales[i].date,$scope.sales[i].time,$scope.sales[i].billNo,$scope.sales[i].totalBills]
+}
+console.log(body[0])
+console.log(body);
+  var docDefinition = {
+    
+  content: [
+  { text:'Item Wise Report \n'+$rootScope.printFormatSettings.shopName+'\n\n',style: 'header' },
+    { text:'Date:'+date +'\nTime:'+time+'\nFrom Date:'+frmDate+'\nTo Date:'+toDate+'\n\n\n',style: 'dateAlignment' },
+
+    {
+      layout: 'lightHorizontalLines', // optional
+      table: {
+        // headers are automatically repeated if the table spans over multiple pages
+        // you can declare how many rows should be treated as headers
+        headerRows: 1,
+        widths: [ '*', '*', '*'],
+
+        body:body
+       /* [
+          [ 'First', 'Second', 'Third', 'The last one' ],
+           [,$scope.sales.time,$scope.sales.billNo,$scope.sales.totalBills],
+         [ $scope.sales[i].date, $scope.sales[i].time, $scope.sales[i].billNo, $scope.sales[i].totalBills ]
+          [ 'First', 'Second', 'Third', 'The last one' ],
+           [ 'First', 'Second', 'Third', 'The last one' ]        
+
+        ]*/
+        }
+        }
+      
+    
+  ],styles: {
+    header: {
+      fontSize: 17,
+      bold: true,
+      alignment: 'center'
+    },
+    dateAlignment:{
+      fontSize:12,
+      alignment: 'left'
+    }
+    
+  }
+    }
+   
+pdfMake.createPdf(docDefinition).download();
+//pdfMake.createPdf(docDefinition).print();
+ 
+}
 })

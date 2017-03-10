@@ -1,4 +1,4 @@
-<ion-view view-title="Bill Wise Report" cache-view="false">
+<ion-view view-title="Bill Wise Report" >
 <ion-content style="text-align:center;" ng-controller="billwiseReportCtrl" scroll=false>
 <label class="item item-input">
   <span class="input-label" style="font-style:italic;font-size: 3vh;font-weight: bold;">Start</span>
@@ -10,6 +10,7 @@
 </label>
 <button ion-button ng-click=save()>Get Report</button>
 <div ng-if="showreport==true">
+<button ion-button ng-click=saveReport()>Save Report</button>
 <div class="card">
   <p><span class="salesReport" >Average Bill Amount:</span>{{totalAmount.avgBillAmount}}</p>
   <p><span class="salesReport" >Total Tax Amount:</span>{{totalAmount.taxAmount}}</p>
