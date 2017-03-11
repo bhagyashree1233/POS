@@ -217,6 +217,8 @@ $rootScope.EditPro = function()
                 console.log("The loading indicator is now displayed");
             });
         };
+
+        
         $rootScope.hideDbLoading = function() {
             $ionicLoading.hide().then(function() {
                 console.log("The loading indicator is now hidden");

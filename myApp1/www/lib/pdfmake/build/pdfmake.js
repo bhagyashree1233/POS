@@ -195,10 +195,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 
 		defaultFileName = defaultFileName || 'file.pdf';
+		console.log("Trying to get blob");
 		this.getBlob(function (result) {
+			console.log("got Blob");
 			saveAs(result, defaultFileName);
 
 			if (typeof cb === 'function') {
+				console.log("going to CB");
 				cb();
 			}
 		}, options);

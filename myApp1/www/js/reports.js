@@ -1,6 +1,6 @@
 angular.module('starter.reportscontroller', [])
 
-.controller('billwiseReportCtrl', function($scope, salesService, $rootScope) {
+.controller('billwiseReportCtrl', function($scope, salesService, $rootScope,$cordovaFile) {
 
     /*
 BTPrinter.list(function(data){
@@ -208,8 +208,31 @@ var docDefinition = {
     }
    
 
-//pdfMake.createPdf(docDefinition).print();
-pdfMake.createPdf(docDefinition).download();
+//pdfMake.createPdf(docDefinition).open();
+//pdfMake.createPdf(docDefinition).download();
+
+var fileName = "BillWiseReport-" + d.getTime() + ".pdf"; 
+
+console.log("fileName : ", fileName);
+
+var Path =cordova.file.externalRootDirectory;
+
+console.log("path : ", Path);
+
+const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+pdfDocGenerator.getBlob((buffer) => {
+    console.log(buffer);
+  $cordovaFile.writeFile(Path, fileName, buffer, true).then(function(result) {
+      // Success! 
+      console.log("File Success: ", result);
+  }, function(err) {
+      // An error occured. Show a message to the user
+      console.log("File Write Failed: ", err);
+  });
+});
+
+
+console.log("Download Done");
  
 }
 })
@@ -333,7 +356,7 @@ pdfMake.createPdf(docDefinition).download();
    })
 
 
-.controller('productReportCtrl', function($scope, salesService, $rootScope) {
+.controller('productReportCtrl', function($scope, salesService, $rootScope,$cordovaFile) {
    $scope.Dte = {}
     $scope.productReport = []
    
@@ -489,8 +512,30 @@ console.log(body);
   }
     }
    
-pdfMake.createPdf(docDefinition).download();
-//pdfMake.createPdf(docDefinition).print();
+
+
+var fileName = "ProductReport-" + d.getTime() + ".pdf"; 
+
+console.log("fileName : ", fileName);
+
+var Path =cordova.file.externalRootDirectory;
+
+console.log("path : ", Path);
+
+const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+pdfDocGenerator.getBlob((buffer) => {
+    console.log(buffer);
+  $cordovaFile.writeFile(Path, fileName, buffer, true).then(function(result) {
+      // Success! 
+      console.log("File Success: ", result);
+  }, function(err) {
+      // An error occured. Show a message to the user
+      console.log("File Write Failed: ", err);
+  });
+});
+
+
+console.log("Download Done");
  
 }
 })

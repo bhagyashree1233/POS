@@ -358,7 +358,6 @@ $scope.onPressHoldProduct = function()
         else
         {
             SaveTransactionDetailstoDB();
-            //UpdateVolatileDataToDB();
             $scope.billCopies = $rootScope.printFormatSettings.billCopies;
         }
 
