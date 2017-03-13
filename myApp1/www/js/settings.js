@@ -43,9 +43,10 @@ angular.module('starter.settingscontroller', [])
 
 
     var taxRate=$scope.txSetting.taxRate;
+    var pattern=new RegExp('^[0-9]+([,.][0-9]+)?$');
     if(taxRate==undefined ||taxRate.length<1){
         console.log('Enter tax Rate')
-    }else if(!taxRate.toString().match(/^[0-9]+([,.][0-9]+)?$/g)){
+    }else if(!pattern.test(taxRate)){
         console.log('Invalid tax Rate')
         return false
     }
@@ -124,10 +125,10 @@ $scope.deleteTaxSettings=function(taxId)
 
 
     var taxRate=$scope.txSetting.taxRate;
-
+    var pattern=new RegExp('^[0-9]+([,.][0-9]+)?$');
     if(taxRate==undefined ||taxRate.length<1){
         console.log('Enter tax Rate')
-    }else if(!taxRate.match(/^[0-9]+([,.][0-9]+)?$/g)){
+    }else if(!pattern.test(taxRate)){
         console.log('Invalid tax Rate')
         return false
     }
