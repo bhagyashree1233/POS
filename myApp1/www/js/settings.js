@@ -183,7 +183,7 @@ $scope.txSetting.taxRate=tax.taxRate;
 
     $scope.savePrinterSettings = function() {
         var shopName=$scope.printFormatSettings.shopName;
-        var pattern= new RegExp(/^[a-z0-9]+$/i);
+        var pattern= new RegExp('^[a-z0-9]+$');
         if(shopName==undefined||shopName.length<2){
             $rootScope.ShowToast("Enter Shop Name", false);
                 console.log('Enter Shop Name')
@@ -218,7 +218,7 @@ $scope.txSetting.taxRate=tax.taxRate;
         var billNumber=$scope.printFormatSettings.strtBillNmbr;
         var pattern= new RegExp('^[0-9]+$');
         if(billNumber==undefined||billNumber.length<1){
-            document.getElementById('billNumber').value=1;
+            $scope.printFormatSettings.strtBillNmbr=document.getElementById('billNumber').value=1;
         }else if(!pattern.test(billNumber)){
             console.log('Invalid bill Number')
             return false

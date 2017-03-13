@@ -960,8 +960,8 @@ $scope.onPressHoldProduct = function()
     $scope.addEditProduct = function() {
 
        
-
         var productName = $scope.newProduct.name;
+       
         if (productName == undefined || productName.length < 2) {
             $rootScope.ShowToast("Enter productName", false);
             console.log('Enter Product Name')
@@ -969,12 +969,13 @@ $scope.onPressHoldProduct = function()
         }
 
         var productSellingPrice = $scope.newProduct.unitPrice;
+        var pattern=new RegExp('^[0-9]+([,.][0-9]+)?$');
+        var pattern1=new RegExp('^[0-9]+$');
         if (productSellingPrice == undefined || productSellingPrice.length < 1) {
-
             $rootScope.ShowToast("Enter Selling Price ", false);
             console.log("Enter Selling Price");
             return false
-        } else if (!productSellingPrice.toString().match(/^[0-9]+([,.][0-9]+)?$/g)) {
+        } else if (!pattern.test(productSellingPrice)) {
             $rootScope.ShowToast("Invalid Selling Price", false);
             console.log('Invalid product Selling')
             return false;
@@ -983,7 +984,7 @@ $scope.onPressHoldProduct = function()
         if (productSellingPrice > 9999.99) {
             $rootScope.ShowToast("Invalid Selling Price", false);
             console.log('Invalid product Selling')
-            return false;
+            return false; 
         }
 
         var taxRate = $scope.newProduct.taxRate;
@@ -996,12 +997,13 @@ $scope.onPressHoldProduct = function()
 
         var buyingPrice = $scope.newProduct.actualPrice;
         if (buyingPrice == undefined || buyingPrice.length < 1) {
-            document.getElementById('buyingPrice').value = 0;
-        } else if (!buyingPrice.toString().match(/^[0-9]+([,.][0-9]+)?$/g)) {
+           $scope.newProduct.actualPrice= document.getElementById('buyingPrice').value = 0;
+        } else if (!pattern.test(buyingPrice)) {
             $rootScope.ShowToast("Invalid buyingPrice", false);
             console.log('Invalid buyingPrice');
             return false
         }
+        console.log(buyingPrice)
         if (buyingPrice > 9999.99) {
             $rootScope.ShowToast("Invalid Buying Price", false);
             console.log('Invalid buying price');
@@ -1020,17 +1022,17 @@ $scope.onPressHoldProduct = function()
 
         var itemInStock = $scope.newProduct.inStock;
         if (itemInStock == undefined || itemInStock < 0) {
-            document.getElementById('itemsStock').value = 1000000;
+          $scope.newProduct.inStock=document.getElementById('itemsStock').value = 1000000;
 
-        } else if (!itemInStock.toString().match('^[0-9]+$') && $scope.newProduct.unit == 'pieces') {
+        } else if (!pattern1.test(itemInStock) && $scope.newProduct.unit == 'pieces') {
             $rootScope.ShowToast("Invalid  itemInStock", false);
             console.log('Invalid  itemInStock');
             return false
-        } else if (!itemInStock.toString().match(/^[0-9]+([,.][0-9]+)?$/g) && $scope.newProduct.unit == 'litres') {
+        } else if (!pattern.test(itemInStock) && $scope.newProduct.unit == 'litres') {
             $rootScope.ShowToast("Invalid  itemInStock", false);
             console.log('Invalid  itemInStock');
             return false
-        } else if (!itemInStock.toString().match(/^[0-9]+([,.][0-9]+)?$/g) && $scope.newProduct.unit == 'kgs') {
+        } else if (!pattern.test(itemInStock) && $scope.newProduct.unit == 'kgs') {
             $rootScope.ShowToast("Invalid  itemInStock", false);
             console.log('Invalid  itemInStock');
             return false
@@ -1041,9 +1043,9 @@ $scope.onPressHoldProduct = function()
         var discount = $scope.newProduct.discount;
 
         if (discount == undefined || discount.length < 1) {
-            document.getElementById('discount').value = 0;
+            $scope.newProduct.discount=document.getElementById('discount').value = 0;
 
-        } else if (!discount.toString().match(/^[0-9]+([,.][0-9]+)?$/g)) {
+        } else if (!pattern.test(discount)) {
             $rootScope.ShowToast("Invalid discount", false);
             console.log('Invalid discount')
             return false
