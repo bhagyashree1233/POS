@@ -1149,7 +1149,10 @@ $scope.onPressHoldProduct = function()
     function addNewProduct() {
         console.log($scope.selectedTax);
         console.log('entered addNewProduct()..');
-        //$scope.newProduct.image = "/img/icedcoffee.jpg";
+        
+        if($scope.newProduct.image == undefined || $scope.newProduct.image == "")
+         $scope.newProduct.image = "img/sc1.jpg";
+
         console.log($scope.newProduct);
 
         
@@ -1160,7 +1163,7 @@ $scope.onPressHoldProduct = function()
                     $scope.newProduct.inStock = 1000000;
                 }*/
 
-                console.log("Cat ID: ",$scope.newProduct.categoryId);
+            console.log("Cat ID: ",$scope.newProduct.categoryId);
             console.log('validation success and entered if');
             console.log($scope.newProduct);
             $rootScope.showDbLoading();
@@ -1172,7 +1175,7 @@ $scope.onPressHoldProduct = function()
                 //  $rootScope.Products.push($scope.newProduct);
                 $scope.newProduct = {
                     unit: 'pieces',
-                    image: "/img/sc1.jpg",
+                    image: "img/sc1.jpg",
                     favourite: false
                 };
                 $rootScope.hideDbLoading();

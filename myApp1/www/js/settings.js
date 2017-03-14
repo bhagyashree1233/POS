@@ -1,7 +1,7 @@
 angular.module('starter.settingscontroller', [])
 
 
-.controller('taxSetting', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicPlatform', 'settingService', function($scope, $rootScope, $state, $cordovaSQLite, $ionicPlatform, settingService) {    
+.controller('taxSetting', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicPlatform', 'settingService','$ionicLoading', function($scope, $rootScope, $state, $cordovaSQLite, $ionicPlatform, settingService,$ionicLoading) {    
     console.log('I am in tax  settings');
 
     $scope.taxSettings = [];
@@ -306,7 +306,7 @@ $scope.txSetting.taxRate=tax.taxRate;
 
 
 
-.controller('BlueToothCtrl', function($scope, settingService, $rootScope) {
+.controller('BlueToothCtrl', function($scope, settingService, $rootScope,$ionicLoading) {
 
 $scope.CurrentDevice = "";
 
@@ -362,7 +362,6 @@ function OnSuccessPairedList(data,status)
 //$scope.getPairedList = function()
 //{
     //$scope.CurrentDevice = "";
-
     $rootScope.getPairedList(OnSuccessPairedList);
 //}
 
@@ -396,6 +395,8 @@ function OnsuccessConnect(status,name)
        $rootScope.printerName = "";
        $rootScope.getPairedList(OnSuccessPairedList);
    }
+
+
 
 }
 
@@ -451,10 +452,11 @@ $scope.connect = function()
 
     console.log("connecting to device: ", $scope.CurrentDevice);
 
-    $rootScope.ShowToast("connecting to device: " + $scope.CurrentDevice ,false);
+    //$rootScope.ShowToast("connecting to device: " + $scope.CurrentDevice ,false);
 
-   $rootScope.printerConnect($scope.CurrentDevice,OnsuccessConnect);
-
+    
+         $rootScope.printerConnect($scope.CurrentDevice,OnsuccessConnect);
+       
 }
 
 $scope.testPrint = function()

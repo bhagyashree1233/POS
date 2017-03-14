@@ -210,15 +210,16 @@ $rootScope.EditPro = function()
    }
 
        $rootScope.showDbLoading = function() {
+           console.log("ShowDBloading");
             $ionicLoading.show({
-                template: 'Loading...'
+                template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
                // duration: 15000
             }).then(function() {
                 console.log("The loading indicator is now displayed");
             });
         };
 
-        
+
         $rootScope.hideDbLoading = function() {
             $ionicLoading.hide().then(function() {
                 console.log("The loading indicator is now hidden");
@@ -274,15 +275,32 @@ $rootScope.PrinterStatus = false;
 
 $rootScope.printerDisconnect= function (PrinterName,callbackFunc)
 {
+
+    function loadNext()
+    {
 BTPrinter.disconnect(function(data){
     console.log("Success");
-    console.log(data)
+    console.log(data);
+    $rootScope.hideDbLoading();
     callbackFunc(true);
 },function(err){
     console.log("Error");
     console.log(err);
+     $rootScope.hideDbLoading();
     callbackFunc(false);
 }, PrinterName)
+    }
+
+
+$ionicLoading.show({
+                template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
+               // duration: 15000
+            }).then(function() {
+                console.log("The loading indicator is now displayed 123");
+                setTimeout(loadNext, 1000);
+               
+            });
+
 
 }
 
@@ -306,34 +324,66 @@ $rootScope.connectCallBack= function(status,PrinterName)
 
 $rootScope.printerConnect = function (name,callbackFunc)
 {
+    console.log("Printer Connect");
+   // $rootScope.showDbLoading();
 
-   BTPrinter.connect(function(data){
+    function loadNext()
+    {
+    console.log("timeout");
+    BTPrinter.connect(function(data){
     console.log("Success");
-    
-    console.log(data)
+    console.log(data);
+    $rootScope.hideDbLoading();
     callbackFunc(true,name);
     },
     function(err){
     console.log("Error");
+    $rootScope.hideDbLoading();
     //$rootScope.ShowToast("Failed to Connect");
     console.log(err);
     callbackFunc(false,name);
     },name)
+    }
+
+      $ionicLoading.show({
+                template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
+               // duration: 15000
+            }).then(function() {
+                console.log("The loading indicator is now displayed 123");
+                setTimeout(loadNext, 1000);
+               
+            });
+
 }
 
 $rootScope.getPairedList = function (callbackFunc)
 {
+    function loadNext()
+    {
 
     BTPrinter.list(function(data){
         console.log("Success");
         console.log(data); //list of printer in data array
+        $rootScope.hideDbLoading();
         callbackFunc(data,true);
 
     },function(err){
         console.log("Error");
         console.log(err);
+        $rootScope.hideDbLoading();
         callbackFuncdata({},false);
     })
+
+    }
+
+     $ionicLoading.show({
+                template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
+               // duration: 15000
+            }).then(function() {
+                console.log("The loading indicator is now displayed 123");
+                setTimeout(loadNext, 1000);
+               
+            });
 }
 
 $rootScope.Testing= function()
@@ -595,8 +645,6 @@ if($rootScope.printerName == "") //printer not configured;;
 
 
    });
-
-
 
 }
 
