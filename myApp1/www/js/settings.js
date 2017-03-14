@@ -43,9 +43,10 @@ angular.module('starter.settingscontroller', [])
 
 
     var taxRate=$scope.txSetting.taxRate;
+    var pattern=new RegExp('^[0-9]+([,.][0-9]+)?$');
     if(taxRate==undefined ||taxRate.length<1){
         console.log('Enter tax Rate')
-    }else if(!taxRate.toString().match(/^[0-9]+([,.][0-9]+)?$/g)){
+    }else if(!pattern.test(taxRate)){
         console.log('Invalid tax Rate')
         return false
     }
@@ -124,10 +125,10 @@ $scope.deleteTaxSettings=function(taxId)
 
 
     var taxRate=$scope.txSetting.taxRate;
-
+    var pattern=new RegExp('^[0-9]+([,.][0-9]+)?$');
     if(taxRate==undefined ||taxRate.length<1){
         console.log('Enter tax Rate')
-    }else if(!taxRate.match(/^[0-9]+([,.][0-9]+)?$/g)){
+    }else if(!pattern.test(taxRate)){
         console.log('Invalid tax Rate')
         return false
     }
@@ -183,7 +184,7 @@ $scope.txSetting.taxRate=tax.taxRate;
 
     $scope.savePrinterSettings = function() {
         var shopName=$scope.printFormatSettings.shopName;
-        var pattern= new RegExp(/^[a-z0-9]+$/i);
+        var pattern= new RegExp('^[a-z0-9]+$');
         if(shopName==undefined||shopName.length<2){
             $rootScope.ShowToast("Enter Shop Name", false);
                 console.log('Enter Shop Name')
@@ -218,7 +219,7 @@ $scope.txSetting.taxRate=tax.taxRate;
         var billNumber=$scope.printFormatSettings.strtBillNmbr;
         var pattern= new RegExp('^[0-9]+$');
         if(billNumber==undefined||billNumber.length<1){
-            document.getElementById('billNumber').value=1;
+            $scope.printFormatSettings.strtBillNmbr=document.getElementById('billNumber').value=1;
         }else if(!pattern.test(billNumber)){
             console.log('Invalid bill Number')
             return false
