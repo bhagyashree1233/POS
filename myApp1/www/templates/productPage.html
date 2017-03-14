@@ -1,7 +1,10 @@
-<ion-view view-title="Add New Products" ng-controller="productCtrl" cache-view="false">
+<ion-view hide-nav-bar='true' ng-controller="productCtrl" cache-view="false">
      
     <ion-content id="productContentDiv">
-        <form name="productForm">
+    <div>
+        <h2 style="text-align:center;"> Add New Products </h2>
+    </div>
+        <!--<form name="productForm">-->
 
             <div class="list">
                 <label class="item item-input">
@@ -69,7 +72,7 @@
                 </label>
             </div>
             <button class="button button-block" ng-disabled=""  ng-click="addEditProduct()">{{ProductButtonText}}</button>
-       </form>
+       <!--</form> -->
         
         <button ng-show = "CreateMode == 0" class="button button-block" ng-Click = "deleteProduct(newProduct.productId)">Delete Product</button>
         <p style="color:green;" ng-show="productSuccessMessage">Product Added successfully</p>

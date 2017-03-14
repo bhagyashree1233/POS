@@ -200,7 +200,7 @@ $scope.txSetting.taxRate=tax.taxRate;
         else if(!pattern.test(number1)){
             $rootScope.ShowToast("Invalid Number", false);
             console.log('Invalid Number')
-            return false 
+            return false;
         }
 
 

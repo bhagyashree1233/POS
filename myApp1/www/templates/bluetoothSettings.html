@@ -1,9 +1,8 @@
-<ion-view view-title="Bluetooth Settings" cache-view="false">
+<ion-view hide-nav-bar='true' cache-view="false">
 <ion-content style="text-align:center;" ng-controller="BlueToothCtrl" scroll=false>
-<!--<ion-button>Scan</ion-button>-->
-<!--<button ng-click="getPairedList()">List Paired devices</button>-->
-
-       <h3>Connect to Printer</h3>
+ <div>
+        <h2 style="text-align:center;"> Bluetooth Settings </h2>
+    </div>
         <button ng-click="connect()">Connect</button>
         <button ng-click="disconnect()">Disconnect</button>
         <button ng-click="testPrint()">Test Print</button>
