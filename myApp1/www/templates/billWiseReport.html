@@ -1,7 +1,7 @@
 
 <ion-view hide-nav-bar='true' cache-view="false">
  
-<ion-content style="text-align:center;" ng-controller="billwiseReportCtrl" scroll=false>
+<ion-content style="text-align:center;" ng-controller="billwiseReportCtrl" >
  <div>
         <h2 style="text-align:center;"> Bill Wise Report </h2>
     </div>
@@ -37,8 +37,9 @@
           <div class="col">Total Amount</div>
         </div>
 </ion-item>
+<!--
 <ion-scroll direction="y" id="productsViewSlideBox" style="width:100%;height:90%;" scrollbar-x = false scrollbar-y= false>
-
+-->
  <ion-item ng-repeat="sales in salesReport">      
         <div class="row" >
           <div class="col">{{sales.date}}</div>
@@ -50,7 +51,7 @@
           <div class="col">{{sales.amountAftertax}}</div>
         </div>
    </ion-item>
-</ion-scroll>
+<!--</ion-scroll>-->
 </ion-list>
 
 </div>
