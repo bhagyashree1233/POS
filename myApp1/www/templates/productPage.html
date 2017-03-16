@@ -1,6 +1,10 @@
-<ion-view view-title="Add New Products" ng-controller="productCtrl" cache-view="false">
+<ion-view hide-nav-bar='true' ng-controller="productCtrl" cache-view="false">
      
     <ion-content id="productContentDiv">
+    <ion-scroll direction="y" >
+    <div style="text-align:center">
+        <h2> Add New Product
+    </div>
         <form name="productForm">
 
             <div class="list">
@@ -11,7 +15,7 @@
 
                 <label class="item item-input">
                     <span class="input-label">Product Name :</span>
-                    <input type="text" name="productNameInput"id="productName" maxlength="25" ng-model="newProduct.name"></input>
+                    <ion-input  name="productNameInput"id="productName" maxlength="25" ng-model="newProduct.name"></ion-input>
                 </label>
 
                  
@@ -26,7 +30,7 @@
                  
                 <label class="item item-input">
                     <span class="input-label">Selling Price :</span>
-                    <input type="tel" name="productSpriceInput" id="productSellingPrice" maxlength="7" ng-model="newProduct.unitPrice"></input>
+                    <ion-input  name="productSpriceInput" id="productSellingPrice" maxlength="7" ng-model="newProduct.unitPrice"></ion-input>
                    
                    </label>
                
@@ -34,33 +38,33 @@
 
                 <label class="item item-input item-select">
                     <span class="input-label">Tax Rate(%):</span>
-                    <input type="text"  ng-click="openTaxRatePopover($event)" id="taxRate" maxlength="10" placeholder="select TaxRate" ng-model="newProduct.taxRate" readonly="readonly"></input>
+                    <ion-input  ng-click="openTaxRatePopover($event)" id="taxRate" maxlength="10" placeholder="select TaxRate" ng-model="newProduct.taxRate" readonly="readonly"></ion-input>
                
                 </label>
 
                 <label class="item item-input">
                     <span class="input-label">Buying Price :</span>
-                    <input type="tel" name="productBpriceInput" id="buyingPrice" maxlength="7"  ng-model="newProduct.actualPrice" required></input>
+                    <ion-input  name="productBpriceInput" id="buyingPrice" maxlength="7"  ng-model="newProduct.actualPrice" required></ion-input>
                 </label>
 
                 <label class="item item-input">
                     <span class="input-label">Items in-stock :</span>
-                    <input type="tel"  ng-model="newProduct.inStock" maxlength="8" id="itemsStock" required></input>
+                    <ion-input type="number"  [(ngModel)]="newProduct.inStock" id="itemsStock"></ion-input>
                 </label>
 
                 <label class="item item-input">
                     <span class="input-label">Discount (%):</span>
-                    <input type="tel" id="discount" maxlength="5" ng-model="newProduct.discount">
+                    <ion-input  id="discount" maxlength="5" ng-model="newProduct.discount">
                 </label>
                 
                 <label class="item item-input item-button-right" ng-click="openCategoryModal()">
                     <span class="input-label">Category :</span>
-                    <input type="text" id="Category" ng-model="newProduct.categoryName" readonly="readonly">
+                    <ion-input  id="Category" ng-model="newProduct.categoryName" readonly="readonly">
                     <a class="button">Select Category</a>
                 </label>
                 <label class="item item-input" ng-click="openCamera()">
                     <span class="input-label">Image :</span>
-                    <input type="text" ng-model="newProduct.image"  id ="Category" readonly="readonly">
+                    <ion-input  ng-model="newProduct.image"  id ="Category" readonly="readonly">
                     <a class="button">Camera</a>
                 </label>
                 <label class="item item-input" ng-click="openGallery()">
@@ -73,5 +77,6 @@
         
         <button ng-show = "CreateMode == 0" class="button button-block" ng-Click = "deleteProduct(newProduct.productId)">Delete Product</button>
         <p style="color:green;" ng-show="productSuccessMessage">Product Added successfully</p>
+   </ion-scroll>
     </ion-content>
 </ion-view>
