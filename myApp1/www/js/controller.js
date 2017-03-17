@@ -219,6 +219,7 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
             //$ionicHistory.goBack();
             $rootScope.SelCat = 'favourite';
             loadCategory();
+            $scope.OnCatClick('favourite');
 
             $state.go('home');
         }, function() {
