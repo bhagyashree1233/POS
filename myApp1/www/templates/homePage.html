@@ -34,7 +34,7 @@
                             </thead>
                             <tr ng-repeat="product in productArr" on-hold="onPressHold($index)">
                                 <td>
-                                    {{$index}}
+                                    {{$index+1}}
                                     
                                     <div ng-if="$index==holdIndex">
                                         <button perform="testDivBlurFunc" style="display:inline;position:absolute;z-index:1;left:3px;font-size:3.5vmin;color:red;" ng-show="showDelete" ng-attr-detect-outside-click="showDelete === true" ng-click="deleteItem($index)" class="button clear icon ion-minus-circled"></button>

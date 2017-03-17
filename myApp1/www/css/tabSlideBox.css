@@ -6,6 +6,7 @@
 }
 .tabbed-slidebox .slider-slides {
     width: 100%;
+  
 }
 
 .tabbed-slidebox .slider-slide {
@@ -18,6 +19,7 @@
     background: url('../img/downloaded.jpg') no-repeat center;
 
   background-size: cover;
+   
  
 }
 
@@ -33,14 +35,16 @@
     position: relative;
 	-webkit-transition: -webkit-transform 0.3s; /* For Safari 3.1 to 6.0 */
 	-webkit-transform:translate3d(0,0,0);
+
 }
 
 .tabbed-slidebox .tsb-icons a {
     display: inline-block;
-    width: 54px;
+    width: 14vmin;
     font-size: 2.5em;
     color: rgba(0, 0, 0, 0.3);
 	-webkit-transform:translate3d(0,8px,0);
+	
 }
 
 .tabbed-slidebox .tsb-icons a.active {
@@ -53,6 +57,7 @@
     position: relative;
     height: 100%;
     overflow: hidden;
+   
 }
 
 .tabbed-slidebox .tsb-icons:after {
@@ -67,6 +72,7 @@
     bottom: -12px;
     left: 50%;
     margin-left: -14px;
+
 }
 .tsb-hscroll.scroll-view{
   	white-space: nowrap;
@@ -86,6 +92,7 @@
 	text-decoration: none;
 	margin: 0 15px;
 	border-bottom: 3px solid transparent;
+
 }
 .tabbed-slidebox .tsb-icons .scroll a.active {
 	font-size: 1.8em;
