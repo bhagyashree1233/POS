@@ -628,6 +628,7 @@ $scope.onPressHoldProduct = function()
            $scope.billCopies = 0;
         if($rootScope.printFormatSettings.tokNum == "Manual")
         {
+            $scope.keypadMessage = "Enter Token Number";
              $rootScope.openNumericModal($scope, $scope.receipt, $scope.receipt);
 
         }
@@ -679,12 +680,14 @@ $scope.onPressHoldProduct = function()
         }
 
         if ($rootScope.PaymentSettings.PaymentMode.length <= 0) {
+            $scope.keypadMessage = "Enter Amount collected";
             $rootScope.openNumericModal($scope, $scope.onPaymentOk, $scope.onPaymentCancel);
             return;
 
         }
 
         if ($rootScope.PaymentSettings.PaymentMode.length == 1 && $rootScope.PaymentSettings.PaymentMode[0].name == "Cash") {
+            $scope.keypadMessage = "Enter Amount collected";
             $rootScope.openNumericModal($scope, $scope.onPaymentOk, $scope.onPaymentCancel);
             return;
         }
@@ -722,6 +725,7 @@ $scope.onPressHoldProduct = function()
                 //show keypad;;
                 //showing Modal();
                 console.log("In cash");
+                $scope.keypadMessage = "Enter Amount collected";
                $rootScope.openNumericModal($scope, $scope.onPaymentOk, $scope.onPaymentCancel);
             }
 
@@ -830,6 +834,7 @@ $scope.onPressHoldProduct = function()
 
         } else {
             $rootScope.CurrentProduct = Product;
+            $scope.keypadMessage = "Enter Quantity";
             $rootScope.openNumericModal($scope, $scope.onQuantityOk, $scope.onQuantityCancel);
         }
 
