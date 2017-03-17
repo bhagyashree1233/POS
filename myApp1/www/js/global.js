@@ -136,14 +136,14 @@ $rootScope.Reports={
               console.log('Your password is', res);
               if(res.done ==true)
               {
-                if(res.text=='payupad123' || res.text==$rootScope.password)
+                //if(res.text=='payupad123' || res.text==$rootScope.password)
                   $rootScope.OnModeChangeClick();
-                else
+               /* else
                  {
                  console.log("Wrong Password");
                  $rootScope.ShowToast("Wrong Password",false);
                  $rootScope.Mode = false;
-                 }
+                 }*/
               }
               else
               {
@@ -173,10 +173,12 @@ $rootScope.Reports={
 
    }
 
-   $rootScope.OnEditCategory = function()
+   $rootScope.OnEditCategory = function(catId)
    {
     console.log("On Edit Category");
     $rootScope.CreateMode =0;
+
+    $rootScope.SelCat = catId;
      
     if($rootScope.SelCat !='favourite')
     $state.go('category');
