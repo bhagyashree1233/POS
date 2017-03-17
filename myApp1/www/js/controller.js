@@ -144,6 +144,92 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
         console.log($scope.allSlideProductArr);
     }
 
+
+   $scope.deleteProduct = function(productId) {
+
+        console.log("Product Id:", productId);
+        $scope.ProductId = productId;
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'The product will be permantly deleted',
+            template: 'Are you sure you want to delete Product?'
+        });
+
+        confirmPopup.then(function(res) {
+            if (res) {
+
+                $rootScope.showDbLoading();
+                console.log("ProductId 2:", productId);
+                var promise = dbService.deleteProduct(productId);
+                promise.then(function(result) {
+
+                    $rootScope.hideDbLoading();
+                    $scope.OnCatClick($rootScope.SelCat);
+                    //$ionicHistory.goBack();
+
+                }, function(result) {
+                    console.log(result);
+                    $rootScope.hideDbLoading();
+                });
+
+            } else
+                return;
+
+        });
+
+    }
+
+       $scope.deleteAllProductsAndCat = function(catId) {
+
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Will also delete all products in Category ',
+            template: 'Are you sure you want to delete Category?'
+        });
+
+        confirmPopup.then(function(res) {
+            if (res) {
+                console.log('Confirm Delete');
+                $rootScope.showDbLoading();
+                var promise1 = dbService.deleteAllProductsInCat(catId);
+                promise1.then(function(res) {
+                    console.log(res);
+                    console.log("deleted Products");
+                    $scope.deleteCategory(catId);
+
+                }, function() {
+                    console.log(res);
+                    console.log("Failed to delete Products in Category");
+                    $rootScope.ShowToast("Failed to delete Products in Category", false);
+                    $rootScope.hideDbLoading();
+                })
+
+            } else
+                return;
+
+        });
+
+    }
+
+    $scope.deleteCategory = function(catId) {
+
+        var promise = dbService.deleteCategory(catId);
+        promise.then(function(res) {
+            console.log(res);
+            $rootScope.ShowToast("Delete Category Success", false);
+            $rootScope.hideDbLoading();
+            //$ionicHistory.goBack();
+            $rootScope.SelCat = 'favourite';
+            loadCategory();
+            $scope.OnCatClick('favourite');
+
+            $state.go('home');
+        }, function() {
+            console.log(res);
+            $rootScope.ShowToast("Failed to Delete Category", false);
+            $rootScope.hideDbLoading();
+        })
+
+    }
+
     /*
     function categorySlideLogic() {
         $scope.allSlideCatArr = [];
@@ -1218,37 +1304,7 @@ $scope.onPressHoldProduct = function()
         })
     }
 
-    $scope.deleteProduct = function(productId) {
 
-        console.log("Product Id:", productId);
-        $scope.ProductId = productId;
-        var confirmPopup = $ionicPopup.confirm({
-            title: 'The product will be permantly deleted',
-            template: 'Are you sure you want to delete Product?'
-        });
-
-        confirmPopup.then(function(res) {
-            if (res) {
-
-                $rootScope.showDbLoading();
-                console.log("ProductId 2:", productId);
-                var promise = dbService.deleteProduct(productId);
-                promise.then(function(result) {
-
-                    $rootScope.hideDbLoading();
-                    $ionicHistory.goBack();
-
-                }, function(result) {
-                    console.log(result);
-                    $rootScope.hideDbLoading();
-                });
-
-            } else
-                return;
-
-        });
-
-    }
 
     $scope.onCategorySelect = function(categoryObj) {
         $scope.newProduct.categoryName = categoryObj.categoryName;
@@ -1371,54 +1427,7 @@ $scope.onPressHoldProduct = function()
 
     }
 
-    $scope.deleteAllProductsAndCat = function() {
-
-        var confirmPopup = $ionicPopup.confirm({
-            title: 'Will also delete all products in Category ',
-            template: 'Are you sure you want to delete Category?'
-        });
-
-        confirmPopup.then(function(res) {
-            if (res) {
-                console.log('Confirm Delete');
-                $rootScope.showDbLoading();
-                var promise1 = dbService.deleteAllProductsInCat($scope.newCategory.categoryId);
-                promise1.then(function(res) {
-                    console.log(res);
-                    console.log("deleted Products");
-                    $scope.deleteCategory();
-
-                }, function() {
-                    console.log(res);
-                    console.log("Failed to delete Products in Category");
-                    $rootScope.ShowToast("Failed to delete Products in Category", false);
-                    $rootScope.hideDbLoading();
-                })
-
-            } else
-                return;
-
-        });
-
-    }
-
-    $scope.deleteCategory = function() {
-
-        var promise = dbService.deleteCategory($scope.newCategory.categoryId);
-        promise.then(function(res) {
-            console.log(res);
-            $rootScope.ShowToast("Delete Category Success", false);
-            $rootScope.hideDbLoading();
-            //$ionicHistory.goBack();
-            $rootScope.SelCat = 'favourite';
-            $state.go('home');
-        }, function() {
-            console.log(res);
-            $rootScope.ShowToast("Failed to Delete Category", false);
-            $rootScope.hideDbLoading();
-        })
-
-    }
+ 
 
     $scope.editedCategory = {
         name: "",
