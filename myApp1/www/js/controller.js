@@ -41,12 +41,7 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
     //ionicParentView
 
     //load products list from DB
-$scope.productHold = function()
-{
 
-    $scope.productHoldFlag = true;
-    console.log("productHold occured");
-}
 
     $scope.OnCatClick = function(catId) {
         console.log(catId);
@@ -738,6 +733,7 @@ $scope.onPressHoldProduct = function()
     // Payment model end
 
     $scope.OnProductClick = function(Product) {
+        console.log("on product click");
         if ($rootScope.Mode == 1) //edit or add mode;;
         {
             console.log("Mode Edit");

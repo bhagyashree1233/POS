@@ -1,4 +1,42 @@
-<ion-view hide-nav-bar='true' ng-controller="productCtrl" cache-view="false">
+<tab-slide-box>
+			    	<div class="tsb-icons">
+			    		<div class="tsb-ic-wrp">
+							
+							<a href="javascript:;" class="ion-images"></a>
+							<a href="javascript:;" class="ion-cash"></a>
+							<a href="javascript:;" class="ion-bag"></a>
+						</div>
+			    	</div>
+			        <ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
+			            <ion-slide>
+			                 <h2> Step 1 </h2>
+			                <h3>Add Product Basics</h3>
+
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">Favourite Product:</span>
+                    <ion-toggle style="border:0px;min-height:6vh;" ng-model="newProduct.favourite" toggle-class="toggle-calm"></ion-toggle>
+                </label>
+
+                <label class="item item-input">
+                    <span class="input-label">Product Name :</span>
+                    <input  ngModel="productNameInput"id="productName" maxlength="25" ng-model="newProduct.name"></ion-input>
+                </label>
+                </div>
+                <ion-button> Next </ion-button>
+			            </ion-slide>
+			            <ion-slide>
+			                <h2> Step 2 </h2>
+			                <h3>Add Product Costings</h3>
+			            </ion-slide>
+			            <ion-slide>
+			               <h2> Step 3 </h2>
+			                <h3>Add inventory</h3>
+			           
+            </tab-slide-box>
+
+
+<!--<ion-view hide-nav-bar='true' ng-controller="productCtrl" cache-view="false">
      
     <ion-content id="productContentDiv">
 
@@ -82,3 +120,4 @@
    </ion-scroll>
     </ion-content>
 </ion-view>
+-->
