@@ -14,7 +14,11 @@
     background-color: #fff;
     text-align: center;
     font-weight: 300;
-    background-color: #0398dc;
+    
+    background: url('../img/downloaded.jpg') no-repeat center;
+
+  background-size: cover;
+ 
 }
 
 .tabbed-slidebox .tsb-icons {
@@ -56,7 +60,7 @@
     height: 0;
     border-style: solid;
     border-width: 0 1.4em 1.4em 1.4em;
-    border-color: transparent transparent #0398dc transparent;
+    border-color: transparent transparent #5e1901 transparent;
     position: absolute;
     content: "";
     display: block;
