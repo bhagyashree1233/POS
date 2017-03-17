@@ -4,7 +4,7 @@
 // the 2nd parameter is an array of 'requires'
 
 
-angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ngCordova', 'starter.globalcontroller','starter.keypad','ion-floating-menu','starter.reportscontroller','starter.settingscontroller','ionic-sidetabs','divBlur']).run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q, $ionicLoading, settingService, salesService, dbService,$state) {
+angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ngCordova', 'starter.globalcontroller','starter.keypad','ion-floating-menu','starter.reportscontroller','starter.settingscontroller','ionic-sidetabs','divBlur','tabSlideBox']).run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q, $ionicLoading, settingService, salesService, dbService,$state) {
 
 
     var dfd = $q.defer();

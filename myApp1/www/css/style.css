@@ -1,14 +1,16 @@
 #product-billing {
     width: 36vw;
-    margin-top:8vmin;
+    margin-top:auto;
     height: 100%;
-    border-top: thin solid black;
-    border-bottom: thin solid black;
-    border-right: thin solid black;
+
+  
+ 
     display: -webkit-flex;
     display: flex;
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
+      -webkit-box-shadow: 10px 0 5px -3px rgba(0,0,0,0.5);
+          box-shadow: 10px 0 5px -3px  rgba(0,0,0,0.5);
 }
 #paymentModel>.modal {
    top: 10%;
@@ -33,21 +35,16 @@
     flex-wrap: wrap;
     flex-direction: column;
     width: 100%;
-    border-style: solid;
-    border-left: thin solid black;
-    border-top: thin solid black;
-    border-bottom: thin solid black;
+ 
+   
     overflow-x: scroll;
     overflow-y: hidden;
     height: 100%;
 }
 #product-billing-head {
-    position:absolute;
-    margin-top:1vmin;
-    margin-left:1vmin;
-    margin-right:1vmin;
-    margin-bottom:1vmin;
-    width:36vw;
+   
+   
+    width:100%;
     height:8vmin;
 }
 .icon_text
@@ -86,48 +83,42 @@ color:white;
     justify-content: center;
 }
 #product-categary {
-    border: 1px solid black;
+    position:absolute;
     width: 64vw;
-    height: 10vh;
+    height: 9vh;
     display: inline-block;
-    bottom:0px;
+    bottom:1vh;
+    line-height:10vh;
+    z-index:0;
     
 }
-#product-cat-slide {
-height:9vh;
- 
-}
-.product-slide {
+
+
+.product-categary-scroll {
+
+    bottom: 3vh;
     width: 100%;
-    height: 100%;
-}
-#product-categary-scroll {
-    height: 100%;
-    width: 100%;
-    margin: 0vh;
+    height: 16vh;
     overflow-x: scroll;
     white-space: nowrap;
+
 }
-#product-categary-next,
-#product-categary-previous {
-    width: 6%;
-    height: auto;
-    background: black;
-}
-#button-next,
-#button-previous {
-    width: 100%;
-    height: 100%;
-    background: black;
-    color: white;
-}
+
+
 .product-categary-button {
     background: black;
     color: #ffffff;
-    width: 20%;
-    line-height: 8vh!important;
+    width: 16vw;
+   
+    font-size:2.5vmin;
+    line-height: 8vmin!important;
     border-radius: 5px;
     height: 100%;
+    -webkit-box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
+-moz-box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
+box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
+
+
     
 }
 .bar-light .button {
@@ -160,30 +151,30 @@ height:9vh;
     font-size-adjust: auto;
     font-size: 1.5vh;
     position: relative;
-    border: solid;
+
     width: 32%;
     height: 18%;
     background: black;
     color: white;
     margin: 0.5vh;
 }
-#product-display-row>#product-image {
-    float: right;
-    height: 70%
-}
+
+
+
 #quantityBox {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.4);
-    border: solid #111;
+ 
     width: 100%;
     height: 100%;
 }
 #product-billing-col1 {
-    border: solid;
-    padding-top:0px;
+  
+    padding-top:20px;
     width: 100%;
     height: 100%;
-    color: white;
+    color:white;
+  
 }
 #product-price {
     left: 0;
@@ -192,10 +183,10 @@ height:9vh;
     text-align: center;
     vertical-align: center;
     position: absolute;
-    border: black;
+  
     background: black;
     height: 4vmin;
-    border-radius:4px;
+    border-radius:0.5vmin;
     width: auto;
     min-width:3vmin;
     min-width: 4vmin;
@@ -208,10 +199,11 @@ height:9vh;
     right: 0;
    top: 0vh;
     position: absolute;
-    border: black;
-    background: #f54949;
+    
+    background: grey;
+    color:white;
     height: 4vmin;
-    border-radius:4px;
+    border-radius:0.5vmin;
     width: auto;
     min-width:3vmin;
     opacity: 0.9;
@@ -224,7 +216,7 @@ height:9vh;
 
 #product-stock-text{
     opacity:1;
-    color:black;
+    color:white;
     vertical-align:middle;
     line-height:2.5vmin;
  transform: translateY(25%);
@@ -236,7 +228,7 @@ height:9vh;
 #product-name{
     left:0;
 
-    bottom:5px;
+    bottom:0px;
     width:100%;
     text-align:center;
     color: white;
@@ -249,56 +241,20 @@ height:9vh;
     height:4vmin;
     border-radius:0.5vmin;
 }
-#product-image {
 
 
+.product-image {
 
+
+ border-radius:1vmin;
     position:relative;
-   
-   
+     -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.6);
+-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.6);
+box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.6);
 
 }
 
-#product-billing-table {
-    table-layout: fixed;
-    border: 1px solid black;
-    width: 100%;
-    border-collapse: initial;
-    font-size:2.5vmin;
-    text-align:right;
-}
-.product-billing-tableScroll {
-    overflow-y: auto;
-    height: 93%;
-}
-tbody {
-    overflow-y: auto;
-    /* Trigger vertical scroll    */
-    
-    overflow-x: hidden;
-}
-th {
-    background: black;
-    color: White;
-}
-td {
-    background: rgba(170, 170, 170, 0.2);
-}
-tr:hover {
-    background: rgba(170, 170, 170, 0.66);
-}
-tr,
-td,
-th {
-    border: 1px solid black;
-    height: 5vh;
-}
-tr.selected td {
-    background: #ccc!important;
-}
-body {
-    cursor: url('http://ionicframework.com/img/finger.png'), auto;
-}
+
 .sam-cust-bar .button.button-block {
     margin-top: 0;
     margin-bottom: 0;
@@ -409,6 +365,7 @@ input.printerSettingtext {
         margin: 10vh;
     }
     #productsViewSlideBox {
+      top:5vmin;
         height: 100%;
         width: 100%;
         margin: 0vh;
@@ -785,4 +742,102 @@ body {
     50% {
         -webkit-transform: rotate(1deg);
     }
+}
+
+.backgroundProduct
+{
+ background: url('../img/downloaded.jpg') no-repeat center;
+
+  background-size: cover;
+  height: 100%;
+
+}
+
+.backgroundPOS
+{
+  background: url('../img/background.jpg') no-repeat center;
+  background-color: rbga(0,0,0,0.9);
+  height: 100%;
+  
+
+}
+
+#logo
+{
+  position: fixed;
+  top: 500px;
+  right: 25px;
+  opacity: 0.5;
+}
+
+#logo:hover
+{
+  opacity: 1;
+}
+
+caption
+{
+  font-size: 64px;
+  margin: 25px;
+  color: #222;
+  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+table
+{
+  text-align: left;
+  width: 100%;
+  border-collapse:collapse;
+  margin: 0 auto;
+
+  background: rgba(255, 255, 255, 0.15);
+}
+
+td, th
+{
+  padding: 16px;
+  width: 200px;
+  line-height: 18px;
+  font-weight: 300;
+ 
+}
+
+thead
+{
+  display: block;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+th
+{
+  border-bottom: 0;
+  color: white;
+  color: #444;
+  font-weight: 700;
+  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+th:last-child
+{
+  width: 219px;
+}
+
+tbody
+{
+  width: 100%;
+  max-height:55vh;
+  min-height:0px;
+  overflow: auto;
+
+  display: block;
+}
+
+tr:nth-child(even)
+{
+  background: rgba(255, 255, 255, 0.15);
+}
+
+tr td:first-child
+{
+  font-weight: bold;
 }
