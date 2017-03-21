@@ -143,8 +143,6 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
         }
         console.log($scope.allSlideProductArr);
     }
-
-
    $scope.deleteProduct = function(productId) {
 
         console.log("Product Id:", productId);
