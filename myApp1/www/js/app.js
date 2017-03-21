@@ -212,13 +212,7 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'n
             
         
     })
-    .state('productReport', {
-        url: '/productReport',
-       templateUrl: 'templates/itemReport.html'
-            
-        
-    })
-
+    
     .state('itemReport', {
         url: '/itemReport',
        
