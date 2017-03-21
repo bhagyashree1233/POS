@@ -353,8 +353,12 @@ input.printerSettingtext {
     color: black;
 }
     #categaryModal {
+      position:absolute;
+      top:25%;
+      height:30vh;
+     
         width: 50%;
-        left: 40%;
+        left: 25%;
     }
     #errorMessage {} .red {
         border-color: red;
