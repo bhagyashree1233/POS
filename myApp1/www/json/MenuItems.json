@@ -14,21 +14,14 @@
 },
 {
 "name": "Tax-Settings",
-"icon": "ion-ios-compose-outline",
+"icon": "ion-settings",
 "state": "TaxSettings"
 },
 {
 "name": "Report-Setting",
-"icon": "ion-document-text",
+"icon": "ion-document",
 "state": "Reports"
-},
-{
-"name": "BillWise-Report",
-"icon": "ion-document-text",
-"state": "billWiseReport"
-},
-
-{
+},{
 "name": "Bluetooth-Settings",
 "icon": "ion-bluetooth",
 "state": "bluetoothsettings"
@@ -39,14 +32,9 @@
 "state": "passwordChange"
 },
 {
-"name": "Reprint-Bill",
-"icon": "ion-android-print",
-"state": "billdetails"
-},
-{
-"name": "Cancel-Bill",
-"icon": "ion-android-cancel",
-"state": "billdetails"
+"name": "BillWise-Report",
+"icon": "ion-document-text",
+"state": "billWiseReport"
 },
 {
 "name": "Sales-Report",
@@ -57,7 +45,20 @@
 "name": "ItemWise-Report",
 "icon": "ion-document-text",
 "state": "itemReport"
+},
+
+
+{
+"name": "Reprint-Bill",
+"icon": "ion-android-print",
+"state": "billdetails"
+},
+{
+"name": "Cancel-Bill",
+"icon": "ion-android-cancel",
+"state": "billdetails"
 }
+
 
 ]
 }
