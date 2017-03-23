@@ -43,7 +43,9 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'n
         //$rootScope.TaxSettings = TaxSettings;
         //$rootScope.PaymentSettings = PaymentSettings;
         //$rootScope.Reports=Reports;
-        //$cordovaSQLite.execute($rootScope.db, "DROP TABLE TransactionDetails ").then(console.log('Transaction table droped Successfully')); 
+        //$cordovaSQLite.execute($rootScope.db, "DROP TABLE Category ").then(console.log('Transaction table droped Successfully')); 
+        //$cordovaSQLite.execute($rootScope.db, "DROP TABLE Product ").then(console.log('Transaction table droped Successfully')); 
+
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Category (CategoryId integer primary key AUTOINCREMENT, CategoryName text, CategoryDesc text)").then(console.log('Category table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Product (ProductId integer primary key AUTOINCREMENT, ProductName text, ProductUnit text, ProductPrice real, TaxId integer, BuyingPrice real, TaxRate real, ItemsinStock real, Discount real, CategoryId integer, CategoryName text, Image text, Favourite text)").then(console.log('Product table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS TransactionDetails (BillNo integer, DateTime text,DiscountAmount real, ProductId integer, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, CategoryId integer, CategoryName text)").then(console.log('TransactionDetails table created Successfully'));

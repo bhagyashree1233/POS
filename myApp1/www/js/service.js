@@ -2,7 +2,9 @@ angular.module('starter.services', [])
 
 .factory("dbService", function($q, $cordovaSQLite, $rootScope) {
     function addNewCategory(name, desc) {
+        
         var deferred = $q.defer();
+      
         console.log('entered add newCategory service..');
         var query = "INSERT INTO Category (CategoryName, CategoryDesc) VALUES (?,?)";
         $cordovaSQLite.execute($rootScope.db, query, [name, desc]).then(function(res) {
@@ -266,6 +268,11 @@ angular.module('starter.services', [])
     }
     function editCategory(categoryId, name, desc) {
         var deferred = $q.defer();
+        if($scope.newCategory.categoryName==undefined ||$scope.newCategory.categoryName.length>1){
+            $rootScope.ShowToast("Enter Categary Name", false);
+            console.log('Enter Categary');
+            return false;
+        }
         var query = "update Category Set CategoryName='" + name + "',CategoryDesc='" + desc + "' where CategoryId='" + categoryId + "'";
         console.log(query);
         $cordovaSQLite.execute($rootScope.db, query).then(function(res) {

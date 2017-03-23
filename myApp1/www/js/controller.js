@@ -358,6 +358,8 @@ $scope.onPressHoldProduct = function()
         console.log("discountAmount: " + discountAmount);
         var productTotalAmount = parseFloat((productTotalPrice + productTotalTax - discountAmount).toFixed(2));
         console.log("productTotalAmount: " + productTotalAmount);
+        console.log("productId " + product.productId);
+
         $scope.productArr.push({
             productId: product.productId,
             name: product.name,
@@ -1044,7 +1046,7 @@ $scope.onPressHoldProduct = function()
 
     $scope.addEditProduct = function() {
 
-       
+         console.log($scope.newProduct.productId)
         var productName = $scope.newProduct.name;
        
         if (productName == undefined || productName.length < 2) {
@@ -1254,7 +1256,7 @@ $scope.onPressHoldProduct = function()
             console.log('validation success and entered if');
             console.log($scope.newProduct);
             $rootScope.showDbLoading();
-            var promise = dbService.addNewProduct($scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite);
+            var promise = dbService.addNewProduct($scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite,$scope.newProduct.productId);
             promise.then(function(result) {
                 console.log(result);
                 console.log("Product Added Sucessfully");
@@ -1446,6 +1448,11 @@ $scope.onPressHoldProduct = function()
     }
 
     $scope.saveEditedCategory = function() {
+        if($scope.newCategory.categoryName==undefined||$scope.newCategory.categoryName.length<1){
+         $rootScope.ShowToast("Enter Categary Name", false);
+        console.log('Enter Categary');
+        return false;
+        }
         if ($scope.newCategory.name != '' ) {
             console.log($scope.newCategory.categoryName);
            
@@ -1488,6 +1495,14 @@ $scope.onPressHoldProduct = function()
     $scope.newCategory = {};
 
     $scope.addNewCategory = function() {
+        console.log('I am in add New Categary')
+        console.log($scope.newCategory.categoryName)
+        console.log($scope.newCategory.categoryName.length)
+         if($scope.newCategory.categoryName==undefined ||$scope.newCategory.categoryName.length<1){
+            $rootScope.ShowToast("Enter Categary Name", false);
+            console.log('Enter Categary');
+            return false;
+        }
 
         if (!($scope.catIdErrorMsg)) {
             $rootScope.showDbLoading();
