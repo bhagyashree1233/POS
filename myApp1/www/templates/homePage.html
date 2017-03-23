@@ -93,6 +93,102 @@
             <!--<button class="product-categary-button" ng-show = "Mode == 1" ng-click="AddNewCat()">Add New</button>
                         <button  class="product-categary-button"  ng-repeat="categoryObj in categoryArr" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
                         -->
+
+            <div id="productsView">
+            <table style="width:100%;font-size:2vmin;font-weight:bold;line-height:4.5vmin;">
+            
+            <tr ng-show='Mode == true'>
+            <td>
+            <div style="width:20%;height:20%;margin:1vh;" ng-click="AddNewPro()">
+            <div style="position:relative;">
+                                    <div style="width:15vw;max-height:25vh;">
+                                        <div id="product-image" style="width:100%; height:100%" align="right">
+                                            <img ng-src="img/add-product.png" style="padding:auto;margin:auto;height:100%;width:100%;"></img>
+                                        </div>
+                                    </div>
+                                </div>
+            </div>
+            </td>
+            </tr>
+             
+            <tr ng-repeat="Product in Products" ng-if="$index%3==0">
+           
+             <td>
+             <div ng-class="{jiggle: Mode}"  style="position:relative;">
+                                    <div ng-show='Mode==true' style="position:absolute;z-index:1;font-size:7vmin;height:7vmin;width:5vmin;color:red;top:-10px;right:-4px;" class="icon-right ion-close-circled" ng-Click = "deleteProduct(Products[$index].productId)"></div>
+                                    <div ng-show='Mode==true' style="position:absolute;z-index:1;font-size:4vmin;line-height:7vmin;text-align:center;height:7vmin;width:7vmin;color:white;bottom:-10px;left:-4px;background:blue;border-radius:10px;" class="icon-left ion-edit" ng-Click = "OnProductClick(Products[$index])"></div>
+                                    <div style="width:15vw;max-height:25vh;" on-hold="productHold(); $event.stopPropagation()" ng-click="OnProductClick(Products[$index])">
+                                        <div class="product-image">
+                                            <img ng-src={{Products[$index].image}} style="width:100%; height:100%"></img>
+                                            
+                                            <div id="product-stock">
+                                                <div id="product-stock-text">Stock: {{Products[$index].inStock}} </div>
+                                            </div>
+                                            
+                                            <div id="product-price">
+                                                <a style="font-weight:bold;color:lightblue;">{{PaymentSettings.CurrencyOptions.symbol}}{{Products[$index].unitPrice}}</a>
+                                            </div>
+                                            
+                                            <div id="product-name">
+                                                <p>{{Products[$index].name}}</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+            </td>
+              
+            <td>
+
+            <div ng-class="{jiggle: Mode}" ng-if="Products[$index+1]!=undefined" style="position:relative;">
+                                    <div ng-show='Mode==true' style="position:absolute;z-index:1;font-size:7vmin;height:7vmin;width:5vmin;color:red;top:-10px;right:-4px;" class="icon-right ion-close-circled" ng-Click = "deleteProduct(Products[$index+1].productId)"></div>
+                                    <div ng-show='Mode==true' style="position:absolute;z-index:1;font-size:4vmin;line-height:7vmin;text-align:center;height:7vmin;width:7vmin;color:white;bottom:-10px;left:-4px;background:blue;border-radius:10px;" class="icon-left ion-edit" ng-Click = "OnProductClick(Products[$index+1])"></div>
+                                    <div style="width:15vw;max-height:25vh;" on-hold="productHold(); $event.stopPropagation()" ng-click="OnProductClick(Products[$index+1])">
+                                        <div class="product-image">
+                                            <img ng-src={{Products[$index+1].image}} style="width:100%; height:100%"></img>
+                                            <div id="product-stock">
+                                                <div id="product-stock-text">Stock: {{Products[$index+1].inStock}} </div>
+                                            </div>
+                                            <div id="product-price">
+                                                <a style="font-weight:bold;color:lightblue;">{{PaymentSettings.CurrencyOptions.symbol}}{{Products[$index+1].unitPrice}}</a>
+                                            </div>
+                                            <div id="product-name">
+                                                <p>{{Products[$index+1].name}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+            </td>
+            <td>
+                        <div ng-class="{jiggle: Mode}" ng-if="Products[$index+2]!=undefined" style="position:relative;">
+                                    <div ng-show='Mode==true' style="position:absolute;z-index:1;font-size:7vmin;height:7vmin;width:5vmin;color:red;top:-10px;right:-4px;" class="icon-right ion-close-circled" ng-Click = "deleteProduct(Products[$index+2].productId)"></div>
+                                    <div ng-show='Mode==true' style="position:absolute;z-index:1;font-size:4vmin;line-height:7vmin;text-align:center;height:7vmin;width:7vmin;color:white;bottom:-10px;left:-4px;background:blue;border-radius:10px;" class="icon-left ion-edit" ng-Click = "OnProductClick(Products[$index+2])"></div>
+                                    <div style="width:15vw;max-height:25vh;" on-hold="productHold(); $event.stopPropagation()" ng-click="OnProductClick(Products[$index+2])">
+                                        <div class="product-image">
+                                            <img ng-src={{Products[$index+2].image}} style="width:100%; height:100%"></img>
+                                            <div id="product-stock">
+                                                <div id="product-stock-text">Stock: {{Products[$index+2].inStock}} </div>
+                                            </div>
+                                            <div id="product-price">
+                                                <a style="font-weight:bold;color:lightblue;">{{PaymentSettings.CurrencyOptions.symbol}}{{Products[$index+2].unitPrice}}</a>
+                                            </div>
+                                            <div id="product-name">
+                                                <p>{{Products[$index+2].name}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+            
+
+            </td>
+          
+            </tr>
+            </table>
+
+            <!--</div>-->
+
+
+
+
+
+<!--
             <div id="productsView">
                 <ion-scroll direction="y" id="productsViewSlideBox" style="width:100%;height:90%;" scrollbar-x=false scrollbar-y=false>
                     <div style="width:94%;">
@@ -167,6 +263,8 @@
                         </div>
                     </div>
                 </ion-scroll>
+
+                -->
                 <!--<ion-slide-box show-pager="true" style="width:100%;height:90%;" id="productsViewSlideBox" >
                  -->
                 <!--<ion-slide style="display:flex;width:100%;height:100%;flex-wrap:wrap;flex-direction:row;" ng-repeat="proArr in allSlideProductArr">
@@ -207,7 +305,7 @@
                         </span>
                     </ion-scroll>
                 </div>
-            </div>
+           </div>
         </div>
         <!--  
         <div class="bar bar-footer bar-light " id="footer">
