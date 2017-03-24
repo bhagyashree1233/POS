@@ -218,7 +218,7 @@ console.log("fileName : ", fileName);
 var Path =cordova.file.externalRootDirectory;
 
 console.log("path : ", Path);
-
+/*
 const pdfDocGenerator = pdfMake.createPdf(docDefinition);
 pdfDocGenerator.getBlob((buffer) => {
     console.log(buffer);
@@ -230,7 +230,7 @@ pdfDocGenerator.getBlob((buffer) => {
       console.log("File Write Failed: ", err);
   });
 });
-
+*/
 
 console.log("Download Done");
  
@@ -521,7 +521,7 @@ console.log("fileName : ", fileName);
 var Path =cordova.file.externalRootDirectory;
 
 console.log("path : ", Path);
-
+/*
 const pdfDocGenerator = pdfMake.createPdf(docDefinition);
 pdfDocGenerator.getBlob((buffer) => {
     console.log(buffer);
@@ -533,7 +533,7 @@ pdfDocGenerator.getBlob((buffer) => {
       console.log("File Write Failed: ", err);
   });
 });
-
+*/
 
 console.log("Download Done");
  
