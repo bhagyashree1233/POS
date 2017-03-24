@@ -787,7 +787,7 @@ caption
   text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.4);
 }
 
-table
+table.billList
 {
   text-align: left;
   width: 100%;
@@ -797,7 +797,7 @@ table
   background: rgba(255, 255, 255, 0.15);
 }
 
-td, th
+table.billList td, th
 {
   padding: 16px;
   width: 200px;
@@ -806,13 +806,13 @@ td, th
  
 }
 
-thead
+table.billList thead
 {
   display: block;
   background: rgba(255, 255, 255, 0.5);
 }
 
-th
+table.billList th
 {
   border-bottom: 0;
   color: white;
@@ -821,12 +821,12 @@ th
   text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.7);
 }
 
-th:last-child
+table.billList th:last-child
 {
   width: 219px;
 }
 
-tbody
+table.billList tbody
 {
   width: 100%;
   max-height:55vh;
@@ -836,12 +836,80 @@ tbody
   display: block;
 }
 
-tr:nth-child(even)
+table.billList tr:nth-child(even)
 {
   background: rgba(255, 255, 255, 0.15);
 }
 
-tr td:first-child
+table.billList tr td:first-child
 {
   font-weight: bold;
+}
+
+
+/*---*/
+
+
+
+
+
+table.productsList
+{
+  text-align: left;
+  width: 100%;
+  border-collapse:collapse;
+  margin: 0 auto;
+
+  background: transparent;
+}
+
+
+table.productsList td, th
+{
+  padding: 16px;
+  width: 200px;
+  line-height: 18px;
+  font-weight: 300;
+ 
+}
+
+
+table.productsList thead
+{
+  
+}
+
+
+table.productsList th
+{
+  
+}
+
+
+table.productsList th:last-child
+{
+ 
+}
+
+
+table.productsList tbody
+{
+  width: 100%;
+  max-height:100%;
+  min-height:0px;
+  overflow: auto;
+
+  display: block;
+}
+
+
+table.productsList tr:nth-child(even)
+{
+  background: rgba(255, 255, 255, 1);
+}
+
+
+table.productsList tr td:first-child
+{
+  background: rgba(255, 255, 255, 1);
 }
