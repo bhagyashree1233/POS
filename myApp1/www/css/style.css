@@ -849,22 +849,17 @@ table.billList tr td:first-child
 
 /*---*/
 
-
-
-
-
-table.productsList
+table.productlist
 {
   text-align: left;
   width: 100%;
   border-collapse:collapse;
   margin: 0 auto;
 
-  background: transparent;
+  background: rgba(255, 255, 255, 0.15);
 }
 
-
-table.productsList td, th
+table.productlist td, th
 {
   padding: 16px;
   width: 200px;
@@ -873,43 +868,42 @@ table.productsList td, th
  
 }
 
-
-table.productsList thead
+table.productlist thead
 {
-  
+  display: block;
+  background: rgba(255, 255, 255, 0.5);
 }
 
-
-table.productsList th
+table.productlist th
 {
-  
+  border-bottom: 0;
+  color: white;
+  color: #444;
+  font-weight: 700;
+  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.7);
 }
 
-
-table.productsList th:last-child
+table.productlist th:last-child
 {
- 
+  width: 219px;
 }
 
-
-table.productsList tbody
+table.productlist tbody
 {
   width: 100%;
-  max-height:100%;
+  max-height:90vh;
   min-height:0px;
   overflow: auto;
 
   display: block;
 }
 
-
-table.productsList tr:nth-child(even)
+table.productlist tr:nth-child(even)
 {
-  background: rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 0.15);
 }
 
-
-table.productsList tr td:first-child
+table.productlist tr td:first-child
 {
-  background: rgba(255, 255, 255, 1);
+  font-weight: bold;
 }

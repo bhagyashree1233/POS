@@ -95,7 +95,7 @@
                         <button  class="product-categary-button"  ng-repeat="categoryObj in categoryArr" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
                         -->
             <div id="productsView" >
-                <table class="productsList" style="width:100%;font-size:2vmin;font-weight:bold;line-height:4.5vmin;">
+                <table class="productlist"  style="width:100%;font-size:2vmin;font-weight:bold;line-height:4.5vmin;">
                     <tr ng-show='Mode == true'>
                         <td style="background:transparent;">
                             <div style="width:20%;height:20%;margin:1vh;" ng-click="AddNewPro()">
