@@ -27,7 +27,7 @@
     text-align: center;
     margin: 10px 0;
     position: relative;
-	background-color:#fff;
+	background-color:#000;
 }
 
 .tabbed-slidebox .tsb-ic-wrp {
@@ -42,13 +42,13 @@
     display: inline-block;
     width: 14vmin;
     font-size: 2.5em;
-    color: rgba(0, 0, 0, 0.3);
+    color: grey;
 	-webkit-transform:translate3d(0,8px,0);
 	
 }
 
 .tabbed-slidebox .tsb-icons a.active {
-    color: rgba(0, 0, 0, 1);
+    color: rgb(255, 255, 255);
     font-size: 3.5em;
 	-webkit-transform:translate3d(0,0,0);
 }

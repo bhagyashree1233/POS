@@ -1,8 +1,14 @@
 
 angular.module('starter.globalcontroller', [])
 
-.controller('global',function($rootScope,$scope,$cordovaSQLite,$state,$cordovaToast,$scope, $ionicLoading,$ionicPopup){
+.controller('global',function($rootScope,$scope,$cordovaSQLite,$state,$cordovaToast,$scope, $ionicSlideBoxDelegate, $ionicLoading,$ionicPopup){
   console.log('Hello hai');
+
+   $rootScope.nextSlide = function() {
+      console.log("changing to next slide");
+    $ionicSlideBoxDelegate.next();
+     };
+     
    $rootScope.Mode = false;
    $rootScope.SelCat ='0';
    $rootScope.CreateMode = 0;

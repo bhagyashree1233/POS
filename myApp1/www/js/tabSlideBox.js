@@ -143,6 +143,8 @@ angular.module('tabSlideBox', [])
 				}
 				var events = scope.events;
 				events.on('slideChange', function(data){
+					console.log("in sclide change func");
+					console.log(data);
 					setPosition(data.index);
 				});
 				events.on('ngRepeatFinished', function(ngRepeatFinishedEvent) {

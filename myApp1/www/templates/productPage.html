@@ -1,5 +1,5 @@
 
-<tab-slide-box ng-controller="productCtrl">
+<tab-slide-box ng-controller="productCtrl" style="background-color:black;">
     <div class="tsb-icons">
         <div class="tsb-ic-wrp">
 
@@ -34,7 +34,7 @@
                 
                 
             </div>
-            <ion-button> Next </ion-button>
+            <button ion-button larger color="dark" ng-click='nextSlide()'> Next </button>
         </ion-slide>
         <ion-slide>
             <h2 style="color:white;"> Step 2 </h2>
@@ -62,6 +62,7 @@
                 <span class="input-label">Discount (%):</span>
                 <input type="tel" id="discount" maxlength="5" ng-model="newProduct.discount">
             </label>
+            <button ion-button larger color="dark" ng-click='nextSlide()'> Next </button>
 
         </ion-slide>
         <ion-slide>

@@ -1021,6 +1021,8 @@ $scope.onPressHoldProduct = function()
 ])//END OF HOMECTRL;;
 
 .controller("productCtrl", function($scope, $state, $rootScope, $ionicPopover, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
+ 
+
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         console.log('working before enter..')
 
@@ -1043,6 +1045,8 @@ $scope.onPressHoldProduct = function()
         }
         loadCategory();
     });
+
+    
 
     $scope.addEditProduct = function() {
 
@@ -1353,6 +1357,8 @@ $scope.onPressHoldProduct = function()
             });
         }, false);
     }
+     
+
     $scope.openGallery = function() {
         console.log('gallery opened..');
         document.addEventListener("deviceready", function() {
@@ -1547,6 +1553,7 @@ $scope.onPressHoldProduct = function()
    
 
 })
+
 .controller('MenuCtrl', function($scope, settingService, $rootScope, $state) {
 
     $rootScope.devWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width);
