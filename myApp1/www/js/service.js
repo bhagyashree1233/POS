@@ -122,7 +122,7 @@ angular.module('starter.services', [])
                     categoryId: res.rows.item(i).CategoryId,
                     categoryName: res.rows.item(i).CategoryName,
                     image: res.rows.item(i).Image,
-                    favorite: res.rows.item(i).Favourite
+                    favourite: res.rows.item(i).Favourite
                 });
             }
             deferred.resolve(Products);

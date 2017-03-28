@@ -27,11 +27,11 @@
                     <a class="button">Select Category</a>
                 </label>
 
-                <label style="background-color:transparent;" class="item item-input" ng-click="openCamera()">
+                <label style="background-color:transparent;" class="item item-input">
                     <span class="input-label">Image :</span>
                     <input style="background-color:transparent;" type="text" ng-model="newProduct.image" id="Category" readonly="readonly">
-                    <a class="button">Camera</a>
-                     <a class="button" ng-click="openGallery()">Gallery</a>
+                   <a class="button" ng-click="openCamera()" >Camera</a> </label>
+                   <a class="button" ng-click="openGallery()">Gallery</a></label>
                 </label>
                 
                 
@@ -72,8 +72,9 @@
             <h3 style="color:white;">Add inventory</h3>
             <label  style="background-color:transparent;" class="item item-input">
                 <span class="input-label">Favourite Product:</span>
-                <ion-toggle  style="border:0px;min-height:6vh;background-color:transparent;" ng-model="newProduct.favourite" toggle-class="toggle-calm"></ion-toggle>
+                <ion-toggle  style="border:0px;min-height:6vh;background-color:transparent;" ng-model="newProduct.favourite" ng-checked="newProduct.favourite" toggle-class="toggle-calm"></ion-toggle>
             </label>
+            
             <label style="background-color:transparent;" class="item item-input">
                 <span class="input-label">Product Unit :</span>
                 <ion-radio style="background-color:transparent;" ng-model="newProduct.unit" ng-value="'kgs'">Kgs</ion-radio>
