@@ -1192,14 +1192,14 @@ $scope.onPressHoldProduct = function()
     }
 
     function loadCategory() {
-        $rootScope.showDbLoading();
+        //$rootScope.showDbLoading();
         var promise = dbService.loadCategoryFromDB('Category');
         promise.then(function(res) {
             $scope.categoryArr = res;
-            $rootScope.hideDbLoading();
+            //$rootScope.hideDbLoading();
         }, function(res) {
             console.log(res);
-            $rootScope.hideDbLoading();
+            //$rootScope.hideDbLoading();
         })
     }
 
