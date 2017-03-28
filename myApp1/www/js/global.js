@@ -891,8 +891,6 @@ return s;
        AmountHeader = padLeft(AmountHeader," ",8);
 
 
-  
-
       $rootScope.PrintText(itemHeader + "  " + qtyHeader + "  " + priceHeader + "  " + AmountHeader +"\n");
 
       $rootScope.PrintText("-----------------------------------------\n");
@@ -958,6 +956,16 @@ return s;
        $rootScope.PrintText("Total Tax:");
        $rootScope.PrintEnableBold(false);
        $rootScope.PrintText(billSummary.totalTaxAmount + "\n");
+
+        if(billSummary.discountAmount !=undefined && billSummary.discountAmount > 0)
+        {
+       $rootScope.PrintEnableBold(true);
+       $rootScope.PrintText("Discount:");
+       $rootScope.PrintEnableBold(false);
+       $rootScope.PrintText(billSummary.discountAmount + "\n");
+        }
+
+
        $rootScope.PrintEnableBold(true);
        $rootScope.PrintText("Total Amount:");
        $rootScope.PrintEnableBold(false);
@@ -973,7 +981,7 @@ return s;
       
 
 
-        if(tokenNo != undefined)
+        if(tokenNo != undefined && tokenNo > 0)
         {
             $rootScope.PrintText("Token No: " + tokenNo + "\n");
         }

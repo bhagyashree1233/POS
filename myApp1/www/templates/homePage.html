@@ -67,6 +67,7 @@
                     <div class="totalAmountCalculation" style="padding-top:1vmin;">
                         <button style="border-radius:1%;width:100%;height-max:2vmin;line-height:6vmin;font-size:2vmin;;" ng-click="showPaymentMode()" class="button  button-balanced">check out {{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</button>
                         <p style="font-size:2vmin;color:white;line-height:1.5vmin;"></p>
+                         <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;">Bill No: {{VolatileData.CurrentBillNo}}</p>
                         <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;">Total Bill Amount{{currencySymbol}}:{{totalPrice}}</p>
                         <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;">Tax{{currencySymbol}}:{{totalTaxAmount}}</p>
                         <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;">Discount Amount{{currencySymbol}}:{{discountAmount}}</p>

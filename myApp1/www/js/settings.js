@@ -585,11 +585,12 @@ BTPrinter.printText(function(data){
     $scope.showTran = false;
     $scope.showBill=false;
 
-    $scope.ShowBill= function(BillNo)
+    $scope.ShowBills= function(BillNo)
     {
 
     $scope.showTran = false;
     $scope.showBill=false;
+
         if(BillNo == 0 || BillNo == "")
         {
         $rootScope.ShowToast("Please Enter Bill No",false);    
@@ -625,12 +626,12 @@ BTPrinter.printText(function(data){
                      {
                     var product = {};
                     product.name= data[i].ProductName;
-                    product.quantity= data[i].Quantity;
-                    product.productTotalPrice= data[i].ProductPrice;
+                    product.quantity= data[i].Quantity; 
+                    product.productPrice = data[i].ProductPrice;
+                    product.productTotalPrice= data[i].TotalPrice;
                     $scope.productArr.push(product);
                      }
                 })
-
 
 
                  var promise = dbService.getBillDetails(BillNo);
@@ -638,7 +639,10 @@ BTPrinter.printText(function(data){
                      console.log(data);
 
                     if(data.length <=0)
+                    {
+                        console.log("No data found");
                     return;
+                    }
 
                     $scope.showBill=true;
                     $scope.totalPrice= data[0].TotalPrice;
@@ -647,6 +651,7 @@ BTPrinter.printText(function(data){
                     $scope.totalChargeAmount=  data[0].TotalAmount;
                     $scope.BillStatus=  data[0].BillStatus;
                     $scope.DateTime = data[0].DateTime;
+                    console.log("Date Time is : ",data[0].DateTime);
                     //PaymentMethod:  data[0].PaymentMethod,
                     //TotalItems:  data[0].TotalItems,
                     //BillStatus:  data[0].BillStatus
@@ -667,20 +672,28 @@ $scope.ReprintBill = function(BillNo)
     }
 
     var billSummary={};
-     var d = new Date($scope.DateTime);
+    // var d = new Date();
 
-     console.log($scope.DateTime);
-     console.log(d);
+      //var transactionDate = (new Date()).getTime();
+
+      //console.log("Trans date: ", transactionDate);
+
+     console.log("scope: ", $scope.DateTime);
+     //console.log(d);
      billSummary.totalPrice= $scope.totalPrice;
      billSummary.discountAmount=  $scope.discountAmount;
      billSummary.totalTaxAmount= $scope.totalTaxAmount;
      billSummary.totalChargeAmount=  $scope.totalChargeAmount;
      billSummary.BillStatus=  $scope.BillStatus;
-     billSummary.DateTime = d;
+     billSummary.DateTime = new Date(parseInt($scope.DateTime));
+
+     console.log(billSummary);
 
      var billdetails = $scope.productArr;
 
-      $rootScope.print(billSummary,billdetails,$scope.ReprintComplete,$scope.ReprintError);
+     console.log(billdetails);
+
+     $rootScope.print(billSummary,billdetails,$scope.ReprintComplete,$scope.ReprintError,0,BillNo);
 
 }
 
