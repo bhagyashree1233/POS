@@ -153,8 +153,9 @@ angular.module('starter.services', [])
         for (var i = 0; i < productArr.length; i++) {
             var productObj = productArr[i];
             console.log(productObj);
+            console.log("Store to Tran: ", d);
             var query = "INSERT INTO TransactionDetails (BillNo, DateTime, ProductId, ProductName, Quantity, ProductPrice, TotalPrice, TaxAmount, TotalAmount, DiscountAmount, Discount, TaxRate, TaxId, CategoryId, CategoryName) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            $cordovaSQLite.execute($rootScope.db, query, [BillNo, d, productObj.productId, productObj.name, productObj.quantity, productObj.productPrice, productObj.productTotalPrice, productObj.productTaxAmount, productObj.productTotalAmount, productObj.discountAmount, productObj.discount, productObj.taxRate, productObj.taxId, productObj.categoryId, productObj.categoryName]).then(function(res) {
+            $cordovaSQLite.execute($rootScope.db, query, [BillNo, d.toString(), productObj.productId, productObj.name, productObj.quantity, productObj.productPrice, productObj.productTotalPrice, productObj.productTaxAmount, productObj.productTotalAmount, productObj.discountAmount, productObj.discount, productObj.taxRate, productObj.taxId, productObj.categoryId, productObj.categoryName]).then(function(res) {
                 //     $cordovaSQLite.execute($rootScope.db, query, [102, "24-Jan-2017 11:03:24", "Cofee123", "cofee", 2, 120, 3, 4, 4, "CAT01", "Category 01"]).then(function(res) {
                 console.log("INSERT ID -> " + res.insertId);
                 
@@ -168,9 +169,9 @@ angular.module('starter.services', [])
     }
     function storeToBillDetails(totalPrice, discountAmount, totalTaxAmount, totalChargeAmount, paymentMethod, totalItems, d,BillNo) {
         var deferred = $q.defer();
-        
+        console.log("Inserting bill date: ", d);
         var query = "INSERT INTO BillDetails (BillNo, TotalPrice, DiscountAmount, TaxAmount, TotalAmount, PaymentMethod, DateTime, TotalItems, BillStatus) VALUES (?,?,?,?,?,?,?,?,?)";
-        $cordovaSQLite.execute($rootScope.db, query, [BillNo, totalPrice, discountAmount, totalTaxAmount, totalChargeAmount, paymentMethod, d, totalItems, 'success']).then(function(res) {
+        $cordovaSQLite.execute($rootScope.db, query, [BillNo, totalPrice, discountAmount, totalTaxAmount, totalChargeAmount, paymentMethod, d.toString(), totalItems, 'success']).then(function(res) {
             console.log("INSERT ID -> " + res.insertId);
             deferred.resolve('success');
         }, function(err) {
@@ -234,7 +235,7 @@ angular.module('starter.services', [])
                     DateTime: res.rows.item(i).DateTime,
                     ProductId: res.rows.item(i).ProductId,
                     ProductName: res.rows.item(i).ProductName,
-                    Quantity: res.rows.item(i).Quantity,
+                    Quantity: res.rows.item(i).Quantity, 
                     ProductPrice: res.rows.item(i).ProductPrice,
                     TotalPrice: res.rows.item(i).TotalPrice,
                     TaxAmount: res.rows.item(i).TaxAmount,

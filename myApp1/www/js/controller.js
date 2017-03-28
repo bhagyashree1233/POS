@@ -494,7 +494,7 @@ $scope.onPressHoldProduct = function()
          $scope.transactionDate = (new Date()).getTime();
         //check
 
-        console.log($scope.transactionDate);
+        console.log("tran Date: ", $scope.transactionDate);
         var promise = dbService.storeToTransaction($scope.productArr, $scope.transactionDate,$rootScope.VolatileData.CurrentBillNo);
         promise.then(function(result) {
             console.log(result);
@@ -512,6 +512,7 @@ $scope.onPressHoldProduct = function()
 
     //function to save bill details to database
     function SaveBillDetails() {
+        console.log("Save Bill date: ", $scope.transactionDate);
         var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.transactionDate,$rootScope.VolatileData.CurrentBillNo);
         promise.then(function(result) {
             console.log(result);
