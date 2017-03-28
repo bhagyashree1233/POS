@@ -672,20 +672,20 @@ $scope.ReprintBill = function(BillNo)
     }
 
     var billSummary={};
-     var d = new Date();
+    // var d = new Date();
 
-      var transactionDate = (new Date()).getTime();
+      //var transactionDate = (new Date()).getTime();
 
-      console.log("Trans date: ", transactionDate);
+      //console.log("Trans date: ", transactionDate);
 
-     console.log($scope.DateTime);
-     console.log(d);
+     console.log("scope: ", $scope.DateTime);
+     //console.log(d);
      billSummary.totalPrice= $scope.totalPrice;
      billSummary.discountAmount=  $scope.discountAmount;
      billSummary.totalTaxAmount= $scope.totalTaxAmount;
      billSummary.totalChargeAmount=  $scope.totalChargeAmount;
      billSummary.BillStatus=  $scope.BillStatus;
-     billSummary.DateTime = d;
+     billSummary.DateTime = new Date(parseInt($scope.DateTime));
 
      console.log(billSummary);
 

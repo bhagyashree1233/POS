@@ -400,7 +400,15 @@ $scope.onPressHoldProduct = function()
         billSummary.totalTaxAmount = $scope.totalTaxAmount;
         billSummary.totalChargeAmount = $scope.totalChargeAmount;
         billSummary.BillStatus = "Active";
-        billSummary.DateTime = new Date();
+
+        if($scope.BillDate == undefined)
+        {
+        $scope.BillDate = (new Date()).getTime();
+        }
+
+        billSummary.DateTime = new Date($scope.BillDate);
+
+        //$scope.BillDate =  billSummary.DateTime;
 
         $scope.CurrentTokenNumber = tokenNo;
 
@@ -491,11 +499,11 @@ $scope.onPressHoldProduct = function()
 
     function SaveTransactionDetailstoDB()
     {
-         $scope.transactionDate = (new Date()).getTime();
+         //$scope.transactionDate = $scope.BillDate;
         //check
 
-        console.log("tran Date: ", $scope.transactionDate);
-        var promise = dbService.storeToTransaction($scope.productArr, $scope.transactionDate,$rootScope.VolatileData.CurrentBillNo);
+        //console.log("tran Date: ", $scope.transactionDate);
+        var promise = dbService.storeToTransaction($scope.productArr, $scope.BillDate,$rootScope.VolatileData.CurrentBillNo);
         promise.then(function(result) {
             console.log(result);
             $scope.paymentMethod = "cash";
@@ -512,8 +520,8 @@ $scope.onPressHoldProduct = function()
 
     //function to save bill details to database
     function SaveBillDetails() {
-        console.log("Save Bill date: ", $scope.transactionDate);
-        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.transactionDate,$rootScope.VolatileData.CurrentBillNo);
+        //console.log("Save Bill date: ", $scope.transactionDate);
+        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.BillDate,$rootScope.VolatileData.CurrentBillNo);
         promise.then(function(result) {
             console.log(result);
             //clear all values
@@ -601,6 +609,7 @@ $scope.onPressHoldProduct = function()
         $scope.Balance = parseFloat(balance).toFixed(2);
         $scope.typedAmount = typedAmount;
 
+
           $ionicPopup.show({
               title: 'Print Receipt',
               subTitle: 'Print Receipt to Complete Transaction',
@@ -630,11 +639,13 @@ $scope.onPressHoldProduct = function()
         if($rootScope.printFormatSettings.tokNum == "Manual")
         {
             $scope.keypadMessage = "Enter Token Number";
-             $rootScope.openNumericModal($scope, $scope.receipt, $scope.receipt);
+            $scope.BillDate = undefined;
+            $rootScope.openNumericModal($scope, $scope.receipt, $scope.receipt);
 
         }
         else if($rootScope.printFormatSettings.tokNum == "Auto")
         {
+            $scope.BillDate = (new Date()).getTime();
             $scope.receipt($rootScope.VolatileData.CurrentTokenNo);
            // $rootScope.VolatileData.CurrentTokenNo = $rootScope.VolatileData.CurrentTokenNo + 1;
            // if($rootScope.VolatileData.CurrentTokenNo > $rootScope.printFormatSettings.tokResetAftr)
@@ -644,6 +655,8 @@ $scope.onPressHoldProduct = function()
         }
         else //disable;;
         {
+            //$scope.BillDate = (new Date()).getItem();
+            $scope.BillDate = (new Date()).getTime();
             $scope.receipt(undefined);
         }
            //();
@@ -652,6 +665,7 @@ $scope.onPressHoldProduct = function()
        }
        else if(res=="Save")
        {
+           $scope.BillDate =(new Date()).getTime();
            SaveTransactionDetailstoDB();
            //UpdateVolatileDataToDB();
        }

@@ -885,8 +885,6 @@ return s;
        AmountHeader = padLeft(AmountHeader," ",8);
 
 
-  
-
       $rootScope.PrintText(itemHeader + "  " + qtyHeader + "  " + priceHeader + "  " + AmountHeader +"\n");
 
       $rootScope.PrintText("-----------------------------------------\n");
