@@ -22,9 +22,38 @@ angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'n
             //cordova.plugins.Keyboard.disableScroll(false);
             //ionic.Platform.isFullScreen = true;
         }
-        if (window.StatusBar) {
-            StatusBar.styleDefault();
-        }
+       // if (window.StatusBar) {
+            //StatusBar.styleDefault();
+            StatusBar.hide();
+
+window.addEventListener('native.keyboardhide', function (e) {
+//show stuff on keyboard hide
+StatusBar.hide();
+console.log("keyboard hidden");
+window.AndroidFullScreen.immersiveMode(false, false);
+});
+
+        //}
+            
+  /*function errorFunction(error) { console.error(error); }
+  AndroidFullScreen.isSupported(AndroidFullScreen.immersiveMode, errorFunction);
+                
+            //ionic.Platform.fullScreen();
+        }*/
+        /*
+if (ionic.Platform.isAndroid()) {
+window.addEventListener('native.keyboardhide', function (e) {
+//show stuff on keyboard hide
+StatusBar.hide();
+console.log("keyboard hidden");
+window.AndroidFullScreen.immersiveMode(false, false);
+}); }
+*/
+
+
+
+
+
         if (window.cordova) {
             $rootScope.db = $cordovaSQLite.openDB({
                 name: "PayUPos.db",
