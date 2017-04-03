@@ -1047,6 +1047,8 @@ $scope.onPressHoldProduct = function()
             console.log("Edit Product: ");
             console.log($rootScope.CurrentProduct);
             $scope.newProduct = $rootScope.CurrentProduct;
+            $scope.newProduct.favourite == "true" ?  $scope.newProduct.favourite = true :$scope.newProduct.favourite = false;
+            console.log("fav: ", $scope.newProduct.favourite);
             $rootScope.editingProduct = {};
             $scope.pIdDisable = true;
         }
@@ -1163,6 +1165,8 @@ $scope.onPressHoldProduct = function()
             console.log('Select Categary');
             return false
         }
+
+        console.log("fav value: ", $scope.newProduct.favourite);
         //validate here;;
         //min length;;
         //min value;;
@@ -1188,14 +1192,14 @@ $scope.onPressHoldProduct = function()
     }
 
     function loadCategory() {
-        $rootScope.showDbLoading();
-        var promise = dbService.loadProductFromDB('Category');
+        //$rootScope.showDbLoading();
+        var promise = dbService.loadCategoryFromDB('Category');
         promise.then(function(res) {
             $scope.categoryArr = res;
-            $rootScope.hideDbLoading();
+            //$rootScope.hideDbLoading();
         }, function(res) {
             console.log(res);
-            $rootScope.hideDbLoading();
+            //$rootScope.hideDbLoading();
         })
     }
 
@@ -1313,6 +1317,7 @@ $scope.onPressHoldProduct = function()
 
     function editProduct() {
         $rootScope.showDbLoading();
+        console.log("Edit fav : ", $scope.newProduct.favourite);
         var promise = dbService.editProduct($scope.newProduct.productId, $scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite);
         promise.then(function(result) {
             console.log(result);
