@@ -1,8 +1,14 @@
 
 angular.module('starter.globalcontroller', [])
 
-.controller('global',function($rootScope,$scope,$cordovaSQLite,$state,$cordovaToast,$scope, $ionicSlideBoxDelegate, $ionicLoading,$ionicPopup){
+.controller('global',function($rootScope,$scope,$cordovaSQLite,$state,$cordovaToast,$scope, $ionicSlideBoxDelegate, $ionicHistory, $ionicLoading,$ionicPopup){
   console.log('Hello hai');
+
+  $rootScope.closeView =function()
+  {
+
+     $ionicHistory.goBack(-1);
+  }
 
    $rootScope.nextSlide = function() {
       console.log("changing to next slide");

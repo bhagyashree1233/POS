@@ -1,6 +1,6 @@
 
 
-<tab-slide-box ng-controller="productCtrl" style="background-color:black;">
+<tab-slide-box tab="0" ng-controller="productCtrl" style="background-color:black;" cache-view='false' class="has-header">
 
     <div class="tsb-icons">
         <div class="tsb-ic-wrp">
@@ -10,7 +10,7 @@
             <a href="javascript:;" class="ion-bag"></a>
         </div>
     </div>
-    <ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
+    <ion-slide-box selected="0" show-pager="false" on-slide-changed="slideHasChanged($index)">
         <ion-slide>
             <h2 style="color:white;"> Step 1 </h2>
             <h3 style="color:white;">Add Product Basics</h3>
@@ -24,19 +24,19 @@
                 <label style="background-color:transparent;" class="item item-input item-button-right" ng-click="openCategoryModal()">
                     <span class="input-label">Category :</span>
                     <input style="background-color:transparent;" type="text" id="Category" ng-model="newProduct.categoryName" readonly="readonly">
-                    <a class="button">Select Category</a>
+                    <button class="button button-dark">Select Category</button>
                 </label>
 
-                <label style="background-color:transparent;" class="item item-input" ng-click="openCamera()">
+                <label style="background-color:transparent;" class="item item-input" >
                     <span class="input-label">Image :</span>
                     <input style="background-color:transparent;" type="text" ng-model="newProduct.image" id="Category" readonly="readonly">
-                    <a class="button">Camera</a>
-                     <a class="button" ng-click="openGallery()">Gallery</a>
+                    <a  class="button button-icon icon ion-ios-camera" ng-click="openCamera()"></a>
+                    <a class="button button-icon icon ion-images" ng-click="openGallery()"></a>
                 </label>
-                
+
                 
             </div>
-            <button ion-button larger color="dark" ng-click='nextSlide()'> Next </button>
+            <button class='button button-dark' ng-click='nextSlide()'> Next </button>
         </ion-slide>
         <ion-slide>
             <h2 style="color:white;"> Step 2 </h2>
@@ -64,7 +64,7 @@
                 <span class="input-label">Discount (%):</span>
                 <input type="tel" id="discount" maxlength="5" ng-model="newProduct.discount">
             </label>
-            <button ion-button larger color="dark" ng-click='nextSlide()'> Next </button>
+           <button class='button button-dark' ng-click='nextSlide()'> Next </button>
 
         </ion-slide>
         <ion-slide>
@@ -76,16 +76,17 @@
             </label>
             <label style="background-color:transparent;" class="item item-input">
                 <span class="input-label">Product Unit :</span>
-                <ion-radio style="background-color:transparent;" ng-model="newProduct.unit" ng-value="'kgs'">Kgs</ion-radio>
-                <ion-radio style="background-color:transparent;" ng-model="newProduct.unit" ng-value="'litres'">Litres</ion-radio>
-                <ion-radio style="background-color:transparent;" ng-model="newProduct.unit" ng-value="'pieces'">pieces</ion-radio>
+                <ion-radio ng-style="{'background-color': 'black'}" ng-model="newProduct.unit" ng-value="'kgs'">Kgs</ion-radio>
+                <ion-radio ng-style="{'background-color': 'black'}" ng-model="newProduct.unit" ng-value="'litres'">Litres</ion-radio>
+                <ion-radio ng-style="{'background-color': 'black'}" ng-model="newProduct.unit" ng-value="'pieces'">pieces</ion-radio>
             </label>
 
             <label style="background-color:transparent;" class="item item-input">
                 <span class="input-label">Items in-stock :</span>
                 <input type="tel" ng-model="newProduct.inStock" maxlength="8" id="itemsStock" required></input>
             </label>
-            <button style="background-color:transparent;" class="button button-block" ng-disabled="" ng-click="addEditProduct()">{{ProductButtonText}}</button>
+           <button class='button button-dark' ng-click="addEditProduct()"> Upadate Product </button>
+<button class='button button-dark' ng-click="closeView()"> Exit without update </button>
 
         </ion-slide>
 </tab-slide-box>

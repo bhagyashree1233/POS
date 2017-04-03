@@ -907,3 +907,7 @@ table.productlist tr td:first-child
 {
   font-weight: bold;
 }
+
+button.ion-ios-camera i:before {
+    font-size: 15vmin !important;
+}
