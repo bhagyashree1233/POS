@@ -911,3 +911,8 @@ table.productlist tr td:first-child
 button.ion-ios-camera i:before {
     font-size: 15vmin !important;
 }
+
+.productAddSlide .input-label {
+  color:black;
+  text-shadow: 1px 1px grey;
+}

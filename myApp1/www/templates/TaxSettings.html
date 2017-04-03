@@ -18,10 +18,17 @@
                 <div class="padding">
              
             
-            <div class="row">
-             <button type="submit"  ng-click="saveTaxSetting(-1)" class="button button-block button-dark" style="margin:auto;width:50%">Addnew</button>
+            <div class="row" style="margin:auto;">
+              
+             <button style="width:25vh;margin-right:2vh;" class='button button-dark' ng-click="saveTaxSetting(-1)">Addnew</button>
+             <button style="width:25vh;margin-right:2vh;" class='button button-dark' ng-click="closeView()"> Close </button>
+             
+
+             <button style="width:25vh;margin-right:2vh;" class='button button-dark' ng-if="addView==false"class="button button-block button-dark" ng-click="editTaxSetting(txSetting.id)">Edit</button>
+             <button style="width:25vh;margin-right:2vh;" class='button button-dark' ng-if="addView==false"class="button button-block button-dark" ng-click="deleteTaxSettings(txSetting.id)">Delete</button>
+            <!-- <button type="submit"  ng-click="saveTaxSetting(-1)" class="button button-block button-dark" style="margin:auto;width:50%">Addnew</button>
              <button type="submit"   ng-if="addView==false"class="button button-block button-dark" ng-click="editTaxSetting(txSetting.id)">Edit</button>
-             <button type="submit"  ng-if="addView==false"class="button button-block button-dark"  ng-click="deleteTaxSettings(txSetting.id)">Delete</button>
+             <button type="submit"  ng-if="addView==false"class="button button-block button-dark"  ng-click="deleteTaxSettings(txSetting.id)">Delete</button>-->
             </div>
             
             <!--<button type="submit"  ng-click="editTaxSetting(tax.id)" ng-if="tax.name!=undefined"class="button button-block button-dark" style="margin:auto;width:70%">Edit</button>

@@ -1,50 +1,38 @@
 <ion-view hide-nav-bar="true" cache-view="false">
     <ion-content ng-controller="printerSettings">
-          <div>
-        <h2 style="text-align:center;"> Printer Settings </h2>
-    </div>
-        <form id="prinrSettings" name="myForm" >
-
-             
+        <div>
+            <h2 style="text-align:center;">Printer Settings </h2>
+        </div>
+        <form id="prinrSettings" name="myForm">
             <label class="item item-input">
                 <span class="input-label">Shop Name:</span>
-                <input type="text" name="shopName" id="shopName" class="printerSettingtext"  maxlength=20 ng-model="printFormatSettings.shopName" required></input>
-              
-
-             </label>
-         <label class="item item-input">
+                <input type="text" name="shopName" id="shopName" class="printerSettingtext" maxlength=20 ng-model="printFormatSettings.shopName" required></input>
+            </label>
+            <label class="item item-input">
                 <span class="input-label">Address Line1:</span>
                 <input type="text" name="addressLine1" id="addressLine1" class="printerSettingtext" maxlength=20 ng-model="printFormatSettings.addressLine1"></input>
-
             </label>
             <label class="item item-input">
                 <span class="input-label">Address Line2:</span>
-                <input type="text" name="addressLine2" id="addressLine2" class="printerSettingtext"  ng-model="printFormatSettings.addressLine2" maxlength=20></input>
-
+                <input type="text" name="addressLine2" id="addressLine2" class="printerSettingtext" ng-model="printFormatSettings.addressLine2" maxlength=20></input>
             </label>
             <label class="item item-input">
                 <span class="input-label">Phone No:</span>
                 <input type="tel" name="number1" id="number1" class="printerSettingtext" ng-model="printFormatSettings.phNumber" maxlength=13></input>
-               
             </label>
             <label class="item item-input">
-                <span class="input-label" >TIN Number:</span>
-                <input type="text" name="tinNum" id="tinNum"  class="printerSettingtext" ng-model="printFormatSettings.tin" maxlength=13></input>
-               
+                <span class="input-label">TIN Number:</span>
+                <input type="text" name="tinNum" id="tinNum" class="printerSettingtext" ng-model="printFormatSettings.tin" maxlength=13></input>
             </label>
             <label class="item item-input">
                 <span class="input-label">Greeting:</span>
                 <input type="text" class="printerSettingtext" id="greetings" name="greetings" ng-model="printFormatSettings.greeting" maxlength=30></input>
-              
             </label>
             <label class="item item-input">
                 <span class="input-label">Starting Bill Number:</span>
-                <input type="tel" name="startBillNm" id="billNumber" class="printerSettingtext" ng-model="printFormatSettings.strtBillNmbr"  maxlength=8 required></input>
-                
+                <input type="tel" name="startBillNm" id="billNumber" class="printerSettingtext" ng-model="printFormatSettings.strtBillNmbr" maxlength=8 required></input>
             </label>
-            
-            
-           <!-- <label class="item item-input">
+            <!-- <label class="item item-input">
                 <span class="input-label">Token Number:</span>
                 <label class="toggle">
                     <input type="checkbox" ng-model="printFormatSettings.tokNum">
@@ -53,50 +41,39 @@
                     </div>
                 </label>
             </label>-->
-
-
-               <label class="item item-input">
-                    <span class="input-label">Token Number :</span>
-                    <ion-radio ng-model="printFormatSettings.tokNum" ng-value="'Disable'">Disable</ion-radio>
-                    <ion-radio ng-model="printFormatSettings.tokNum" ng-value="'Auto'">Auto</ion-radio>
-                    <ion-radio ng-model="printFormatSettings.tokNum" ng-value="'Manual'">Manual</ion-radio>
-                </label>
-
-
+            <label class="item item-input">
+                <span class="input-label">Token Number :</span>
+                <ion-radio ng-model="printFormatSettings.tokNum" ng-value="'Disable'">Disable</ion-radio>
+                <ion-radio ng-model="printFormatSettings.tokNum" ng-value="'Auto'">Auto</ion-radio>
+                <ion-radio ng-model="printFormatSettings.tokNum" ng-value="'Manual'">Manual</ion-radio>
+            </label>
             <div ng-show="printFormatSettings.tokNum == 'Auto'">
                 <label class="item item-input">
                     <span class="input-label">Token Start No:</span>
-                    <input type="tel" id="trtTokenNum" name="strtTokenNum"class="printerSettingtext" ng-model="printFormatSettings.tokStartNmbr"  maxlength=4 required></input>
-                 
+                    <input type="tel" id="trtTokenNum" name="strtTokenNum" class="printerSettingtext" ng-model="printFormatSettings.tokStartNmbr" maxlength=4 required></input>
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Token Reset After:</span>
-                    <input type="tel" id="restTokenNum" name="restTokenNum"class="printerSettingtext" ng-model="printFormatSettings.tokResetAftr" maxlength=4></input>
-              
+                    <input type="tel" id="restTokenNum" name="restTokenNum" class="printerSettingtext" ng-model="printFormatSettings.tokResetAftr" maxlength=4></input>
                 </label>
             </div>
             <label class="item item-input">
                 <span class="input-label">Bill Copies:</span>
-                <input type="tel"  id="billCopies" name="billCopies"class="printerSettingtext" ng-model="printFormatSettings.billCopies" maxlength=1 required></input>
+                <input type="tel" id="billCopies" name="billCopies" class="printerSettingtext" ng-model="printFormatSettings.billCopies" maxlength=1 required></input>
             </label>
-            
             <label class="item item-input">
                 <span class="input-label">Wifi Password:</span>
-                <input type="text" id="wifiPassword" name="wifiPassword" class="printerSettingtext" ng-model="printFormatSettings.wifiPasswrd"   maxlength=15></input>
-
+                <input type="text" id="wifiPassword" name="wifiPassword" class="printerSettingtext" ng-model="printFormatSettings.wifiPasswrd" maxlength=15></input>
             </label>
-            
             <label class="item item-input">
-                <span class="input-label">Wifi SSID:</span> 
-                <input type="text" id="wifiSsid" name="wifiSsid"class="printerSettingtext" ng-model="printFormatSettings.wifiSsid"  maxlength=15></input>
- 
+                <span class="input-label">Wifi SSID:</span>
+                <input type="text" id="wifiSsid" name="wifiSsid" class="printerSettingtext" ng-model="printFormatSettings.wifiSsid" maxlength=15></input>
             </label>
-            
-            
-          <div class="padding">
-          <button type="submit"  ng-click="savePrinterSettings()"class="button button-block button-dark" style="margin:auto;width:70%">Submit</button>
-        </div>
+            <div style="text-align:center;margin-top:2vh;">
+                <!--<button type="submit"  class="button button-block button-dark" style="margin:auto;width:70%">Submit</button>-->
+                <button style="width:25vh;margin-right:2vh;" class='button button-dark' ng-click="savePrinterSettings()">Save </button>
+                <button style="width:25vh;" class='button button-dark' ng-click="closeView()">Close </button>
+            </div>
         </form>
-              
     </ion-content>
 </ion-view>
