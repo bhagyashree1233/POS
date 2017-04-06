@@ -99,7 +99,7 @@
                 <button class="product-categary-button" ng-show="Mode == 1" ng-click="AddNewTableSection()">Create Section</button>
                 <span ng-repeat="section in sectionArr">
                     <div style="display:inline-block; width:24vmin;position:relative;" ng-class="{jiggle: Mode}">
-                        <div ng-show='Mode==true' style="position:absolute;z-index:1;font-size:7vmin;height:7vmin;width:5vmin;color:red; float: right;right:-5px;top:-24px;" class="icon-right ion-close-circled" ng-Click="deleteAllTablesAndSections(section.categoryId)"></div>
+                        <div ng-show='Mode==true' style="position:absolute;z-index:1;font-size:7vmin;height:7vmin;width:5vmin;color:red; float: right;right:-5px;top:-24px;" class="icon-right ion-close-circled" ng-Click="deleteAllTablesAndSections(section.sectionId)"></div>
                         <div ng-show='Mode==true' style="position:absolute;font-size:4vmin;line-height:7vmin;text-align:center;height:7vmin;width:7vmin;color:white;background:blue;border-radius:10px;float:left;left:-4px;top:-15px;" class="icon-left ion-edit" ng-Click="OnEditSection(section.sectionId)"></div>
                         <button class="product-categary-button" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnSectionClick(section.sectionId)">{{section.sectionName}}</button>
                     </div>

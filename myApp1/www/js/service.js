@@ -510,6 +510,36 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         return deferred.promise;
     }
 
+    function deleteAllProductsInCat(sectionId) {
+        var deferred = $q.defer();
+
+        var query = "delete from TableInfo where TableSectionId='" + sectionId + "'";
+        console.log(query);
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log("deleted all Tables in Section successfully...");
+            deferred.resolve('success');
+        }, function(err) {
+            console.error(err);
+            deferred.reject('failure');
+        });
+
+        return deferred.promise;
+    }
+
+    function deleteSection(deleteSectionId) {
+        var deferred = $q.defer();
+        var query = "delete from TableInfoSection where SectionId='" + deleteSectionId + "'";
+        console.log(query);
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log("deleted from TableInfoSection successfully...");
+            deferred.resolve('deleted success');
+        }, function(err) {
+            console.error(err);
+            deferred.reject('failure');
+        });
+        return deferred.promise;
+    }
+
     return {
         addNewCategory: addNewCategory,
         addNewProduct: addNewProduct,
@@ -535,7 +565,8 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         addNewSection: addNewSection,
         loadTablesForSection: loadTablesForSection,
         loadSectionFromDB: loadSectionFromDB,
-        GetSectionById: GetSectionById 
+        GetSectionById: GetSectionById,
+        deleteSection: deleteSection 
     }
 }).factory("settingService", function($q, $cordovaSQLite, $rootScope) {
     function set(SettingsName, SettingsValue) {

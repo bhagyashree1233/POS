@@ -1541,7 +1541,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         loadTables()
 
-        loadCategory();
+        loadSection();
         //$scope.highlight = "1x";
       //  if ($rootScope.SelSection != '0') {
      //       $scope.OnSectionClick($rootScope.SelSection)
@@ -1549,7 +1549,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
       //  }
     });
 
-    function loadCategory() {
+    function loadSection() {
 
         $rootScope.showDbLoading();
         var promise = dbService.loadSectionFromDB('TableInfoSection');
@@ -1657,6 +1657,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
                 promise.then(function(result) {
                     $rootScope.hideDbLoading();
                     loadTables();
+                    loadTables();
                 }, function(result) {
                     console.log(result);
                     $rootScope.hideDbLoading();
@@ -1699,6 +1700,58 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
             $rootScope.hideDbLoading();
         })
     }
+
+     $scope.deleteAllTablesAndSections = function(sectionId) {
+
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Will also delete all tables in section ',
+            template: 'Are you sure you want to delete Section?'
+        });
+
+        confirmPopup.then(function(res) {
+            if (res) {
+                console.log('Confirm Delete');
+                $rootScope.showDbLoading();
+                var promise1 = dbService.deleteAllProductsInCat(sectionId);
+                promise1.then(function(res) {
+                    console.log(res);
+                    console.log("deleted Products");
+                    $scope.deleteSection(sectionId);
+
+                }, function() {
+                    console.log(res);
+                    console.log("Failed to delete Tables in Section");
+                    $rootScope.ShowToast("Failed to delete Tables in Section", false);
+                    $rootScope.hideDbLoading();
+                })
+
+            } else
+                return;
+
+        });
+
+    }
+
+    $scope.deleteSection = function(sectionId) {
+
+        var promise = dbService.deleteSection(sectionId);
+        promise.then(function(res) {
+            console.log(res);
+            $rootScope.ShowToast("Delete Section Success", false);
+            $rootScope.hideDbLoading();
+            //$ionicHistory.goBack();
+            loadSection();
+
+
+            $state.go('tableInfo');
+        }, function() {
+            console.log(res);
+            $rootScope.ShowToast("Failed to Delete Section", false);
+            $rootScope.hideDbLoading();
+        })
+
+    }
+
 
 }).controller('addEditTableInfoCtrl', function($scope, $ionicHistory, $rootScope, dbService, $state, $ionicPopup, $ionicModal) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -1842,7 +1895,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
     $scope.closeView = function() {
         $ionicHistory.goBack();
     }
-}).controller('addEditSectionCtrl', function($scope, $rootScope, dbService, $ionicHistory ) {
+}).controller('addEditSectionCtrl', function($scope, $rootScope, dbService, $ionicHistory, $ionicPopup, $state) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         if ($rootScope.CreateMode == 1) {
             getSection()
