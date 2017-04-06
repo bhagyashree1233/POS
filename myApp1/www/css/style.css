@@ -1,25 +1,24 @@
 #product-billing {
     width: 36vw;
-    margin-top:auto;
+    margin-top: auto;
     height: 100%;
-
-  
- 
     display: -webkit-flex;
     display: flex;
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
-      -webkit-box-shadow: 10px 0 5px -3px rgba(0,0,0,0.5);
-          box-shadow: 10px 0 5px -3px  rgba(0,0,0,0.5);
+    -webkit-box-shadow: 10px 0 5px -3px rgba(0,0,0,0.5);
+    box-shadow: 10px 0 5px -3px rgba(0,0,0,0.5);
 }
+
 #paymentModel>.modal {
-   top: 10%;
+    top: 10%;
     left: 30%;
 }
+
 #productsView {
-    width:64vw;
-   
+    width: 64vw;
 }
+
 #product {
     width: 100%;
     height: 100%;
@@ -27,6 +26,7 @@
     display: flex;
     display: -webkit-flex;
 }
+
 #product-display {
     display: -webkit-flex;
     display: flex;
@@ -35,32 +35,28 @@
     flex-wrap: wrap;
     flex-direction: column;
     width: 100%;
- 
-   
     overflow-x: scroll;
     overflow-y: hidden;
     height: 100%;
 }
+
 #product-billing-head {
-   
-   
-    width:100%;
-    height:8vmin;
-}
-.icon_text
-{
-
-position:relative;
-text-align:center; 
-color:white;
-top: 8px;
-font-size:2vmin;
+    width: 100%;
+    height: 8vmin;
 }
 
-.element{
-text-align:center; 
-text-decoration: none;
-color:white;
+.icon_text {
+    position: relative;
+    text-align: center;
+    color: white;
+    top: 8px;
+    font-size: 2vmin;
+}
+
+.element {
+    text-align: center;
+    text-decoration: none;
+    color: white;
 }
 
 .button-circle {
@@ -73,6 +69,7 @@ color:white;
     -webkit-transition: all 0.2s ease-in;
     transition: all 0.2s ease-in;
 }
+
 .col.col-center {
     display: -webkit-flex;
     display: flex;
@@ -82,45 +79,38 @@ color:white;
     -webkit-justify-content: center;
     justify-content: center;
 }
+
 #product-categary {
-    position:absolute;
+    position: absolute;
     width: 64vw;
     height: 9vh;
     display: inline-block;
-    bottom:1vh;
-    line-height:10vh;
-    z-index:0;
-    
+    bottom: 1vh;
+    line-height: 10vh;
+    z-index: 0;
 }
 
-
 .product-categary-scroll {
-
     bottom: 3vh;
     width: 100%;
     height: 16vh;
     overflow-x: scroll;
     white-space: nowrap;
-
 }
-
 
 .product-categary-button {
     background: black;
     color: #ffffff;
     width: 16vw;
-   
-    font-size:2.5vmin;
+    font-size: 2.5vmin;
     line-height: 8vmin!important;
     border-radius: 5px;
     height: 100%;
     -webkit-box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
--moz-box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
-box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
-
-
-    
+    -moz-box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
 }
+
 .bar-light .button {
     padding: 3vh;
     width: 20%;
@@ -129,6 +119,7 @@ box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
     color: white;
     font-size: small;
 }
+
 /*
 .bar-footer {
     position: fixed;
@@ -141,17 +132,16 @@ box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
     overflow-y: false;
 }
 */
-
 #product-display-row {
     padding: auto;
     width: 100%;
     height: 98%;
 }
+
 #product-display-col1 {
     font-size-adjust: auto;
     font-size: 1.5vh;
     position: relative;
-
     width: 32%;
     height: 18%;
     background: black;
@@ -159,190 +149,191 @@ box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
     margin: 0.5vh;
 }
 
-
-
 #quantityBox {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.4);
- 
     width: 100%;
     height: 100%;
 }
+
 #product-billing-col1 {
-  
-    padding-top:20px;
+    padding-top: 20px;
     width: 100%;
     height: 100%;
-    color:white;
-  
+    color: white;
 }
+
 #product-price {
     left: 0;
-    padding-top:.5vmin;
+    padding-top: .5vmin;
     top: 0;
     text-align: center;
     vertical-align: center;
     position: absolute;
-  
     background: black;
     height: 4vmin;
-    border-radius:0.5vmin;
+    border-radius: 0.5vmin;
     width: auto;
-    min-width:3vmin;
+    min-width: 3vmin;
     min-width: 4vmin;
-    font-size:2vmin;
-    width:auto;
+    font-size: 2vmin;
+    width: auto;
     opacity: 0.7;
-    line-height:2.5vmin;
+    line-height: 2.5vmin;
 }
+
 #product-stock {
     right: 0;
-   top: 0vh;
+    top: 0vh;
     position: absolute;
-    
     background: grey;
-    color:white;
+    color: white;
     height: 4vmin;
-    border-radius:0.5vmin;
+    border-radius: 0.5vmin;
     width: auto;
-    min-width:3vmin;
+    min-width: 3vmin;
     opacity: 0.9;
     font-size: 2.5vmin;
-    font-weight:normal;
-    text-align:center;
-    vertical-align:middle;
-    line-height:2.5vmin;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 2.5vmin;
 }
 
-#product-stock-text{
-    opacity:1;
-    color:white;
-    vertical-align:middle;
-    line-height:2.5vmin;
- transform: translateY(25%);
- margin-left:5px;
- margin-right:5px;
- 
-  
-}
-#product-name{
-    left:0;
-
-    bottom:2px;
-    width:100%;
-    text-align:center;
+#product-stock-text {
+    opacity: 1;
     color: white;
-    z-index:0;
-    position:absolute;
-    background-color:rgba(10,10,10,0.6);
-    font-size:2.5vmin;
-    font-weight:bold;
-    line-height:4vmin;
-    height:4vmin;
-    border-radius:0.5vmin;
+    vertical-align: middle;
+    line-height: 2.5vmin;
+    transform: translateY(25%);
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
+#product-name {
+    left: 0;
+    bottom: 2px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    z-index: 0;
+    position: absolute;
+    background-color: rgba(10,10,10,0.6);
+    font-size: 2.5vmin;
+    font-weight: bold;
+    line-height: 4vmin;
+    height: 4vmin;
+    border-radius: 0.5vmin;
+}
 
 .product-image {
-
-
- border-radius:2vmin;
-    position:relative;
-     -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.6);
--moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.6);
-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.6);
-
+    border-radius: 2vmin;
+    position: relative;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.6);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.6);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.6);
 }
-
 
 .sam-cust-bar .button.button-block {
     margin-top: 0;
     margin-bottom: 0;
 }
+
 .sam-input-item {
     border: none;
-    height:12vmin;
+    height: 12vmin;
     padding: 0;
-         background-color: rgba(255,255,255,0.9);
+    background-color: rgba(255,255,255,0.9);
 }
-.inputview {
 
-    height:100%;
-    vertical-align:middle;
+.inputview {
+    height: 100%;
+    vertical-align: middle;
     padding: 1vmin;
-    text-align:right;
+    text-align: right;
     margin: 0;
     font-size: 10vmin;
     color: #500200;
     border: 1px solid #cecece;
     display: block
 }
+
 #model-view {
-top:0px;
-left:36vmax;
-  
+    top: 0px;
+    left: 36vmax;
     width: 64vmax;
     height: 100vmin;
     background: rgba(34,34,34,0.90);
-  
     z-index: 99;
 }
+
 #holdModal {
     width: 90%;
     height: 85%;
     left: 5%;
     top: 5%;
 }
+
 #quantity-close {
-   
-    margin-top:2px;
-    margin-right:2px;
-  
-    
+    margin-top: 2px;
+    margin-right: 2px;
 }
+
 #recallModal {
     width: 100%;
     height: 90%;
     top: 0vh;
     left: 0vh;
 }
-#recallModal button .icon {} .recallTabs {
+
+#recallModal button .icon {
+}
+
+.recallTabs {
     width: 85%;
     height: 80%;
     left: 6%;
     top: 10%;
 }
+
 #quantity-close {
     color: black;
 }
+
 .modal-backdrop-bg {
     background-color: rgba(204, 204, 204, 0.01);
 }
+
 .modal-open .modal-backdrop {
     pointer-events: none;
 }
 
-#productContentDiv,
-#categoryContentDiv {
+#productContentDiv, #categoryContentDiv {
     width: 90%;
     margin: auto;
 }
+
 #productContentDiv input[readonly="readonly"] {
     background-color: transparent;
 }
+
 input.printerSettingtext {
     border: 0.1vh solid #b2b2b2;
     width: 200px;
 }
+
 #currency {
     width: 55%;
 }
+
 #payment {
     width: 55%;
 }
+
 .pySttg.item-radio .item-content {
     margin-left: 5vh;
 }
+
 .pySttg.item-radio .ion-checkmark {
     top: 0;
     left: 0;
@@ -352,68 +343,71 @@ input.printerSettingtext {
     line-height: 1vh;
     color: black;
 }
-    #categaryModal {
-      position:absolute;
-      top:25%;
-      height:30vh;
-     
-        width: 50%;
-        left: 25%;
-    }
-    #errorMessage {} .red {
-        border-color: red;
-        color: red;
-    }
-   
-    .editProHead {
-        margin: 10vh;
-    }
-    #productsViewSlideBox {
-      top:5vmin;
-        height: 100%;
-        width: 100%;
-        margin: 0vh;
-      
-        white-space: nowrap;
-    }
 
-    .salesReport{
-     font-style:italic;
-     font-size: 3vh;
-     font-weight: bold;
-    }
-    #salesReportHeading{
-        background-color:black;
-        color:white;
-    }
-    .salesReportFont{
-     font-style:italic;
-     font-size: 3vh;
-     font-weight: bold;
-     border:1px solid white;
-     padding:10vh;
-     margin:0;
-    
-    }
-    .salesReportitemFont{
-     font-style:italic;
-     font-size: 3vh;
-     border:1px solid black;
-     padding:10vh;
-     margin:0;
+#categaryModal {
+    position: absolute;
+    top: 25%;
+    height: 30vh;
+    width: 50%;
+    left: 25%;
+}
 
-    }
-    #salesReportHeader{
-        font-weight:bold;
-       background:black;
-       font-size: 3vh;
-       color:white;
-    }
-    
- @import url(http://fonts.googleapis.com/css?family=Open+Sans:300);
+#errorMessage {
+}
 
-html {
-  
+.red {
+    border-color: red;
+    color: red;
+}
+
+.editProHead {
+    margin: 10vh;
+}
+
+#productsViewSlideBox {
+    top: 5vmin;
+    height: 100%;
+    width: 100%;
+    margin: 0vh;
+    white-space: nowrap;
+}
+
+.salesReport {
+    font-style: italic;
+    font-size: 3vh;
+    font-weight: bold;
+}
+
+#salesReportHeading {
+    background-color: black;
+    color: white;
+}
+
+.salesReportFont {
+    font-style: italic;
+    font-size: 3vh;
+    font-weight: bold;
+    border: 1px solid white;
+    padding: 10vh;
+    margin: 0;
+}
+
+.salesReportitemFont {
+    font-style: italic;
+    font-size: 3vh;
+    border: 1px solid black;
+    padding: 10vh;
+    margin: 0;
+}
+
+#salesReportHeader {
+    font-weight: bold;
+    background: black;
+    font-size: 3vh;
+    color: white;
+}
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300); html {
 }
 
 body {
@@ -432,6 +426,7 @@ body {
     -webkit-text-size-adjust: none;
     -ms-text-size-adjust: none;
 }
+
 .txtright {
     text-align: right;
 }
@@ -463,8 +458,9 @@ body {
     font-size: 11px;
     font-weight: bold;
 }
-.iconbig{
-  font-size: 12px;
+
+.iconbig {
+    font-size: 12px;
 }
 
 .bar {
@@ -479,7 +475,7 @@ body {
 
 .grid {
     width: 33.333333333333%;
-    height:16vmin;
+    height: 16vmin;
     margin: 0;
     float: left;
     display: inline;
@@ -490,18 +486,16 @@ body {
 
 .numbers-cont {
     width: 60vmin;
-    height:100vmin;
+    height: 100vmin;
     display: inline-block;
-    text-align:center;
+    text-align: center;
     display: block;
-  margin-left: auto;
-  margin-right: auto;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 1vmin;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-
-    
 }
 
 .number-circle {
@@ -527,31 +521,25 @@ body {
     box-sizing: border-box;
 }
 
-
 .number-circle .num {
     font-size: 6vmin;
-    color:white;
-  /*  -webkit-animation: neon2 1.5s ease-in-out infinite alternate;*/
- /* -moz-animation: neon2 1.5s ease-in-out infinite alternate;*/
- /* animation: neon2 1.5s ease-in-out infinite alternate;*/
-
+    color: white;
+    /*  -webkit-animation: neon2 1.5s ease-in-out infinite alternate;*/
+    /* -moz-animation: neon2 1.5s ease-in-out infinite alternate;*/
+    /* animation: neon2 1.5s ease-in-out infinite alternate;*/
 }
 
 .number-circle:active {
     font-size: 6vmin;
-    color:white;
+    color: white;
     -webkit-animation: neon2 2.5s ease-in-out infinite alternate;
-  -moz-animation: neon2 2.5s ease-in-out infinite alternate;
-  animation: neon2 4.5s ease-in-out infinite alternate;
-
+    -moz-animation: neon2 2.5s ease-in-out infinite alternate;
+    animation: neon2 4.5s ease-in-out infinite alternate;
 }
-
-
-
 
 .number-circle .textkey {
     font-size: 6vmin;
-    color:white;
+    color: white;
 }
 
 .number-circle .abc {
@@ -610,6 +598,7 @@ body {
 .number-circle-ladd .num {
     font-size: 30px;
 }
+
 /*
 .number-circle:hover,
 .number-circle-ladd:hover,
@@ -617,7 +606,6 @@ body {
     background: #D6CEC3;
     color: #fff;
 }*/
-
 .call-cont {
     width: 100%;
     text-align: center;
@@ -681,45 +669,43 @@ body {
     font-size: 11px;
 }
 
-
 @-webkit-keyframes neon2 {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228DFF, 0 0 70px #228DFF, 0 0 80px #228DFF, 0 0 100px #228DFF, 0 0 150px #228DFF;
-  }
-  to {
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #228DFF, 0 0 35px #228DFF, 0 0 40px #228DFF, 0 0 50px #228DFF, 0 0 75px #228DFF;
-  }
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228DFF, 0 0 70px #228DFF, 0 0 80px #228DFF, 0 0 100px #228DFF, 0 0 150px #228DFF;
+    }
+
+    to {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #228DFF, 0 0 35px #228DFF, 0 0 40px #228DFF, 0 0 50px #228DFF, 0 0 75px #228DFF;
+    }
 }
 
 @-moz-keyframes neon2 {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228DFF, 0 0 70px #228DFF, 0 0 80px #228DFF, 0 0 100px #228DFF, 0 0 150px #228DFF;
-  }
-  to {
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #228DFF, 0 0 35px #228DFF, 0 0 40px #228DFF, 0 0 50px #228DFF, 0 0 75px #228DFF;
-  }
-}
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228DFF, 0 0 70px #228DFF, 0 0 80px #228DFF, 0 0 100px #228DFF, 0 0 150px #228DFF;
+    }
 
+    to {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #228DFF, 0 0 35px #228DFF, 0 0 40px #228DFF, 0 0 50px #228DFF, 0 0 75px #228DFF;
+    }
+}
 
 @keyframes neon2 {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228DFF, 0 0 70px #228DFF, 0 0 80px #228DFF, 0 0 100px #228DFF, 0 0 150px #228DFF;
-  }
-  to {
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #228DFF, 0 0 35px #228DFF, 0 0 40px #228DFF, 0 0 50px #228DFF, 0 0 75px #228DFF;
-  }
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #228DFF, 0 0 70px #228DFF, 0 0 80px #228DFF, 0 0 100px #228DFF, 0 0 150px #228DFF;
+    }
+
+    to {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #228DFF, 0 0 35px #228DFF, 0 0 40px #228DFF, 0 0 50px #228DFF, 0 0 75px #228DFF;
+    }
 }
 
-
 .big-icon {
-  font-size: 150%;
+    font-size: 150%;
 }
 
 .has-header {
     top: 0px;
 }
-
-
 
 .jiggle {
     -webkit-animation: jiggle 0.2s infinite;
@@ -734,6 +720,7 @@ body {
     0% {
         -moz-transform: rotate(-1deg);
     }
+
     50% {
         -moz-transform: rotate(1deg);
     }
@@ -742,170 +729,138 @@ body {
 @-webkit-keyframes jiggle {
     0% {
         -webkit-transform: rotate(-1deg);
-        }
+    }
+
     50% {
         -webkit-transform: rotate(1deg);
     }
 }
 
-.backgroundProduct
-{
- background: url('../img/downloaded.jpg') no-repeat center;
-
-  background-size: cover;
-  height: 100%;
-
+.backgroundProduct {
+    background: url('../img/downloaded.jpg') no-repeat center;
+    background-size: cover;
+    height: 100%;
 }
 
-.backgroundPOS
-{
-  background: url('../img/background.jpg') no-repeat center;
-  background-color: rbga(0,0,0,0.9);
-  height: 100%;
-  
-
+.backgroundPOS {
+    background: url('../img/background.jpg') no-repeat center;
+    background-color: rbga(0,0,0,0.9);
+    height: 100%;
 }
 
-#logo
-{
-  position: fixed;
-  top: 500px;
-  right: 25px;
-  opacity: 0.5;
+#logo {
+    position: fixed;
+    top: 500px;
+    right: 25px;
+    opacity: 0.5;
 }
 
-#logo:hover
-{
-  opacity: 1;
+#logo:hover {
+    opacity: 1;
 }
 
-caption
-{
-  font-size: 64px;
-  margin: 25px;
-  color: #222;
-  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.4);
+caption {
+    font-size: 64px;
+    margin: 25px;
+    color: #222;
+    text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.4);
 }
 
-table.billList
-{
-  text-align: left;
-  width: 100%;
-  border-collapse:collapse;
-  margin: 0 auto;
-
-  background: rgba(255, 255, 255, 0.15);
+table.billList {
+    text-align: left;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.15);
 }
 
-table.billList td, th
-{
-  padding: 16px;
-  width: 200px;
-  line-height: 18px;
-  font-weight: 300;
- 
+table.billList td, th {
+    padding: 16px;
+    width: 200px;
+    line-height: 18px;
+    font-weight: 300;
 }
 
-table.billList thead
-{
-  display: block;
-  background: rgba(255, 255, 255, 0.5);
+table.billList thead {
+    display: block;
+    background: rgba(255, 255, 255, 0.5);
 }
 
-table.billList th
-{
-  border-bottom: 0;
-  color: white;
-  color: #444;
-  font-weight: 700;
-  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.7);
+table.billList th {
+    border-bottom: 0;
+    color: white;
+    color: #444;
+    font-weight: 700;
+    text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.7);
 }
 
-table.billList th:last-child
-{
-  width: 219px;
+table.billList th:last-child {
+    width: 219px;
 }
 
-table.billList tbody
-{
-  width: 100%;
-  max-height:55vh;
-  min-height:0px;
-  overflow: auto;
-
-  display: block;
+table.billList tbody {
+    width: 100%;
+    max-height: 55vh;
+    min-height: 0px;
+    overflow: auto;
+    display: block;
 }
 
-table.billList tr:nth-child(even)
-{
-  background: rgba(255, 255, 255, 0.15);
+table.billList tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.15);
 }
 
-table.billList tr td:first-child
-{
-  font-weight: bold;
+table.billList tr td:first-child {
+    font-weight: bold;
 }
-
 
 /*---*/
-
-table.productlist
-{
-  text-align: left;
-  width: 100%;
-  border-collapse:collapse;
-  margin: 0 auto;
-
-  background: rgba(255, 255, 255, 0.15);
+table.productlist {
+    text-align: left;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.15);
 }
 
-table.productlist td, th
-{
-  padding: 16px;
-  width: 200px;
-  line-height: 18px;
-  font-weight: 300;
- 
+table.productlist td, th {
+    padding: 16px;
+    width: 200px;
+    line-height: 18px;
+    font-weight: 300;
 }
 
-table.productlist thead
-{
-  display: block;
-  background: rgba(255, 255, 255, 0.5);
+table.productlist thead {
+    display: block;
+    background: rgba(255, 255, 255, 0.5);
 }
 
-table.productlist th
-{
-  border-bottom: 0;
-  color: white;
-  color: #444;
-  font-weight: 700;
-  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.7);
+table.productlist th {
+    border-bottom: 0;
+    color: white;
+    color: #444;
+    font-weight: 700;
+    text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.7);
 }
 
-table.productlist th:last-child
-{
-  width: 219px;
+table.productlist th:last-child {
+    width: 219px;
 }
 
-table.productlist tbody
-{
-  width: 90%;
-  max-height:82vh;
-  min-height:0px;
-  overflow: auto;
-
-  display: block;
+table.productlist tbody {
+    width: 90%;
+    max-height: 82vh;
+    min-height: 0px;
+    overflow: auto;
+    display: block;
 }
 
-table.productlist tr:nth-child(even)
-{
-  background: rgba(255, 255, 255, 0.15);
+table.productlist tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.15);
 }
 
-table.productlist tr td:first-child
-{
-  font-weight: bold;
+table.productlist tr td:first-child {
+    font-weight: bold;
 }
 
 button.ion-ios-camera i:before {
@@ -913,6 +868,162 @@ button.ion-ios-camera i:before {
 }
 
 .productAddSlide .input-label {
-  color:black;
-  text-shadow: 1px 1px grey;
+    color: black;
+    text-shadow: 1px 1px grey;
 }
+
+table.tableInfolist {
+    text-align: left;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+table.tableInfolist td, th {
+    padding: 16px;
+    width: 150px;
+    line-height: 18px;
+    font-weight: 300;
+}
+
+table.tableInfolist th:last-child {
+    width: 219px;
+}
+
+table.tableInfolist tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.15);
+}
+.tableInfoView {
+    width:100%;
+    height:90%;
+}
+
+table.tableInfolist tr td:first-child {
+    font-weight: bold;
+}
+
+.tableInfo-desc {
+    left: 0;
+    bottom: 2px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    z-index: 0;
+    position: absolute;
+    background-color: rgba(10,10,10,0.6);
+    font-size: 2.5vmin;
+    font-weight: bold;
+    line-height: 3vmin;
+    min-height: 5vmin;
+    border-radius: 0.5vmin;
+}
+
+.tableInfo-capacity {
+     bottom: 2px;
+    width: 30%;
+    text-align: center;
+    color: white;
+    z-index: 0;
+    position: absolute;
+    background-color: rgba(10,10,10,0.6);
+    font-size: 2.5vmin;
+    font-weight: bold;
+    line-height: 3vmin;
+    height: 4vmin;
+    border-radius: 2vmin;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+}
+
+
+.tableInfoNumber {
+
+    margin: auto;
+    top: 0; 
+    left: 0; 
+    bottom: 0; 
+    right: 0;
+    position: absolute;
+    background: grey;
+    color: white;
+    height: 4vmin;
+    border-radius: 0.5vmin;
+    min-width:5vmin;
+    opacity: 0.9;
+    font-size: 2.5vmin;
+    font-weight: normal;
+    text-align: center;
+    line-height: 2.5vmin;
+}
+
+.tableInfo-occupancy {
+    padding-top: .5vmin;
+    top: 0;
+    text-align: center;
+    vertical-align: center;
+    position: absolute;
+    background: black;
+    height: 4vmin;
+    border-radius: 0.5vmin;
+    min-width: 1vmin;
+    font-size: 2.5vmin;
+    font-weight: bold;
+    width: 30%;
+    opacity: 0.7;
+    line-height: 2.5vmin;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+}
+
+
+.tableInfo-image {
+    width:100%; 
+    height:100%;
+    text-align:center;
+    margin-left:3vh;
+}
+
+.red {
+    border-radius: 2vmin;
+    position: relative;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(128,0,0,0.6);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(128,0,0,0.6);
+    box-shadow: 10px 10px 5px 0px rgba(128,0,0,0.6);    
+}
+
+.green {
+    border-radius: 2vmin;
+    position: relative;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,128,0,0.6);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,128,0,0.6);
+    box-shadow: 10px 10px 5px 0px rgba(0,128,0,0.6);
+}
+.yellow {
+    border-radius: 2vmin;
+    position: relative;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(255,255,0,0.6);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(255,255,0,0.6);
+    box-shadow: 10px 10px 5px 0px rgba(255,255,0,0.6);
+}
+
+.tableInfo-section {
+    position: absolute;
+    width: 100%;
+    height: 9vh;
+    display: inline-block;
+    bottom: 1vh;
+    line-height: 10vh;
+    z-index: 0;
+}
+
+.tableInfo-section-scroll {
+    bottom: 3vh;
+    width: 100%;
+    height: 16vh;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+

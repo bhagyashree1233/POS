@@ -57,6 +57,11 @@
 "name": "Cancel-Bill",
 "icon": "ion-android-cancel",
 "state": "billdetails"
+},
+{
+"name": "Table Info",
+"icon": "ion-navicon-round",
+"state": "tableInfo"
 }
 
 

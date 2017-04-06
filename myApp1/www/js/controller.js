@@ -1,34 +1,35 @@
-angular.module('starter.controller', [])
-
-.controller('MyCtrl', function($scope) {
-$(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggleClass('jiggle');  
-        return false; 
+angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
+    $(function() {
+        $('.click-to-jiggle').click(function(e) {
+            $(this).toggleClass('jiggle');
+            return false;
+        });
     });
-});$(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggleClass('jiggle');  
-        return false; 
+    $(function() {
+        $('.click-to-jiggle').click(function(e) {
+            $(this).toggleClass('jiggle');
+            return false;
+        });
     });
-});
-    
 
+    $scope.tabExpand = function(index) {
+        console.log('Tab ' + index + ' expanded');
+    }
+    ;
+    $scope.tabCollapse = function(index) {
+        console.log('Tab ' + index + ' collapsed');
+    }
+    ;
 
+    $scope.tab1 = {
+        expand: false // initial state  
+    };
 
-  $scope.tabExpand = function(index) {
-    console.log('Tab ' + index + ' expanded');
-  };
-  $scope.tabCollapse = function(index) {
-    console.log('Tab ' + index + ' collapsed');
-  };
-
-   $scope.tab1 = {
-    expand: false   // initial state  
-  };
-      
-  $scope.toggleTab1 = function() {
-    $scope.tab1.expand = !$scope.tab1.expand;
-  };
-})
-
-.controller('homeCtrl', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', '$ionicPopup','settingService', function($scope, $rootScope, $state, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading, $ionicPopup, settingService) {
+    $scope.toggleTab1 = function() {
+        $scope.tab1.expand = !$scope.tab1.expand;
+    }
+    ;
+}).controller('homeCtrl', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', '$ionicPopup', 'settingService', function($scope, $rootScope, $state, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading, $ionicPopup, settingService) {
 
     /*
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -41,7 +42,6 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
     //ionicParentView
 
     //load products list from DB
-
 
     $scope.OnCatClick = function(catId) {
         console.log(catId);
@@ -93,10 +93,6 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
 
     })
 
-    
-
-
-
     $scope.Products = [];
     $scope.categoryArr = [];
     $scope.allSlideCatArr = [];
@@ -143,7 +139,7 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
         }
         console.log($scope.allSlideProductArr);
     }
-   $scope.deleteProduct = function(productId) {
+    $scope.deleteProduct = function(productId) {
 
         console.log("Product Id:", productId);
         $scope.ProductId = productId;
@@ -176,7 +172,7 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
 
     }
 
-       $scope.deleteAllProductsAndCat = function(catId) {
+    $scope.deleteAllProductsAndCat = function(catId) {
 
         var confirmPopup = $ionicPopup.confirm({
             title: 'Will also delete all products in Category ',
@@ -243,12 +239,11 @@ $(function () { $('.click-to-jiggle').click(function (e) {  $(this).toggle
         console.log($scope.allSlideCatArr);
     }
 */
-$scope.onPressHoldProduct = function()
-{
+    $scope.onPressHoldProduct = function() {
 
-    $scope.jiggleProduct = true;
-    
-}
+        $scope.jiggleProduct = true;
+
+    }
 
     $scope.onPressHold = function(index) {
         console.log('enterd on hold');
@@ -263,13 +258,12 @@ $scope.onPressHoldProduct = function()
         calculateProductCost();
     }
 
-       $scope.testDivBlurFunc = function()
-   {
+    $scope.testDivBlurFunc = function() {
         $scope.showDelete = false;
 
-       console.log('clicked outside');
-   };
-
+        console.log('clicked outside');
+    }
+    ;
 
     function calculateProductCost() {
         $scope.totalPrice = 0;
@@ -391,9 +385,9 @@ $scope.onPressHoldProduct = function()
 
     $scope.receipt = function(tokenNo) {
         //$scope.paymentModal.hide();
-       console.log("Print Receipt");
+        console.log("Print Receipt");
         var billSummary = {};
-       // $scope.NoCopies = $rootScope.printFormatSettings.billCopies;
+        // $scope.NoCopies = $rootScope.printFormatSettings.billCopies;
 
         billSummary.totalPrice = $scope.totalPrice;
         billSummary.discountAmount = $scope.discountAmount;
@@ -401,9 +395,8 @@ $scope.onPressHoldProduct = function()
         billSummary.totalChargeAmount = $scope.totalChargeAmount;
         billSummary.BillStatus = "Active";
 
-        if($scope.BillDate == undefined)
-        {
-        $scope.BillDate = (new Date()).getTime();
+        if ($scope.BillDate == undefined) {
+            $scope.BillDate = (new Date()).getTime();
         }
 
         billSummary.DateTime = new Date($scope.BillDate);
@@ -412,98 +405,87 @@ $scope.onPressHoldProduct = function()
 
         $scope.CurrentTokenNumber = tokenNo;
 
-        $rootScope.print(billSummary, $scope.productArr,onPrintReceiptSuccess,PrintReceiptError,tokenNo,$rootScope.VolatileData.CurrentBillNo);
-        return(true);
-    
-    }  
-
-    function onPrintReceiptSuccess()
-    {
-        $scope.billCopies++;
-
-      if($scope.billCopies < $rootScope.printFormatSettings.billCopies)
-      {
-         
-       $ionicPopup.show({
-              title: 'Print another copy',
-              subTitle: 'Click Print to get another bill copy',
-              scope:$scope,
-               buttons: [
-              { text: 'Cancel', onTap: function(e) { return "cancel"; } },
-              {
-                  text: '<b>Print</b>',
-                  type: 'button-positive',
-                  onTap: function(e) { return "Print";}
-              }
-
-              ]
-
-   }).then(function(res) {
-       
-        if(res == "Print")
-        {
-            $scope.receipt($scope.CurrentTokenNumber);
-        }
-        else
-        {
-            SaveTransactionDetailstoDB();
-            $scope.billCopies = $rootScope.printFormatSettings.billCopies;
-        }
-
-
-        });
-         
-      }
-      else
-      {
-        SaveTransactionDetailstoDB();
-        //UpdateVolatileDataToDB();
-      }
-
-
+        $rootScope.print(billSummary, $scope.productArr, onPrintReceiptSuccess, PrintReceiptError, tokenNo, $rootScope.VolatileData.CurrentBillNo);
+        return ( true) ;
 
     }
 
-    function UpdateVolatileDataToDB()
-    {
-          var promise = settingService.set("VolatileData", JSON.stringify($rootScope.VolatileData));
+    function onPrintReceiptSuccess() {
+        $scope.billCopies++;
+
+        if ($scope.billCopies < $rootScope.printFormatSettings.billCopies) {
+
+            $ionicPopup.show({
+                title: 'Print another copy',
+                subTitle: 'Click Print to get another bill copy',
+                scope: $scope,
+                buttons: [{
+                    text: 'Cancel',
+                    onTap: function(e) {
+                        return "cancel";
+                    }
+                }, {
+                    text: '<b>Print</b>',
+                    type: 'button-positive',
+                    onTap: function(e) {
+                        return "Print";
+                    }
+                }]
+
+            }).then(function(res) {
+
+                if (res == "Print") {
+                    $scope.receipt($scope.CurrentTokenNumber);
+                } else {
+                    SaveTransactionDetailstoDB();
+                    $scope.billCopies = $rootScope.printFormatSettings.billCopies;
+                }
+
+            });
+
+        } else {
+            SaveTransactionDetailstoDB();
+            //UpdateVolatileDataToDB();
+        }
+
+    }
+
+    function UpdateVolatileDataToDB() {
+        var promise = settingService.set("VolatileData", JSON.stringify($rootScope.VolatileData));
         promise.then(function(data) {
             if (data.rowsAffected >= 1) {
                 console.log("Data update Success");
                 //$rootScope.ShowToast("Data update Success",false);
-               // $rootScope.password = newpassword;
+                // $rootScope.password = newpassword;
             } else {
-                
+
                 console.log("Data update Failed");
                 //$rootScope.ShowToast("Unable to Password",false);
             }
-        },function(err)
-        {
+        }, function(err) {
             console.log("Data update Failed: ", err);
             //$rootScope.ShowToast("Unable to Password",false);
         })
     }
 
-    function PrintReceiptError()
-    {
-      console.log("Print Receipt Error");
+    function PrintReceiptError() {
+        console.log("Print Receipt Error");
 
-      if($scope.billCopies > 0) //atleast one copy printed;;
-      {
-          SaveTransactionDetailstoDB();
-          //UpdateVolatileDataToDB();
+        if ($scope.billCopies > 0) //atleast one copy printed;;
+        {
+            SaveTransactionDetailstoDB();
+            //UpdateVolatileDataToDB();
 
-      }
+        }
 
     }
 
-    function SaveTransactionDetailstoDB()
-    {
-         //$scope.transactionDate = $scope.BillDate;
+    function SaveTransactionDetailstoDB() {
+        //$scope.transactionDate = $scope.BillDate;
         //check
 
         //console.log("tran Date: ", $scope.transactionDate);
-        var promise = dbService.storeToTransaction($scope.productArr, $scope.BillDate,$rootScope.VolatileData.CurrentBillNo);
+        var promise = dbService.storeToTransaction($scope.productArr, $scope.BillDate, $rootScope.VolatileData.CurrentBillNo);
         promise.then(function(result) {
             console.log(result);
             $scope.paymentMethod = "cash";
@@ -517,11 +499,10 @@ $scope.onPressHoldProduct = function()
 
     }
 
-
     //function to save bill details to database
     function SaveBillDetails() {
         //console.log("Save Bill date: ", $scope.transactionDate);
-        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.BillDate,$rootScope.VolatileData.CurrentBillNo);
+        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.BillDate, $rootScope.VolatileData.CurrentBillNo);
         promise.then(function(result) {
             console.log(result);
             //clear all values
@@ -533,20 +514,18 @@ $scope.onPressHoldProduct = function()
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
 
-            console.log("updating volatile Data" ,result);
+            console.log("updating volatile Data", result);
 
-            $rootScope.VolatileData.CurrentBillNo =  Number($rootScope.VolatileData.CurrentBillNo) + 1;
-            if(Number($rootScope.VolatileData.CurrentBillNo) > 99999999)
-            $rootScope.VolatileData.CurrentBillNo = 1;
+            $rootScope.VolatileData.CurrentBillNo = Number($rootScope.VolatileData.CurrentBillNo) + 1;
+            if (Number($rootScope.VolatileData.CurrentBillNo) > 99999999)
+                $rootScope.VolatileData.CurrentBillNo = 1;
 
-          if($rootScope.printFormatSettings.tokNum == "Auto")
-           {
-            $rootScope.VolatileData.CurrentTokenNo = Number($rootScope.VolatileData.CurrentTokenNo) + 1;
-            if(Number($rootScope.VolatileData.CurrentTokenNo) > $rootScope.printFormatSettings.tokResetAftr)
-            {
-                $rootScope.VolatileData.CurrentTokenNo = $rootScope.printFormatSettings.tokStartNmbr;
+            if ($rootScope.printFormatSettings.tokNum == "Auto") {
+                $rootScope.VolatileData.CurrentTokenNo = Number($rootScope.VolatileData.CurrentTokenNo) + 1;
+                if (Number($rootScope.VolatileData.CurrentTokenNo) > $rootScope.printFormatSettings.tokResetAftr) {
+                    $rootScope.VolatileData.CurrentTokenNo = $rootScope.printFormatSettings.tokStartNmbr;
+                }
             }
-           }
 
             UpdateVolatileDataToDB();
         }, function(result) {
@@ -585,12 +564,8 @@ $scope.onPressHoldProduct = function()
         $scope.totalChargeAmount = 0;
     }
 
-
-
     $scope.onPaymentOk = function(value) {
         console.log("Payment Ok");
-
-        
 
         console.log('I am in Paid Function')
         console.log(value)
@@ -601,7 +576,7 @@ $scope.onPressHoldProduct = function()
             console.log("Collected Amount less than Bill Amount");
             return ( false) ;
         }
-        
+
         $scope.paidAmount1 = typedAmount;
         console.log(typedAmount);
 
@@ -609,78 +584,69 @@ $scope.onPressHoldProduct = function()
         $scope.Balance = parseFloat(balance).toFixed(2);
         $scope.typedAmount = typedAmount;
 
+        $ionicPopup.show({
+            title: 'Print Receipt',
+            subTitle: 'Print Receipt to Complete Transaction',
+            scope: $scope,
+            buttons: [{
+                text: 'Close',
+                onTap: function(e) {
+                    return "cancel";
+                }
+            }, {
+                text: '<b>Print</b>',
+                type: 'button-positive',
+                onTap: function(e) {
+                    return "Print";
+                }
+            }, {
+                text: '<b>Save</b>',
+                type: 'button-positive',
+                onTap: function(e) {
+                    return "Save";
+                }
+            }]
 
-          $ionicPopup.show({
-              title: 'Print Receipt',
-              subTitle: 'Print Receipt to Complete Transaction',
-              scope:$scope,
-               buttons: [
-              { text: 'Close', onTap: function(e) { return "cancel"; } },
-              {
-                  text: '<b>Print</b>',
-                  type: 'button-positive',
-                  onTap: function(e) { return "Print";}
-              },
-              {
-                  text: '<b>Save</b>',
-                  type: 'button-positive',
-                  onTap: function(e) { return "Save";}
-              }
+        }).then(function(res) {
+            if (res == "Print") {
+                //console.log("printer Name is: ", $rootScope.printerName);
+                //$rootScope.printerConnect($rootScope.printerName,$rootScope.ConnectStatusFunc);
+                console.log("Print Receipt Invoked");
+                $scope.billCopies = 0;
+                if ($rootScope.printFormatSettings.tokNum == "Manual") {
+                    $scope.keypadMessage = "Enter Token Number";
+                    $scope.BillDate = undefined;
+                    $rootScope.openNumericModal($scope, $scope.receipt, $scope.receipt);
 
-              ]
+                } else if ($rootScope.printFormatSettings.tokNum == "Auto") {
+                    $scope.BillDate = (new Date()).getTime();
+                    $scope.receipt($rootScope.VolatileData.CurrentTokenNo);
+                    // $rootScope.VolatileData.CurrentTokenNo = $rootScope.VolatileData.CurrentTokenNo + 1;
+                    // if($rootScope.VolatileData.CurrentTokenNo > $rootScope.printFormatSettings.tokResetAftr)
+                    //{
+                    //  $rootScope.VolatileData.CurrentTokenNo = $rootScope.printFormatSettings.tokStartNmbr;
+                    //}
+                } else //disable;;
+                {
+                    //$scope.BillDate = (new Date()).getItem();
+                    $scope.BillDate = (new Date()).getTime();
+                    $scope.receipt(undefined);
+                }
+                //();
+                return;
 
-   }).then(function(res) {
-       if(res=="Print")
-       {
-           //console.log("printer Name is: ", $rootScope.printerName);
-           //$rootScope.printerConnect($rootScope.printerName,$rootScope.ConnectStatusFunc);
-           console.log("Print Receipt Invoked");
-           $scope.billCopies = 0;
-        if($rootScope.printFormatSettings.tokNum == "Manual")
-        {
-            $scope.keypadMessage = "Enter Token Number";
-            $scope.BillDate = undefined;
-            $rootScope.openNumericModal($scope, $scope.receipt, $scope.receipt);
+            } else if (res == "Save") {
+                $scope.BillDate = (new Date()).getTime();
+                SaveTransactionDetailstoDB();
+                //UpdateVolatileDataToDB();
+            } else {
+                return;
+            }
 
-        }
-        else if($rootScope.printFormatSettings.tokNum == "Auto")
-        {
-            $scope.BillDate = (new Date()).getTime();
-            $scope.receipt($rootScope.VolatileData.CurrentTokenNo);
-           // $rootScope.VolatileData.CurrentTokenNo = $rootScope.VolatileData.CurrentTokenNo + 1;
-           // if($rootScope.VolatileData.CurrentTokenNo > $rootScope.printFormatSettings.tokResetAftr)
-            //{
-              //  $rootScope.VolatileData.CurrentTokenNo = $rootScope.printFormatSettings.tokStartNmbr;
-            //}
-        }
-        else //disable;;
-        {
-            //$scope.BillDate = (new Date()).getItem();
-            $scope.BillDate = (new Date()).getTime();
-            $scope.receipt(undefined);
-        }
-           //();
-           return;
-           
-       }
-       else if(res=="Save")
-       {
-           $scope.BillDate =(new Date()).getTime();
-           SaveTransactionDetailstoDB();
-           //UpdateVolatileDataToDB();
-       }
-       else
-       {
-           return;
-       }
+        });
 
+        return ( true) ;
 
-   });
-
-
-    return (true);
-
-        
     }
 
     $scope.onPaymentCancel = function() {
@@ -741,7 +707,7 @@ $scope.onPressHoldProduct = function()
                 //showing Modal();
                 console.log("In cash");
                 $scope.keypadMessage = "Enter Amount collected";
-               $rootScope.openNumericModal($scope, $scope.onPaymentOk, $scope.onPaymentCancel);
+                $rootScope.openNumericModal($scope, $scope.onPaymentOk, $scope.onPaymentCancel);
             }
 
         });
@@ -864,14 +830,13 @@ $scope.onPressHoldProduct = function()
             return ( false) ;
         }
 
-        console.log("value is: ",value);
+        console.log("value is: ", value);
         value = Number(value);
 
-        if(isNaN(value))
-        {
+        if (isNaN(value)) {
             console.log("please Enter Valid Qty");
-             $rootScope.ShowToast("please Enter Valid Qty",false);
-             return(false);
+            $rootScope.ShowToast("please Enter Valid Qty", false);
+            return ( false) ;
         }
 
         if ((value * $rootScope.CurrentProduct.unitPrice) > 99999.99) {
@@ -880,22 +845,20 @@ $scope.onPressHoldProduct = function()
             return ( false) ;
         }
 
-        if(value > 9999.99)
-        {
-           console.log("Quantity greater than 9999.99");
+        if (value > 9999.99) {
+            console.log("Quantity greater than 9999.99");
             $rootScope.ShowToast("Quantity cannot be greater than 9999.99", false);
-            return ( false) ;   
+            return ( false) ;
         }
 
-        if($rootScope.CurrentProduct.unit == "pieces")
-        {
-            var n = Math.abs(value); // Change to positive
+        if ($rootScope.CurrentProduct.unit == "pieces") {
+            var n = Math.abs(value);
+            // Change to positive
             var decimal = n - Math.floor(n);
-            if(decimal > 0)
-            {
-            console.log("Quantity cannot be decimal for peices type product");
-            $rootScope.ShowToast("Quantity cannot be decimal for this product", false);
-            return(false);
+            if (decimal > 0) {
+                console.log("Quantity cannot be decimal for peices type product");
+                $rootScope.ShowToast("Quantity cannot be decimal for this product", false);
+                return ( false) ;
             }
 
         }
@@ -922,43 +885,39 @@ $scope.onPressHoldProduct = function()
     }
     ;
 
-
     $scope.holdItems = function() {
 
+        if ($rootScope.holdItemArr.length == 0 && $scope.productArr.length != 0) //hold;;
+        {
+            $rootScope.holdItemArr = $scope.productArr;
+            //deepcopy;;
+            $scope.totalPrice = 0;
+            $scope.productArr = [];
+            $scope.totalPrice = 0;
+            $scope.totalTaxAmount = 0;
+            $scope.discountAmount = 0;
+            $scope.totalChargeAmount = 0;
+            $scope.Balance = undefined;
+            $scope.typedAmount = undefined;
+            console.log("Current Bill put on hold");
+            $rootScope.ShowToast("Current Bill put on hold", false);
+            return;
+        } else if ($rootScope.holdItemArr.length != 0 && $scope.productArr.length == 0) //recall;;
+        {
 
-       if($rootScope.holdItemArr.length== 0 && $scope.productArr.length != 0) //hold;;
-      {
-         $rootScope.holdItemArr = $scope.productArr; //deepcopy;;
-         $scope.totalPrice =0;
-         $scope.productArr = [];
-         $scope.totalPrice = 0;
-         $scope.totalTaxAmount = 0;
-         $scope.discountAmount = 0;
-         $scope.totalChargeAmount = 0;
-         $scope.Balance = undefined;
-         $scope.typedAmount =undefined;
-         console.log("Current Bill put on hold");
-         $rootScope.ShowToast("Current Bill put on hold",false);
-         return;
-      }
-      else if($rootScope.holdItemArr.length!= 0 && $scope.productArr.length == 0) //recall;;
-      {
+            $scope.productArr = $rootScope.holdItemArr;
+            //deepcopy;;
+            $rootScope.holdItemArr = [];
+            calculateProductCost();
+            console.log("Saved Bill Recalled");
+            $rootScope.ShowToast("Saved Bill Recalled", false);
+            return;
+        } else {
+            console.log("Else case");
+            $rootScope.ShowToast("Current Bill Not Empty or Hold Item already Exists", false);
+        }
 
-         $scope.productArr = $rootScope.holdItemArr; //deepcopy;;
-         $rootScope.holdItemArr = [];
-         calculateProductCost();
-         console.log("Saved Bill Recalled");
-         $rootScope.ShowToast("Saved Bill Recalled",false);
-         return;
-      }
-      else
-      {
-          console.log("Else case");
-          $rootScope.ShowToast("Current Bill Not Empty or Hold Item already Exists",false);
-      }
-
-
- /*
+        /*
         if ($scope.productArr.length != 0) {
             var itemsDetails = {};
             var d = new Date();
@@ -983,10 +942,7 @@ $scope.onPressHoldProduct = function()
         }
    */
 
-
     }
-
-
 
     $rootScope.recallItems = function() {
         var itemsJsonObj = window.localStorage.getItem('holdEvents');
@@ -1036,7 +992,6 @@ $scope.onPressHoldProduct = function()
 ])//END OF HOMECTRL;;
 
 .controller("productCtrl", function($scope, $state, $rootScope, $ionicPopover, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
- 
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         console.log('working before enter..')
@@ -1047,12 +1002,11 @@ $scope.onPressHoldProduct = function()
             console.log("Edit Product: ");
             console.log($rootScope.CurrentProduct);
             $scope.newProduct = $rootScope.CurrentProduct;
-            $scope.newProduct.favourite == "true" ?  $scope.newProduct.favourite = true :$scope.newProduct.favourite = false;
+            $scope.newProduct.favourite == "true" ? $scope.newProduct.favourite = true : $scope.newProduct.favourite = false;
             console.log("fav: ", $scope.newProduct.favourite);
             $rootScope.editingProduct = {};
             $scope.pIdDisable = true;
-        }
-        else {
+        } else {
             $scope.ProductButtonText = "Add Product";
             $scope.pIdDisable = false;
             $scope.newProduct = {
@@ -1063,13 +1017,11 @@ $scope.onPressHoldProduct = function()
         loadCategory();
     });
 
-    
-
     $scope.addEditProduct = function() {
 
-         console.log($scope.newProduct.productId)
+        console.log($scope.newProduct.productId)
         var productName = $scope.newProduct.name;
-       
+
         if (productName == undefined || productName.length < 2) {
             $rootScope.ShowToast("Enter productName", false);
             console.log('Enter Product Name')
@@ -1077,8 +1029,8 @@ $scope.onPressHoldProduct = function()
         }
 
         var productSellingPrice = $scope.newProduct.unitPrice;
-        var pattern=new RegExp('^[0-9]+([,.][0-9]+)?$');
-        var pattern1=new RegExp('^[0-9]+$');
+        var pattern = new RegExp('^[0-9]+([,.][0-9]+)?$');
+        var pattern1 = new RegExp('^[0-9]+$');
         if (productSellingPrice == undefined || productSellingPrice.length < 1) {
             $rootScope.ShowToast("Enter Selling Price ", false);
             console.log("Enter Selling Price");
@@ -1092,7 +1044,7 @@ $scope.onPressHoldProduct = function()
         if (productSellingPrice > 9999.99) {
             $rootScope.ShowToast("Invalid Selling Price", false);
             console.log('Invalid product Selling')
-            return false; 
+            return false;
         }
 
         var taxRate = $scope.newProduct.taxRate;
@@ -1105,7 +1057,7 @@ $scope.onPressHoldProduct = function()
 
         var buyingPrice = $scope.newProduct.actualPrice;
         if (buyingPrice == undefined || buyingPrice.length < 1) {
-           $scope.newProduct.actualPrice= document.getElementById('buyingPrice').value = 0;
+            $scope.newProduct.actualPrice = document.getElementById('buyingPrice').value = 0;
         } else if (!pattern.test(buyingPrice)) {
             $rootScope.ShowToast("Invalid buyingPrice", false);
             console.log('Invalid buyingPrice');
@@ -1130,7 +1082,7 @@ $scope.onPressHoldProduct = function()
 
         var itemInStock = $scope.newProduct.inStock;
         if (itemInStock == undefined || itemInStock < 0) {
-          $scope.newProduct.inStock=document.getElementById('itemsStock').value = 1000000;
+            $scope.newProduct.inStock = document.getElementById('itemsStock').value = 1000000;
 
         } else if (!pattern1.test(itemInStock) && $scope.newProduct.unit == 'pieces') {
             $rootScope.ShowToast("Invalid  itemInStock", false);
@@ -1151,7 +1103,7 @@ $scope.onPressHoldProduct = function()
         var discount = $scope.newProduct.discount;
 
         if (discount == undefined || discount.length < 1) {
-            $scope.newProduct.discount=document.getElementById('discount').value = 0;
+            $scope.newProduct.discount = document.getElementById('discount').value = 0;
 
         } else if (!pattern.test(discount)) {
             $rootScope.ShowToast("Invalid discount", false);
@@ -1240,7 +1192,6 @@ $scope.onPressHoldProduct = function()
         $scope.taxRatePopover.show($event);
     }
     ;
-   
 
     $scope.newProduct = {
         unit: 'pieces',
@@ -1261,57 +1212,55 @@ $scope.onPressHoldProduct = function()
     function addNewProduct() {
         console.log($scope.selectedTax);
         console.log('entered addNewProduct()..');
-        
-        if($scope.newProduct.image == undefined || $scope.newProduct.image == "")
-         $scope.newProduct.image = "img/sc1.jpg";
+
+        if ($scope.newProduct.image == undefined || $scope.newProduct.image == "")
+            $scope.newProduct.image = "img/sc1.jpg";
 
         console.log($scope.newProduct);
 
-        
-            /* if (!(angular.isDefined($scope.newProduct.discount))) {
+        /* if (!(angular.isDefined($scope.newProduct.discount))) {
                     $scope.newProduct.discount = 0;
                 }
                  if (!(angular.isDefined($scope.newProduct.inStock))) {
                     $scope.newProduct.inStock = 1000000;
                 }*/
 
-            console.log("Cat ID: ",$scope.newProduct.categoryId);
-            console.log('validation success and entered if');
-            console.log($scope.newProduct);
-            $rootScope.showDbLoading();
-            var promise = dbService.addNewProduct($scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite,$scope.newProduct.productId);
-            promise.then(function(result) {
-                console.log(result);
-                console.log("Product Added Sucessfully");
-                $rootScope.ShowToast("Product Added Sucessfully", false);
-                //  $rootScope.Products.push($scope.newProduct);
-                $scope.newProduct = {
-                    unit: 'pieces',
-                    image: "img/sc1.jpg",
-                    favourite: false
-                };
-                $rootScope.hideDbLoading();
-                $scope.productSuccessMessage = true;
-                //confirmation popup
-                var confirmPopup = $ionicPopup.confirm({
-                    title: 'Add More Products ',
-                    template: 'Do you want to add more products?'
-                });
-                confirmPopup.then(function(res) {
-                    if (res) {
-                        console.log('add more products');
-                    } else {
-                        console.log('No');
-                        $ionicHistory.goBack();
-                    }
-                });
-            }, function(result) {
-                console.log(result);
-                console.log("Unable to add product");
-                $rootScope.ShowToast("Unable to add product", false);
-                $rootScope.hideDbLoading();
-            })
-        
+        console.log("Cat ID: ", $scope.newProduct.categoryId);
+        console.log('validation success and entered if');
+        console.log($scope.newProduct);
+        $rootScope.showDbLoading();
+        var promise = dbService.addNewProduct($scope.newProduct.name, $scope.newProduct.unit, $scope.newProduct.unitPrice, $scope.newProduct.taxId, $scope.newProduct.actualPrice, $scope.newProduct.taxRate, $scope.newProduct.inStock, $scope.newProduct.discount, $scope.newProduct.categoryId, $scope.newProduct.categoryName, $scope.newProduct.image, $scope.newProduct.favourite, $scope.newProduct.productId);
+        promise.then(function(result) {
+            console.log(result);
+            console.log("Product Added Sucessfully");
+            $rootScope.ShowToast("Product Added Sucessfully", false);
+            //  $rootScope.Products.push($scope.newProduct);
+            $scope.newProduct = {
+                unit: 'pieces',
+                image: "img/sc1.jpg",
+                favourite: false
+            };
+            $rootScope.hideDbLoading();
+            $scope.productSuccessMessage = true;
+            //confirmation popup
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Add More Products ',
+                template: 'Do you want to add more products?'
+            });
+            confirmPopup.then(function(res) {
+                if (res) {
+                    console.log('add more products');
+                } else {
+                    console.log('No');
+                    $ionicHistory.goBack();
+                }
+            });
+        }, function(result) {
+            console.log(result);
+            console.log("Unable to add product");
+            $rootScope.ShowToast("Unable to add product", false);
+            $rootScope.hideDbLoading();
+        })
 
     }
 
@@ -1332,8 +1281,6 @@ $scope.onPressHoldProduct = function()
             $rootScope.hideDbLoading();
         })
     }
-
-
 
     $scope.onCategorySelect = function(categoryObj) {
         $scope.newProduct.categoryName = categoryObj.categoryName;
@@ -1377,7 +1324,6 @@ $scope.onPressHoldProduct = function()
             });
         }, false);
     }
-     
 
     $scope.openGallery = function() {
         console.log('gallery opened..');
@@ -1419,8 +1365,7 @@ $scope.onPressHoldProduct = function()
         console.log('open categoryModal')
         $scope.categoryModal.show();
     }
-})
-.controller('categoryCtrl', function($scope, $state, $ionicHistory, $ionicPopup, $cordovaSQLite, $rootScope, dbService) {
+}).controller('categoryCtrl', function($scope, $state, $ionicHistory, $ionicPopup, $cordovaSQLite, $rootScope, dbService) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
         $scope.newCategory = {};
         $scope.newCategory.categoryId = "";
@@ -1458,8 +1403,6 @@ $scope.onPressHoldProduct = function()
 
     }
 
- 
-
     $scope.editedCategory = {
         name: "",
         description: ""
@@ -1474,17 +1417,17 @@ $scope.onPressHoldProduct = function()
     }
 
     $scope.saveEditedCategory = function() {
-        if($scope.newCategory.categoryName==undefined||$scope.newCategory.categoryName.length<1){
-         $rootScope.ShowToast("Enter Categary Name", false);
-        console.log('Enter Categary');
-        return false;
+        if ($scope.newCategory.categoryName == undefined || $scope.newCategory.categoryName.length < 1) {
+            $rootScope.ShowToast("Enter Categary Name", false);
+            console.log('Enter Categary');
+            return false;
         }
-        if ($scope.newCategory.name != '' ) {
+        if ($scope.newCategory.name != '') {
             console.log($scope.newCategory.categoryName);
-           
+
             console.log($scope.newCategory.categoryDescription);
             $rootScope.showDbLoading();
-            var promise = dbService.editCategory($scope.newCategory.categoryId,$scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
+            var promise = dbService.editCategory($scope.newCategory.categoryId, $scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
             promise.then(function(res) {
                 console.log(res);
                 $rootScope.hideDbLoading();
@@ -1524,7 +1467,7 @@ $scope.onPressHoldProduct = function()
         console.log('I am in add New Categary')
         console.log($scope.newCategory.categoryName)
         console.log($scope.newCategory.categoryName.length)
-         if($scope.newCategory.categoryName==undefined ||$scope.newCategory.categoryName.length<1){
+        if ($scope.newCategory.categoryName == undefined || $scope.newCategory.categoryName.length < 1) {
             $rootScope.ShowToast("Enter Categary Name", false);
             console.log('Enter Categary');
             return false;
@@ -1570,11 +1513,7 @@ $scope.onPressHoldProduct = function()
         }
     }
 
-   
-
-})
-
-.controller('MenuCtrl', function($scope, settingService, $rootScope, $state) {
+}).controller('MenuCtrl', function($scope, settingService, $rootScope, $state, dbService) {
 
     $rootScope.devWidth = ((window.innerWidth > 0) ? window.innerWidth : screen.width);
     console.log($rootScope.devWidth);
@@ -1590,13 +1529,382 @@ $scope.onPressHoldProduct = function()
 
     $scope.itemclick = function(obj) {
         console.log("OnClick");
-        if(obj.name == "Reprint-Bill")
-        $rootScope.reprintBillButtonEnable = 1;
+        if (obj.name == "Reprint-Bill")
+            $rootScope.reprintBillButtonEnable = 1;
         else
-        $rootScope.reprintBillButtonEnable = 0;
+            $rootScope.reprintBillButtonEnable = 0;
         $state.go(obj.state);
     }
 
+}).controller('tableInfoCtrl', function($scope, $ionicPopup, $rootScope, dbService, $state) {
+
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+        loadTables()
+
+        loadCategory();
+        //$scope.highlight = "1x";
+      //  if ($rootScope.SelSection != '0') {
+     //       $scope.OnSectionClick($rootScope.SelSection)
+            //$scope.highlight = $rootScope.SelCat;
+      //  }
+    });
+
+    function loadCategory() {
+
+        $rootScope.showDbLoading();
+        var promise = dbService.loadSectionFromDB('TableInfoSection');
+        promise.then(function(res) {
+            $scope.sectionArr = res;
+            console.log($scope.sectionArr);
+            $rootScope.hideDbLoading();
+        }, function(res) {
+            console.log(res);
+            $rootScope.hideDbLoading();
+        })
+    }
+
+    function loadTables() {
+        $rootScope.showDbLoading();
+        var promise = dbService.loadTablesFromDB('TableInfo');
+        promise.then(function(res) {
+            $scope.tables = res;
+            console.log('tables loaded...');
+            $rootScope.hideDbLoading();
+        }, function(res) {
+            console.log(res);
+            $rootScope.hideDbLoading();
+        })
+    }
+
+ /*
+    $scope.sectionsArr = [{
+        sectionId: "01",
+        sectionName: "1st floor",
+        sectionDescription: "This is Section 01"
+    }, {
+        sectionId: "02",
+        sectionName: "2nd floor",
+        sectionDescription: "This is Section 02"
+    }, {
+        sectionId: "03",
+        sectionName: "3rd floor",
+        sectionDescription: "This is Section 03"
+    }, {
+        sectionId: "04",
+        sectionName: "4th floor",
+        sectionDescription: "This is Section 04"
+    }, {
+        sectionId: "05",
+        sectionName: "5th floor",
+        sectionDescription: "This is Section 05"
+    }]
+
+   
+    $scope.tables = [{
+        tableId: "01",
+        tableNumber: "table01",
+        tableDescription: "This is Table number 01",
+        image: "/img/database.jpg",
+        color:'red'
+    }, {
+        tableId: "02",
+        tableNumber: "table02",
+        tableDescription: "This is Table number 02",
+        image: "/img/database.jpg",
+        color:'green'
+    }, {
+        tableId: "03",
+        tableNumber: "table03",
+        tableDescription: "This is Table number 03",
+        image: "/img/database.jpg",
+        color:'yellow'
+    }, {
+        tableId: "04",
+        tableNumber: "table04",
+        tableDescription: "This is Table number 04",
+        image: "/img/database.jpg",
+        color:'green'
+    }, {
+        tableId: "05",
+        tableNumber: "table05",
+        tableDescription: "This is Table number 05",
+        image: "/img/database.jpg",
+        color:'yellow'
+    }, {
+        tableId: "06",
+        tableNumber: "table06",
+        tableDescription: "This is Table number 06",
+        image: "/img/database.jpg",
+        color:'red'
+    }];
+  */
+
+    $scope.deleteTable = function(tableId) {
+
+        console.log("Table Id:", tableId);
+        $scope.TableId = tableId;
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'The table will be permantly deleted',
+            template: 'Are you sure you want to delete table?'
+        });
+
+        confirmPopup.then(function(res) {
+            if (res) {
+
+                $rootScope.showDbLoading();
+                console.log("tableId 2:", tableId);
+                var promise = dbService.deleteTable(tableId);
+                promise.then(function(result) {
+                    $rootScope.hideDbLoading();
+                    loadTables();
+                }, function(result) {
+                    console.log(result);
+                    $rootScope.hideDbLoading();
+                });
+
+            } else
+                return;
+
+        });
+
+    }
+
+    $scope.OnTableClick = function(table) {
+        console.log("on table click");
+        if ($rootScope.Mode == 1) //edit or add mode;;
+        {
+            console.log("Mode Edit");
+            $rootScope.CreateMode = 0;
+            //edit mode;
+            $rootScope.CurrentTable = table;
+            $state.go('addEditTableInfo');
+
+        }
+    }
+
+    $scope.OnSectionClick = function(sectionId) {
+        console.log(sectionId);
+        $rootScope.SelSection = sectionId;
+
+        $scope.highlight = sectionId;
+
+        $rootScope.showDbLoading();
+        var promise = dbService.loadTablesForSection(sectionId);
+        promise.then(function(res) {
+            $scope.tables = res;
+            console.log('tables loaded...');
+            $rootScope.hideDbLoading();
+        }, function(res) {
+            console.log(res);
+            $rootScope.hideDbLoading();
+        })
+    }
+
+}).controller('addEditTableInfoCtrl', function($scope, $ionicHistory, $rootScope, dbService, $state, $ionicPopup, $ionicModal) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+        console.log('working before enter..')
+
+        if ($rootScope.CreateMode == 0) {
+            //editing;;
+            console.log("Edit Table: ");
+            console.log($rootScope.CurrentTable);
+            $scope.tableInfoObj = $rootScope.CurrentTable;
+
+        } else {
+            $scope.tableInfoObj = {};
+        }
+        loadSection();
+    });
+
+    function loadSection() {
+        //$rootScope.showDbLoading();
+        var promise = dbService.loadSectionFromDB('TableInfoSection');
+        promise.then(function(res) {
+            $scope.sectionArr = res;
+            //$rootScope.hideDbLoading();
+        }, function(res) {
+            console.log(res);
+            //$rootScope.hideDbLoading();
+        })
+    }
+
+    $scope.onSectionSelect = function(sectionObj) {
+        $scope.tableInfoObj.sectionName = sectionObj.sectionName;
+        $scope.tableInfoObj.sectionId = sectionObj.sectionId;
+        $scope.sectionModal.hide();
+    }
+
+    $scope.addNewSection = function(newSectionName) {
+        $rootScope.cameFromTable = true;
+        $state.go('addEditTableSection');
+        $scope.sectionModal.hide();
+    }
+
+    $ionicModal.fromTemplateUrl('templates/tableSectionModal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.sectionModal = modal;
+    })
+    $scope.openSectionModal = function() {
+        console.log('open sectionModal')
+        $scope.sectionModal.show();
+    }
+
+    $scope.saveTableInfo = function(tableInfoObj) {
+        console.log(tableInfoObj.tableNumber);
+
+        if (tableInfoObj.tableNumber == undefined || tableInfoObj.tableNumber == "") {
+            $rootScope.ShowToast("Please Enter table number", false);
+            console.log('Please Enter table number');
+            return false
+        }
+
+        if (tableInfoObj.tableNumber.length > 10) {
+            $rootScope.ShowToast("Table number should contain max 10 characters", false);
+            console.log('Table number should contain max 10 characters');
+            return false
+        }
+
+        if (tableInfoObj.tableDescription == undefined || tableInfoObj.tableDescription == "") {
+            $rootScope.ShowToast("Please Enter table Description", false);
+            console.log('Please Enter table Description');
+            return false
+        }
+
+        if (tableInfoObj.tableDescription.length > 25) {
+            $rootScope.ShowToast("Table Description should contain max 25 characters", false);
+            console.log('Table Description should contain max 25 characters');
+            return false
+        }
+
+        if ($rootScope.CreateMode == 0) {
+            console.log("Edit Product");
+            editTable();
+        } else {
+            console.log("Add Product");
+            addNewTable();
+        }
+    }
+
+    function addNewTable() {
+        console.log('entered addNewTable()..');
+
+        $rootScope.showDbLoading();
+        var promise = dbService.addNewTable($scope.tableInfoObj.tableNumber, $scope.tableInfoObj.tableDescription, $scope.tableInfoObj.sectionId, $scope.tableInfoObj.sectionName, $scope.tableInfoObj.tableCharges, $scope.tableInfoObj.tableCapacity);
+        promise.then(function(result) {
+            console.log(result);
+            console.log("Table Added Sucessfully");
+            $rootScope.ShowToast("Table Added Sucessfully", false);
+            //  $rootScope.Products.push($scope.newProduct);
+            $scope.tableInfoObj = {};
+            $rootScope.hideDbLoading();
+
+            //confirmation popup
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Add More Tables ',
+                template: 'Do you want to add more Tables?'
+            });
+            confirmPopup.then(function(res) {
+                if (res) {
+                    console.log('add more Tables');
+                } else {
+                    console.log('No');
+                    $ionicHistory.goBack();
+                }
+            });
+        }, function(result) {
+            console.log(result);
+            console.log("Unable to add Tables");
+            $rootScope.ShowToast("Unable to add Tables", false);
+            $rootScope.hideDbLoading();
+        })
+
+    }
+
+    function editTable() {
+        $rootScope.showDbLoading();
+        var promise = dbService.editTable($scope.tableInfoObj.tableId, $scope.tableInfoObj.tableNumber, $scope.tableInfoObj.tableDescription,  $scope.tableInfoObj.sectionId, $scope.tableInfoObj.sectionName, $scope.tableInfoObj.tableCharges, $scope.tableInfoObj.tableCapacity);
+        promise.then(function(result) {
+            console.log(result);
+            console.log("Table Edited Sucessfully");
+            $rootScope.hideDbLoading();
+            $rootScope.ShowToast("Table Edited Sucessfully", false);
+            $ionicHistory.goBack();
+        }, function(result) {
+            console.log(result);
+            $rootScope.ShowToast("Unable to Edit Table", false);
+            console.log("Unable to Edit Table");
+            $rootScope.hideDbLoading();
+        })
+    }
+
+    $scope.closeView = function() {
+        $ionicHistory.goBack();
+    }
+}).controller('addEditSectionCtrl', function($scope, $rootScope, dbService, $ionicHistory ) {
+    $scope.$on("$ionicView.beforeEnter", function(event, data) {
+        if ($rootScope.CreateMode == 1) {
+            getSection()
+        }
+    });
+
+    function getSection() {
+       // $rootScope.showDbLoading();
+        var promise = dbService.GetSectionById($rootScope.SelSection);
+        promise.then(function(res) {
+            if (res.sectionId != "Failed")
+                $scope.tableInfoSection = res;
+
+         //   $rootScope.hideDbLoading();
+        }, function(res) {
+            console.log(res);
+        //    $rootScope.hideDbLoading();
+        })
+    }
+
+    $scope.tableInfoSection = {};
+
+    $scope.saveSectionInfo = function(newSection) {
+        console.log('I am in add New Section')
+        if (newSection.sectionName == undefined || newSection.sectionName.length < 1) {
+            $rootScope.ShowToast("Enter Section Name", false);
+            console.log('Enter Section Name');
+            return false;
+        }
+
+        $rootScope.showDbLoading();
+        var promise = dbService.addNewSection($scope.tableInfoSection.sectionName, $scope.tableInfoSection.sectionDescription);
+        promise.then(function(result) {
+            console.log(result);
+            $rootScope.hideDbLoading();
+            //   $rootScope.categoryArr.push($scope.newCategory);
+            $scope.tableInfoSection = {};
+
+            if ($rootScope.cameFromTable) {
+                $rootScope.cameFromTable = false;
+                $ionicHistory.goBack();
+            } else {
+                //confirmation popup
+                $rootScope.ShowToast("Section Added Sucessfully", false);
+                var confirmPopup = $ionicPopup.confirm({
+                    title: 'Add More Section ',
+                    template: 'Do you want to add more Section?'
+                });
+                confirmPopup.then(function(res) {
+                    if (res) {
+                        console.log('add more Section');
+                        $state.reload();
+                    } else {
+                        console.log('No');
+                        $ionicHistory.goBack();
+                    }
+                });
+            }
+        }, function() {
+            console.log("Failed to Add Section");
+            $rootScope.ShowToast("Failed to Add Section", false);
+            $rootScope.hideDbLoading();
+        });
+    }
 })
-
-

@@ -1,10 +1,8 @@
-angular.module('starter.services', [])
-
-.factory("dbService", function($q, $cordovaSQLite, $rootScope) {
+angular.module('starter.services', []).factory("dbService", function($q, $cordovaSQLite, $rootScope) {
     function addNewCategory(name, desc) {
-        
+
         var deferred = $q.defer();
-      
+
         console.log('entered add newCategory service..');
         var query = "INSERT INTO Category (CategoryName, CategoryDesc) VALUES (?,?)";
         $cordovaSQLite.execute($rootScope.db, query, [name, desc]).then(function(res) {
@@ -17,7 +15,7 @@ angular.module('starter.services', [])
         });
         return deferred.promise;
     }
-    
+
     function loadProductFromDB(tableName) {
         var deferred = $q.defer();
         //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
@@ -79,17 +77,16 @@ angular.module('starter.services', [])
         categoryArr.categoryId = "Failed";
         //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
         var query = "SELECT * FROM Category where CategoryId = '" + CatId + "'";
-        console.log("hello",query);
+        console.log("hello", query);
         $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
             console.log('success');
-            if(res.rows.length > 0)
-            {
-              categoryArr.categoryId = res.rows.item(0).CategoryId;
-              categoryArr.categoryName= res.rows.item(0).CategoryName;
-              categoryArr.categoryDescription= res.rows.item(0).CategoryDesc;
+            if (res.rows.length > 0) {
+                categoryArr.categoryId = res.rows.item(0).CategoryId;
+                categoryArr.categoryName = res.rows.item(0).CategoryName;
+                categoryArr.categoryDescription = res.rows.item(0).CategoryDesc;
 
             }
-           
+
             deferred.resolve(categoryArr);
         }, function(err) {
             console.log(err);
@@ -146,10 +143,10 @@ angular.module('starter.services', [])
         });
         return deferred.promise;
     }
-    function storeToTransaction(productArr, d,BillNo) {
+    function storeToTransaction(productArr, d, BillNo) {
         var deferred = $q.defer();
         console.log(productArr);
-        
+
         for (var i = 0; i < productArr.length; i++) {
             var productObj = productArr[i];
             console.log(productObj);
@@ -158,7 +155,7 @@ angular.module('starter.services', [])
             $cordovaSQLite.execute($rootScope.db, query, [BillNo, d.toString(), productObj.productId, productObj.name, productObj.quantity, productObj.productPrice, productObj.productTotalPrice, productObj.productTaxAmount, productObj.productTotalAmount, productObj.discountAmount, productObj.discount, productObj.taxRate, productObj.taxId, productObj.categoryId, productObj.categoryName]).then(function(res) {
                 //     $cordovaSQLite.execute($rootScope.db, query, [102, "24-Jan-2017 11:03:24", "Cofee123", "cofee", 2, 120, 3, 4, 4, "CAT01", "Category 01"]).then(function(res) {
                 console.log("INSERT ID -> " + res.insertId);
-                
+
                 deferred.resolve('success');
             }, function(err) {
                 console.error(err);
@@ -167,7 +164,7 @@ angular.module('starter.services', [])
         }
         return deferred.promise;
     }
-    function storeToBillDetails(totalPrice, discountAmount, totalTaxAmount, totalChargeAmount, paymentMethod, totalItems, d,BillNo) {
+    function storeToBillDetails(totalPrice, discountAmount, totalTaxAmount, totalChargeAmount, paymentMethod, totalItems, d, BillNo) {
         var deferred = $q.defer();
         console.log("Inserting bill date: ", d);
         var query = "INSERT INTO BillDetails (BillNo, TotalPrice, DiscountAmount, TaxAmount, TotalAmount, PaymentMethod, DateTime, TotalItems, BillStatus) VALUES (?,?,?,?,?,?,?,?,?)";
@@ -207,12 +204,11 @@ angular.module('starter.services', [])
         return deferred.promise;
     }
 
-
-      function SetBillStatus(billNo,BillDateTime,status) {
+    function SetBillStatus(billNo, BillDateTime, status) {
         var deferred = $q.defer();
-         //var query = "INSERT INTO  (BillNo, TotalPrice, DiscountAmount, TaxAmount, TotalAmount, PaymentMethod, DateTime, TotalItems, BillStatus) VALUES (?,?,?,?,?,?,?,?,?)";
+        //var query = "INSERT INTO  (BillNo, TotalPrice, DiscountAmount, TaxAmount, TotalAmount, PaymentMethod, DateTime, TotalItems, BillStatus) VALUES (?,?,?,?,?,?,?,?,?)";
 
-        var query = "update BillDetails Set BillStatus='" + status + "' where BillNo='" + billNo  + "' and DateTime='" + BillDateTime +"'";
+        var query = "update BillDetails Set BillStatus='" + status + "' where BillNo='" + billNo + "' and DateTime='" + BillDateTime + "'";
         console.log(query);
         $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
             deferred.resolve(res);
@@ -235,7 +231,7 @@ angular.module('starter.services', [])
                     DateTime: res.rows.item(i).DateTime,
                     ProductId: res.rows.item(i).ProductId,
                     ProductName: res.rows.item(i).ProductName,
-                    Quantity: res.rows.item(i).Quantity, 
+                    Quantity: res.rows.item(i).Quantity,
                     ProductPrice: res.rows.item(i).ProductPrice,
                     TotalPrice: res.rows.item(i).TotalPrice,
                     TaxAmount: res.rows.item(i).TaxAmount,
@@ -269,7 +265,7 @@ angular.module('starter.services', [])
     }
     function editCategory(categoryId, name, desc) {
         var deferred = $q.defer();
-       
+
         var query = "update Category Set CategoryName='" + name + "',CategoryDesc='" + desc + "' where CategoryId='" + categoryId + "'";
         console.log(query);
         $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
@@ -281,23 +277,21 @@ angular.module('starter.services', [])
         return deferred.promise;
     }
 
-    
     function deleteProduct(deleteProductId) {
         var deferred = $q.defer();
-        
-            var query = "delete from Product where ProductId='" + deleteProductId + "'";
-            console.log(query);
-            $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
-                console.log("deleted from Product successfully...");
-                deferred.resolve('success');
-            }, function(err) {
-                console.error(err);
-                deferred.reject('failure');
-            });
-        
+
+        var query = "delete from Product where ProductId='" + deleteProductId + "'";
+        console.log(query);
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log("deleted from Product successfully...");
+            deferred.resolve('success');
+        }, function(err) {
+            console.error(err);
+            deferred.reject('failure');
+        });
+
         return deferred.promise;
     }
-
 
     function deleteCategory(deleteCategoryId) {
         var deferred = $q.defer();
@@ -313,25 +307,21 @@ angular.module('starter.services', [])
         return deferred.promise;
     }
 
-  
     function deleteAllProductsInCat(CatId) {
         var deferred = $q.defer();
-        
-            var query = "delete from Product where CategoryId='" + CatId + "'";
-            console.log(query);
-            $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
-                console.log("deleted all Products in Category successfully...");
-                deferred.resolve('success');
-            }, function(err) {
-                console.error(err);
-                deferred.reject('failure');
-            });
-        
+
+        var query = "delete from Product where CategoryId='" + CatId + "'";
+        console.log(query);
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log("deleted all Products in Category successfully...");
+            deferred.resolve('success');
+        }, function(err) {
+            console.error(err);
+            deferred.reject('failure');
+        });
+
         return deferred.promise;
     }
-
-
-
 
     function updateItemsInStock(itemsInStockObj) {
         /*
@@ -350,9 +340,9 @@ angular.module('starter.services', [])
             query = query + "WHEN '" + item + "' THEN " + itemsInStockObj[item] + " "
         }
         idString = idString.slice(0, -1);
-        query = "UPDATE Product SET ItemsinStock = CASE ProductId " + query + "END" + " WHERE ProductId IN(" + idString + ")";        
-       // var query = "update Product Set ItemsinStock = 50 where ProductId= 'ftr'";
-          console.log(query);
+        query = "UPDATE Product SET ItemsinStock = CASE ProductId " + query + "END" + " WHERE ProductId IN(" + idString + ")";
+        // var query = "update Product Set ItemsinStock = 50 where ProductId= 'ftr'";
+        console.log(query);
         $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
             console.log("Product Stock Updated successfully...");
             deferred.resolve('In stock update success');
@@ -362,6 +352,164 @@ angular.module('starter.services', [])
         });
         return deferred.promise;
     }
+
+    function deleteTable(deleteTableId) {
+        var deferred = $q.defer();
+
+        var query = "delete from TableInfo where id='" + deleteTableId + "'";
+        console.log(query);
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log("deleted from TableInfo successfully...");
+            deferred.resolve('success');
+        }, function(err) {
+            console.error(err);
+            deferred.reject('failure');
+        });
+
+        return deferred.promise;
+    }
+
+    function addNewTable(tableNumber, tableDesc, tableSectionId, tableSectionName, tableCharges, tableCapacity) {
+        var deferred = $q.defer();
+        var query = "INSERT INTO TableInfo (TableNumber, TableDescription, TableSectionId, TableSectionName, TableCharges, TableCapacity) VALUES (?,?,?,?,?,?)";
+        $cordovaSQLite.execute($rootScope.db, query, [tableNumber, tableDesc, tableSectionId, tableSectionName, tableCharges, tableCapacity]).then(function(res) {
+            console.log("INSERT ID -> " + res.insertId);
+            console.log("new Table added successfully...");
+            deferred.resolve('success');
+        }, function(err) {
+            console.log(err);
+            deferred.reject('failure');
+        });
+        return deferred.promise;
+    }
+    function editTable(tableId, tableNumber, tableDesc, tableSectionName, tableCharges, tableCapacity) {
+        var deferred = $q.defer();
+        var query = "update TableInfo Set TableNumber='" + tableNumber + "', tableDescription='" + tableDesc + "', tableSectionName='" + tableSectionName + "', tableCharges='" + tableCharges + "', tableCapacity='" + tableCapacity + "' where id='" + tableId + "'";
+        console.log(query);
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            deferred.resolve("TableInfo edited successfully...");
+        }, function(err) {
+            console.error(err);
+            deferred.reject('failure');
+        });
+        return deferred.promise;
+    }
+
+    function loadTablesFromDB(tableName) {
+        var deferred = $q.defer();
+        //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
+        query = "SELECT * FROM " + tableName;
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            var tables = [];
+            for (var i = 0; i < res.rows.length; i++) {
+                tables.push({
+                    tableId: res.rows.item(i).id,
+                    tableNumber: res.rows.item(i).TableNumber,
+                    tableDescription: res.rows.item(i).TableDescription,
+                    tableSectionName: res.rows.item(i).TableSectionName,
+                    tableCharges: res.rows.item(i).TableCharges,
+                    tableCapacity: res.rows.item(i).TableCapacity,
+                    image: "/img/table2.jpg"
+                });
+            }
+            deferred.resolve(tables);
+        }, function(err) {
+            console.error(err);
+            deferred.reject('failure');
+        })
+        return deferred.promise;
+    }
+
+    function addNewSection(name, desc) {
+
+        var deferred = $q.defer();
+
+        console.log('entered add newCategory service..');
+        var query = "INSERT INTO TableInfoSection (SectionName, SectionDescription) VALUES (?,?)";
+        $cordovaSQLite.execute($rootScope.db, query, [name, desc]).then(function(res) {
+            console.log("INSERT ID -> " + res.insertId);
+            console.log("new section added successfully...");
+            deferred.resolve('success');
+        }, function(err) {
+            console.log(err.message);
+            deferred.reject('failure');
+        });
+        return deferred.promise;
+    }
+
+    function loadTablesForSection(sectionId) {
+        var deferred = $q.defer();
+        var query = "SELECT * FROM TableInfo where TableSectionId = '" + sectionId + "'";
+
+        //query = "SELECT * FROM "+tableName;
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            var tables = [];
+            for (var i = 0; i < res.rows.length; i++) {
+                tables.push({
+                    tableId: res.rows.item(i).id,
+                    tableNumber: res.rows.item(i).TableNumber,
+                    tableDescription: res.rows.item(i).TableDescription,
+                    tableSectionId: res.rows.item(i).TableSectionId,
+                    tableSectionName: res.rows.item(i).TableSectionName,
+                    tableCharges: res.rows.item(i).TableCharges,
+                    tableCapacity: res.rows.item(i).TableCapacity,
+                    image: "/img/table2.jpg"
+                });
+            }
+            deferred.resolve(tables);
+        }, function(err) {
+            console.error(err);
+            deferred.reject('failure');
+        })
+        return deferred.promise;
+    }
+
+    function GetSectionById(sectionId) {
+        var deferred = $q.defer();
+        var section = {};
+        section.sectionId = "Failed";
+
+        var query = "SELECT * FROM TableInfoSection where SectionId = '" + sectionId + "'";
+        console.log("getSectionById query", query);
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log('success');
+            if (res.rows.length > 0) {
+                section.sectionId = res.rows.item(0).SectionId;
+                section.sectionName = res.rows.item(0).SectionName;
+                section.sectionDescription = res.rows.item(0).SectionDescription;
+            }
+
+            deferred.resolve(section);
+        }, function(err) {
+            console.log(err);
+            deferred.reject(section);
+        })
+
+        return deferred.promise;
+    }
+
+    function loadSectionFromDB(tableName) {
+        var deferred = $q.defer();
+        var sectionArr = [];
+        //  query = "SELECT * FROM Category where CategoryId = "+enteredCatId;
+        query = "SELECT * FROM " + tableName;
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            console.log('success');
+            for (var i = 0; i < res.rows.length; i++) {
+                sectionArr.push({
+                    sectionId: res.rows.item(i).SectionId,
+                    sectionName: res.rows.item(i).SectionName,
+                    sectionDescription: res.rows.item(i).SectionDescription
+                });
+            }
+            deferred.resolve(sectionArr);
+        }, function(err) {
+            console.log(err);
+            deferred.reject('failure');
+        })
+        return deferred.promise;
+    }
+
     return {
         addNewCategory: addNewCategory,
         addNewProduct: addNewProduct,
@@ -377,21 +525,26 @@ angular.module('starter.services', [])
         editCategory: editCategory,
         deleteProduct: deleteProduct,
         deleteCategory: deleteCategory,
-        deleteAllProductsInCat:deleteAllProductsInCat,
-        SetBillStatus:SetBillStatus,
-        updateItemsInStock: updateItemsInStock
+        deleteAllProductsInCat: deleteAllProductsInCat,
+        SetBillStatus: SetBillStatus,
+        updateItemsInStock: updateItemsInStock,
+        deleteTable: deleteTable,
+        addNewTable: addNewTable,
+        editTable: editTable,
+        loadTablesFromDB: loadTablesFromDB,
+        addNewSection: addNewSection,
+        loadTablesForSection: loadTablesForSection,
+        loadSectionFromDB: loadSectionFromDB,
+        GetSectionById: GetSectionById 
     }
-})
-
-
-.factory("settingService", function($q, $cordovaSQLite, $rootScope) {
+}).factory("settingService", function($q, $cordovaSQLite, $rootScope) {
     function set(SettingsName, SettingsValue) {
         var dfd = $q.defer();
         console.log("Setting Name: ", SettingsName);
         console.log("Setting Value: ", SettingsValue);
         $cordovaSQLite.execute($rootScope.db, 'INSERT OR REPLACE INTO Settings (SettingsName,SettingsValue) VALUES (?,?) ', [SettingsName, SettingsValue]).then(function(result) {
-           console.log(result);
-           dfd.resolve(result);
+            console.log(result);
+            dfd.resolve(result);
 
         }, function(error) {
             dfd.resolve(error);
@@ -402,7 +555,7 @@ angular.module('starter.services', [])
         var dfd = $q.defer();
         //$rootScope.deviceReady = dfd.promise;
         $cordovaSQLite.execute($rootScope.db, 'Select SettingsValue from Settings where SettingsName=?', [SettingsName]).then(function(result) {
-            console.log("select value: " ,result);
+            console.log("select value: ", result);
             dfd.resolve(result);
         }, function(error) {
             dfd.resolve(error);
@@ -413,26 +566,24 @@ angular.module('starter.services', [])
         set: set,
         get: get
     }
-})
+}).factory("salesService", function($q, $cordovaSQLite, $rootScope) {
 
-.factory("salesService", function($q, $cordovaSQLite, $rootScope) {
-    
-    function getItemWiseReport( strt, end) {
+    function getItemWiseReport(strt, end) {
         var report = [];
-        var strtdate=new Date(strt)
-        var enddate=new Date(end)
+        var strtdate = new Date(strt)
+        var enddate = new Date(end)
         console.log(strtdate)
         console.log(enddate)
         var dfd = $q.defer();
         // BillNo integer, DateTime text, ProductId text, ProductName text, Quantity real, ProductPrice real, TotalPrice real, TaxAmount real, TotalAmount real, Discount real, TaxRate real, TaxId integer, CategoryId text, CategoryName text
-       
+
         if (end == undefined && strt == undefined) {
             var query = 'Select ProductId, ProductName,Sum(Quantity)  as Quantity,Sum(TotalPrice) as TotalPrice from TransactionDetails Where DateTime=' + strt + ' Group by ProductId ';
         } else {
 
-           var query = 'Select ProductId,ProductName,Sum(Quantity) as Quantity,Sum(TotalPrice) as TotalPrice from TransactionDetails WHERE DateTime BETWEEN ' + strt + ' AND ' + end + ' Group by ProductId  '
+            var query = 'Select ProductId,ProductName,Sum(Quantity) as Quantity,Sum(TotalPrice) as TotalPrice from TransactionDetails WHERE DateTime BETWEEN ' + strt + ' AND ' + end + ' Group by ProductId  '
         }
-       /* if (strt == undefined && end == undefined) {
+        /* if (strt == undefined && end == undefined) {
             console.log('I am in First query')
             query = 'Select ProductId, ProductName,Sum(Quantity),Sum(TotalPrice) from TransactionDetails WHERE ProductId=' + itemCode + ' Group by ProductId '
         } else if (itemCode == undefined && strt == undefined) {
@@ -453,8 +604,8 @@ angular.module('starter.services', [])
                     itemName: result.rows.item(i).ProductName,
                     qtySold: result.rows.item(i).Quantity,
                     totalAmount: result.rows.item(i).TotalPrice,
-                   // totalTax: result.rows.item(i).TaxAmount,
-                   // totalAmount: result.rows.item(i).TotalAmount
+                    // totalTax: result.rows.item(i).TaxAmount,
+                    // totalAmount: result.rows.item(i).TotalAmount
                 })
             }
             console.log(report.length);
@@ -465,10 +616,9 @@ angular.module('starter.services', [])
         return dfd.promise;
     }
 
-
     /////////////////
 
-     function getSalesReport(strt, end) {
+    function getSalesReport(strt, end) {
         var salesReport = []
         //$cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
         var dfd = $q.defer();
@@ -478,17 +628,17 @@ angular.module('starter.services', [])
             var query = "Select COUNT(*)as TotalBills, SUM(TotalPrice) as TotalPrice, SUM(TaxAmount) as TaxAmount, SUM(TotalAmount) as TotalAmount from BillDetails Where DateTime=" + strt + ' And BillStatus = ' + "'success'" + '';
         } else {
 
-            var query = "Select COUNT(*)as TotalBills, SUM(TotalPrice) as TotalPrice, SUM(TaxAmount) as TaxAmount, SUM(TotalAmount) as TotalAmount from BillDetails Where DateTime Between " + strt + ' and ' + end + ' And BillStatus = ' +  "'success'" + '';
+            var query = "Select COUNT(*)as TotalBills, SUM(TotalPrice) as TotalPrice, SUM(TaxAmount) as TaxAmount, SUM(TotalAmount) as TotalAmount from BillDetails Where DateTime Between " + strt + ' and ' + end + ' And BillStatus = ' + "'success'" + '';
 
         }
         $cordovaSQLite.execute($rootScope.db, query).then(function(result) {
-            console.log(result); 
-            salesReport =[];
+            console.log(result);
+            salesReport = [];
             for (var i = 0; i < result.rows.length; i++) {
-                var date=new Date(parseFloat(result.rows.item(i).DateTime));
-                
+                var date = new Date(parseFloat(result.rows.item(i).DateTime));
+
                 salesReport.push({
-                    
+
                     totalPrice: result.rows.item(i).TotalPrice,
                     taxAmount: result.rows.item(i).TaxAmount,
                     totalAmount: result.rows.item(i).TotalAmount,
@@ -502,17 +652,12 @@ angular.module('starter.services', [])
         return dfd.promise;
     }
 
-
     //////////////
-
-
-
 
     function getBillWiseReport(strt, end) {
         var salesReport = []
         //$cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS BillDetails (BillNo integer, TotalPrice real, DiscountAmount real, TaxAmount real, TotalAmount real, PaymentMethod text, DateTime text, TotalItems integer, BillStatus text)").then(console.log('BillDetails table created Successfully'));
         var dfd = $q.defer();
-
 
         if (end == undefined && strt == undefined) {
             var query = 'Select * from BillDetails Where DateTime=' + strt + '';
@@ -522,14 +667,14 @@ angular.module('starter.services', [])
         }
         $cordovaSQLite.execute($rootScope.db, query).then(function(result) {
             console.log(result)
-            salesReport=[];
+            salesReport = [];
             for (var i = 0; i < result.rows.length; i++) {
-                var date=new Date(parseFloat(result.rows.item(i).DateTime));
-                
+                var date = new Date(parseFloat(result.rows.item(i).DateTime));
+
                 salesReport.push({
-                    date:date.toString().substring(4, 15),
-                    time:date.toString().substring(15, 25),
-                    billNo:result.rows.item(i).BillNo,
+                    date: date.toString().substring(4, 15),
+                    time: date.toString().substring(15, 25),
+                    billNo: result.rows.item(i).BillNo,
                     totalBills: result.rows.item(i).TotalItems,
                     avgBillAmt: result.rows.item(i).TotalPrice / result.rows.item(i).TotalItems,
                     billAmt: result.rows.item(i).TotalPrice,
@@ -547,6 +692,6 @@ angular.module('starter.services', [])
     return {
         getItemWiseReport: getItemWiseReport,
         getBillWiseReport: getBillWiseReport,
-        getSalesReport:getSalesReport
+        getSalesReport: getSalesReport
     }
 })
