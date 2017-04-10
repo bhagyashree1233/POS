@@ -410,7 +410,10 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
                     tableSectionName: res.rows.item(i).TableSectionName,
                     tableCharges: res.rows.item(i).TableCharges,
                     tableCapacity: res.rows.item(i).TableCapacity,
-                    image: "/img/table2.jpg"
+                   // image: "../assets/img/table2.jpg",
+
+                    //image: "/img/table2.jpg"
+                    color:"green"
                 });
             }
             deferred.resolve(tables);
@@ -420,7 +423,7 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         })
         return deferred.promise;
     }
-
+ 
     function addNewSection(name, desc) {
 
         var deferred = $q.defer();
@@ -454,7 +457,10 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
                     tableSectionName: res.rows.item(i).TableSectionName,
                     tableCharges: res.rows.item(i).TableCharges,
                     tableCapacity: res.rows.item(i).TableCapacity,
-                    image: "/img/table2.jpg"
+                   // image: "../img/table2.jpg",
+                    color:"green"
+
+                    //image: "android_asset/www/img/.jpg"
                 });
             }
             deferred.resolve(tables);
