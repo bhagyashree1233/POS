@@ -1,7 +1,18 @@
 <ion-view ng-controller="tableInfoCtrl">
-    <ion-content style="margin-top:5vh;">
-        <div id="tableInfoView">
-            <table class="tableInfolist" style="width:100%;font-size:2vmin;font-weight:bold;line-height:4.5vmin;">
+    <ion-content scroll="false" style="margin-top:5vh;">
+
+    <div >
+      <h2>Draging directive fun</h2>
+        <div ng-draggable>
+      <img style="height:100px;"  src="http://fc00.deviantart.net/fs70/i/2012/135/a/7/tux_button_by_blacklite_teh_haxxor-d4zv3fv.png"/>
+      <span ng-draggable>Drag me!</span>
+      </div>
+      
+    </div>
+
+
+       <!-- <div id="tableInfoView">
+            <table class="tableInfolist" style="width:100%;font-size:2vmin;font-weight:bold;line-height:4.5vmin;color:black;">
                 <tr ng-show='Mode == true'>
                     <td style="background:transparent;">
                         <div style="min-width:20%;height:20%;margin:1vh;" ng-click="AddNewTable()">
@@ -10,7 +21,9 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-repeat="table in tables" ng-if="$index%4==0" style="background:transparent;">
+                
+
+             <tr ng-repeat="table in tables" ng-if="$index%4==0" style="background:transparent;">
                     <td style="background:transparent;">
                         <div ng-class="{jiggle: Mode}" style="position:relative;">
                             <div ng-show='Mode==true' style="position:absolute;z-index:1;font-size:7vmin;height:7vmin;width:5vmin;color:red;top:-10px;right:-4px;" class="icon-right ion-close-circled" ng-Click="deleteTable(tables[$index].tableId)"></div>
@@ -42,12 +55,12 @@
                                     </div>
                                     <div class="tableInfo-occupancy">
                                         <a style="font-weight:bold;color:lightblue;">{{4}}</a>
-                                    </div>
+                                    </div> 
                                     <!--     <div class="tableInfo-desc">
                                         <p>{{tables[$index+1].tableDescription}}</p>
                                     </div>
                                 -->
-                                    <div class="tableInfo-capacity">
+               <!--                     <div class="tableInfo-capacity">
                                         <p>{{tables[$index+1].tableCapacity}}</p>
                                     </div>
                                 </div>
@@ -92,6 +105,7 @@
                             </div>
                     </td>
                 </tr>
+             
             </table>
         </div>
         <div class="tableInfo-section">
@@ -105,6 +119,6 @@
                     </div>
                 </span>
             </ion-scroll>
-        </div>
+        </div> -->
     </ion-content>
 </ion-view>
