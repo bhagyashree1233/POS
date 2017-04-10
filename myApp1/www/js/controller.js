@@ -1670,6 +1670,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
     }
 
     $scope.OnTableClick = function(table) {
+        console.log(table);
+
         console.log("on table click");
         if ($rootScope.Mode == 1) //edit or add mode;;
         {
@@ -1715,6 +1717,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
                 promise1.then(function(res) {
                     console.log(res);
                     console.log("deleted Products");
+                    loadTables();
                     $scope.deleteSection(sectionId);
 
                 }, function() {
@@ -1781,8 +1784,9 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
     }
 
     $scope.onSectionSelect = function(sectionObj) {
-        $scope.tableInfoObj.sectionName = sectionObj.sectionName;
-        $scope.tableInfoObj.sectionId = sectionObj.sectionId;
+        $scope.tableInfoObj.tableSectionName = sectionObj.sectionName;
+        $scope.tableInfoObj.tableSectionId = sectionObj.sectionId;
+        //$scope.$apply();
         $scope.sectionModal.hide();
     }
 
@@ -1843,7 +1847,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
         console.log('entered addNewTable()..');
 
         $rootScope.showDbLoading();
-        var promise = dbService.addNewTable($scope.tableInfoObj.tableNumber, $scope.tableInfoObj.tableDescription, $scope.tableInfoObj.sectionId, $scope.tableInfoObj.sectionName, $scope.tableInfoObj.tableCharges, $scope.tableInfoObj.tableCapacity);
+        var promise = dbService.addNewTable($scope.tableInfoObj.tableNumber, $scope.tableInfoObj.tableDescription, $scope.tableInfoObj.tableSectionId, $scope.tableInfoObj.tableSectionName, $scope.tableInfoObj.tableCharges, $scope.tableInfoObj.tableCapacity);
         promise.then(function(result) {
             console.log(result);
             console.log("Table Added Sucessfully");
@@ -1876,7 +1880,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
 
     function editTable() {
         $rootScope.showDbLoading();
-        var promise = dbService.editTable($scope.tableInfoObj.tableId, $scope.tableInfoObj.tableNumber, $scope.tableInfoObj.tableDescription,  $scope.tableInfoObj.sectionId, $scope.tableInfoObj.sectionName, $scope.tableInfoObj.tableCharges, $scope.tableInfoObj.tableCapacity);
+        var promise = dbService.editTable($scope.tableInfoObj.tableId, $scope.tableInfoObj.tableNumber, $scope.tableInfoObj.tableDescription,  $scope.tableInfoObj.tableSectionId, $scope.tableInfoObj.tableSectionName, $scope.tableInfoObj.tableCharges, $scope.tableInfoObj.tableCapacity);
         promise.then(function(result) {
             console.log(result);
             console.log("Table Edited Sucessfully");
@@ -1896,10 +1900,12 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
     }
 }).controller('addEditSectionCtrl', function($scope, $rootScope, dbService, $ionicHistory, $ionicPopup, $state) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
-        if ($rootScope.CreateMode == 1) {
+        $scope.tableInfoSection = {};
+        if ($rootScope.CreateMode != 1) {
             getSection()
         }
     });
+
 
     function getSection() {
        // $rootScope.showDbLoading();
@@ -1915,11 +1921,47 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
         })
     }
 
+    $scope.OnSave = function() {
+        if ($rootScope.CreateMode == 1)
+            $scope.addNewSection();
+        else
+            $scope.saveEditedSection();
+
+    } 
+
+    $scope.saveEditedSection = function() {
+        if ($scope.tableInfoSection.sectionName == undefined || $scope.tableInfoSection.sectionName.length < 1) {
+            $rootScope.ShowToast("Enter Section Name", false);
+            console.log('Enter Section Name');
+            return false;
+        }
+
+        if ($scope.tableInfoSection.sectionName != '') {
+            console.log($scope.tableInfoSection.sectionName);
+
+            $rootScope.showDbLoading();
+            var promise = dbService.editSection($scope.tableInfoSection.sectionId, $scope.tableInfoSection.sectionName, $scope.tableInfoSection.sectionDescription);
+            promise.then(function(res) {
+                console.log(res);
+                $rootScope.hideDbLoading();
+                $scope.tableInfoSection = {};
+                $ionicHistory.goBack();
+            }, function() {
+                console.log(res);
+                $rootScope.hideDbLoading();
+            })
+        } else {
+            console.log('enter name and description...');
+            //$scope.newNameDescWarningMsg = true;
+        }
+    }
+
+
     $scope.tableInfoSection = {};
 
-    $scope.saveSectionInfo = function(newSection) {
+    $scope.addNewSection = function() {
         console.log('I am in add New Section')
-        if (newSection.sectionName == undefined || newSection.sectionName.length < 1) {
+        if ($scope.tableInfoSection.sectionName == undefined || $scope.tableInfoSection.sectionName.length < 1) {
             $rootScope.ShowToast("Enter Section Name", false);
             console.log('Enter Section Name');
             return false;
@@ -1958,5 +2000,55 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
             $rootScope.ShowToast("Failed to Add Section", false);
             $rootScope.hideDbLoading();
         });
+    }
+
+    $scope.addNewCategory = function() {
+        console.log('I am in add New Categary')
+        console.log($scope.newCategory.categoryName)
+        console.log($scope.newCategory.categoryName.length)
+        if ($scope.newCategory.categoryName == undefined || $scope.newCategory.categoryName.length < 1) {
+            $rootScope.ShowToast("Enter Categary Name", false);
+            console.log('Enter Categary');
+            return false;
+        }
+
+        if (!($scope.catIdErrorMsg)) {
+            $rootScope.showDbLoading();
+            var promise = dbService.addNewCategory($scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
+            promise.then(function(result) {
+                console.log(result);
+                $rootScope.hideDbLoading();
+                $scope.succesMessage = true;
+                //   $rootScope.categoryArr.push($scope.newCategory);
+                $scope.newCategory = {};
+                if ($rootScope.cameFromProduct) {
+                    $rootScope.cameFromProduct = false;
+                    $ionicHistory.goBack();
+                } else {
+                    //confirmation popup
+                    $rootScope.ShowToast("Category Added Sucessfully", false);
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: 'Add More Category ',
+                        template: 'Do you want to add more Category?'
+                    });
+                    confirmPopup.then(function(res) {
+                        if (res) {
+                            console.log('add more Category');
+                            $state.reload();
+                        } else {
+                            console.log('No');
+                            $ionicHistory.goBack();
+                        }
+                    });
+                }
+            }, function() {
+                console.log("Failed to Add Category");
+                $rootScope.ShowToast("Failed to Add Category", false);
+                $rootScope.hideDbLoading();
+            });
+        } else {
+            console.log("Id already Exists");
+            $rootScope.ShowToast("Id already Exists", false);
+        }
     }
 })

@@ -382,9 +382,9 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         });
         return deferred.promise;
     }
-    function editTable(tableId, tableNumber, tableDesc, tableSectionName, tableCharges, tableCapacity) {
+    function editTable(tableId, tableNumber, tableDesc, tableSectionId, tableSectionName, tableCharges, tableCapacity) {
         var deferred = $q.defer();
-        var query = "update TableInfo Set TableNumber='" + tableNumber + "', tableDescription='" + tableDesc + "', tableSectionName='" + tableSectionName + "', tableCharges='" + tableCharges + "', tableCapacity='" + tableCapacity + "' where id='" + tableId + "'";
+        var query = "update TableInfo Set TableNumber='" + tableNumber + "', TableDescription='" + tableDesc +"', TableSectionId='" + tableSectionId + "', TableSectionName='" + tableSectionName + "', TableCharges='" + tableCharges + "', TableCapacity='" + tableCapacity + "' where id='" + tableId + "'";
         console.log(query);
         $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
             deferred.resolve("TableInfo edited successfully...");
@@ -406,6 +406,7 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
                     tableId: res.rows.item(i).id,
                     tableNumber: res.rows.item(i).TableNumber,
                     tableDescription: res.rows.item(i).TableDescription,
+                    tableSectionId: res.rows.item(i).TableSectionId,
                     tableSectionName: res.rows.item(i).TableSectionName,
                     tableCharges: res.rows.item(i).TableCharges,
                     tableCapacity: res.rows.item(i).TableCapacity,
@@ -540,6 +541,21 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         return deferred.promise;
     }
 
+    function editSection(sectionId, name, desc) {
+        var deferred = $q.defer();
+
+        var query = "update TableInfoSection Set SectionName='" + name + "',SectionDescription='" + desc + "' where SectionId='" + sectionId + "'";
+        console.log(query);
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+            deferred.resolve("Section edited successfully...");
+        }, function(err) {
+            console.error(err);
+            deferred.reject('failure');
+        });
+        return deferred.promise;
+    }
+
+
     return {
         addNewCategory: addNewCategory,
         addNewProduct: addNewProduct,
@@ -566,7 +582,8 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         loadTablesForSection: loadTablesForSection,
         loadSectionFromDB: loadSectionFromDB,
         GetSectionById: GetSectionById,
-        deleteSection: deleteSection 
+        deleteSection: deleteSection,
+        editSection: editSection 
     }
 }).factory("settingService", function($q, $cordovaSQLite, $rootScope) {
     function set(SettingsName, SettingsValue) {

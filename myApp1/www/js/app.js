@@ -66,7 +66,7 @@ window.AndroidFullScreen.immersiveMode(false, false);
         //$rootScope.PaymentSettings = PaymentSettings;
         //$rootScope.Reports=Reports;
         //$cordovaSQLite.execute($rootScope.db, "DROP TABLE Category ").then(console.log('Transaction table droped Successfully')); 
-       // $cordovaSQLite.execute($rootScope.db, "DROP TABLE TableInfo ").then(console.log('TableInfo table droped Successfully')); 
+        //$cordovaSQLite.execute($rootScope.db, "DROP TABLE TableInfo").then(console.log('TableInfo table droped Successfully')); 
 
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Category (CategoryId integer primary key AUTOINCREMENT, CategoryName text, CategoryDesc text)").then(console.log('Category table created Successfully'));
         $cordovaSQLite.execute($rootScope.db, "CREATE TABLE IF NOT EXISTS Product (ProductId integer primary key AUTOINCREMENT, ProductName text, ProductUnit text, ProductPrice real, TaxId integer, BuyingPrice real, TaxRate real, ItemsinStock real, Discount real, CategoryId integer, CategoryName text, Image text, Favourite text)").then(console.log('Product table created Successfully'));
