@@ -260,7 +260,7 @@ window.AndroidFullScreen.immersiveMode(false, false);
         url: '/addEditTableSection',
         templateUrl: 'templates/addEditTableSection.html',
     })
-    $urlRouterProvider.otherwise('/Splash');
+    //$urlRouterProvider.otherwise('/Splash');
 
 }).directive('textarea', function() {
     return {
