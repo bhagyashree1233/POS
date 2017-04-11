@@ -22,12 +22,21 @@
                 </label>
                 <label style="background-color:transparent;height:8vh" class="item item-input item-borderless">
                     <span class="input-label">Image :</span>
-                    <input style="background-color:transparent;" type="text" ng-model="newProduct.image" id="Category" readonly="readonly">
-                    <a style="font-size:7vh;margin-right:3vh;color:black;" class="icon ion-ios-camera" ng-click="openCamera()"></a>
-                    <a style="font-size:6vh;margin-right:2vh;color:black;" class="icon ion-images" ng-click="openGallery()"></a>
-                </label>
-            </div>
-            <button class='button button-dark' ng-click='nextSlide()'>Next </button>
+                    <input style="background-color:transparent;" type="text" ng-model="newProduct.image" id="Category" readonly="readonly"></input>
+                    <label class="item item-input item-borderless" style="background-color:transparent;margin-right:3vh;" ng-click="openCamera()">
+                        <i style="font-size:12vh;" class="icon ion-ios-camera"></i>
+                    </label>
+                    <label class="item item-input item-borderless" style="background-color:transparent;margin-right:3vh;" ng-click="openGallery()">
+                        <i style="font-size:10vh;" class="icon ion-images"></i>
+                    </label>
+                    <!-- 
+                     <a class="button button-icon icon ion-ios-camera" ng-click="openCamera()"></a>
+                     <a class="button button-icon icon ion-images" ng-click="openGallery()"></a> 
+               -->
+			    			   </label>
+							</div>   
+                    <button class='button button-dark' ng-click='nextSlide()'>Next </button>
+                
         </ion-slide>
         <ion-slide>
             <h2 style="color:white;">Step 2 </h2>

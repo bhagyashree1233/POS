@@ -1834,6 +1834,22 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
             return false
         }
 
+        if(typeof tableInfoObj.tableCharges !== 'number') {
+            $rootScope.ShowToast("Invalid table charge", false);
+            console.log('Invalid table charge...');
+            return false
+        }
+        if((typeof tableInfoObj.tableCapacity !== 'number') || (tableInfoObj.tableCapacity % 1 !== 0)) {
+            $rootScope.ShowToast("Invalid table capacity", false);
+            console.log('Invalid table capacity...');
+            return false
+        }
+        if(typeof tableInfoObj.tableSectionName == undefined || tableInfoObj.tableSectionName == "") {
+            $rootScope.ShowToast("Select table section name", false);
+            console.log('select table section name...');
+            return false
+        }
+
         if ($rootScope.CreateMode == 0) {
             console.log("Edit Product");
             editTable();
@@ -1900,7 +1916,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
     }
 }).controller('addEditSectionCtrl', function($scope, $rootScope, dbService, $ionicHistory, $ionicPopup, $state) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
-        $scope.tableInfoSection = {};
+        $scope.tableInfoSection = {sectionName:"", sectionDescription:""};
         if ($rootScope.CreateMode != 1) {
             getSection()
         }
@@ -1926,7 +1942,6 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
             $scope.addNewSection();
         else
             $scope.saveEditedSection();
-
     } 
 
     $scope.saveEditedSection = function() {
@@ -1944,7 +1959,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
             promise.then(function(res) {
                 console.log(res);
                 $rootScope.hideDbLoading();
-                $scope.tableInfoSection = {};
+                  $scope.tableInfoSection = {sectionName:"", sectionDescription:""};
                 $ionicHistory.goBack();
             }, function() {
                 console.log(res);
@@ -1957,7 +1972,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
     }
 
 
-    $scope.tableInfoSection = {};
+    $scope.tableInfoSection = {sectionName:"", sectionDescription:""};
 
     $scope.addNewSection = function() {
         console.log('I am in add New Section')
@@ -1973,7 +1988,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
             console.log(result);
             $rootScope.hideDbLoading();
             //   $rootScope.categoryArr.push($scope.newCategory);
-            $scope.tableInfoSection = {};
+              $scope.tableInfoSection = {sectionName:"", sectionDescription:""};
 
             if ($rootScope.cameFromTable) {
                 $rootScope.cameFromTable = false;
@@ -2002,53 +2017,4 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
         });
     }
 
-    $scope.addNewCategory = function() {
-        console.log('I am in add New Categary')
-        console.log($scope.newCategory.categoryName)
-        console.log($scope.newCategory.categoryName.length)
-        if ($scope.newCategory.categoryName == undefined || $scope.newCategory.categoryName.length < 1) {
-            $rootScope.ShowToast("Enter Categary Name", false);
-            console.log('Enter Categary');
-            return false;
-        }
-
-        if (!($scope.catIdErrorMsg)) {
-            $rootScope.showDbLoading();
-            var promise = dbService.addNewCategory($scope.newCategory.categoryName, $scope.newCategory.categoryDescription);
-            promise.then(function(result) {
-                console.log(result);
-                $rootScope.hideDbLoading();
-                $scope.succesMessage = true;
-                //   $rootScope.categoryArr.push($scope.newCategory);
-                $scope.newCategory = {};
-                if ($rootScope.cameFromProduct) {
-                    $rootScope.cameFromProduct = false;
-                    $ionicHistory.goBack();
-                } else {
-                    //confirmation popup
-                    $rootScope.ShowToast("Category Added Sucessfully", false);
-                    var confirmPopup = $ionicPopup.confirm({
-                        title: 'Add More Category ',
-                        template: 'Do you want to add more Category?'
-                    });
-                    confirmPopup.then(function(res) {
-                        if (res) {
-                            console.log('add more Category');
-                            $state.reload();
-                        } else {
-                            console.log('No');
-                            $ionicHistory.goBack();
-                        }
-                    });
-                }
-            }, function() {
-                console.log("Failed to Add Category");
-                $rootScope.ShowToast("Failed to Add Category", false);
-                $rootScope.hideDbLoading();
-            });
-        } else {
-            console.log("Id already Exists");
-            $rootScope.ShowToast("Id already Exists", false);
-        }
-    }
 })

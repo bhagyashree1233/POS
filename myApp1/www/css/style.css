@@ -942,7 +942,7 @@ table.tableInfolist tr td:first-child {
 }
 
 .tableInfo-capacity {
-     bottom: 2px;
+    bottom: 2px;
     width: 30%;
     text-align: center;
     color: white;
@@ -953,7 +953,7 @@ table.tableInfolist tr td:first-child {
     font-weight: bold;
     line-height: 3vmin;
     height: 4vmin;
-    border-radius: 2vmin;
+    border-radius: 0.5vmin;
     margin: 0 auto;
     left: 0;
     right: 0;
@@ -968,7 +968,7 @@ table.tableInfolist tr td:first-child {
     bottom: 0; 
     right: 0;
     position: absolute;
-    background: grey;
+    background: transparent;
     color: white;
     height: 4vmin;
     border-radius: 0.5vmin;
@@ -983,6 +983,7 @@ table.tableInfolist tr td:first-child {
 .tableInfo-occupancy {
     padding-top: .5vmin;
     top: 0;
+    color:white;
     text-align: center;
     vertical-align: center;
     position: absolute;
@@ -1036,12 +1037,10 @@ table.tableInfolist tr td:first-child {
     width: 100vw;
     height: 10vh;
     display: inline-block;
-    bottom: 1vh;
     line-height: 10vh;
     z-index: 0;
     margin-top:1vh;
     margin-bottom:2vh;
-    bottom:0px;
 }
 
 .tableInfo-section-scroll {
