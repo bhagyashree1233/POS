@@ -1657,7 +1657,6 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
                 promise.then(function(result) {
                     $rootScope.hideDbLoading();
                     loadTables();
-                    loadTables();
                 }, function(result) {
                     console.log(result);
                     $rootScope.hideDbLoading();
