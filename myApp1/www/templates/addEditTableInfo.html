@@ -13,15 +13,15 @@
                 </label>
                 <label class="item item-input item-borderless">
                     <span class="input-label">Addtional Charges:</span>
-                    <input type="text" ng-model="tableInfoObj.tableCharges">
+                    <input type="number" ng-model="tableInfoObj.tableCharges">
                 </label>
                 <label class="item item-input item-borderless">
                     <span class="input-label">Occupancy Capacity :</span>
-                    <input type="text" ng-model="tableInfoObj.tableCapacity">
+                    <input type="number" ng-model="tableInfoObj.tableCapacity">
                 </label>
                 <label class="item item-input item-borderless item-button-right" ng-click="openSectionModal()">
                     <span class="input-label">Section :</span>
-                    <input type="text" id="Category" ng-model="tableInfoObj.sectionName" readonly="readonly">
+                    <input type="text" id="Category" ng-model="tableInfoObj.tableSectionName" readonly="readonly">
                     <button class="button button-dark">Select Category</button>
                 </label>
             </div>
