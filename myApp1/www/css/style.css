@@ -917,8 +917,8 @@ table.tableInfolist tr:nth-child(even) {
     background: rgba(255, 255, 255, 0.15);
 }
 .tableInfoView {
-    width:100vh;
-    height:94vw;
+    width:100vw;
+    height:84vh;
 }
 
 table.tableInfolist tr td:first-child {
@@ -942,18 +942,17 @@ table.tableInfolist tr td:first-child {
 }
 
 .tableInfo-capacity {
-     bottom: 2px;
+    bottom: 0px;
     width: 30%;
     text-align: center;
     color: white;
     z-index: 0;
     position: absolute;
-    background-color: rgba(10,10,10,0.6);
+    background-color: transparent;
     font-size: 2.5vmin;
     font-weight: bold;
     line-height: 3vmin;
     height: 4vmin;
-    border-radius: 2vmin;
     margin: 0 auto;
     left: 0;
     right: 0;
@@ -968,13 +967,13 @@ table.tableInfolist tr td:first-child {
     bottom: 0; 
     right: 0;
     position: absolute;
-    background: grey;
+    background: transparent;
     color: white;
-    height: 4vmin;
+    height: 3vmin;
     border-radius: 0.5vmin;
     min-width:5vmin;
     opacity: 0.9;
-    font-size: 2.5vmin;
+    font-size: 2.3vmin;
     font-weight: normal;
     text-align: center;
     line-height: 2.5vmin;
@@ -983,17 +982,16 @@ table.tableInfolist tr td:first-child {
 .tableInfo-occupancy {
     padding-top: .5vmin;
     top: 0;
+    color:white;
     text-align: center;
     vertical-align: center;
     position: absolute;
-    background: black;
+    background: transparent;
     height: 4vmin;
     border-radius: 0.5vmin;
     min-width: 1vmin;
     font-size: 2.5vmin;
     font-weight: bold;
-    width: 30%;
-    opacity: 0.7;
     line-height: 2.5vmin;
     margin: 0 auto;
     left: 0;
@@ -1008,27 +1006,16 @@ table.tableInfolist tr td:first-child {
     margin-left:3vh;
 }
 
-.red {
-    border-radius: 2vmin;
-    position: relative;
-    -webkit-box-shadow: 10px 10px 5px 0px rgba(128,0,0,0.6);
-    -moz-box-shadow: 10px 10px 5px 0px rgba(128,0,0,0.6);
-    box-shadow: 10px 10px 5px 0px rgba(128,0,0,0.6);    
-}
 
-.green {
-    border-radius: 2vmin;
+.tableInfolistDiv {
+    position:relative;
+    min-height:15vh;
+    background-color:#808080;
+    border-radius: 1vmin;
     position: relative;
-    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,128,0,0.6);
-    -moz-box-shadow: 10px 10px 5px 0px rgba(0,128,0,0.6);
-    box-shadow: 10px 10px 5px 0px rgba(0,128,0,0.6);
-}
-.yellow {
-    border-radius: 2vmin;
-    position: relative;
-    -webkit-box-shadow: 10px 10px 5px 0px rgba(255,255,0,0.6);
-    -moz-box-shadow: 10px 10px 5px 0px rgba(255,255,0,0.6);
-    box-shadow: 10px 10px 5px 0px rgba(255,255,0,0.6);
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(128,128,128,0.6);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(128,128,128,0.6);
+    box-shadow: 5px 5px 5px 0px rgba(128,128,128,0.6);
 }
 
 .tableInfo-section {
@@ -1036,12 +1023,10 @@ table.tableInfolist tr td:first-child {
     width: 100vw;
     height: 10vh;
     display: inline-block;
-    bottom: 1vh;
     line-height: 10vh;
     z-index: 0;
     margin-top:1vh;
     margin-bottom:2vh;
-    bottom:0px;
 }
 
 .tableInfo-section-scroll {
@@ -1064,3 +1049,35 @@ table.tableInfolist tr td:first-child {
     -moz-box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
     box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
 }
+
+.tableInfolistDiv > .tableDelete {
+    position:absolute;
+    z-index:1;
+    height:7vmin;
+    width:5vmin;
+    color:red;
+    top:-10px;
+    right:-4px;
+}
+.tableInfolistDiv > .tableEdit {
+    position:absolute;
+    z-index:1;
+    line-height:7vmin;
+    text-align:center;
+    height:6vmin;
+    width:6vmin;
+    color:white;
+    bottom:-10px;
+    left:-4px;
+    background:blue;
+    border-radius:10px;
+}
+
+.tableInfolistDiv > .ion-close-circled {
+    font-size:5.5vmin;
+}
+.tableInfolistDiv > .ion-edit{
+    font-size:3vmin;
+}
+
+
