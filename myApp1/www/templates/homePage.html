@@ -67,7 +67,7 @@
                         </table>
                     </div>
                     <div class="totalAmountCalculation" style="padding-top:1vmin;">
-                        <button style="border-radius:1%;width:100%;height-max:2vmin;line-height:6vmin;font-size:2vmin;;" ng-click="takeOrder()" class="button  button-assertive">Place Order</button>
+                        <button ng-show = "showPlaceButton ==true" style="border-radius:1%;width:100%;height-max:2vmin;line-height:6vmin;font-size:2vmin;;" ng-click="placeOrder()" class="button  button-assertive">Place Order</button>
                        
                         <button style="border-radius:1%;width:100%;height-max:2vmin;line-height:6vmin;font-size:2vmin;;" ng-click="showPaymentMode()" class="button  button-balanced">check out {{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</button>
                         

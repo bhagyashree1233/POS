@@ -43,6 +43,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
 
     //load products list from DB
 
+ 
+
     $scope.OnCatClick = function(catId) {
         console.log(catId);
         $rootScope.SelCat = catId;
@@ -72,6 +74,82 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
     }
 
 
+    $scope.placeOrder = function()
+    {
+
+       $ionicPopup.show({
+            title: 'Print Receipt',
+            subTitle: 'Print kitchen Receipt',
+            scope: $scope,
+            buttons: [{
+                text: 'Close',
+                onTap: function(e) {
+                    return "cancel";
+                }
+            }, {
+                text: '<b>Print</b>',
+                type: 'button-positive',
+                onTap: function(e) {
+                    return "Print";
+                }
+            }, {
+                text: '<b>Place</b>',
+                type: 'button-positive',
+                onTap: function(e) {
+                    return "Save";
+                }
+            }]
+
+        }).then(function(res) {
+
+            if(res == 'Close')
+            {
+                return;
+            }
+            else if(res == 'Print')
+            {
+                var proarry = [];
+
+             for(var i=0;i<$scope.productArr.length;i++)
+             {
+                 if($scope.productArr[i].status == false)
+                 {
+                    proarry.push($scope.productArr[i]);
+                 }
+             }
+
+             if(proarry.length>0)//print receipt;;
+            $rootScope.printKitchenReceipt(proarry,$rootScope.selTable.tableId ,onKitchenPrintSuccess, onKitchenPrintFailure);
+            else
+            $rootScope.ShowToast("No Items to print",false);
+           
+            }
+            else
+            {
+               $scope.saveItemsToTable($rootScope.selTable);
+            }
+
+        });
+
+
+
+
+        //$scope.saveItemsToTable($rootScope.selTable);
+       
+
+        function onKitchenPrintSuccess()
+        {
+          $scope.saveItemsToTable($rootScope.selTable);
+          
+        }
+
+        function onKitchenPrintFailure()
+        {
+            $rootScope.ShowToast("Failed to Print",false);
+        }
+    }
+
+   
     $scope.saveItemsToTable = function(table)
     {
         //(table,items,billAmount)
@@ -79,16 +157,20 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
 
         for(var i=0;i<$scope.productArr.length;i++)
         {
-          $scope.productArr.status = true;
+          $scope.productArr[i].status = true;
         }
 
         $rootScope.saveItemsToTable(table,$scope.productArr,$scope.totalChargeAmount);
+
+        $scope.showPlaceButton = false;
+        $scope.productArr = [];
+        $rootScope.selTable = {};
+
+        $scope.totalPrice = 0;
+        $scope.totalTaxAmount = 0;
+        $scope.discountAmount = 0;
+        $scope.totalChargeAmount =0;
        
-            
-           // $scope.totalPrice = $scope.totalPrice + tempObj.productTotalPrice;
-           // $scope.totalTaxAmount = parseFloat(($scope.totalTaxAmount + tempObj.productTaxAmount).toFixed(2));
-           // $scope.discountAmount = parseFloat(($scope.discountAmount + tempObj.discountAmount).toFixed(2));
-            
     }
 
     $scope.$on("$ionicParentView.enter", function(event, data) {
@@ -103,6 +185,17 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
             $scope.OnCatClick($rootScope.SelCat)
             //$scope.highlight = $rootScope.SelCat;
         }
+
+    console.log("Table Id ", $rootScope.selTable.tableId);
+
+    if($rootScope.selTable.tableId != undefined)
+    {
+        console.log("loading table items");
+        $scope.productArr = $rootScope.loadItemsToTable($rootScope.selTable);
+        calculateProductCost();
+         
+    }
+
     });
 
     $ionicPlatform.ready(function() {//loadProducts();
@@ -400,6 +493,9 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
         $scope.discountAmount = parseFloat(($scope.discountAmount + discountAmount).toFixed(2));
         $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount + productTotalAmount).toFixed(2));
         console.log('This is Total Price' + $scope.totalPrice);
+
+         if($rootScope.selTable.tableId != undefined)
+            $scope.showPlaceButton = true;
     }
 
     //receipt function to store all transaction details in DB
@@ -535,6 +631,12 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
 
+            if($rootScope.selTable.tableId != undefined)
+            {
+                console.log("TableId Found");
+              $rootScope.RemoveTable($rootScope.selTable);
+
+            }
             console.log("updating volatile Data", result);
 
             $rootScope.VolatileData.CurrentBillNo = Number($rootScope.VolatileData.CurrentBillNo) + 1;
@@ -735,94 +837,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
 
     }
 
-    /*
-
-    $scope.typedAmount = "";
-
-    $scope.keyPressedAmount = function(keyCode) {
-        //console.log(keyCode)
-        tempT = $scope.typedAmount;
-        switch (keyCode) {
-            case -4:
-                $scope.sendTheCodeA();
-                break;
-            case -3:
-                $scope.removeA();
-                break;
-            case -2:
-                $scope.removeAllA();
-                break;
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 0:
-            case '.':
-                if (!/\d/.test(tempT)) {
-                    $scope.typedAmount = keyCode;
-                    console.log($scope.typedAmount)
-                } else {
-                    $scope.typedAmount += '' + keyCode;
-                    console.log($scope.typedAmount)
-                }
-                break;
-        }
-    };
-
-
-    $scope.sendTheCodeA = function() {
-        if (/\d/.test(tempT)) {
-            // TODO : sends the entered code
-            console.log('entered code is ' + $scope.typedCode + " " + $scope.typedAmount.length);
-            $scope.typedAmount = "";
-        }
-    };
-    $scope.removeA = function() {
-        console.log($scope.typedAmount)
-        if ($scope.typedAmount.length > 0) {
-            $scope.typedAmount = $scope.typedAmount.slice(0, -1);
-        } else {
-            $scope.typedAmount = "";
-        }
-        console.log('I am in remove');
-        // TODO start scaning the code and once it receives send to the socket
-    };
-    $scope.removeAllA = function() {
-        $scope.typedAmount = "";
-    }
-
-
-    $ionicModal.fromTemplateUrl('templates/PaymentModel.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal) {
-        $scope.paymentModal = modal;
-    });
-
-    $scope.openPaymentModal = function() {
-        $scope.enterBtn = false;
-        if ($scope.productArr.length) {
-            console.log('I am in openModel')
-            $scope.typedAmount = null;
-            $scope.paymentModal.show();
-            $scope.receiptBtnShow = true;
-            $ionicScrollDelegate.$getByHandle('scrollSmall').scrollBottom(true);
-        }
-    };
-
-
-    $scope.closePaymentModal = function() {
-        console.log('I am in close Model')
-        $scope.typedAmount = "";
-        $scope.paymentModal.hide();
-    };*/
-
-    // Payment model end
+ 
 
     $scope.OnProductClick = function(Product) {
         console.log("on product click");
@@ -1707,6 +1722,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
         }
         else
         {
+           console.log("table loaded");
            $rootScope.selTable = table;
            $state.go('home');
 
