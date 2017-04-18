@@ -71,6 +71,26 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
         })
     }
 
+
+    $scope.saveItemsToTable = function(table)
+    {
+        //(table,items,billAmount)
+        //print kitchen bill here;;
+
+        for(var i=0;i<$scope.productArr.length;i++)
+        {
+          $scope.productArr.status = true;
+        }
+
+        $rootScope.saveItemsToTable(table,$scope.productArr,$scope.totalChargeAmount);
+       
+            
+           // $scope.totalPrice = $scope.totalPrice + tempObj.productTotalPrice;
+           // $scope.totalTaxAmount = parseFloat(($scope.totalTaxAmount + tempObj.productTaxAmount).toFixed(2));
+           // $scope.discountAmount = parseFloat(($scope.discountAmount + tempObj.discountAmount).toFixed(2));
+            
+    }
+
     $scope.$on("$ionicParentView.enter", function(event, data) {
         console.log('entered before enter parent view');
         //loadProducts();
@@ -368,7 +388,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
             taxId: product.taxId,
             categoryId: product.categoryId,
             categoryName: product.categoryName,
-            selected: false
+            selected: false,
+            status: false
         })
         //$scope.numericModal.hide();
         //$scope.newProduct = {};
@@ -1682,6 +1703,12 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
             //edit mode;
             $rootScope.CurrentTable = table;
             $state.go('addEditTableInfo');
+
+        }
+        else
+        {
+           $rootScope.selTable = table;
+           $state.go('home');
 
         }
     }

@@ -42,7 +42,7 @@
                                     
                                    
                                   <i  ng-if="$index==holdIndex" perform="testDivBlurFunc" style="position:absolute;left:3px;;font-size:3.5vmin;color:red;" ng-show="showDelete" ng-attr-detect-outside-click="showDelete === true" ng-click="deleteItem($index)" class="icon ion-minus-circled"></i>
-                                  <i  ng-if="product.Done==tru"  style="position:absolute;left:3px;;font-size:5vmin;color:green;"  class="icon ion-ios-checkmark-empty"></i>
+                                  <i  ng-if="product.status==true"  style="position:absolute;left:3px;;font-size:5vmin;color:green;"  class="icon ion-ios-checkmark-empty"></i>
                                     
                                 </td>
                                 <td style="font-weight:bold;">{{product.name}}

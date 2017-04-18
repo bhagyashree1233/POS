@@ -35,6 +35,7 @@ angular.module('starter.globalcontroller', [])
     $rootScope.masterPassword = "payupad123";
     $rootScope.printerName = "";
     $rootScope.PrinterStatus = false;
+    $rootScope.selTable ={};
 
     $rootScope.reprintBillButtonEnable = 0;
 
@@ -102,6 +103,79 @@ angular.module('starter.globalcontroller', [])
         ]
 
     }
+
+    $rootScope.getTableIndex = function(TableId)
+    {
+      
+      var index = -1;
+        //find table in table array;;
+        for(var i =0; i< $rootScope.runningTables.length;i++)
+        {
+            if(TableId == $rootScope.runningTables[i].TableId)
+            {
+              index = i;
+              break;
+            }
+        }
+
+        return(index);
+
+    }
+
+    $rootScope.RemoveTable = function(table)
+    {
+        var index = $rootScope.getTableIndex(table.TableId);
+        if(index>-1) //table exists;;
+        {
+            $rootScope.runningTables.splice(index, 1);
+        }
+    }
+
+    $rootScope.loadItemsToTable= function(table)
+    {
+        var index = $rootScope.getTableIndex(table.TableId);
+
+        if(index==-1) //table doesnot exist;;
+        {
+            $rootScope.CurrentTable = {};
+        }
+        else
+        {
+             $rootScope.CurrentTable = $rootScope.runningTables[index];
+        }
+        
+    }
+
+   $rootScope.saveItemsToTable = function(table,items,billAmount)
+     {
+         var index = $rootScope.getTableIndex(table.TableId);
+       
+    
+        if(index == -1)
+        { //new table;;
+
+        var SingleTable = 
+      {
+        TableId : table.TableId,
+        TableStatus: "Running", // Billed
+        TotalBillAmount: billAmount,
+        productArr: items
+
+      }
+
+      $rootScope.runningTables.push(SingleTable);
+      //save to localStorage here;;
+
+        }
+
+      else
+      {
+         
+      $rootScope.runningTables[i].productArr = $rootScope.runningTables[i].productArr.concat(items);
+       //save to localStorage here;;
+      }
+
+     }
 
     $rootScope.ShowPopUpPassword = function() {
         console.log("now mode is");
