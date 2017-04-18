@@ -33,15 +33,17 @@
                                 </tr>
                             </thead>
                             <tr ng-repeat="product in productArr" on-hold="onPressHold($index)">
-                                <td style="font-weight:bold;">
+                                <td style="font-weight:bold;position:relative;">
                                     {{$index+1}}
                                     
                                     
                                     
                                     
-                                    <div ng-if="$index==holdIndex">
-                                        <button perform="testDivBlurFunc" style="display:inline;position:absolute;z-index:1;left:3px;font-size:3.5vmin;color:red;" ng-show="showDelete" ng-attr-detect-outside-click="showDelete === true" ng-click="deleteItem($index)" class="button clear icon ion-minus-circled"></button>
-                                    </div>
+                                    
+                                   
+                                  <i  ng-if="$index==holdIndex" perform="testDivBlurFunc" style="position:absolute;left:3px;;font-size:3.5vmin;color:red;" ng-show="showDelete" ng-attr-detect-outside-click="showDelete === true" ng-click="deleteItem($index)" class="icon ion-minus-circled"></i>
+                                  <i  ng-if="product.Done==tru"  style="position:absolute;left:3px;;font-size:5vmin;color:green;"  class="icon ion-ios-checkmark-empty"></i>
+                                    
                                 </td>
                                 <td style="font-weight:bold;">{{product.name}}
                                     </td>
@@ -65,7 +67,10 @@
                         </table>
                     </div>
                     <div class="totalAmountCalculation" style="padding-top:1vmin;">
+                        <button style="border-radius:1%;width:100%;height-max:2vmin;line-height:6vmin;font-size:2vmin;;" ng-click="takeOrder()" class="button  button-assertive">Place Order</button>
+                       
                         <button style="border-radius:1%;width:100%;height-max:2vmin;line-height:6vmin;font-size:2vmin;;" ng-click="showPaymentMode()" class="button  button-balanced">check out {{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</button>
+                        
                         <p style="font-size:2vmin;color:white;line-height:1.5vmin;"></p>
                         <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;font-weight:bold;">Bill No: {{VolatileData.CurrentBillNo}}</p>
                         <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;font-weight:bold;">Total Bill Amount{{currencySymbol}}:{{totalPrice}}</p>
@@ -277,7 +282,7 @@
                     <ion-scroll direction="x" class="product-categary-scroll" scrollbar-x=false scrollbar-y=false style="padding-top:3vh;">
                         <button class="product-categary-button" ng-show="Mode == 1" ng-click="AddNewCat()">Create Category</button>
                         <span ng-repeat="categoryObj in categoryArr">
-                            <div style="display:inline-block; width:16vw;margin:0 0.5vw;position:relative;"  ng-class="categoryObj.categoryId != 'favourite' ? {jiggle: Mode} : ''">
+                            <div style="display:inline-block; width:16vw;margin:0 0.5vw;position:relative;" ng-class="categoryObj.categoryId != 'favourite' ? {jiggle: Mode} : ''">
                                 <div ng-show='Mode==true && categoryObj.categoryId != "favourite"' style="position:absolute;z-index:1;font-size:7vmin;height:7vmin;width:5vmin;color:red;float:right;right:0px;top:-28px;" class="icon-right ion-close-circled" ng-Click="deleteAllProductsAndCat(categoryObj.categoryId)"></div>
                                 <div ng-show='Mode==true  && categoryObj.categoryId != "favourite"' style="position:absolute;font-size:4vmin;line-height:7vmin;text-align:center;height:6vmin;width:6vmin;color:white;background:blue;border-radius:10px;float:left;left:-4px;top:-11px;" class="icon-left ion-edit" ng-Click="OnEditCategory(categoryObj.categoryId)"></div>
                                 <button class="product-categary-button" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
@@ -304,13 +309,11 @@
             <ion-side-tab-handle width="60" height="100" toggle="ion-chevron-right ion-ios-gear-outline" class="dark-bg stable" style="border-radius: 40px 0 0 40px; background-color:rgba(8,8,8,0.9);">
                 <i style="font-size:5vmin;" class="icon ion-ios-gear-outline"></i>
             </ion-side-tab-handle>
-            
-                <div class="item" style="background-color:transparent;border:0px;width:60%;text-align:center;">
-                    <div>
-                        <ion-toggle style="background-color:transparent;border:0px;color:white;" ng-model="$root.Mode" toggle-class="toggle-calm" ng-change="ShowPopUpPassword()">Enable Administrative rights to Add, Remove Products </ion-toggle>
-                    </div>
+            <div class="item" style="background-color:transparent;border:0px;width:60%;text-align:center;">
+                <div>
+                    <ion-toggle style="background-color:transparent;border:0px;color:white;" ng-model="$root.Mode" toggle-class="toggle-calm" ng-change="ShowPopUpPassword()">Enable Administrative rights to Add, Remove Products </ion-toggle>
                 </div>
-           
+            </div>
             <div style="position:relative;top:2vmin" ng-controller="MenuCtrl">
                 <div>
                     <div ng-repeat="items in rightItems">
@@ -344,7 +347,7 @@
                 </div>
             </div>
         </ion-side-tab>
-      <!--  <ion-side-tab class="positive-bg" style="border-radius: 10px;" expand="tabs.tab2">
+        <!--  <ion-side-tab class="positive-bg" style="border-radius: 10px;" expand="tabs.tab2">
             <ion-side-tab-handle width="60" height="100" toggle="ion-chevron-left ion-chevron-right" class="positive-bg" style="border-radius: 40px 0 0 40px;">
                 <i style="font-size:3vmin;color:white;" class="icon ion-edit"></i>
             </ion-side-tab-handle>
