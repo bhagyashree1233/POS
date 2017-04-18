@@ -92,6 +92,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     $scope.$on("$ionicParentView.enter", function(event, data) {
         console.log('entered before enter parent view');
         //loadProducts();
+        
         loadCategory();
         //$scope.highlight = "1x";
         if ($rootScope.SelCat == '0') {
@@ -102,6 +103,47 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             //$scope.highlight = $rootScope.SelCat;
         }
     });
+
+     $scope.$on("$ionicView.beforeEnter", function(event, data) {
+        loadTables();
+        console.log("table loaded in tableinfocontrol +++++++++++++++++++++++++++++");
+
+        loadSection();
+        //$scope.highlight = "1x";
+        //  if ($rootScope.SelSection != '0') {
+        //       $scope.OnSectionClick($rootScope.SelSection)
+        //$scope.highlight = $rootScope.SelCat;
+        //  }
+    });
+
+    function loadSection() {
+
+        $rootScope.showDbLoading();
+        var promise = dbService.loadSectionFromDB('TableInfoSection');
+        promise.then(function(res) {
+            $scope.sectionArr = res;
+            console.log($scope.sectionArr);
+            $rootScope.hideDbLoading();
+        }, function(res) {
+            console.log(res);
+            $rootScope.hideDbLoading();
+        })
+    }
+
+    function loadTables() {
+        $rootScope.showDbLoading();
+        var promise = dbService.loadTablesFromDB('TableInfo');
+        promise.then(function(res) {
+            $scope.tables = res;
+            //status and other details load here;;
+
+            console.log('tables loaded...');
+            $rootScope.hideDbLoading();
+        }, function(res) {
+            console.log(res);
+            $rootScope.hideDbLoading();
+        })
+    }    
 
     $ionicPlatform.ready(function() {//loadProducts();
     //loadCategory();
@@ -1559,6 +1601,13 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
 .controller('tableInfoCtrl', function($scope, $ionicPopup, $rootScope, dbService, $state) {
 
+   $rootScope.$on('tableChange',function(event,data) {
+    console.log("On Table change Table broadcast reciever");
+       loadTables();
+       loadSection();
+ 
+   });
+
    loadTables();
    loadSection();
 
@@ -1913,6 +1962,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
                     console.log('add more Tables');
                 } else {
                     console.log('No');
+                    $rootScope.$broadcast('tableChange',[]);
                    // $ionicHistory.goBack();
                    $state.go('home');
                 }
@@ -1934,6 +1984,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             console.log("Table Edited Sucessfully");
             $rootScope.hideDbLoading();
             $rootScope.ShowToast("Table Edited Sucessfully", false);
+            $rootScope.$broadcast('tableChange',[]);
           //  $ionicHistory.goBack();
             $state.go('home');
         }, function(result) {
@@ -1998,6 +2049,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
                     sectionName: "",
                     sectionDescription: ""
                 };
+                $rootScope.$broadcast('tableChange',[]);
                 //$ionicHistory.goBack();
                 $state.go('home');
             }, function() {
@@ -2036,6 +2088,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
             if ($rootScope.cameFromTable) {
                 $rootScope.cameFromTable = false;
+                $rootScope.$broadcast('tableChange',[]);
                 $ionicHistory.goBack();
             } else {
                 //confirmation popup
@@ -2050,6 +2103,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
                         $state.reload();
                     } else {
                         console.log('No');
+                        $rootScope.$broadcast('tableChange',[]);
                         //$ionicHistory.goBack();
                         $state.go('home');
                     }
