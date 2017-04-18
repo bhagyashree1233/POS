@@ -36,6 +36,7 @@ angular.module('starter.globalcontroller', [])
     $rootScope.printerName = "";
     $rootScope.PrinterStatus = false;
     $rootScope.selTable ={};
+    //$rootScope.currentTable = [];
 
     $rootScope.reprintBillButtonEnable = 0;
 
@@ -119,44 +120,60 @@ angular.module('starter.globalcontroller', [])
         }
 
         return(index);
+    }
+
+    $rootScope.getTableStatus = function(Table)
+    {
+      if($rootScope.getTableIndex(Table.tableId)>-1)
+       return(true);
+
+       return(false);
 
     }
 
     $rootScope.RemoveTable = function(table)
     {
-        var index = $rootScope.getTableIndex(table.TableId);
+        var index = -1;
+        index = $rootScope.getTableIndex(table.tableId);
+        console.log("found id: ", table.tableId);
+        console.log("index is : ", index);
         if(index>-1) //table exists;;
         {
+            console.log("Table exists in Remove Table");
             $rootScope.runningTables.splice(index, 1);
         }
+
+        $rootScope.selTable = {};
     }
 
     $rootScope.loadItemsToTable= function(table)
     {
-        var index = $rootScope.getTableIndex(table.TableId);
+        var index = $rootScope.getTableIndex(table.tableId);
 
         if(index==-1) //table doesnot exist;;
         {
-            $rootScope.CurrentTable = {};
+             return([]);
         }
-        else
-        {
-             $rootScope.CurrentTable = $rootScope.runningTables[index];
-        }
+        //else
+        //{
+            return($rootScope.runningTables[index].productArr);
+        //}
+
+        //return($rootScope.currentTable);
         
     }
 
    $rootScope.saveItemsToTable = function(table,items,billAmount)
      {
-         var index = $rootScope.getTableIndex(table.TableId);
+         var index = $rootScope.getTableIndex(table.tableId);
        
     
         if(index == -1)
         { //new table;;
-
+         console.log("Table not found");
         var SingleTable = 
       {
-        TableId : table.TableId,
+        TableId : table.tableId,
         TableStatus: "Running", // Billed
         TotalBillAmount: billAmount,
         productArr: items
@@ -170,8 +187,8 @@ angular.module('starter.globalcontroller', [])
 
       else
       {
-         
-      $rootScope.runningTables[i].productArr = $rootScope.runningTables[i].productArr.concat(items);
+         console.log("Table Exists");
+      $rootScope.runningTables[index].productArr = items.slice();
        //save to localStorage here;;
       }
 
@@ -783,6 +800,115 @@ $rootScope.connectCallBack= function(status,PrinterName)
             callbackError(err);
         }, text);
 
+    }
+
+    $rootScope.printKitchenReceipt = function (billdetails,tableNo,callbackfcSuccess, callbackfcFailure)
+    {
+        var d = new Date();
+        var date = d.toString().substring(4, 15);
+        var time = d.toString().substring(15, 25);
+        $rootScope.PrintInit();
+           $rootScope.PrintChangeFont(true);
+        //large font;;
+        $rootScope.PrintAlign("center");
+
+         if (printerSettings.shopName != undefined && printerSettings.shopName != "") {
+            console.log('I am in shop')
+            $rootScope.PrintEnableUnderline(true);
+            $rootScope.PrintEnableBold(true);
+            $rootScope.PrintChangeBigFont("vertical");
+            $rootScope.PrintText(printerSettings.shopName + "\n");
+
+        }
+
+        $rootScope.PrintEnableUnderline(false);
+        $rootScope.PrintEnableBold(false);
+        $rootScope.PrintChangeBigFont("normal");
+        $rootScope.PrintAlign("left");
+        $rootScope.PrintText(date);
+        $rootScope.PrintText("          " + time + "\n");
+
+        $rootScope.PrintAlign("center");
+        $rootScope.PrintText("Table No: " + tableNo.toString());
+
+          // padding left
+        function padRight(s, paddingChar, length) {
+
+            //var s = new String(this);
+            var ln = s.length;
+
+            if ((s.length < length) && (paddingChar.toString().length > 0)) {
+                for (var i = 0; i < (length - ln); i++)
+                    s = s.concat(paddingChar.toString().charAt(0));
+            }
+
+            return s;
+        };
+
+        function padLeft(s, paddingChar, length) {
+
+            //var s = new String(this);
+            var ln = s.length;
+
+            if ((s.length < length) && (paddingChar.toString().length > 0)) {
+                for (var i = 0; i < (length - ln); i++)
+                    s = paddingChar.toString().charAt(0).concat(s);
+            }
+
+            return s;
+        };
+
+         $rootScope.PrintAlign("left");
+         $rootScope.PrintChangeFont(false);
+        //small font;;
+        $rootScope.PrintEnableBold(true);
+ 
+         $rootScope.PrintText("-----------------------------------------\n");
+
+         $rootScope.PrintAlign("left");
+
+        $rootScope.PrintChangeBigFont("vertical");
+
+         var itemHeader = "item";
+
+        itemHeader = padRight(itemHeader, " ", 25);
+
+        console.log("itemHeader:", itemHeader.length);
+
+        var qtyHeader = "Qty";
+        qtyHeader = padLeft(qtyHeader, " ", 8);
+
+        $rootScope.PrintText(itemHeader + "  " + qtyHeader);
+
+         $rootScope.PrintText("-----------------------------------------\n");
+
+         $rootScope.PrintEnableBold(false);
+
+
+           for (var i = 0; i < billdetails.length; i++) {
+            var proName = billdetails[i].name;
+            if (proName.length > 24)
+                proName = proName.substring(0, 24);
+            proName = padRight(proName, " ", 25);
+
+            console.log("Name:", proName.length);
+
+            var Qty = billdetails[i].quantity.toString();
+
+            Qty = padLeft(Qty, " ", 8);
+
+            console.log("Qty:", Qty.length);
+
+           
+          
+            $rootScope.PrintText(proName + "  " + Qty + "\n");
+        }
+
+        // $rootScope.PrintText("\n");
+
+        $rootScope.PrintText("-----------------------------------------\n");
+
+        $rootScope.EndPrint(callbackfcSuccess, callbackfcFailure);
     }
 
     $rootScope.print = function(billSummary, billdetails, callbackfcSuccess, callbackfcFailure, tokenNo, billNo) {
