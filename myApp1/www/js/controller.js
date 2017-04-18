@@ -188,6 +188,13 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             //$scope.highlight = $rootScope.SelCat;
         }
 
+   
+
+    });
+
+
+    $scope.$on('tableSel',function(event,data)
+    {
     console.log("Table Id ", $rootScope.selTable.tableId);
 
     if($rootScope.selTable.tableId != undefined)
@@ -1734,9 +1741,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         {
            console.log("table loaded");
            $rootScope.selTable = table;
-           $state.go('home');
-
-
+           $rootScope.$broadcast('tableSel',[]);
+           //$state.go('home');
         }
     }
 
