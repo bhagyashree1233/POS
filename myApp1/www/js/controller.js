@@ -1560,7 +1560,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
 }).controller('tableInfoCtrl', function($scope, $ionicPopup, $rootScope, dbService, $state) {
 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
-        loadTables()
+        loadTables();
+        console.log("table loaded in tableinfocontrol +++++++++++++++++++++++++++++");
 
         loadSection();
         //$scope.highlight = "1x";
