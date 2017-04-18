@@ -1568,6 +1568,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
         var promise = dbService.loadTablesFromDB('TableInfo');
         promise.then(function(res) {
             $scope.tables = res;
+            //status and other details load here;;
+            
             console.log('tables loaded...');
             $rootScope.hideDbLoading();
         }, function(res) {

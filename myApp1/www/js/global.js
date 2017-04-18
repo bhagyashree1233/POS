@@ -10,8 +10,20 @@ angular.module('starter.globalcontroller', [])
     $rootScope.nextSlide = function() {
         console.log("changing to next slide");
         $ionicSlideBoxDelegate.next();
-    }
-    ;
+    };
+
+
+     $rootScope.runningTables = [];
+
+     $rootScope.SingleTable = 
+     {
+        TableId : 0,
+        TableStatus: "Running", // Billed
+        TotalBillAmount: 0,
+        productArr: []
+
+     }
+
 
     $rootScope.Mode = false;
     $rootScope.SelCat = '0';
@@ -225,7 +237,9 @@ angular.module('starter.globalcontroller', [])
     $rootScope.showDbLoading = function() {
         console.log("ShowDBloading");
         $ionicLoading.show({
-            template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'// duration: 15000
+            template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>',
+            duration: 3000,
+            showDelay: 0
         }).then(function() {
             console.log("The loading indicator is now displayed");
         });
@@ -236,8 +250,7 @@ angular.module('starter.globalcontroller', [])
         $ionicLoading.hide().then(function() {
             console.log("The loading indicator is now hidden");
         });
-    }
-    ;
+    };
 
     $rootScope.ShowToast = function(message, longx) {
         if (window.cordova) {
