@@ -79,7 +79,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
 
         for(var i=0;i<$scope.productArr.length;i++)
         {
-          $scope.productArr.status = "old";
+          $scope.productArr.status = true;
         }
 
         $rootScope.saveItemsToTable(table,$scope.productArr,$scope.totalChargeAmount);
@@ -389,7 +389,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope) {
             categoryId: product.categoryId,
             categoryName: product.categoryName,
             selected: false,
-            status: "new"
+            status: false
         })
         //$scope.numericModal.hide();
         //$scope.newProduct = {};
