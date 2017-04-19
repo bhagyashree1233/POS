@@ -681,6 +681,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $scope.totalTaxAmount = 0;
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
+            $scope.showPlaceButton = false;
+            $rootScope.selTable = {};
 
             if($rootScope.selTable.tableId != undefined)
             {
