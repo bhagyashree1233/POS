@@ -354,14 +354,14 @@
                         <td style="background:transparent;">
                             <div style="min-width:20%;height:20%;margin:1vh;" ng-click="AddNewTable()">
                                 <img ng-src="img/add-product.png" style="width:100%;"></img>
-                                <p style="text-align:center;">Add New Table</p>
+                                <p style="text-align:center;color:white;">Add New Table</p>
                             </div>
                         </td>
                     </tr>
                     <tr ng-repeat="table in tables" ng-if="$index%5==0" style="background:transparent;">
                         <td style="background:transparent;">
                             <div ng-class="[{jiggle: Mode}]">
-                                <div ng-class="{tableInfolistDiv:getTableStatus(table)==false ,tableInfolistDivRunning:getTableStatus(table)==true}">
+                                <div ng-class="{tableInfolistDiv:getTableStatus(tables[$index])==false ,tableInfolistDivRunning:getTableStatus(tables[$index])==true}">
                                     <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index].tableId)"></div>
                                     <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index]);"></div>
                                     <div style="width:15vw;max-height:24vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index]);">
@@ -369,7 +369,8 @@
                                             <div class="tableInfoNumber">{{tables[$index].tableNumber}}
                                             </div>
                                             <div class="tableInfo-occupancy">
-                                                <p class="badge" style="background-color:green;color:white;">0</p>
+                                              <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
+                                                <p>{{counter|formatTimer}}</p>
                                             </div>
                                             <div style="width:100%" class="tableInfo-capacity">
                                                 <div class="badge badge-stable">{{tables[$index].tableCapacity}}</div>
@@ -377,79 +378,88 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </td>
                         <td>
-                            <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv" ng-if="tables[$index+1]!=undefined">
-                                <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+1].tableId)"></div>
-                                <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+1])"></div>
-                                <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+1]);">
-                                    <!--     <img ng-src={{tables[$index+1].image}} class="tableInfo-image"></img> -->
-                                    <div class="tableInfoNumber">
-                                        <p>{{tables[$index+1].tableNumber}} </p>
-                                    </div>
-                                    <div class="tableInfo-occupancy">
-                                        <p class="badge" style="background-color:green;color:white;">0</p>
-                                    </div>
-                                    <!--     <div class="tableInfo-desc">
+                            <div ng-class="[{jiggle: Mode}]" ng-if="tables[$index+1]!=undefined">
+                                <div ng-class="{tableInfolistDiv:getTableStatus(tables[$index+1])==false ,tableInfolistDivRunning:getTableStatus(tables[$index+1])==true}">
+                                    <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+1].tableId)"></div>
+                                    <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+1])"></div>
+                                    <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+1]);">
+                                        <!--     <img ng-src={{tables[$index+1].image}} class="tableInfo-image"></img> -->
+                                        <div class="tableInfoNumber">
+                                            <p>{{tables[$index+1].tableNumber}} </p>
+                                        </div>
+                                        <div class="tableInfo-occupancy">
+                                            <p class="badge" style="background-color:green;color:white;">0</p>
+                                        </div>
+                                        <!--     <div class="tableInfo-desc">
                                         <p>{{tables[$index+1].tableDescription}}</p>
                                     </div>
                            -->
-                                    <div class="tableInfo-capacity">
-                                        <p class="badge badge-stable">{{tables[$index+1].tableCapacity}}</p>
+                                        <div class="tableInfo-capacity">
+                                            <p class="badge badge-stable">{{tables[$index+1].tableCapacity}}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv" ng-if="tables[$index+2]!=undefined">
-                                <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+2].tableId)"></div>
-                                <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+2])"></div>
-                                <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+2]);">
-                                    <!--    <img ng-src={{tables[$index+2].image}} class="tableInfo-image"></img>  -->
-                                    <div class="tableInfoNumber">
-                                        <p>{{tables[$index+2].tableNumber}} </p>
-                                    </div>
-                                    <div class="tableInfo-occupancy">
-                                        <p class="badge" style="background-color:green;color:white;">0</p>
-                                    </div>
-                                    <div class="tableInfo-capacity">
-                                        <p class="badge badge-stable">{{tables[$index+2].tableCapacity}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv" ng-if="tables[$index+3]!=undefined">
-                                <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+3].tableId)"></div>
-                                <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+3])"></div>
-                                <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+3]);">
-                                    <!--     <img ng-src={{tables[$index+3].image}} class="tableInfo-image"></img>  -->
-                                    <div class="tableInfoNumber">
-                                        <p>{{tables[$index+3].tableNumber}} </p>
-                                    </div>
-                                    <div class="tableInfo-occupancy">
-                                        <p class="badge" style="background-color:green;color:white;">0</p>
-                                    </div>
-                                    <div class="tableInfo-capacity">
-                                        <p class="badge badge-stable">{{tables[$index+3].tableCapacity}}</p>
+                            <div ng-class="[{jiggle: Mode}]" ng-if="tables[$index+2]!=undefined">
+                                <div ng-class="{tableInfolistDiv:getTableStatus(tables[$index+2])==false ,tableInfolistDivRunning:getTableStatus(tables[$index+2])==true}">
+                                    <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+2].tableId)"></div>
+                                    <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+2])"></div>
+                                    <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+2]);">
+                                        <!--    <img ng-src={{tables[$index+2].image}} class="tableInfo-image"></img>  -->
+                                        <div class="tableInfoNumber">
+                                            <p>{{tables[$index+2].tableNumber}} </p>
+                                        </div>
+                                        <div class="tableInfo-occupancy">
+                                            <p class="badge" style="background-color:green;color:white;">0</p>
+                                        </div>
+                                        <div class="tableInfo-capacity">
+                                            <p class="badge badge-stable">{{tables[$index+2].tableCapacity}}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv" ng-if="tables[$index+4]!=undefined">
-                                <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+4].tableId)"></div>
-                                <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+4]);"></div>
-                                <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+4]);">
-                                    <!--     <img ng-src={{tables[$index+3].image}} class="tableInfo-image"></img>  -->
-                                    <div class="tableInfoNumber">
-                                        <p>{{tables[$index+4].tableNumber}} </p>
+                            <div ng-class="[{jiggle: Mode}]" ng-if="tables[$index+3]!=undefined">
+                                <div ng-class="{tableInfolistDiv:getTableStatus(tables[$index+3])==false ,tableInfolistDivRunning:getTableStatus(tables[$index+3])==true}">
+                                    <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+3].tableId)"></div>
+                                    <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+3])"></div>
+                                    <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+3]);">
+                                        <!--     <img ng-src={{tables[$index+3].image}} class="tableInfo-image"></img>  -->
+                                        <div class="tableInfoNumber">
+                                            <p>{{tables[$index+3].tableNumber}} </p>
+                                        </div>
+                                        <div class="tableInfo-occupancy">
+                                            <p class="badge" style="background-color:green;color:white;">0</p>
+                                        </div>
+                                        <div class="tableInfo-capacity">
+                                            <p class="badge badge-stable">{{tables[$index+3].tableCapacity}}</p>
+                                        </div>
                                     </div>
-                                    <div class="tableInfo-occupancy">
-                                        <p class="badge" style="background-color:green;color:white;">0</p>
-                                    </div>
-                                    <div class="tableInfo-capacity">
-                                        <p class="badge badge-stable">{{tables[$index+4].tableCapacity}}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-class="[{jiggle: Mode}]" ng-if="tables[$index+4]!=undefined">
+                                <div ng-class="{tableInfolistDiv:getTableStatus(tables[$index+4])==false ,tableInfolistDivRunning:getTableStatus(tables[$index+4])==true}">
+                                    <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+4].tableId)"></div>
+                                    <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+4]);"></div>
+                                    <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+4]);">
+                                        <!--     <img ng-src={{tables[$index+3].image}} class="tableInfo-image"></img>  -->
+                                        <div class="tableInfoNumber">
+                                            <p>{{tables[$index+4].tableNumber}} </p>
+                                        </div>
+                                        <div class="tableInfo-occupancy">
+                                            <p class="badge" style="background-color:green;color:white;">0</p>
+                                        </div>
+                                        <div class="tableInfo-capacity">
+                                            <p class="badge badge-stable">{{tables[$index+4].tableCapacity}}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -475,19 +485,18 @@
                 <i style="font-size:5vmin;" class="icon ion-ios-search"></i>
             </ion-side-tab-handle>
             <div class="item" style="background-color:transparent;border:0px;width:100%;text-align:center;" ng-controller="searchProductsCtrl">
-               
                 <div class="item item-input-inset no-padding">
                     <label class="item-input-wrapper" style="margin:0;">
                         <i class="icon ion-ios-search placeholder-icon "></i>
                         <input type="search" style="width:100%;" placeholder="Search" ng-change="searchChange() " ng-model="searchObj.pattern">
                     </label>
                     <button class="button button-clear" ng-click="resetSearch()">
-                        <i class="ion-android-cancel assertive"></i>
+                        <i style="font-size:6vh;" class="ion-android-cancel assertive"></i>
                     </button>
                 </div>
                 <ion-list>
                     <ion-item ng-repeat="x in searchedResults" ng-click="toggleTab('tab3');onClickSearchProduct(x)">{{x.name}}</ion-item>
-                <!--    <ion-item ng-if="searchedResults !== undefined && !searchedResults.length">No Results Found..</ion-item>  -->
+                    <!--    <ion-item ng-if="searchedResults !== undefined && !searchedResults.length">No Results Found..</ion-item>  -->
                 </ion-list>
             </div>
         </ion-side-tab>
