@@ -49,6 +49,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     });
 */
 
+   $scope.tableNumberSelected = -1;
+
     //ionicParentView
 
     //load products list from DB
@@ -161,6 +163,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         $scope.totalTaxAmount = 0;
         $scope.discountAmount = 0;
         $scope.totalChargeAmount = 0;
+        $scope.tableNumberSelected = -1;
 
     }
 
@@ -187,6 +190,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             console.log("loading table items");
             $scope.productArr = $rootScope.loadItemsToTable($rootScope.selTable);
             calculateProductCost();
+            $scope.tableNumberSelected = $rootScope.selTable.tableId;
 
         }
 
