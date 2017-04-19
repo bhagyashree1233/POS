@@ -20,7 +20,7 @@
                     <div style="position:relative;top:0px;">
                         <table class="billList" style="width:100%;font-size:2vmin;font-weight:bold;line-height:4.5vmin;">
                             <tr>
-                            <p style="font-weight:bold;font-size:2.2vmin;text-align:center!important;">Table: {{tableNumberSelected}} </p>
+                                <p style="font-weight:bold;font-size:2.2vmin;text-align:center!important;">Table: {{tableNumberSelected}} </p>
                             </tr>
                             <thead>
                                 <tr>
@@ -360,25 +360,23 @@
                     </tr>
                     <tr ng-repeat="table in tables" ng-if="$index%5==0" style="background:transparent;">
                         <td style="background:transparent;">
-                            <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv">
-                                <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index].tableId)"></div>
-                                <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index]);"></div>
-                                <div style="width:15vw;max-height:24vh;"  ng-click="toggleTab('tab2');OnTableClick(tables[$index]);">
-                                    <!--     <img ng-src={{tables[$index].image}} alt="iamge" class="tableInfo-image"></img>  -->
-                                    <div style="width:100%;height:100%;vertical-align: middle;"> 
-                                    <div  class="tableInfoNumber">
-                                        {{tables[$index].tableNumber}}
+                            <div ng-class="[{jiggle: Mode}]">
+                                <div ng-class="{tableInfolistDiv:getTableStatus(table)==false ,tableInfolistDivRunning:getTableStatus(table)==true}">
+                                    <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index].tableId)"></div>
+                                    <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index]);"></div>
+                                    <div style="width:15vw;max-height:24vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index]);">
+                                        <div style="width:100%;height:100%;vertical-align: middle;">
+                                            <div class="tableInfoNumber">{{tables[$index].tableNumber}}
+                                            </div>
+                                            <div class="tableInfo-occupancy">
+                                                <p class="badge" style="background-color:green;color:white;">0</p>
+                                            </div>
+                                            <div style="width:100%" class="tableInfo-capacity">
+                                                <div class="badge badge-stable">{{tables[$index].tableCapacity}}</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="tableInfo-occupancy">
-                                        <p class="badge" style="background-color:green;color:white;">0</p>
-                                    </div>
-                                    <div style="width:100%" class="tableInfo-capacity">
-                                        <div class="badge badge-stable">{{tables[$index].tableCapacity}}</div>
-                                    </div>
-</div>
-                                   
                                 </div>
-                            </div>
                         </td>
                         <td>
                             <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv" ng-if="tables[$index+1]!=undefined">
