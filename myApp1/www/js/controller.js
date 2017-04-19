@@ -506,6 +506,13 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         console.log("productTotalAmount: " + productTotalAmount);
         console.log("productId " + product.productId);
 
+        var status = true;
+
+        if($rootScope.selTable.tableId !=undefined) //table order;;
+        {
+            status = false;
+        }
+
         $scope.productArr.push({
             productId: product.productId,
             name: product.name,
@@ -521,7 +528,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             categoryId: product.categoryId,
             categoryName: product.categoryName,
             selected: false,
-            status: false
+            status: status
         })
         //$scope.numericModal.hide();
         //$scope.newProduct = {};
@@ -669,14 +676,18 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $scope.totalTaxAmount = 0;
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
-            $scope.showPlaceButton = false;
-            $rootScope.selTable = {};
+           
 
             if ($rootScope.selTable.tableId != undefined) {
                 console.log("TableId Found");
                 $rootScope.RemoveTable($rootScope.selTable);
 
             }
+
+             $scope.showPlaceButton = false;
+            $rootScope.selTable = {};
+            $scope.tableNumberSelected = -1;
+
             console.log("updating volatile Data", result);
 
             $rootScope.VolatileData.CurrentBillNo = Number($rootScope.VolatileData.CurrentBillNo) + 1;
