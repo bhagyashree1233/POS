@@ -113,7 +113,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
         }).then(function(res) {
 
-            if (res == 'Close') {
+            if (res == 'cancel') {
                 return;
             } else if (res == 'Print') {
                 var proarry = [];
@@ -194,6 +194,11 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $scope.productArr = $rootScope.loadItemsToTable($rootScope.selTable);
             calculateProductCost();
             $scope.tableNumberSelected = $rootScope.selTable.tableId;
+
+            if($scope.isPendingOrder()==true)
+                 $scope.showPlaceButton = true;
+                else
+                 $scope.showPlaceButton = false;
 
         }
 
@@ -411,6 +416,46 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         $scope.showDelete = false;
         delete $scope.itemsInStockObj[product.productId];
         calculateProductCost();
+
+        console.log("In delete Item");
+        
+        if($rootScope.selTable.tableId !=undefined) //table order;;
+        {
+            if($scope.productArr.length <=0) //no items for table;;
+            {//gau;;
+            //remove from running list;;
+             $rootScope.RemoveTable($rootScope.selTable);
+             $scope.showPlaceButton = false;
+            $rootScope.selTable = {};
+            $scope.tableNumberSelected = -1;
+            }
+            else
+            {
+                if($scope.isPendingOrder()==true)
+                 {
+                 $scope.showPlaceButton = true;
+                 console.log("Show button");
+                 }
+                else
+                 {
+                 $scope.showPlaceButton = false;
+                 console.log("Hide button");
+                 }
+            }
+        }
+
+
+    }
+
+    $scope.isPendingOrder = function()
+    {
+        for(var i=0;i<$scope.productArr.length;i++)
+        {
+            if($scope.productArr[i].status == false)
+              return(true);
+        }
+
+        return(false); //gau;;
     }
 
     $scope.testDivBlurFunc = function() {
@@ -509,6 +554,13 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         console.log("productTotalAmount: " + productTotalAmount);
         console.log("productId " + product.productId);
 
+        var status = true;
+
+        if($rootScope.selTable.tableId !=undefined) //table order;;
+        {
+            status = false;
+        }
+
         $scope.productArr.push({
             productId: product.productId,
             name: product.name,
@@ -524,7 +576,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             categoryId: product.categoryId,
             categoryName: product.categoryName,
             selected: false,
-            status: false
+            status: status
         })
         //$scope.numericModal.hide();
         //$scope.newProduct = {};
@@ -537,7 +589,10 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         console.log('This is Total Price' + $scope.totalPrice);
 
         if ($rootScope.selTable.tableId != undefined)
+        {
             $scope.showPlaceButton = true;
+            $rootScope.saveItemsToTable($rootScope.selTable, $scope.productArr, $scope.totalChargeAmount);
+        }
     }
 
     //receipt function to store all transaction details in DB
@@ -672,14 +727,18 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $scope.totalTaxAmount = 0;
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
-            $scope.showPlaceButton = false;
-            $rootScope.selTable = {};
+           
 
             if ($rootScope.selTable.tableId != undefined) {
                 console.log("TableId Found");
                 $rootScope.RemoveTable($rootScope.selTable);
 
             }
+
+             $scope.showPlaceButton = false;
+            $rootScope.selTable = {};
+            $scope.tableNumberSelected = -1;
+
             console.log("updating volatile Data", result);
 
             $rootScope.VolatileData.CurrentBillNo = Number($rootScope.VolatileData.CurrentBillNo) + 1;
@@ -728,6 +787,14 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         $scope.totalTaxAmount = 0;
         $scope.discountAmount = 0;
         $scope.totalChargeAmount = 0;
+        //gau;;
+         if($rootScope.selTable.tableId != undefined) //table order;;
+          {
+         $rootScope.RemoveTable($rootScope.selTable);
+         $scope.showPlaceButton = false;
+         $rootScope.selTable = {};
+         $scope.tableNumberSelected = -1;
+          }
     }
 
     $scope.onPaymentOk = function(value) {
@@ -963,6 +1030,13 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     ;
 
     $scope.holdItems = function() {
+
+        if($rootScope.selTable.tableId != undefined) //table order;;
+        {
+            $rootScope.ShowToast("Functionality not Available for Table Order", false);
+            console.log("Functionality not Available for Table Order");
+            return;
+        }
 
         if ($rootScope.holdItemArr.length == 0 && $scope.productArr.length != 0) //hold;;
         {
