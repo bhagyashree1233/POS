@@ -401,6 +401,7 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         query = "SELECT * FROM " + tableName;
         $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
             var tables = [];
+            var d = new Date().getTime();
             for (var i = 0; i < res.rows.length; i++) {
                 tables.push({
                     tableId: res.rows.item(i).id,
@@ -413,9 +414,12 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
                    // image: "../assets/img/table2.jpg",
 
                     //image: "/img/table2.jpg"
-                    color:"green"
+                    //color:"green"
+                    seatedTime: d
                 });
             }
+            console.log(tables);
+
             deferred.resolve(tables);
         }, function(err) {
             console.error(err);
@@ -442,6 +446,7 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
     }
 
     function loadTablesForSection(sectionId) {
+        var d = new Date().getTime();
         var deferred = $q.defer();
         var query = "SELECT * FROM TableInfo where TableSectionId = '" + sectionId + "'";
 
@@ -456,9 +461,11 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
                     tableSectionId: res.rows.item(i).TableSectionId,
                     tableSectionName: res.rows.item(i).TableSectionName,
                     tableCharges: res.rows.item(i).TableCharges,
-                    tableCapacity: res.rows.item(i).TableCapacity
+                    tableCapacity: res.rows.item(i).TableCapacity,
+                    seatedTime: d
                 });
             }
+            console.log(tables);
             deferred.resolve(tables);
         }, function(err) {
             console.error(err);

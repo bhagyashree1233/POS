@@ -3,7 +3,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ngCordova', 'starter.globalcontroller', 'starter.keypad', 'ion-floating-menu', 'starter.reportscontroller', 'starter.settingscontroller', 'ionic-sidetabs', 'divBlur', 'draggable', 'tabSlideBox', 'starter.filter']).run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q, $ionicLoading, settingService, salesService, dbService, $state) {
+angular.module('starter', ['ionic', 'starter.controller', 'starter.services', 'ngCordova', 'starter.globalcontroller', 'starter.keypad', 'ion-floating-menu', 'starter.reportscontroller', 'starter.settingscontroller', 'ionic-sidetabs', 'divBlur', 'draggable', 'tabSlideBox', 'starter.filter', 'angularMoment']).run(function($ionicPlatform, $cordovaSQLite, $rootScope, $q, $ionicLoading, settingService, salesService, dbService, $state) {
 
     var dfd = $q.defer();
     $rootScope.deviceReady = dfd.promise;
@@ -277,3 +277,21 @@ window.AndroidFullScreen.immersiveMode(false, false);
         }
     };
 });
+
+ moment.locale('en', {
+  relativeTime: {
+    future: "in %s",
+    past: "%s ago",
+    s: "%d sec",
+    m: "a minute",
+    mm: "%d minutes",
+    h: "an hour",
+    hh: "%d hours",
+    d: "a day",
+    dd: "%d days",
+    M: "a month",
+    MM: "%d months",
+    y: "a year",
+    yy: "%d years"
+  }
+})
