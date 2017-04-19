@@ -809,9 +809,12 @@ $rootScope.connectCallBack= function(status,PrinterName)
         var date = d.toString().substring(4, 15);
         var time = d.toString().substring(15, 25);
         $rootScope.PrintInit();
+        console.log("In Kitchen Print");
            $rootScope.PrintChangeFont(true);
         //large font;;
         $rootScope.PrintAlign("center");
+
+        var printerSettings = $rootScope.printFormatSettings;
 
          if (printerSettings.shopName != undefined && printerSettings.shopName != "") {
             console.log('I am in shop')
@@ -830,7 +833,7 @@ $rootScope.connectCallBack= function(status,PrinterName)
         $rootScope.PrintText("          " + time + "\n");
 
         $rootScope.PrintAlign("center");
-        $rootScope.PrintText("Table No: " + tableNo.toString());
+        $rootScope.PrintText("Table No: " + tableNo.toString() + "\n");
 
           // padding left
         function padRight(s, paddingChar, length) {
@@ -879,7 +882,7 @@ $rootScope.connectCallBack= function(status,PrinterName)
         var qtyHeader = "Qty";
         qtyHeader = padLeft(qtyHeader, " ", 8);
 
-        $rootScope.PrintText(itemHeader + "  " + qtyHeader);
+        $rootScope.PrintText(itemHeader + "  " + qtyHeader + "\n");
 
          $rootScope.PrintText("-----------------------------------------\n");
 
@@ -907,7 +910,7 @@ $rootScope.connectCallBack= function(status,PrinterName)
 
         // $rootScope.PrintText("\n");
 
-        $rootScope.PrintText("-----------------------------------------\n");
+        $rootScope.PrintText("-----------------------------------------\n\n");
 
         $rootScope.EndPrint(callbackfcSuccess, callbackfcFailure);
     }
