@@ -20,7 +20,9 @@
                     <div style="position:relative;top:0px;">
                         <table class="billList" style="width:100%;font-size:2vmin;font-weight:bold;line-height:4.5vmin;">
                             <tr>
-                            <p ng-show = "tableNumberSelected != -1" style="font-weight:bold;font-size:2.2vmin;text-align:center!important;">Table: {{tableNumberSelected}} </p>
+
+                                <p ng-show = "tableNumberSelected != -1" style="font-weight:bold;font-size:2.2vmin;text-align:center!important;">Table: {{tableNumberSelected}} </p>
+
                             </tr>
                             <thead>
                                 <tr>
@@ -360,25 +362,23 @@
                     </tr>
                     <tr ng-repeat="table in tables" ng-if="$index%5==0" style="background:transparent;">
                         <td style="background:transparent;">
-                            <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv">
-                                <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index].tableId)"></div>
-                                <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index]);"></div>
-                                <div style="width:15vw;max-height:24vh;"  ng-click="toggleTab('tab2');OnTableClick(tables[$index]);">
-                                    <!--     <img ng-src={{tables[$index].image}} alt="iamge" class="tableInfo-image"></img>  -->
-                                    <div style="width:100%;height:100%;vertical-align: middle;"> 
-                                    <div  class="tableInfoNumber">
-                                        {{tables[$index].tableNumber}}
+                            <div ng-class="[{jiggle: Mode}]">
+                                <div ng-class="{tableInfolistDiv:getTableStatus(table)==false ,tableInfolistDivRunning:getTableStatus(table)==true}">
+                                    <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index].tableId)"></div>
+                                    <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index]);"></div>
+                                    <div style="width:15vw;max-height:24vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index]);">
+                                        <div style="width:100%;height:100%;vertical-align: middle;">
+                                            <div class="tableInfoNumber">{{tables[$index].tableNumber}}
+                                            </div>
+                                            <div class="tableInfo-occupancy">
+                                                <p class="badge" style="background-color:green;color:white;">0</p>
+                                            </div>
+                                            <div style="width:100%" class="tableInfo-capacity">
+                                                <div class="badge badge-stable">{{tables[$index].tableCapacity}}</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="tableInfo-occupancy">
-                                        <p class="badge" style="background-color:green;color:white;">0</p>
-                                    </div>
-                                    <div style="width:100%" class="tableInfo-capacity">
-                                        <div class="badge badge-stable">{{tables[$index].tableCapacity}}</div>
-                                    </div>
-</div>
-                                   
                                 </div>
-                            </div>
                         </td>
                         <td>
                             <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv" ng-if="tables[$index+1]!=undefined">
@@ -470,6 +470,27 @@
                         </span>
                     </ion-scroll>
                 </div>
+            </div>
+        </ion-side-tab>
+        <ion-side-tab positive-bg style="border-radius: 10px;border-radius: 10px; width:10vw;background-color:rgba(8,8,8,0.9);" has-header='false' expand="tabs.tab3">
+            <ion-side-tab-handle width="60" height="100" toggle="ion-chevron-right ion-ios-search" class="dark-bg stable" style="border-radius: 40px 0 0 40px; background-color:rgba(8,8,8,0.9);">
+                <i style="font-size:5vmin;" class="icon ion-ios-search"></i>
+            </ion-side-tab-handle>
+            <div class="item" style="background-color:transparent;border:0px;width:100%;text-align:center;" ng-controller="searchProductsCtrl">
+               
+                <div class="item item-input-inset no-padding">
+                    <label class="item-input-wrapper" style="margin:0;">
+                        <i class="icon ion-ios-search placeholder-icon "></i>
+                        <input type="search" style="width:100%;" placeholder="Search" ng-change="searchChange() " ng-model="searchObj.pattern">
+                    </label>
+                    <button class="button button-clear" ng-click="resetSearch()">
+                        <i class="ion-android-cancel assertive"></i>
+                    </button>
+                </div>
+                <ion-list>
+                    <ion-item ng-repeat="x in searchedResults" ng-click="toggleTab('tab3');onClickSearchProduct(x)">{{x.name}}</ion-item>
+                <!--    <ion-item ng-if="searchedResults !== undefined && !searchedResults.length">No Results Found..</ion-item>  -->
+                </ion-list>
             </div>
         </ion-side-tab>
     </ion-side-tabs>
