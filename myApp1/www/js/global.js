@@ -1,5 +1,4 @@
-angular.module('starter.globalcontroller', [])
-.controller('global', function($rootScope, $scope, $cordovaSQLite, $state, $cordovaToast, $scope, $ionicSlideBoxDelegate, $ionicHistory, $ionicLoading, $ionicPopup) {
+angular.module('starter.globalcontroller', []).controller('global', function($rootScope, $scope, $cordovaSQLite, $state, $cordovaToast, $scope, $ionicSlideBoxDelegate, $ionicHistory, $ionicLoading, $timeout, $ionicPopup) {
     console.log('Hello hai');
 
     $rootScope.closeView = function() {
@@ -10,20 +9,19 @@ angular.module('starter.globalcontroller', [])
     $rootScope.nextSlide = function() {
         console.log("changing to next slide");
         $ionicSlideBoxDelegate.next();
-    };
+    }
+    ;
 
+    $rootScope.runningTables = [];
 
-     $rootScope.runningTables = [];
-
-     $rootScope.SingleTable = 
-     {
-        TableId : 0,
-        TableStatus: "Running", // Billed
+    $rootScope.SingleTable = {
+        TableId: 0,
+        TableStatus: "Running",
+        // Billed
         TotalBillAmount: 0,
         productArr: []
 
-     }
-
+    }
 
     $rootScope.Mode = false;
     $rootScope.SelCat = '0';
@@ -36,7 +34,7 @@ angular.module('starter.globalcontroller', [])
     $rootScope.masterPassword = "payupad123";
     $rootScope.printerName = "";
     $rootScope.PrinterStatus = false;
-    $rootScope.selTable ={};
+    $rootScope.selTable = {};
     //$rootScope.currentTable = [];
 
     $rootScope.reprintBillButtonEnable = 0;
@@ -101,44 +99,38 @@ angular.module('starter.globalcontroller', [])
             id: 1,
             name: "Cash",
             desc: "Cash Payment Mode"
-        }
-        ]
+        }]
 
     }
 
-    $rootScope.getTableIndex = function(TableId)
-    {
-      
-      var index = -1;
+    $rootScope.getTableIndex = function(TableId) {
+
+        var index = -1;
         //find table in table array;;
-        for(var i =0; i< $rootScope.runningTables.length;i++)
-        {
-            if(TableId == $rootScope.runningTables[i].TableId)
-            {
-              index = i;
-              break;
+        for (var i = 0; i < $rootScope.runningTables.length; i++) {
+            if (TableId == $rootScope.runningTables[i].TableId) {
+                index = i;
+                break;
             }
         }
 
-        return(index);
+        return ( index) ;
     }
 
-    $rootScope.getTableStatus = function(Table)
-    {
-      if($rootScope.getTableIndex(Table.tableId)>-1)
-       return(true);
+    $rootScope.getTableStatus = function(Table) {
+        if ($rootScope.getTableIndex(Table.tableId) > -1)
+            return ( true) ;
 
-       return(false);
+        return ( false) ;
 
     }
 
-    $rootScope.RemoveTable = function(table)
-    {
+    $rootScope.RemoveTable = function(table) {
         var index = -1;
         index = $rootScope.getTableIndex(table.tableId);
         console.log("found id: ", table.tableId);
         console.log("index is : ", index);
-        if(index>-1) //table exists;;
+        if (index > -1) //table exists;;
         {
             console.log("Table exists in Remove Table");
             $rootScope.runningTables.splice(index, 1);
@@ -147,53 +139,47 @@ angular.module('starter.globalcontroller', [])
         $rootScope.selTable = {};
     }
 
-    $rootScope.loadItemsToTable= function(table)
-    {
+    $rootScope.loadItemsToTable = function(table) {
         var index = $rootScope.getTableIndex(table.tableId);
 
-        if(index==-1) //table doesnot exist;;
+        if (index == -1) //table doesnot exist;;
         {
-             return([]);
+            return ( []) ;
         }
         //else
         //{
-            return($rootScope.runningTables[index].productArr);
+        return ( $rootScope.runningTables[index].productArr) ;
         //}
 
         //return($rootScope.currentTable);
-        
+
     }
 
-   $rootScope.saveItemsToTable = function(table,items,billAmount)
-     {
-         var index = $rootScope.getTableIndex(table.tableId);
-       
-    
-        if(index == -1)
-        { //new table;;
-         console.log("Table not found");
-        var SingleTable = 
-      {
-        TableId : table.tableId,
-        TableStatus: "Running", // Billed
-        TotalBillAmount: billAmount,
-        productArr: items
+    $rootScope.saveItemsToTable = function(table, items, billAmount) {
+        var index = $rootScope.getTableIndex(table.tableId);
 
-      }
+        if (index == -1) {
+            //new table;;
+            console.log("Table not found");
+            var SingleTable = {
+                TableId: table.tableId,
+                TableStatus: "Running",
+                // Billed
+                TotalBillAmount: billAmount,
+                productArr: items
 
-      $rootScope.runningTables.push(SingleTable);
-      //save to localStorage here;;
+            }
 
+            $rootScope.runningTables.push(SingleTable);
+            //save to localStorage here;;
+
+        } else {
+            console.log("Table Exists");
+            $rootScope.runningTables[index].productArr = items.slice();
+            //save to localStorage here;;
         }
 
-      else
-      {
-         console.log("Table Exists");
-      $rootScope.runningTables[index].productArr = items.slice();
-       //save to localStorage here;;
-      }
-
-     }
+    }
 
     $rootScope.ShowPopUpPassword = function() {
         console.log("now mode is");
@@ -232,8 +218,7 @@ angular.module('starter.globalcontroller', [])
                     $scope.result.done = true;
                     return $scope.result;
                 }
-            }
-            ]
+            }]
         }).then(function(res) {
             console.log('Your password is', res);
             if (res.done == true) {
@@ -342,7 +327,8 @@ angular.module('starter.globalcontroller', [])
         $ionicLoading.hide().then(function() {
             console.log("The loading indicator is now hidden");
         });
-    };
+    }
+    ;
 
     $rootScope.ShowToast = function(message, longx) {
         if (window.cordova) {
@@ -355,8 +341,7 @@ angular.module('starter.globalcontroller', [])
                     // error
                     console.log("Toast Failed");
                 });
-            }
-            else {
+            } else {
                 $cordovaToast.showShortCenter(message).then(function(success) {
                     // success
                     console.log("Toast Success");
@@ -694,8 +679,7 @@ $rootScope.connectCallBack= function(status,PrinterName)
                 onTap: function(e) {
                     return "Reconnect";
                 }
-            }
-            ]
+            }]
 
         }).then(function(res) {
             if (res == "Reconnect") {
@@ -803,20 +787,19 @@ $rootScope.connectCallBack= function(status,PrinterName)
 
     }
 
-    $rootScope.printKitchenReceipt = function (billdetails,tableNo,callbackfcSuccess, callbackfcFailure)
-    {
+    $rootScope.printKitchenReceipt = function(billdetails, tableNo, callbackfcSuccess, callbackfcFailure) {
         var d = new Date();
         var date = d.toString().substring(4, 15);
         var time = d.toString().substring(15, 25);
         $rootScope.PrintInit();
         console.log("In Kitchen Print");
-           $rootScope.PrintChangeFont(true);
+        $rootScope.PrintChangeFont(true);
         //large font;;
         $rootScope.PrintAlign("center");
 
         var printerSettings = $rootScope.printFormatSettings;
 
-         if (printerSettings.shopName != undefined && printerSettings.shopName != "") {
+        if (printerSettings.shopName != undefined && printerSettings.shopName != "") {
             console.log('I am in shop')
             $rootScope.PrintEnableUnderline(true);
             $rootScope.PrintEnableBold(true);
@@ -835,7 +818,7 @@ $rootScope.connectCallBack= function(status,PrinterName)
         $rootScope.PrintAlign("center");
         $rootScope.PrintText("Table No: " + tableNo.toString() + "\n");
 
-          // padding left
+        // padding left
         function padRight(s, paddingChar, length) {
 
             //var s = new String(this);
@@ -847,9 +830,8 @@ $rootScope.connectCallBack= function(status,PrinterName)
             }
 
             return s;
-        };
-
-        function padLeft(s, paddingChar, length) {
+        }
+        ;function padLeft(s, paddingChar, length) {
 
             //var s = new String(this);
             var ln = s.length;
@@ -860,20 +842,19 @@ $rootScope.connectCallBack= function(status,PrinterName)
             }
 
             return s;
-        };
-
-         $rootScope.PrintAlign("left");
-         $rootScope.PrintChangeFont(false);
+        }
+        ;$rootScope.PrintAlign("left");
+        $rootScope.PrintChangeFont(false);
         //small font;;
         $rootScope.PrintEnableBold(true);
- 
-         $rootScope.PrintText("-----------------------------------------\n");
 
-         $rootScope.PrintAlign("left");
+        $rootScope.PrintText("-----------------------------------------\n");
+
+        $rootScope.PrintAlign("left");
 
         $rootScope.PrintChangeBigFont("vertical");
 
-         var itemHeader = "item";
+        var itemHeader = "item";
 
         itemHeader = padRight(itemHeader, " ", 25);
 
@@ -884,12 +865,11 @@ $rootScope.connectCallBack= function(status,PrinterName)
 
         $rootScope.PrintText(itemHeader + "  " + qtyHeader + "\n");
 
-         $rootScope.PrintText("-----------------------------------------\n");
+        $rootScope.PrintText("-----------------------------------------\n");
 
-         $rootScope.PrintEnableBold(false);
+        $rootScope.PrintEnableBold(false);
 
-
-           for (var i = 0; i < billdetails.length; i++) {
+        for (var i = 0; i < billdetails.length; i++) {
             var proName = billdetails[i].name;
             if (proName.length > 24)
                 proName = proName.substring(0, 24);
@@ -903,8 +883,6 @@ $rootScope.connectCallBack= function(status,PrinterName)
 
             console.log("Qty:", Qty.length);
 
-           
-          
             $rootScope.PrintText(proName + "  " + Qty + "\n");
         }
 
@@ -995,8 +973,7 @@ $rootScope.connectCallBack= function(status,PrinterName)
 
             return s;
         }
-        ;
-        function padLeft(s, paddingChar, length) {
+        ;function padLeft(s, paddingChar, length) {
 
             //var s = new String(this);
             var ln = s.length;
@@ -1008,8 +985,7 @@ $rootScope.connectCallBack= function(status,PrinterName)
 
             return s;
         }
-        ;
-        //$rootScope.PrintAlign("right");
+        ;//$rootScope.PrintAlign("right");
 
         $rootScope.PrintText("          " + time + "\n");
 
@@ -1197,5 +1173,28 @@ $rootScope.connectCallBack= function(status,PrinterName)
         console.log("Report Print Failed");
         $rootScope.ShowToast("Report Print Failed", false);
     }
+
+    //----------- timer logic --------------------
+
+    $rootScope.counter = 0;
+    var stopped = true;
+    //$scope.buttonText='Stop';
+    var onTimeout = function() {
+        $rootScope.counter++;
+        mytimeout = $timeout(onTimeout, 1000);
+    }
+
+    var mytimeout; 
+    $rootScope.startTimer = function() {
+        mytimeout = $timeout(onTimeout, 1000);
+        console.log('start timer');
+    }
+
+    $rootScope.stopTimer = function() {
+        $timeout.cancel(mytimeout);
+        console.log('stop timer');
+    }
+
+    //---------------------------------------------------
 
 })

@@ -1690,7 +1690,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         $state.go(obj.state);
     }
 
-}).controller('tableInfoCtrl', function($scope, $ionicPopup, $rootScope, dbService, $state) {
+}).controller('tableInfoCtrl', function($scope, $ionicPopup, $rootScope, dbService, $state, $timeout) {
 
     loadSection();
     loadTables();
@@ -1952,6 +1952,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         })
 
     }
+  $rootScope.startTimer();
 
 }).controller('addEditTableInfoCtrl', function($scope, $ionicHistory, $rootScope, dbService, $state, $ionicPopup, $ionicModal) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
