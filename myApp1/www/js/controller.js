@@ -44,6 +44,9 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     //ionicParentView
 
     //load products list from DB
+      
+
+
 
     $scope.OnCatClick = function(catId) {
         console.log(catId);
@@ -1044,12 +1047,15 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     $scope.previousCategorySlide = function() {
         // $ionicScrollDelegate.scrollBy(0, -68, true);
         $ionicSlideBoxDelegate.$getByHandle('categorySlideHandle').previous();
-    }
-    ;
+    };
     //Slide Ends
 
-}
-])//END OF HOMECTRL;;
+    $rootScope.$on('OnClickSearchItem', function(event, data) {
+        console.log("On click search item broadcast reciever");
+       $scope.OnProductClick(data.prod);   
+    });
+
+}])//END OF HOMECTRL;;
 
 .controller("productCtrl", function($scope, $state, $rootScope, $ionicPopover, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
 
@@ -2140,4 +2146,34 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         });
     }
 
+})
+
+
+.controller('searchProductsCtrl', function($scope, dbService, $rootScope) {
+
+    console.log('entered search Products Ctrl')
+    $scope.searchObj = {};
+    $scope.searchChange = function() {
+        console.log('entered searchChange function');
+        $scope.searchedResults = [];
+        if ($scope.searchObj.pattern) {
+            var promise = dbService.loadProductsForSearchPattern($scope.searchObj.pattern);
+            promise.then(function(res) {
+                $scope.searchedResults = res;
+                console.log(res);
+            }, function() {
+                console.log('unable to search...')
+            })
+        }
+    }
+    ;
+
+    $scope.resetSearch = function() {
+        $scope.searchObj.pattern = "";
+        $scope.searchedResults = [];
+    }
+
+   $scope.onClickSearchProduct = function(product) {
+      $rootScope.$broadcast('OnClickSearchItem', { prod: product });
+   }
 })

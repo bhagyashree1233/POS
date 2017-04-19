@@ -557,6 +557,41 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         return deferred.promise;
     }
 
+    function loadProductsForSearchPattern(searchPattern) {
+        var searchedProducts = [];
+        var deferred = $q.defer();
+        console.log('entered loadProductsForSearchPattern');
+        var query = "SELECT * FROM Product where ProductName like '%" + searchPattern + "%'";
+
+        $cordovaSQLite.execute($rootScope.db, query).then(function(res) {
+
+            for (var i = 0; i < res.rows.length; i++) {
+
+                searchedProducts.push({
+                    productId: res.rows.item(i).ProductId,
+                    name: res.rows.item(i).ProductName,
+                    unit: res.rows.item(i).ProductUnit,
+                    unitPrice: res.rows.item(i).ProductPrice,
+                    taxRate: res.rows.item(i).TaxRate,
+                    taxId: res.rows.item(i).TaxId,
+                    actualPrice: res.rows.item(i).BuyingPrice,
+                    inStock: res.rows.item(i).ItemsinStock,
+                    discount: res.rows.item(i).Discount,
+                    categoryId: res.rows.item(i).CategoryId,
+                    categoryName: res.rows.item(i).CategoryName,
+                    image: res.rows.item(i).Image,
+                    favourite: res.rows.item(i).Favourite
+                });
+            }
+
+             console.log(searchedProducts);
+             deferred.resolve(searchedProducts);
+        }, function(err) {
+            console.error(err);
+             deferred.reject('failure');
+        })
+         return deferred.promise;
+    }
 
     return {
         addNewCategory: addNewCategory,
@@ -585,7 +620,8 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
         loadSectionFromDB: loadSectionFromDB,
         GetSectionById: GetSectionById,
         deleteSection: deleteSection,
-        editSection: editSection 
+        editSection: editSection,
+        loadProductsForSearchPattern: loadProductsForSearchPattern 
     }
 }).factory("settingService", function($q, $cordovaSQLite, $rootScope) {
     function set(SettingsName, SettingsValue) {

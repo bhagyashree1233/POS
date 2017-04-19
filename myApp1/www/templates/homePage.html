@@ -66,10 +66,7 @@
                         </table>
                     </div>
                     <div class="totalAmountCalculation" style="padding-top:1vmin;">
-
-                        <button ng-show = "showPlaceButton ==true" style="border-radius:1%;width:100%;height-max:2vmin;line-height:6vmin;font-size:2vmin;;" ng-click="placeOrder()" class="button  button-assertive">Place Order</button>
-                       
-
+                        <button ng-show="showPlaceButton ==true" style="border-radius:1%;width:100%;height-max:2vmin;line-height:6vmin;font-size:2vmin;;" ng-click="placeOrder()" class="button  button-assertive">Place Order</button>
                         <button style="border-radius:1%;width:100%;height-max:2vmin;line-height:6vmin;font-size:2vmin;;" ng-click="showPaymentMode()" class="button  button-balanced">check out {{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</button>
                         <p style="font-size:2vmin;color:white;line-height:1.5vmin;"></p>
                         <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;font-weight:bold;">Bill No: {{VolatileData.CurrentBillNo}}</p>
@@ -470,6 +467,27 @@
                         </span>
                     </ion-scroll>
                 </div>
+            </div>
+        </ion-side-tab>
+        <ion-side-tab positive-bg style="border-radius: 10px;border-radius: 10px; width:10vw;background-color:rgba(8,8,8,0.9);" has-header='false' expand="tabs.tab3">
+            <ion-side-tab-handle width="60" height="100" toggle="ion-chevron-right ion-ios-search" class="dark-bg stable" style="border-radius: 40px 0 0 40px; background-color:rgba(8,8,8,0.9);">
+                <i style="font-size:5vmin;" class="icon ion-ios-search"></i>
+            </ion-side-tab-handle>
+            <div class="item" style="background-color:transparent;border:0px;width:100%;text-align:center;" ng-controller="searchProductsCtrl">
+               
+                <div class="item item-input-inset no-padding">
+                    <label class="item-input-wrapper" style="margin:0;">
+                        <i class="icon ion-ios-search placeholder-icon "></i>
+                        <input type="search" style="width:100%;" placeholder="Search" ng-change="searchChange() " ng-model="searchObj.pattern">
+                    </label>
+                    <button class="button button-clear" ng-click="resetSearch()">
+                        <i class="ion-android-cancel assertive"></i>
+                    </button>
+                </div>
+                <ion-list>
+                    <ion-item ng-repeat="x in searchedResults" ng-click="toggleTab('tab3');onClickSearchProduct(x)">{{x.name}}</ion-item>
+                <!--    <ion-item ng-if="searchedResults !== undefined && !searchedResults.length">No Results Found..</ion-item>  -->
+                </ion-list>
             </div>
         </ion-side-tab>
     </ion-side-tabs>
