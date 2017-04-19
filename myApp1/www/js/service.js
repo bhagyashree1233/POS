@@ -456,11 +456,7 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
                     tableSectionId: res.rows.item(i).TableSectionId,
                     tableSectionName: res.rows.item(i).TableSectionName,
                     tableCharges: res.rows.item(i).TableCharges,
-                    tableCapacity: res.rows.item(i).TableCapacity,
-                   // image: "../img/table2.jpg",
-                    color:"green"
-
-                    //image: "android_asset/www/img/.jpg"
+                    tableCapacity: res.rows.item(i).TableCapacity
                 });
             }
             deferred.resolve(tables);
