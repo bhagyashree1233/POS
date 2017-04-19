@@ -83,27 +83,30 @@
 #product-categary {
     position: absolute;
     width: 64vw;
-    height: 9vh;
+    height: 14.5vh;
     display: inline-block;
-    bottom: 1vh;
+    bottom: 3px;
     line-height: 10vh;
     z-index: 0;
 }
 
 .product-categary-scroll {
-    bottom: 3vh;
+    top: 0px;
     width: 100%;
-    height: 16vh;
+    
+    position:relative;
     overflow-x: scroll;
     white-space: nowrap;
 }
 
 .product-categary-button {
     background: black;
+    position:relative;
+    
     color: #ffffff;
     width: 16vw;
     font-size: 2.5vmin;
-    line-height: 8vmin!important;
+    line-height: 8.5vmin!important;
     border-radius: 5px;
     height: 100%;
     -webkit-box-shadow: 7px -7px 5px 0px rgba(0,0,0,0.5);
@@ -918,8 +921,10 @@ table.tableInfolist tr:nth-child(even) {
 }
 .tableInfoView {
     width:100vw;
-    height:84vh;
+    height:100vh!important;
+   
 }
+
 
 table.tableInfolist tr td:first-child {
     font-weight: bold;
@@ -1025,7 +1030,8 @@ table.tableInfolist tr td:first-child {
 }
 
 .tableInfo-section {
-    position: relative;
+    position: absolute;
+    bottom:0px;
     width: 100vw;
     height: 10vh;
     display: inline-block;
@@ -1036,7 +1042,8 @@ table.tableInfolist tr td:first-child {
 }
 
 .tableInfo-section-scroll {
-    bottom: 3vh;
+    bottom: 0px;
+    position:absolute;
     width: 100%;
     height: 16vh;
     overflow-x: scroll;
