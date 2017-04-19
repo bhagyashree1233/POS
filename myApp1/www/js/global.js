@@ -27,6 +27,7 @@ angular.module('starter.globalcontroller', [])
 
     $rootScope.Mode = false;
     $rootScope.SelCat = '0';
+    $rootScope.SelSection = '0';
     $rootScope.CreateMode = 0;
     $rootScope.PrevSelCat = '0';
     $rootScope.CurrentProduct = {};
