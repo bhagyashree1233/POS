@@ -5,7 +5,7 @@
             <div id="product-billing" class='backgroundPOS row'>
                 <div class="row" id="product-billing-head" style="height:6vmin;color:white;">
                     <i style="font-size:5vmin;text-align:right;" ng-click="void()" class="icon ion-ios-trash-outline col-10 "></i>
-                    <div class="col-80" style="text-align:center;transform: translateY(-50%);line-height:9vmin; font-size:2.5vmin;font-weight:bold; ">payUpad</div>
+                    <div class="col-80" style="text-align:center;transform: translateY(-50%);line-height:9vmin; font-size:2.5vmin;font-weight:bold; ">Admire POS</div>
                     <i style="font-size:5vmin;text-align-left;" class="icon ion-loop col-10" ng-click="holdItems()"></i>
                 </div>
                 <div id="product-billing-col1">
@@ -16,10 +16,12 @@
                         <i style="font-size:3vh;" class="icon ion-chevron-down"></i>
                     </button>
 
-
                     -->
                     <div style="position:relative;top:0px;">
                         <table class="billList" style="width:100%;font-size:2vmin;font-weight:bold;line-height:4.5vmin;">
+                            <tr>
+                            <p style="font-weight:bold;font-size:2.2vmin;text-align:center!important;">Table: {{tableNumberSelected}} </p>
+                            </tr>
                             <thead>
                                 <tr>
                                     <th>SNo.
@@ -39,10 +41,8 @@
                                     
                                     
                                     
-                                    
-                                   
-                                  <i ng-if="$index==holdIndex" perform="testDivBlurFunc" style="position:absolute;left:3px;;font-size:3.5vmin;color:red;" ng-show="showDelete" ng-attr-detect-outside-click="showDelete === true" ng-click="deleteItem($index)" class="icon ion-minus-circled"></i>
-                                    <i ng-if="product.status==true" style="position:absolute;left:3px;;font-size:5vmin;color:green;" class="icon ion-ios-checkmark-empty"></i>
+                                    <i ng-if="product.status==true" style="position:absolute;left:6px;top:0px;font-size:6vmin;color:green;" class="icon ion-ios-checkmark-empty"></i>
+                                    <i ng-if="$index==holdIndex" perform="testDivBlurFunc" style="position:absolute;left:3px;;font-size:3.5vmin;color:red;" ng-show="showDelete" ng-attr-detect-outside-click="showDelete === true" ng-click="deleteItem($index)" class="icon ion-minus-circled"></i>
                                 </td>
                                 <td style="font-weight:bold;">{{product.name}}
                                     </td>
@@ -362,18 +362,21 @@
                         <td style="background:transparent;">
                             <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv">
                                 <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index].tableId)"></div>
-                                <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index])"></div>
-                                <div style="width:15vw;max-height:24vh;" on-hold="productHold(); $event.stopPropagation()" ng-click="OnTableClick(tables[$index])">
+                                <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index]);"></div>
+                                <div style="width:15vw;max-height:24vh;"  ng-click="toggleTab('tab2');OnTableClick(tables[$index]);">
                                     <!--     <img ng-src={{tables[$index].image}} alt="iamge" class="tableInfo-image"></img>  -->
-                                    <div class="tableInfoNumber">
-                                        <p>{{tables[$index].tableNumber}} </p>
+                                    <div style="width:100%;height:100%;vertical-align: middle;"> 
+                                    <div  class="tableInfoNumber">
+                                        {{tables[$index].tableNumber}}
                                     </div>
                                     <div class="tableInfo-occupancy">
                                         <p class="badge" style="background-color:green;color:white;">0</p>
                                     </div>
-                                    <div class="tableInfo-capacity">
-                                        <p class="badge badge-stable">{{tables[$index].tableCapacity}}</p>
+                                    <div style="width:100%" class="tableInfo-capacity">
+                                        <div class="badge badge-stable">{{tables[$index].tableCapacity}}</div>
                                     </div>
+</div>
+                                   
                                 </div>
                             </div>
                         </td>
@@ -381,7 +384,7 @@
                             <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv" ng-if="tables[$index+1]!=undefined">
                                 <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+1].tableId)"></div>
                                 <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+1])"></div>
-                                <div style="width:15vw;max-height:25vh;" on-hold="productHold(); $event.stopPropagation()" ng-click="OnTableClick(tables[$index+1])">
+                                <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+1]);">
                                     <!--     <img ng-src={{tables[$index+1].image}} class="tableInfo-image"></img> -->
                                     <div class="tableInfoNumber">
                                         <p>{{tables[$index+1].tableNumber}} </p>
@@ -403,7 +406,7 @@
                             <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv" ng-if="tables[$index+2]!=undefined">
                                 <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+2].tableId)"></div>
                                 <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+2])"></div>
-                                <div style="width:15vw;max-height:25vh;" on-hold="productHold(); $event.stopPropagation()" ng-click="OnTableClick(tables[$index+2])">
+                                <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+2]);">
                                     <!--    <img ng-src={{tables[$index+2].image}} class="tableInfo-image"></img>  -->
                                     <div class="tableInfoNumber">
                                         <p>{{tables[$index+2].tableNumber}} </p>
@@ -421,7 +424,7 @@
                             <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv" ng-if="tables[$index+3]!=undefined">
                                 <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+3].tableId)"></div>
                                 <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+3])"></div>
-                                <div style="width:15vw;max-height:25vh;" on-hold="productHold(); $event.stopPropagation()" ng-click="OnTableClick(tables[$index+3])">
+                                <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+3]);">
                                     <!--     <img ng-src={{tables[$index+3].image}} class="tableInfo-image"></img>  -->
                                     <div class="tableInfoNumber">
                                         <p>{{tables[$index+3].tableNumber}} </p>
@@ -438,8 +441,8 @@
                         <td>
                             <div ng-class="[{jiggle: Mode}]" class="tableInfolistDiv" ng-if="tables[$index+4]!=undefined">
                                 <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+4].tableId)"></div>
-                                <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+4])"></div>
-                                <div style="width:15vw;max-height:25vh;" on-hold="productHold(); $event.stopPropagation()" ng-click="OnTableClick(tables[$index+4])">
+                                <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+4]);"></div>
+                                <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+4]);">
                                     <!--     <img ng-src={{tables[$index+3].image}} class="tableInfo-image"></img>  -->
                                     <div class="tableInfoNumber">
                                         <p>{{tables[$index+4].tableNumber}} </p>

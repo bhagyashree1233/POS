@@ -12,24 +12,32 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         });
     });
 
-    $scope.tabExpand = function(index) {
-        console.log('Tab ' + index + ' expanded');
-    }
-    ;
+  $scope.tabs = {
+    tab1: false,   // initial state
+    tab2: false,
+    tab3: false,
+    autocollapse: false
+  };
+  
+  $scope.tabExpand = function(index) {
+    console.log('Tab ' + index + ' expanded');
+  };
 
-    $scope.tabCollapse = function(index) {
-        console.log('Tab ' + index + ' collapsed');
+  $scope.tabCollapse = function(index) {
+    console.log('Tab ' + index + ' collapsed');
+    
+    // collapse all tabs
+    if ($scope.tabs.autocollapse){
+      $scope.tabs.tab1=false;
+      $scope.tabs.tab2=false;
+      $scope.tabs.tab3=false;
     }
-    ;
-
-    $scope.tab1 = {
-        expand: false // initial state  
-    };
-
-    $scope.toggleTab1 = function() {
-        $scope.tab1.expand = !$scope.tab1.expand;
-    }
-    ;
+  };
+  
+  $scope.toggleTab = function(tab) {
+      console.log("togglingTab");
+    $scope.tabs[tab] = !$scope.tabs[tab];
+  };
 
 }).controller('homeCtrl', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', '$ionicPopup', 'settingService', function($scope, $rootScope, $state, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading, $ionicPopup, settingService) {
 
@@ -40,6 +48,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         loadCategory();
     });
 */
+
+   $scope.tableNumberSelected = -1;
 
     //ionicParentView
 
@@ -156,6 +166,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         $scope.totalTaxAmount = 0;
         $scope.discountAmount = 0;
         $scope.totalChargeAmount = 0;
+        $scope.tableNumberSelected = -1;
 
     }
 
@@ -182,6 +193,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             console.log("loading table items");
             $scope.productArr = $rootScope.loadItemsToTable($rootScope.selTable);
             calculateProductCost();
+            $scope.tableNumberSelected = $rootScope.selTable.tableId;
 
         }
 
@@ -660,6 +672,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $scope.totalTaxAmount = 0;
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
+            $scope.showPlaceButton = false;
+            $rootScope.selTable = {};
 
             if ($rootScope.selTable.tableId != undefined) {
                 console.log("TableId Found");
