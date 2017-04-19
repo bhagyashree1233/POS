@@ -57,7 +57,7 @@ angular.module('ionic-sidetabs', [])
               }
 
               function computeWidths() {
-                  expandedWidth = window.innerWidth;
+                  expandedWidth = (window.innerWidth);
                   lastPosX = expandedWidth;
                   $element.css({ width: expandedWidth + 'px', '-webkit-transform' : 'translate3d(' + lastPosX  + 'px, 0,  0)', transform : 'translate3d(' + lastPosX  + 'px, 0,  0)'});
                   $scope.expand = false;
