@@ -974,6 +974,10 @@ table.tableInfolist tr td:first-child {
     right: 0;
     height:33%;
 }
+.tableInfo-capacity p{
+    text-align:center;
+    margin-top:2vh;
+}
 
 
 .tableInfoNumber {
@@ -995,6 +999,11 @@ table.tableInfolist tr td:first-child {
     line-height: 2.5vmin;
 }
 
+.tableInfoNumber p{
+    text-align:center;
+    margin-top:1vh;
+}
+
 .tableInfo-occupancy {
     padding-top: .5vmin;
     top: 0;
@@ -1012,6 +1021,10 @@ table.tableInfolist tr td:first-child {
     margin: 0 auto;
     left: 0;
     right: 0;
+}
+.tableInfo-occupancy p{
+    text-align:center;
+    margin-top:0vh;
 }
 
 

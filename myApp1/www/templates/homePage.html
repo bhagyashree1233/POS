@@ -346,14 +346,16 @@
                                     <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index]);"></div>
                                     <div style="width:15vw;max-height:24vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index]);">
                                         <div style="width:100%;height:100%;vertical-align: middle;">
-                                            <div class="tableInfoNumber"><p>{{tables[$index].tableNumber}}</p></div>
+                                            <div class="tableInfoNumber">
+                                                <p>{{tables[$index].tableNumber}}</p>
+                                            </div>
                                             <div class="tableInfo-occupancy">
                                                 <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
                                                 <!--  <p>{{counter|formatTimer}}</p>  -->
                                                 <p am-time-ago={{tables[$index].seatedTime}}></p>
                                             </div>
                                             <div style="width:100%" class="tableInfo-capacity">
-                                                <p style="text-align:center;" class="badge badge-stable">{{tables[$index].tableCapacity}}</p>
+                                                <p class="badge badge-stable">{{tables[$index].tableCapacity}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -368,17 +370,18 @@
                                     <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+1]);">
                                         <!--     <img ng-src={{tables[$index+1].image}} class="tableInfo-image"></img> -->
                                         <div class="tableInfoNumber">
-                                            <p>{{tables[$index+1].tableNumber}} </p>
+                                            <p style="text-align:center;margin-top:1vh;">{{tables[$index+1].tableNumber}} </p>
                                         </div>
                                         <div class="tableInfo-occupancy">
-                                            <p class="badge" style="background-color:green;color:white;">0</p>
+                                           <!-- <p class="badge" style="background-color:green;color:white;">0</p>  -->
+                                            <p am-time-ago={{tables[$index+1].seatedTime}}></p>
                                         </div>
                                         <!--     <div class="tableInfo-desc">
                                         <p>{{tables[$index+1].tableDescription}}</p>
                                     </div>
                            -->
                                         <div class="tableInfo-capacity">
-                                            <p class="badge badge-stable">{{tables[$index+1].tableCapacity}}</p>
+                                            <p style="text-align:center;margin-top:2vh;" class="badge badge-stable">{{tables[$index+1].tableCapacity}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -395,7 +398,8 @@
                                             <p>{{tables[$index+2].tableNumber}} </p>
                                         </div>
                                         <div class="tableInfo-occupancy">
-                                            <p class="badge" style="background-color:green;color:white;">0</p>
+                                          <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
+                                            <p am-time-ago={{tables[$index+2].seatedTime}}></p>
                                         </div>
                                         <div class="tableInfo-capacity">
                                             <p class="badge badge-stable">{{tables[$index+2].tableCapacity}}</p>
@@ -415,7 +419,8 @@
                                             <p>{{tables[$index+3].tableNumber}} </p>
                                         </div>
                                         <div class="tableInfo-occupancy">
-                                            <p class="badge" style="background-color:green;color:white;">0</p>
+                                          <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
+                                            <p am-time-ago={{tables[$index+3].seatedTime}}></p>
                                         </div>
                                         <div class="tableInfo-capacity">
                                             <p class="badge badge-stable">{{tables[$index+3].tableCapacity}}</p>
@@ -435,7 +440,8 @@
                                             <p>{{tables[$index+4].tableNumber}} </p>
                                         </div>
                                         <div class="tableInfo-occupancy">
-                                            <p class="badge" style="background-color:green;color:white;">0</p>
+                                          <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
+                                            <p am-time-ago={{tables[$index+4].seatedTime}}></p>
                                         </div>
                                         <div class="tableInfo-capacity">
                                             <p class="badge badge-stable">{{tables[$index+4].tableCapacity}}</p>
