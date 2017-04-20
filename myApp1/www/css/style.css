@@ -99,6 +99,7 @@
     white-space: nowrap;
 }
 
+
 .product-categary-button {
     background: black;
     position:relative;
@@ -872,7 +873,21 @@ button.ion-ios-camera i:before {
 
 .productAddSlide .input-label {
     color: black;
-    text-shadow: 1px 1px grey;
+    text-shadow: 1px 1px #9b9494;
+    font-size:3.2vmin;
+    font-style:italic;
+
+}
+
+.productAddSlide input {
+    color: black;
+    font-size:3vmin;
+    font-style:italic;
+}
+ .productAddSlide input::-webkit-input-placeholder {
+  color:white;
+  font-size:2.5vmin;
+  font-style:italic;  
 }
 
 table.tableInfolist {
@@ -881,7 +896,7 @@ table.tableInfolist {
     height:78vh;
     border-collapse: collapse;
     margin: 0 auto;
-   
+    
 }
 
 table.tableInfolist td, th {
@@ -889,6 +904,7 @@ table.tableInfolist td, th {
     width: 20vw;
     line-height: 3vh;
     font-weight: 300;
+    padding-bottom:2vh;
 }
 
 table.tableInfolist thead {
@@ -956,11 +972,11 @@ table.tableInfolist tr td:first-child {
     margin: 0 auto;
     left: 0;
     right: 0;
+    height:33%;
 }
 
 
 .tableInfoNumber {
-
     margin: auto;
     top: 0; 
     left: 0; 
@@ -969,7 +985,7 @@ table.tableInfolist tr td:first-child {
     position: absolute;
     background: transparent;
     color: white;
-    height: 3vmin;
+    height: 33%;
     border-radius: 0.5vmin;
     min-width:5vmin;
     opacity: 0.9;
@@ -987,7 +1003,7 @@ table.tableInfolist tr td:first-child {
     vertical-align: center;
     position: absolute;
     background: transparent;
-    height: 4vmin;
+    height: 33%;
     border-radius: 0.5vmin;
     min-width: 1vmin;
     font-size: 2.5vmin;
