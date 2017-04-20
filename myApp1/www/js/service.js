@@ -462,7 +462,7 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
                     tableSectionName: res.rows.item(i).TableSectionName,
                     tableCharges: res.rows.item(i).TableCharges,
                     tableCapacity: res.rows.item(i).TableCapacity,
-                    seatedTime: d
+                    seatedTime: 0
                 });
             }
             console.log(tables);

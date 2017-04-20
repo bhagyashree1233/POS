@@ -132,6 +132,7 @@ angular.module('starter.globalcontroller', []).controller('global', function($ro
         console.log("index is : ", index);
         if (index > -1) //table exists;;
         {
+            table.seatedTime = 0;
             console.log("Table exists in Remove Table");
             $rootScope.runningTables.splice(index, 1);
         }
@@ -171,6 +172,10 @@ angular.module('starter.globalcontroller', []).controller('global', function($ro
             }
 
             $rootScope.runningTables.push(SingleTable);
+            //console.log("Seated Time: ", table.seatedTime);
+
+            table.seatedTime = new Date().getTime();
+            console.log("Seated Time: ", table.seatedTime);
             //save to localStorage here;;
 
         } else {
@@ -1176,8 +1181,9 @@ $rootScope.connectCallBack= function(status,PrinterName)
 
     //----------- timer logic --------------------
 
-    $rootScope.counter = 0;
+   /* $rootScope.counter = 0;
     var stopped = true;
+
     //$scope.buttonText='Stop';
     var onTimeout = function() {
         $rootScope.counter++;
@@ -1185,6 +1191,7 @@ $rootScope.connectCallBack= function(status,PrinterName)
     }
 
     var mytimeout; 
+
     $rootScope.startTimer = function() {
         mytimeout = $timeout(onTimeout, 1000);
         console.log('start timer');
@@ -1193,7 +1200,7 @@ $rootScope.connectCallBack= function(status,PrinterName)
     $rootScope.stopTimer = function() {
         $timeout.cancel(mytimeout);
         console.log('stop timer');
-    }
+    }*/
 
     //---------------------------------------------------
 
