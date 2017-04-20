@@ -352,7 +352,7 @@
                                             <div class="tableInfo-occupancy">
                                                 <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
                                                 <!--  <p>{{counter|formatTimer}}</p>  -->
-                                                <p am-time-ago={{tables[$index].seatedTime}}></p>
+                                                <p ng-if = "tables[$index].seatedTime > 0 " am-time-ago={{tables[$index].seatedTime}}></p>
                                             </div>
                                             <div style="width:100%" class="tableInfo-capacity">
                                                 <p class="badge badge-stable">{{tables[$index].tableCapacity}}</p>

@@ -1952,7 +1952,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         })
 
     }
-  $rootScope.startTimer();
+  //$rootScope.startTimer();
 
 }).controller('addEditTableInfoCtrl', function($scope, $ionicHistory, $rootScope, dbService, $state, $ionicPopup, $ionicModal) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
