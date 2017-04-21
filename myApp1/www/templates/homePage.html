@@ -42,7 +42,7 @@
                                     
                                     
                                     <i ng-if="product.status==true" style="position:absolute;left:6px;top:0px;font-size:6vmin;color:green;" class="icon ion-ios-checkmark-empty"></i>
-                                    <i ng-if="$index==holdIndex" perform="testDivBlurFunc" style="position:absolute;left:3px;;font-size:3.5vmin;color:red;" ng-show="showDelete" ng-attr-detect-outside-click="showDelete === true" ng-click="deleteItem($index)" class="icon ion-minus-circled"></i>
+                                    <i ng-if="$index==holdIndex" perform="testDivBlurFunc" style="position:absolute;left:3px;;font-size:3.5vmin;color:red;" ng-show="showDelete" class="icon ion-minus-circled"></i>
                                 </td>
                                 <td style="font-weight:bold;">{{product.name}}
                                     </td>
@@ -67,16 +67,16 @@
                     </div>
                     <div class="totalAmountCalculation" style="padding-top:1vmin;">
                         <button ng-show="showPlaceButton ==true" style="border-radius:1%;width:100%;height-max:2vmin;line-height:6vmin;font-size:2vmin;;" ng-click="placeOrder()" class="button  button-assertive">Place Order</button>
-                        <button style="border-radius:1%;width:100%;height-max:2vmin;line-height:6vmin;font-size:2vmin;;" ng-click="showPaymentMode()" class="button  button-balanced">check out {{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</button>
-                        <p style="font-size:2vmin;color:white;line-height:1.5vmin;"></p>
-                        <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;font-weight:bold;">Bill No: {{VolatileData.CurrentBillNo}}</p>
-                        <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;font-weight:bold;">Total Bill Amount{{currencySymbol}}:{{totalPrice}}</p>
-                        <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;font-weight:bold;">Tax{{currencySymbol}}:{{totalTaxAmount}}</p>
-                        <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;font-weight:bold;">Discount Amount{{currencySymbol}}:{{discountAmount}}</p>
-                        <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;font-weight:bold;">Paid Amount{{currencySymbol}}: {{typedAmount}}</p>
-                        <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;font-weight:bold;" ng-if="typedAmount>0">Balance{{currencySymbol}}: {{Balance}}</p>
-                        <p style="font-size:2vmin;color:white;line-height:1.5vmin;text-align:right;font-weight:bold;">{{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</p>
-                        <div style="line-height:1vmin;"></div>
+                        <button style="border-radius:1%;width:100%;height-max:2vmin;line-height:6vmin;font-size:2vmin;" ng-click="showPaymentMode()" class="button  button-balanced">check out {{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</button>
+                        <p></p>
+                        <p>Bill No: {{VolatileData.CurrentBillNo}}</p>
+                        <p>Total Bill Amount{{currencySymbol}}:{{totalPrice}}</p>
+                        <p>Tax{{currencySymbol}}:{{totalTaxAmount}}</p>
+                        <p>Discount Amount{{currencySymbol}}:{{discountAmount}}</p>
+                     <!--   <p>Paid Amount{{currencySymbol}}: {{typedAmount}}</p>
+                        <p ng-if="typedAmount>0">Balance{{currencySymbol}}: {{Balance}}</p>
+                        <p>{{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</p>  -->
+                        <div style="line-height:1vmin;"></div>  
                     </div>
                 </div>
             </div>
@@ -128,6 +128,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </td>
                         <td>
                             <div ng-class="{jiggle: Mode}" ng-if="Products[$index+1]!=undefined" style="position:relative;">
@@ -147,6 +148,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </td>
                         <td>
                             <div ng-class="{jiggle: Mode}" ng-if="Products[$index+2]!=undefined" style="position:relative;">
@@ -166,6 +168,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -280,7 +283,7 @@
                         <button class="product-categary-button" ng-show="Mode == 1" ng-click="AddNewCat()">Create Category</button>
                         <span ng-repeat="categoryObj in categoryArr">
                             <div style="display:inline-block; width:16vw;margin:0 0.5vw;position:relative;" ng-class="categoryObj.categoryId != 'favourite' ? {jiggle: Mode} : ''">
-                                <div ng-show='Mode==true && categoryObj.categoryId != "favourite"' style="position:absolute;z-index:1;font-size:7vmin;height:6vmin;width:6vmin;color:white;background:red;border-radius:50%;right:-8px;top:-11px;line-height:7vmin;text-align:center;" class="icon-right ion-ios-close-empty" ng-Click="deleteAllProductsAndCat(categoryObj.categoryId)"></div>
+                                <div ng-show='Mode==true && categoryObj.categoryId != "favourite"' style="position:absolute;z-index:1;font-size:7vmin;height:6.2vmin;width:6.2vmin;color:white;background:red;border-radius:50%;right:-8px;top:-11px;line-height:7vmin;text-align:center;" class="icon-right ion-ios-close-empty" ng-Click="deleteAllProductsAndCat(categoryObj.categoryId)"></div>
                                 <div ng-show='Mode==true  && categoryObj.categoryId != "favourite"' style="position:absolute;z-index:1;font-size:4vmin;height:6vmin;width:6vmin;color:white;background:blue;border-radius:10px;float:left;left:-4px;top:-11px;line-height:7vmin;text-align:center;" class="icon-left ion-edit" ng-Click="OnEditCategory(categoryObj.categoryId)"></div>
                                 <button class="product-categary-button" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
                             </div>
@@ -328,7 +331,7 @@
             <ion-side-tab-handle width="60" height="100" toggle="ion-chevron-left ion-chevron-right" class="positive-bg" style="border-radius: 40px 0 0 40px; background-color:rgba(8,8,8,0.9);">
                 <i style="font-size:5vmin;color:white;" class="ion-android-contacts"></i>
             </ion-side-tab-handle>
-             <div class="item" style="background-color:transparent;border:0px;width:60%;text-align:center;">
+            <div class="item" style="background-color:transparent;border:0px;width:60%;text-align:center;">
                 <div>
                     <ion-toggle style="background-color:transparent;border:0px;color:white;" ng-model="$root.tableEditMode" toggle-class="toggle-calm" ng-change="ShowTablePopUpPassword()">Enable Administrative rights to Add, Remove Products </ion-toggle>
                 </div>
@@ -357,7 +360,7 @@
                                             <div class="tableInfo-occupancy">
                                                 <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
                                                 <!--  <p>{{counter|formatTimer}}</p>  -->
-                                                <p ng-if = "tables[$index].seatedTime > 0 " am-time-ago={{tables[$index].seatedTime}}></p>
+                                                <p ng-if="tables[$index].seatedTime > 0 " am-time-ago={{tables[$index].seatedTime}}></p>
                                             </div>
                                             <div style="width:100%" class="tableInfo-capacity">
                                                 <p class="badge badge-stable">{{tables[$index].tableCapacity}}</p>
@@ -375,10 +378,10 @@
                                     <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+1]);">
                                         <!--     <img ng-src={{tables[$index+1].image}} class="tableInfo-image"></img> -->
                                         <div class="tableInfoNumber">
-                                            <p style="text-align:center;margin-top:1vh;">{{tables[$index+1].tableNumber}} </p>
+                                            <p>{{tables[$index+1].tableNumber}} </p>
                                         </div>
                                         <div class="tableInfo-occupancy">
-                                           <!-- <p class="badge" style="background-color:green;color:white;">0</p>  -->
+                                            <!-- <p class="badge" style="background-color:green;color:white;">0</p>  -->
                                             <p am-time-ago={{tables[$index+1].seatedTime}}></p>
                                         </div>
                                         <!--     <div class="tableInfo-desc">
@@ -386,7 +389,7 @@
                                     </div>
                            -->
                                         <div class="tableInfo-capacity">
-                                            <p style="text-align:center;margin-top:2vh;" class="badge badge-stable">{{tables[$index+1].tableCapacity}}</p>
+                                            <p class="badge badge-stable">{{tables[$index+1].tableCapacity}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -403,7 +406,7 @@
                                             <p>{{tables[$index+2].tableNumber}} </p>
                                         </div>
                                         <div class="tableInfo-occupancy">
-                                          <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
+                                            <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
                                             <p am-time-ago={{tables[$index+2].seatedTime}}></p>
                                         </div>
                                         <div class="tableInfo-capacity">
@@ -424,7 +427,7 @@
                                             <p>{{tables[$index+3].tableNumber}} </p>
                                         </div>
                                         <div class="tableInfo-occupancy">
-                                          <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
+                                            <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
                                             <p am-time-ago={{tables[$index+3].seatedTime}}></p>
                                         </div>
                                         <div class="tableInfo-capacity">
@@ -445,7 +448,7 @@
                                             <p>{{tables[$index+4].tableNumber}} </p>
                                         </div>
                                         <div class="tableInfo-occupancy">
-                                          <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
+                                            <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
                                             <p am-time-ago={{tables[$index+4].seatedTime}}></p>
                                         </div>
                                         <div class="tableInfo-capacity">

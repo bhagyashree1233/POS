@@ -12,32 +12,36 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         });
     });
 
-  $scope.tabs = {
-    tab1: false,   // initial state
-    tab2: false,
-    tab3: false,
-    autocollapse: false
-  };
-  
-  $scope.tabExpand = function(index) {
-    console.log('Tab ' + index + ' expanded');
-  };
+    $scope.tabs = {
+        tab1: false,
+        // initial state
+        tab2: false,
+        tab3: false,
+        autocollapse: false
+    };
 
-  $scope.tabCollapse = function(index) {
-    console.log('Tab ' + index + ' collapsed');
-    
-    // collapse all tabs
-    if ($scope.tabs.autocollapse){
-      $scope.tabs.tab1=false;
-      $scope.tabs.tab2=false;
-      $scope.tabs.tab3=false;
+    $scope.tabExpand = function(index) {
+        console.log('Tab ' + index + ' expanded');
     }
-  };
-  
-  $scope.toggleTab = function(tab) {
-      console.log("togglingTab");
-    $scope.tabs[tab] = !$scope.tabs[tab];
-  };
+    ;
+
+    $scope.tabCollapse = function(index) {
+        console.log('Tab ' + index + ' collapsed');
+
+        // collapse all tabs
+        if ($scope.tabs.autocollapse) {
+            $scope.tabs.tab1 = false;
+            $scope.tabs.tab2 = false;
+            $scope.tabs.tab3 = false;
+        }
+    }
+    ;
+
+    $scope.toggleTab = function(tab) {
+        console.log("togglingTab");
+        $scope.tabs[tab] = !$scope.tabs[tab];
+    }
+    ;
 
 }).controller('homeCtrl', ['$scope', '$rootScope', '$state', '$cordovaSQLite', '$ionicModal', '$ionicScrollDelegate', '$ionicSlideBoxDelegate', 'dbService', '$ionicPlatform', '$ionicLoading', '$ionicPopup', 'settingService', function($scope, $rootScope, $state, $cordovaSQLite, $ionicModal, $ionicScrollDelegate, $ionicSlideBoxDelegate, dbService, $ionicPlatform, $ionicLoading, $ionicPopup, settingService) {
 
@@ -49,14 +53,11 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     });
 */
 
-   $scope.tableNumberSelected = -1;
+    $scope.tableNumberSelected = -1;
 
     //ionicParentView
 
     //load products list from DB
-      
-
-
 
     $scope.OnCatClick = function(catId) {
         console.log(catId);
@@ -195,10 +196,10 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             calculateProductCost();
             $scope.tableNumberSelected = $rootScope.selTable.tableId;
 
-            if($scope.isPendingOrder()==true)
-                 $scope.showPlaceButton = true;
-                else
-                 $scope.showPlaceButton = false;
+            if ($scope.isPendingOrder() == true)
+                $scope.showPlaceButton = true;
+            else
+                $scope.showPlaceButton = false;
 
         }
 
@@ -406,9 +407,24 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     }
 
     $scope.onPressHold = function(index) {
-        console.log('enterd on hold');
+        console.log('entered on hold delete item');
         $scope.showDelete = true;
         $scope.holdIndex = index;
+
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Delete Item ',
+            template: 'Do you want to delete selected item?'
+        });
+        confirmPopup.then(function(res) {
+            if (res) {
+                console.log('Delete item');
+                $scope.deleteItem($scope.holdIndex);
+            } else {
+                console.log('dont delete item');
+                $scope.showDelete = false;
+            }
+        });
+
     }
 
     $scope.deleteItem = function(index) {
@@ -418,53 +434,48 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         calculateProductCost();
 
         console.log("In delete Item");
-        
-        if($rootScope.selTable.tableId !=undefined) //table order;;
+
+        if ($rootScope.selTable.tableId != undefined) //table order;;
         {
-            if($scope.productArr.length <=0) //no items for table;;
-            {//gau;;
-            //remove from running list;;
-             $rootScope.RemoveTable($rootScope.selTable);
-             $scope.showPlaceButton = false;
-            $rootScope.selTable = {};
-            $scope.tableNumberSelected = -1;
-            }
-            else
+            if ($scope.productArr.length <= 0) //no items for table;;
             {
-                if($scope.isPendingOrder()==true)
-                 {
-                 $scope.showPlaceButton = true;
-                 console.log("Show button");
-                 }
-                else
-                 {
-                 $scope.showPlaceButton = false;
-                 console.log("Hide button");
-                 }
+                //gau;;
+                //remove from running list;;
+                $rootScope.RemoveTable($rootScope.selTable);
+                $scope.showPlaceButton = false;
+                $rootScope.selTable = {};
+                $scope.tableNumberSelected = -1;
+            } else {
+                if ($scope.isPendingOrder() == true) {
+                    $scope.showPlaceButton = true;
+                    console.log("Show button");
+                } else {
+                    $scope.showPlaceButton = false;
+                    console.log("Hide button");
+                }
             }
         }
 
-
     }
 
-    $scope.isPendingOrder = function()
-    {
-        for(var i=0;i<$scope.productArr.length;i++)
-        {
-            if($scope.productArr[i].status == false)
-              return(true);
+    $scope.isPendingOrder = function() {
+        for (var i = 0; i < $scope.productArr.length; i++) {
+            if ($scope.productArr[i].status == false)
+                return ( true) ;
         }
 
-        return(false); //gau;;
+        return ( false) ;
+        //gau;;
     }
 
+/*
     $scope.testDivBlurFunc = function() {
         $scope.showDelete = false;
 
         console.log('clicked outside');
     }
     ;
-
+*/
     function calculateProductCost() {
         $scope.totalPrice = 0;
         $scope.totalTaxAmount = 0;
@@ -556,7 +567,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
         var status = true;
 
-        if($rootScope.selTable.tableId !=undefined) //table order;;
+        if ($rootScope.selTable.tableId != undefined) //table order;;
         {
             status = false;
         }
@@ -588,8 +599,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount + productTotalAmount).toFixed(2));
         console.log('This is Total Price' + $scope.totalPrice);
 
-        if ($rootScope.selTable.tableId != undefined)
-        {
+        if ($rootScope.selTable.tableId != undefined) {
             $scope.showPlaceButton = true;
             $rootScope.saveItemsToTable($rootScope.selTable, $scope.productArr, $scope.totalChargeAmount);
         }
@@ -727,7 +737,6 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $scope.totalTaxAmount = 0;
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
-           
 
             if ($rootScope.selTable.tableId != undefined) {
                 console.log("TableId Found");
@@ -735,7 +744,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
             }
 
-             $scope.showPlaceButton = false;
+            $scope.showPlaceButton = false;
             $rootScope.selTable = {};
             $scope.tableNumberSelected = -1;
 
@@ -788,13 +797,13 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         $scope.discountAmount = 0;
         $scope.totalChargeAmount = 0;
         //gau;;
-         if($rootScope.selTable.tableId != undefined) //table order;;
-          {
-         $rootScope.RemoveTable($rootScope.selTable);
-         $scope.showPlaceButton = false;
-         $rootScope.selTable = {};
-         $scope.tableNumberSelected = -1;
-          }
+        if ($rootScope.selTable.tableId != undefined) //table order;;
+        {
+            $rootScope.RemoveTable($rootScope.selTable);
+            $scope.showPlaceButton = false;
+            $rootScope.selTable = {};
+            $scope.tableNumberSelected = -1;
+        }
     }
 
     $scope.onPaymentOk = function(value) {
@@ -819,7 +828,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
         $ionicPopup.show({
             title: 'Print Receipt',
-            subTitle: 'Print Receipt to Complete Transaction',
+            subTitle: 'Print Receipt to Complete Transaction <br/><br/><b>Paid Amount : ' + $scope.typedAmount + ' (' + $rootScope.PaymentSettings.CurrencyOptions.symbol + ')</b><br/><b> Balance Amount : ' + $scope.Balance + ' (' + $rootScope.PaymentSettings.CurrencyOptions.symbol + ')</b>',
             scope: $scope,
             buttons: [{
                 text: 'Close',
@@ -1031,7 +1040,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
     $scope.holdItems = function() {
 
-        if($rootScope.selTable.tableId != undefined) //table order;;
+        if ($rootScope.selTable.tableId != undefined) //table order;;
         {
             $rootScope.ShowToast("Functionality not Available for Table Order", false);
             console.log("Functionality not Available for Table Order");
@@ -1135,15 +1144,17 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     $scope.previousCategorySlide = function() {
         // $ionicScrollDelegate.scrollBy(0, -68, true);
         $ionicSlideBoxDelegate.$getByHandle('categorySlideHandle').previous();
-    };
+    }
+    ;
     //Slide Ends
 
     $rootScope.$on('OnClickSearchItem', function(event, data) {
         console.log("On click search item broadcast reciever");
-       $scope.OnProductClick(data.prod);   
+        $scope.OnProductClick(data.prod);
     });
 
-}])//END OF HOMECTRL;;
+}
+])//END OF HOMECTRL;;
 
 .controller("productCtrl", function($scope, $state, $rootScope, $ionicPopover, $ionicHistory, $ionicPopup, $cordovaSQLite, $cordovaCamera, $timeout, $cordovaFile, $ionicModal, dbService) {
 
@@ -1952,7 +1963,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         })
 
     }
-  //$rootScope.startTimer();
+    //$rootScope.startTimer();
 
 }).controller('addEditTableInfoCtrl', function($scope, $ionicHistory, $rootScope, dbService, $state, $ionicPopup, $ionicModal) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -2236,8 +2247,6 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     }
 
 })
-
-
 .controller('searchProductsCtrl', function($scope, dbService, $rootScope) {
 
     console.log('entered search Products Ctrl')
@@ -2262,7 +2271,9 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         $scope.searchedResults = [];
     }
 
-   $scope.onClickSearchProduct = function(product) {
-      $rootScope.$broadcast('OnClickSearchItem', { prod: product });
-   }
+    $scope.onClickSearchProduct = function(product) {
+        $rootScope.$broadcast('OnClickSearchItem', {
+            prod: product
+        });
+    }
 })

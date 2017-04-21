@@ -238,6 +238,14 @@
     box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.6);
 }
 
+.totalAmountCalculation p {
+  font-size:2vmin;
+  color:white;
+  line-height:1.5vmin;
+  text-align:right;
+  font-weight:bold;   
+}
+
 .sam-cust-bar .button.button-block {
     margin-top: 0;
     margin-bottom: 0;
