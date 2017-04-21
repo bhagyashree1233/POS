@@ -1868,7 +1868,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         console.log(table);
 
         console.log("on table click");
-        if ($rootScope.Mode == 1) //edit or add mode;;
+        if ($rootScope.tableEditMode == 1) //edit or add mode;;
         {
             console.log("Mode Edit");
             $rootScope.CreateMode = 0;

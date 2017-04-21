@@ -24,6 +24,7 @@ angular.module('starter.globalcontroller', []).controller('global', function($ro
     }
 
     $rootScope.Mode = false;
+    $rootScope.tableEditMode = false;
     $rootScope.SelCat = '0';
     $rootScope.SelSection = '0';
     $rootScope.CreateMode = 0;
@@ -260,6 +261,77 @@ angular.module('starter.globalcontroller', []).controller('global', function($ro
 
     }
 
+    $rootScope.ShowTablePopUpPassword = function() {
+        console.log("now table mode is");
+        console.log($rootScope.tableEditMode);
+
+        //$rootScope.Testing();
+        //return;
+
+        if ($rootScope.tableEditMode == false) //already in table edit mode;
+        {
+          //  $rootScope.OnTableModeChangeClick();
+            return;
+
+        }
+        $scope.tableResult = {};
+        $scope.tableResult.done = false;
+        $scope.tableResult.text = "";
+        $ionicPopup.prompt({
+            template: '<input type="password" ng-model="tableResult.text">',
+            title: 'Password Check',
+            subTitle: 'Enter admin password',
+            inputType: 'password',
+            inputPlaceholder: 'Your password',
+            scope: $scope,
+
+            buttons: [{
+                text: 'Cancel',
+                onTap: function(e) {
+                    return $scope.tableResult;
+                }
+            }, {
+                text: '<b>OK</b>',
+                type: 'button-positive',
+                onTap: function(e) {
+                    $scope.tableResult.done = true;
+                    return $scope.tableResult;
+                }
+            }]
+        }).then(function(res) {
+            console.log('Your password is', res);
+            if (res.done == true) {
+               // if (res.text == 'payupad123' || res.text == $rootScope.password) {
+                 //   $rootScope.OnTableModeChangeClick();
+               /* } else {
+                    console.log("Wrong Password");
+                    $rootScope.ShowToast("Wrong Password", false);
+                    $rootScope.tableEditMode = false;
+                }*/
+                
+            } else {
+                $rootScope.tableEditMode = false;
+            }
+
+        });
+    }
+/*
+    $rootScope.OnTableModeChangeClick = function() {
+        console.log("Table Toggle Clicked");
+
+        //$rootScope.$broadcast('ModeChangeEvent',$rootScope.tableEditMode);
+        if ($rootScope.tableEditMode == 0) {
+            $rootScope.tableEditMode = 1;
+        } else {
+            $rootScope.tableEditMode = 0;
+            console.log($rootScope.tableEditMode);
+        }
+
+        if ($rootScope.tableEditMode == 1) //edit Mode;;
+        {}
+        
+    }
+*/
     $rootScope.OnEditCategory = function(catId) {
         console.log("On Edit Category");
         $rootScope.CreateMode = 0;
@@ -1181,7 +1253,7 @@ $rootScope.connectCallBack= function(status,PrinterName)
 
     //----------- timer logic --------------------
 
-   /* $rootScope.counter = 0;
+    /* $rootScope.counter = 0;
     var stopped = true;
 
     //$scope.buttonText='Stop';

@@ -280,7 +280,7 @@
                         <button class="product-categary-button" ng-show="Mode == 1" ng-click="AddNewCat()">Create Category</button>
                         <span ng-repeat="categoryObj in categoryArr">
                             <div style="display:inline-block; width:16vw;margin:0 0.5vw;position:relative;" ng-class="categoryObj.categoryId != 'favourite' ? {jiggle: Mode} : ''">
-                                <div ng-show='Mode==true && categoryObj.categoryId != "favourite"' style="position:absolute;z-index:1;font-size:7vmin;height:7vmin;width:5vmin;color:red;border-radius:50%;float:right;right:0px;top:-28px;text-align:center;" class="icon-right ion-close-circled" ng-Click="deleteAllProductsAndCat(categoryObj.categoryId)"></div>
+                                <div ng-show='Mode==true && categoryObj.categoryId != "favourite"' style="position:absolute;z-index:1;font-size:7vmin;height:6vmin;width:6vmin;color:white;background:red;border-radius:50%;right:-8px;top:-11px;line-height:7vmin;text-align:center;" class="icon-right ion-ios-close-empty" ng-Click="deleteAllProductsAndCat(categoryObj.categoryId)"></div>
                                 <div ng-show='Mode==true  && categoryObj.categoryId != "favourite"' style="position:absolute;z-index:1;font-size:4vmin;height:6vmin;width:6vmin;color:white;background:blue;border-radius:10px;float:left;left:-4px;top:-11px;line-height:7vmin;text-align:center;" class="icon-left ion-edit" ng-Click="OnEditCategory(categoryObj.categoryId)"></div>
                                 <button class="product-categary-button" ng-style="highlight==categoryObj.categoryId ? {background:'Red'} : {background:'Black'}" ng-click="OnCatClick(categoryObj.categoryId)">{{categoryObj.categoryName}}</button>
                             </div>
@@ -328,9 +328,14 @@
             <ion-side-tab-handle width="60" height="100" toggle="ion-chevron-left ion-chevron-right" class="positive-bg" style="border-radius: 40px 0 0 40px; background-color:rgba(8,8,8,0.9);">
                 <i style="font-size:5vmin;color:white;" class="ion-android-contacts"></i>
             </ion-side-tab-handle>
+             <div class="item" style="background-color:transparent;border:0px;width:60%;text-align:center;">
+                <div>
+                    <ion-toggle style="background-color:transparent;border:0px;color:white;" ng-model="$root.tableEditMode" toggle-class="toggle-calm" ng-change="ShowTablePopUpPassword()">Enable Administrative rights to Add, Remove Products </ion-toggle>
+                </div>
+            </div>
             <div id="tableInfoView" ng-controller="tableInfoCtrl">
                 <table class="tableInfolist" style="width:100%;font-size:2vmin;font-weight:bold;line-height:4.5vmin;">
-                    <tr ng-show='Mode == true'>
+                    <tr ng-show='tableEditMode == true'>
                         <td style="background:transparent;">
                             <div style="min-width:20%;height:20%;margin:1vh;" ng-click="AddNewTable()">
                                 <img ng-src="img/add-product.png" style="width:100%;"></img>
@@ -340,10 +345,10 @@
                     </tr>
                     <tr ng-repeat="table in tables" ng-if="$index%5==0" style="background:transparent;">
                         <td style="background:transparent;">
-                            <div ng-class="[{jiggle: Mode}]">
+                            <div ng-class="[{jiggle: tableEditMode}]">
                                 <div ng-class="{tableInfolistDiv:getTableStatus(tables[$index])==false ,tableInfolistDivRunning:getTableStatus(tables[$index])==true}">
-                                    <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index].tableId)"></div>
-                                    <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index]);"></div>
+                                    <div ng-show='tableEditMode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index].tableId)"></div>
+                                    <div ng-show='tableEditMode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index]);"></div>
                                     <div style="width:15vw;max-height:24vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index]);">
                                         <div style="width:100%;height:100%;vertical-align: middle;">
                                             <div class="tableInfoNumber">
@@ -363,10 +368,10 @@
                             </div>
                         </td>
                         <td>
-                            <div ng-class="[{jiggle: Mode}]" ng-if="tables[$index+1]!=undefined">
+                            <div ng-class="[{jiggle: tableEditMode}]" ng-if="tables[$index+1]!=undefined">
                                 <div ng-class="{tableInfolistDiv:getTableStatus(tables[$index+1])==false ,tableInfolistDivRunning:getTableStatus(tables[$index+1])==true}">
-                                    <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+1].tableId)"></div>
-                                    <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+1])"></div>
+                                    <div ng-show='tableEditMode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+1].tableId)"></div>
+                                    <div ng-show='tableEditMode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+1])"></div>
                                     <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+1]);">
                                         <!--     <img ng-src={{tables[$index+1].image}} class="tableInfo-image"></img> -->
                                         <div class="tableInfoNumber">
@@ -388,10 +393,10 @@
                             </div>
                         </td>
                         <td>
-                            <div ng-class="[{jiggle: Mode}]" ng-if="tables[$index+2]!=undefined">
+                            <div ng-class="[{jiggle: tableEditMode}]" ng-if="tables[$index+2]!=undefined">
                                 <div ng-class="{tableInfolistDiv:getTableStatus(tables[$index+2])==false ,tableInfolistDivRunning:getTableStatus(tables[$index+2])==true}">
-                                    <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+2].tableId)"></div>
-                                    <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+2])"></div>
+                                    <div ng-show='tableEditMode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+2].tableId)"></div>
+                                    <div ng-show='tableEditMode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+2])"></div>
                                     <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+2]);">
                                         <!--    <img ng-src={{tables[$index+2].image}} class="tableInfo-image"></img>  -->
                                         <div class="tableInfoNumber">
@@ -409,10 +414,10 @@
                             </div>
                         </td>
                         <td>
-                            <div ng-class="[{jiggle: Mode}]" ng-if="tables[$index+3]!=undefined">
+                            <div ng-class="[{jiggle: tableEditMode}]" ng-if="tables[$index+3]!=undefined">
                                 <div ng-class="{tableInfolistDiv:getTableStatus(tables[$index+3])==false ,tableInfolistDivRunning:getTableStatus(tables[$index+3])==true}">
-                                    <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+3].tableId)"></div>
-                                    <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+3])"></div>
+                                    <div ng-show='tableEditMode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+3].tableId)"></div>
+                                    <div ng-show='tableEditMode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+3])"></div>
                                     <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+3]);">
                                         <!--     <img ng-src={{tables[$index+3].image}} class="tableInfo-image"></img>  -->
                                         <div class="tableInfoNumber">
@@ -430,10 +435,10 @@
                             </div>
                         </td>
                         <td>
-                            <div ng-class="[{jiggle: Mode}]" ng-if="tables[$index+4]!=undefined">
+                            <div ng-class="[{jiggle: tableEditMode}]" ng-if="tables[$index+4]!=undefined">
                                 <div ng-class="{tableInfolistDiv:getTableStatus(tables[$index+4])==false ,tableInfolistDivRunning:getTableStatus(tables[$index+4])==true}">
-                                    <div ng-show='Mode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+4].tableId)"></div>
-                                    <div ng-show='Mode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+4]);"></div>
+                                    <div ng-show='tableEditMode==true' class="icon-right ion-close-circled tableDelete" ng-Click="deleteTable(tables[$index+4].tableId)"></div>
+                                    <div ng-show='tableEditMode==true' class="icon-left ion-edit tableEdit" ng-Click="OnTableClick(tables[$index+4]);"></div>
                                     <div style="width:15vw;max-height:25vh;" ng-click="toggleTab('tab2');OnTableClick(tables[$index+4]);">
                                         <!--     <img ng-src={{tables[$index+3].image}} class="tableInfo-image"></img>  -->
                                         <div class="tableInfoNumber">
@@ -454,11 +459,11 @@
                 </table>
                 <div class="tableInfo-section">
                     <ion-scroll direction="x" class="tableInfo-section-scroll" scrollbar-x=false scrollbar-y=false style="padding-top:3vh;">
-                        <button class="tableInfo-section-button" ng-show="Mode == 1" ng-click="AddNewTableSection()">Create Section</button>
+                        <button class="tableInfo-section-button" ng-show="tableEditMode == 1" ng-click="AddNewTableSection()">Create Section</button>
                         <span ng-repeat="section in sectionArr">
-                            <div style="display:inline-block;margin:0 1vw;width:16vw;position:relative;" ng-class="{jiggle: Mode}">
-                                <div ng-show='Mode==true' style="position:absolute;z-index:1;font-size:5.5vmin;height:7vmin;width:5vmin;color:red;right:-5px;top:-24px;" class="icon-right ion-close-circled" ng-Click="deleteAllTablesAndSections(section.sectionId)"></div>
-                                <div ng-show='Mode==true' style="position:absolute;font-size:3vmin;line-height:7vmin;text-align:center;height:6vmin;width:6vmin;color:white;background:blue;border-radius:10px;left:-4px;top:-15px;" class="icon-left ion-edit" ng-Click="OnEditSection(section.sectionId)"></div>
+                            <div style="display:inline-block;margin:0 1vw;width:16vw;position:relative;" ng-class="{jiggle: tableEditMode}">
+                                <div ng-show='tableEditMode==true' style="position:absolute;z-index:1;font-size:5.5vmin;height:6vmin;width:6vmin;color:white;background-color:red;right:-8px;top:-11px;line-height:7vmin;text-align:center;border-radius:50%;" class="icon icon-right ion-ios-close-empty" ng-Click="deleteAllTablesAndSections(section.sectionId)"></div>
+                                <div ng-show='tableEditMode==true' style="position:absolute;font-size:3vmin;line-height:7vmin;text-align:center;height:6vmin;width:6vmin;color:white;background:blue;border-radius:10px;left:-4px;top:-15px;" class="icon-left ion-edit" ng-Click="OnEditSection(section.sectionId)"></div>
                                 <button class="tableInfo-section-button" ng-style="highlight==section.sectionId ? {background:'Red'} : {background:'Black'}" ng-click="OnSectionClick(section.sectionId)">{{section.sectionName}}</button>
                             </div>
                         </span>
