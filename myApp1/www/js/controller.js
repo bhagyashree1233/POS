@@ -78,6 +78,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         var promise = dbService.loadProductsForCategory(catId);
         promise.then(function(res) {
             $scope.Products = res;
+            console.log(res);
             console.log('products loaded...');
             productSlideLogic();
             $rootScope.hideDbLoading();
@@ -468,7 +469,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         //gau;;
     }
 
-/*
+    /*
     $scope.testDivBlurFunc = function() {
         $scope.showDelete = false;
 
@@ -529,7 +530,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
     $scope.save = function(product, typedCode) {
 
-        console.log("New Product" + product);
+        console.log(product);
+        console.log(product.productId);
         if ($scope.productArr != undefined && $scope.productArr.length < 1) {
             for (var i = 0; i < $scope.productArr.length; i++) {
                 if (product.productId == $scope.productArr[i].productId) {
@@ -715,7 +717,12 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $scope.paymentMethod = "cash";
             $scope.totalItems = $scope.productArr.length;
             //update inStock in product
-            var promise = dbService.updateItemsInStock($scope.itemsInStockObj);
+            var promise2 = dbService.updateItemsInStock($scope.itemsInStockObj);
+            promise2.then(function(res){
+                $scope.OnCatClick($rootScope.SelCat);
+            },function(){
+                
+            })
             SaveBillDetails();
         }, function(result) {
             console.log(result);
@@ -1379,7 +1386,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         console.log('entered addNewProduct()..');
 
         if ($scope.newProduct.image == undefined || $scope.newProduct.image == "")
-            $scope.newProduct.image = "img/sc1.jpg";
+            $scope.newProduct.image = "img/longImage.jpg";
 
         console.log($scope.newProduct);
 
@@ -1402,7 +1409,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             //  $rootScope.Products.push($scope.newProduct);
             $scope.newProduct = {
                 unit: 'pieces',
-                image: "img/sc1.jpg",
+                image: "img/longImage.jpg",
                 favourite: false
             };
             $rootScope.hideDbLoading();
@@ -1734,6 +1741,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         var promise = dbService.loadTablesFromDB('TableInfo');
         promise.then(function(res) {
             $scope.tables = res;
+            var firstSectionId;
             //status and other details load here;;
 
             console.log('tables loaded...');
@@ -1755,18 +1763,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $rootScope.hideDbLoading();
         })
     }
-    /*
-    console.log($scope.sectionArr[0])
-    var firstSectionId;
-    if ($scope.sectionArr[0]) {
-        firstSectionId = $scope.sectionArr[0].sectionId;
-    }
-
-    if ($rootScope.SelSection == '0') {
-        $scope.OnSectionClick(firstSectionId)
-        //$scope.highlight = "favourite";
-    }
- */
+ 
     console.log('entered table info ctrl')
     /* 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -2246,8 +2243,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         });
     }
 
-})
-.controller('searchProductsCtrl', function($scope, dbService, $rootScope) {
+}).controller('searchProductsCtrl', function($scope, dbService, $rootScope) {
 
     console.log('entered search Products Ctrl')
     $scope.searchObj = {};

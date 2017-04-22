@@ -42,7 +42,7 @@
                                     
                                     
                                     <i ng-if="product.status==true" style="position:absolute;left:6px;top:0px;font-size:6vmin;color:green;" class="icon ion-ios-checkmark-empty"></i>
-                                    <i ng-if="$index==holdIndex" perform="testDivBlurFunc" style="position:absolute;left:3px;;font-size:3.5vmin;color:red;" ng-show="showDelete" class="icon ion-minus-circled"></i>
+                                    <i ng-if="$index==holdIndex" style="position:absolute;left:3px;;font-size:3.5vmin;color:red;" ng-show="showDelete" class="icon ion-minus-circled"></i>
                                 </td>
                                 <td style="font-weight:bold;">{{product.name}}
                                     </td>
@@ -73,10 +73,10 @@
                         <p>Total Bill Amount{{currencySymbol}}:{{totalPrice}}</p>
                         <p>Tax{{currencySymbol}}:{{totalTaxAmount}}</p>
                         <p>Discount Amount{{currencySymbol}}:{{discountAmount}}</p>
-                     <!--   <p>Paid Amount{{currencySymbol}}: {{typedAmount}}</p>
+                        <!--   <p>Paid Amount{{currencySymbol}}: {{typedAmount}}</p>
                         <p ng-if="typedAmount>0">Balance{{currencySymbol}}: {{Balance}}</p>
                         <p>{{totalChargeAmount}}({{PaymentSettings.CurrencyOptions.symbol}})</p>  -->
-                        <div style="line-height:1vmin;"></div>  
+                        <div style="line-height:1vmin;"></div>
                     </div>
                 </div>
             </div>
@@ -321,10 +321,58 @@
                 </div>
                 <ion-scroll direction="y" scrollbar-x=false scrollbar-y=false style="margin-top:2vh;height:90vh;">
                     <ion-list>
-                        <ion-item style="font-size:4vmin;height:8vmin;" ng-repeat="x in searchedResults" ng-click="toggleTab('tab3');onClickSearchProduct(x)">{{x.name}}</ion-item>
+                        <ion-item style="height:8vmin;padding:0;text-align:center;" ng-repeat="x in searchedResults" ng-click="toggleTab('tab3');onClickSearchProduct(x)">
+                            <img src="{{x.image}}" style="height:8vmin;width:auto;float:left;"></img>
+                            <div style="font-size:4vmin;width:auto;height:100%;padding-top:2vmin;">
+                              <span style="float:right;margin:0vws 2vw;height:100%;width:30%;">Price: {{x.unitPrice}}</span>
+                              <span style="float:left;text-align:right;margin:0vw 2vw;height:100%;width:auto;">{{x.name}}</span>
+                            </div>
+                        </ion-item>
                         <!--    <ion-item ng-if="searchedResults !== undefined && !searchedResults.length">No Results Found..</ion-item>  -->
                     </ion-list>
                 </ion-scroll>
+            </div>
+        </ion-side-tab>
+        <ion-side-tab positive-bg style="border-radius: 10px;border-radius: 10px; width:10vw;background-color:rgba(8,8,8,0.9);" has-header='false' expand="tabs.tab1">
+            <ion-side-tab-handle width="60" height="100" toggle="ion-chevron-right ion-ios-gear-outline" class="dark-bg stable" style="border-radius: 40px 0 0 40px; background-color:rgba(8,8,8,0.9);">
+                <i style="font-size:5vmin;" class="icon ion-ios-gear-outline"></i>
+            </ion-side-tab-handle>
+            <div class="item" style="background-color:transparent;border:0px;width:60%;text-align:center;">
+                <div>
+                    <ion-toggle style="background-color:transparent;border:0px;color:white;" ng-model="$root.Mode" toggle-class="toggle-calm" ng-change="ShowPopUpPassword()">Enable Administrative rights to Add, Remove Products </ion-toggle>
+                </div>
+            </div>
+            <div style="position:relative;top:2vmin" ng-controller="MenuCtrl">
+                <div>
+                    <div ng-repeat="items in rightItems">
+                        <div class="row" ng-if="$index%3==0">
+                            <div style="position:relative;" class="col col-33 col-center">
+                                <a class="element" ng-if="rightItems[$index]!=undefined" ng-click="itemclick(rightItems[$index])" menu-close>
+                                    <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
+                                        <i class="{{rightItems[$index].icon}}" style="font-size:7vmin"></i>
+                                    </button>
+                                    <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index].name}} </div>
+                                </a>
+                            </div>
+                            <div style="position:relative;" class="col col-30 col-center">
+                                <a class="element" ng-if="rightItems[$index+1]!=undefined" ng-click="itemclick(rightItems[$index+1])" menu-close>
+                                    <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
+                                        <i class="{{rightItems[$index+1].icon}}" style="font-size:7vmin"></i>
+                                    </button>
+                                    <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index+1].name}} </div>
+                                </a>
+                            </div>
+                            <div style="position:relative;" class="col col-30 col-center">
+                                <a class="element" ng-if="rightItems[$index+2]!=undefined" ng-click="itemclick(rightItems[$index+2])" menu-close>
+                                    <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
+                                        <i class="{{rightItems[$index+2].icon}}" style="font-size:7vmin"></i>
+                                    </button>
+                                    <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index+2].name}} </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </ion-side-tab>
         <ion-side-tab class="positive-bg" style="border-radius: 10px;border-radius: 10px; width:10vw;background-color:rgba(8,8,8,0.9);" expand="tabs.tab2">
@@ -382,7 +430,7 @@
                                         </div>
                                         <div class="tableInfo-occupancy">
                                             <!-- <p class="badge" style="background-color:green;color:white;">0</p>  -->
-                                            <p am-time-ago={{tables[$index+1].seatedTime}}></p>
+                                            <p ng-if="tables[$index+1].seatedTime > 0 " am-time-ago={{tables[$index+1].seatedTime}}></p>
                                         </div>
                                         <!--     <div class="tableInfo-desc">
                                         <p>{{tables[$index+1].tableDescription}}</p>
@@ -407,7 +455,7 @@
                                         </div>
                                         <div class="tableInfo-occupancy">
                                             <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
-                                            <p am-time-ago={{tables[$index+2].seatedTime}}></p>
+                                            <p ng-if="tables[$index+2].seatedTime > 0 " am-time-ago={{tables[$index+2].seatedTime}}></p>
                                         </div>
                                         <div class="tableInfo-capacity">
                                             <p class="badge badge-stable">{{tables[$index+2].tableCapacity}}</p>
@@ -428,7 +476,7 @@
                                         </div>
                                         <div class="tableInfo-occupancy">
                                             <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
-                                            <p am-time-ago={{tables[$index+3].seatedTime}}></p>
+                                            <p ng-if="tables[$index+3].seatedTime > 0 " am-time-ago={{tables[$index+3].seatedTime}}></p>
                                         </div>
                                         <div class="tableInfo-capacity">
                                             <p class="badge badge-stable">{{tables[$index+3].tableCapacity}}</p>
@@ -449,7 +497,7 @@
                                         </div>
                                         <div class="tableInfo-occupancy">
                                             <!--  <p class="badge" style="background-color:green;color:white;">0</p>  -->
-                                            <p am-time-ago={{tables[$index+4].seatedTime}}></p>
+                                            <p ng-if="tables[$index+4].seatedTime > 0 " am-time-ago={{tables[$index+4].seatedTime}}></p>
                                         </div>
                                         <div class="tableInfo-capacity">
                                             <p class="badge badge-stable">{{tables[$index+4].tableCapacity}}</p>
@@ -471,48 +519,6 @@
                             </div>
                         </span>
                     </ion-scroll>
-                </div>
-            </div>
-        </ion-side-tab>
-        <ion-side-tab positive-bg style="border-radius: 10px;border-radius: 10px; width:10vw;background-color:rgba(8,8,8,0.9);" has-header='false' expand="tabs.tab1">
-            <ion-side-tab-handle width="60" height="100" toggle="ion-chevron-right ion-ios-gear-outline" class="dark-bg stable" style="border-radius: 40px 0 0 40px; background-color:rgba(8,8,8,0.9);">
-                <i style="font-size:5vmin;" class="icon ion-ios-gear-outline"></i>
-            </ion-side-tab-handle>
-            <div class="item" style="background-color:transparent;border:0px;width:60%;text-align:center;">
-                <div>
-                    <ion-toggle style="background-color:transparent;border:0px;color:white;" ng-model="$root.Mode" toggle-class="toggle-calm" ng-change="ShowPopUpPassword()">Enable Administrative rights to Add, Remove Products </ion-toggle>
-                </div>
-            </div>
-            <div style="position:relative;top:2vmin" ng-controller="MenuCtrl">
-                <div>
-                    <div ng-repeat="items in rightItems">
-                        <div class="row" ng-if="$index%3==0">
-                            <div style="position:relative;" class="col col-33 col-center">
-                                <a class="element" ng-if="rightItems[$index]!=undefined" ng-click="itemclick(rightItems[$index])" menu-close>
-                                    <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
-                                        <i class="{{rightItems[$index].icon}}" style="font-size:7vmin"></i>
-                                    </button>
-                                    <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index].name}} </div>
-                                </a>
-                            </div>
-                            <div style="position:relative;" class="col col-30 col-center">
-                                <a class="element" ng-if="rightItems[$index+1]!=undefined" ng-click="itemclick(rightItems[$index+1])" menu-close>
-                                    <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
-                                        <i class="{{rightItems[$index+1].icon}}" style="font-size:7vmin"></i>
-                                    </button>
-                                    <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index+1].name}} </div>
-                                </a>
-                            </div>
-                            <div style="position:relative;" class="col col-30 col-center">
-                                <a class="element" ng-if="rightItems[$index+2]!=undefined" ng-click="itemclick(rightItems[$index+2])" menu-close>
-                                    <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
-                                        <i class="{{rightItems[$index+2].icon}}" style="font-size:7vmin"></i>
-                                    </button>
-                                    <div style="text-shadow:3px 3px 4px rgba(0, 0, 0, 0.8);" class="icon_text">{{rightItems[$index+2].name}} </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </ion-side-tab>
