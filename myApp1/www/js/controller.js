@@ -1389,12 +1389,14 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
         console.log($scope.newProduct);
 
-        /* if (!(angular.isDefined($scope.newProduct.discount))) {
+        /* 
+          if (!(angular.isDefined($scope.newProduct.discount))) {
                     $scope.newProduct.discount = 0;
                 }
                  if (!(angular.isDefined($scope.newProduct.inStock))) {
                     $scope.newProduct.inStock = 1000000;
-                }*/
+                }
+         */
 
         console.log("Cat ID: ", $scope.newProduct.categoryId);
         console.log('validation success and entered if');
@@ -1580,6 +1582,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         name: "",
         description: ""
     };
+
     $scope.editCategory = function() {
         console.log('entered edit category');
         if ($scope.searchCategory.categoryId) {
@@ -2040,21 +2043,30 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             return false
         }
 
+        if (tableInfoObj.tableCharges == undefined || tableInfoObj.tableCharges == "") {
+            tableInfoObj.tableCharges = 0;
+        }
+
         if (typeof tableInfoObj.tableCharges !== 'number') {
             $rootScope.ShowToast("Invalid table charge", false);
             console.log('Invalid table charge...');
             return false
         }
+
         if ((typeof tableInfoObj.tableCapacity !== 'number') || (tableInfoObj.tableCapacity % 1 !== 0)) {
             $rootScope.ShowToast("Invalid table capacity", false);
             console.log('Invalid table capacity...');
             return false
         }
 
-        if (tableInfoObj.tableCapacity > 25) {
-            $rootScope.ShowToast("table capacity should be less than 25", false);
-            console.log('table capacity should be less than 25...');
+        if (tableInfoObj.tableCapacity > 25 || tableInfoObj.tableCapacity < 0) {
+            $rootScope.ShowToast("table capacity should be atleast 1 and less than 25", false);
+            console.log('table capacity should be atleast 1 and less than 25...');
             return false
+        }
+
+        if (tableInfoObj.tableCapacity == undefined) {
+            tableInfoObj.tableCapacity = null;
         }
 
         if (typeof tableInfoObj.tableSectionName == undefined || tableInfoObj.tableSectionName == "") {
@@ -2065,18 +2077,19 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
         if ($rootScope.CreateMode == 0) {
             console.log("Edit Product");
-            editTable();
+            editTable(tableInfoObj);
         } else {
             console.log("Add Product");
-            addNewTable();
+            addNewTable(tableInfoObj);
         }
     }
 
-    function addNewTable() {
+
+    function addNewTable(tableInfoObj) {
         console.log('entered addNewTable()..');
 
         $rootScope.showDbLoading();
-        var promise = dbService.addNewTable($scope.tableInfoObj.tableNumber, $scope.tableInfoObj.tableDescription, $scope.tableInfoObj.tableSectionId, $scope.tableInfoObj.tableSectionName, $scope.tableInfoObj.tableCharges, $scope.tableInfoObj.tableCapacity);
+        var promise = dbService.addNewTable(tableInfoObj.tableNumber, tableInfoObj.tableDescription, tableInfoObj.tableSectionId, tableInfoObj.tableSectionName, tableInfoObj.tableCharges, tableInfoObj.tableCapacity);
         promise.then(function(result) {
             console.log(result);
             console.log("Table Added Sucessfully");
@@ -2109,9 +2122,9 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
     }
 
-    function editTable() {
+    function editTable(tableInfoObj) {
         $rootScope.showDbLoading();
-        var promise = dbService.editTable($scope.tableInfoObj.tableId, $scope.tableInfoObj.tableNumber, $scope.tableInfoObj.tableDescription, $scope.tableInfoObj.tableSectionId, $scope.tableInfoObj.tableSectionName, $scope.tableInfoObj.tableCharges, $scope.tableInfoObj.tableCapacity);
+        var promise = dbService.editTable(tableInfoObj.tableId, tableInfoObj.tableNumber, tableInfoObj.tableDescription, tableInfoObj.tableSectionId, tableInfoObj.tableSectionName, tableInfoObj.tableCharges, tableInfoObj.tableCapacity);
         promise.then(function(result) {
             console.log(result);
             console.log("Table Edited Sucessfully");
