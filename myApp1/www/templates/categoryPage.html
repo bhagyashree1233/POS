@@ -8,12 +8,12 @@
     
                 <label class="item item-input">
                     <span class="input-label">Category Name :</span>
-                    <input type="text" name="catNameInput" maxlength="25" ng-model="newCategory.categoryName" placeholder="Enter category Name" required></input>
+                    <input type="text" name="catNameInput" limit-char limit="25"  ng-model="newCategory.categoryName" placeholder="Enter category Name" required></input>
                     <!--<p style="color:red;" ng-show="categoryForm.catNameInput.$touched && categoryForm.catNameInput.$invalid">Required and length should be 0-20 characters</p>-->
                 </label>
                 <label class="item item-input">
                     <span class="input-label">Category Description :</span>
-                    <textarea name="catDescInput" maxlength="50" ng-model="newCategory.categoryDescription" placeholder="Type..."></textarea>
+                    <textarea name="catDescInput" limit-char limit="50" ng-model="newCategory.categoryDescription" placeholder="Type..."></textarea>
                     <!--<p style="color:red;" ng-show="categoryForm.catDescInput.$touched && categoryForm.catDescInput.$invalid">Required and length should be 0-20 characters</p>-->
                 </label>
                 <div>

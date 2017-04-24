@@ -39,12 +39,14 @@ BTPrinter.list(function(data){
         {
             console.log("start and End Date undefined");
             startDate = new Date();
+            $scope.Dte.start = startDate;
             startDate.setHours(0);
             startDate.setMinutes(0);
             startDate.setSeconds(0);
             startDate.setMilliseconds(0);
 
             endDate = new Date();
+            $scope.Dte.end = endDate;
             endDate.setHours(23);
             endDate.setMinutes(59);
             endDate.setSeconds(59);
