@@ -6,19 +6,19 @@
         <form id="prinrSettings" name="myForm">
             <label class="item item-input">
                 <span class="input-label">Shop Name:</span>
-                <input type="text" name="shopName" id="shopName" class="printerSettingtext" maxlength=20 ng-model="printFormatSettings.shopName" required></input>
+                <input type="text" name="shopName" id="shopName" class="printerSettingtext"  ng-model="printFormatSettings.shopName" limit-char limit="20" required></input>
             </label>
             <label class="item item-input">
                 <span class="input-label">Address Line1:</span>
-                <input type="text" name="addressLine1" id="addressLine1" class="printerSettingtext" maxlength=20 ng-model="printFormatSettings.addressLine1"></input>
+                <input type="text" name="addressLine1" id="addressLine1" class="printerSettingtext"  ng-model="printFormatSettings.addressLine1" limit-char limit="20"></input>
             </label>
             <label class="item item-input">
                 <span class="input-label">Address Line2:</span>
-                <input type="text" name="addressLine2" id="addressLine2" class="printerSettingtext" ng-model="printFormatSettings.addressLine2" maxlength=20></input>
+                <input type="text" name="addressLine2" id="addressLine2" class="printerSettingtext" ng-model="printFormatSettings.addressLine2" limit-char limit="20"></input>
             </label>
             <label class="item item-input">
                 <span class="input-label">Phone No:</span>
-                <input type="tel" name="number1" id="number1" class="printerSettingtext" ng-model="printFormatSettings.phNumber" maxlength=13></input>
+                <input type="tel" name="number1" id="number1" class="printerSettingtext" ng-model="printFormatSettings.phNumber"  maxlength=13></input>
             </label>
             <label class="item item-input">
                 <span class="input-label">TIN Number:</span>
@@ -26,7 +26,7 @@
             </label>
             <label class="item item-input">
                 <span class="input-label">Greeting:</span>
-                <input type="text" class="printerSettingtext" id="greetings" name="greetings" ng-model="printFormatSettings.greeting" maxlength=30></input>
+                <input type="text" class="printerSettingtext" id="greetings" name="greetings" ng-model="printFormatSettings.greeting" limit-char limit="30"></input>
             </label>
             <label class="item item-input">
                 <span class="input-label">Starting Bill Number:</span>
@@ -63,11 +63,11 @@
             </label>
             <label class="item item-input">
                 <span class="input-label">Wifi Password:</span>
-                <input type="text" id="wifiPassword" name="wifiPassword" class="printerSettingtext" ng-model="printFormatSettings.wifiPasswrd" maxlength=15></input>
+                <input type="text" id="wifiPassword" name="wifiPassword" class="printerSettingtext" ng-model="printFormatSettings.wifiPasswrd" limit-char limit="15"></input>
             </label>
             <label class="item item-input">
                 <span class="input-label">Wifi SSID:</span>
-                <input type="text" id="wifiSsid" name="wifiSsid" class="printerSettingtext" ng-model="printFormatSettings.wifiSsid" maxlength=15></input>
+                <input type="text" id="wifiSsid" name="wifiSsid" class="printerSettingtext" ng-model="printFormatSettings.wifiSsid" limit-char limit="15"></input>
             </label>
             <div style="text-align:center;margin-top:2vh;">
                 <!--<button type="submit"  class="button button-block button-dark" style="margin:auto;width:70%">Submit</button>-->

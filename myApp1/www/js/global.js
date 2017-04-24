@@ -1,5 +1,9 @@
-angular.module('starter.globalcontroller', []).controller('global', function($rootScope, $scope, $cordovaSQLite, $state, $cordovaToast, $scope, $ionicSlideBoxDelegate, $ionicHistory, $ionicLoading, $timeout, $ionicPopup) {
+angular.module('starter.globalcontroller', [])
+
+.controller('global', function($rootScope, $scope, $cordovaSQLite, $state, $cordovaToast, $scope, $ionicSlideBoxDelegate, $ionicHistory, $ionicLoading, $timeout, $ionicPopup) {
     console.log('Hello hai');
+
+
 
     $rootScope.closeView = function() {
 

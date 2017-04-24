@@ -13,7 +13,7 @@
             <div class="list" style="background-color:transparent;">
                 <label class="item item-input item-borderless" style="background-color:transparent;">
                     <span class="input-label">Product Name :</span>
-                    <input type="text" ngModel="productNameInput" id="productName" maxlength="25" ng-model="newProduct.name" placeholder="Enter product name">
+                    <input type="text" ngModel="productNameInput" id="productName" limit-char limit="25" ng-model="newProduct.name" placeholder="Enter product name">
                 </label>
                 <label style="background-color:transparent;" class="item item-input item-borderless item-button-right" ng-click="openCategoryModal()">
                     <span class="input-label">Category :</span>
