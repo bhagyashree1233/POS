@@ -718,10 +718,9 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $scope.totalItems = $scope.productArr.length;
             //update inStock in product
             var promise2 = dbService.updateItemsInStock($scope.itemsInStockObj);
-            promise2.then(function(res){
+            promise2.then(function(res) {
                 $scope.OnCatClick($rootScope.SelCat);
-            },function(){
-                
+            }, function() {
             })
             SaveBillDetails();
         }, function(result) {
@@ -1386,7 +1385,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         console.log('entered addNewProduct()..');
 
         if ($scope.newProduct.image == undefined || $scope.newProduct.image == "")
-            $scope.newProduct.image = "img/longImage.jpg";
+            $scope.newProduct.image = "img/sc1.jpg";
 
         console.log($scope.newProduct);
 
@@ -1408,8 +1407,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $rootScope.ShowToast("Product Added Sucessfully", false);
             //  $rootScope.Products.push($scope.newProduct);
             $scope.newProduct = {
-                unit: 'pieces',
-                image: "img/longImage.jpg",
+                unit: 'pieces', 
+                image: "img/sc1.jpg",
                 favourite: false
             };
             $rootScope.hideDbLoading();
@@ -1493,7 +1492,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
                     console.dir(error);
                 });
             }, function(err) {// error
-            });
+            }); 
         }, false);
     }
 
@@ -1502,6 +1501,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         document.addEventListener("deviceready", function() {
             var options = {
                 quality: 50,
+                targetWidth: 1020,
+                targetHeight: 768,
                 destinationType: Camera.DestinationType.FILE_URI,
                 sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                 allowEdit: true
@@ -1514,7 +1515,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
                 console.log("Copying from : " + sourceDirectory + sourceFileName);
                 console.log("Copying to : " + cordova.file.dataDirectory + destinationTypeFileName);
                 console.log(sourceFileName);
-                console.log($scope.galeryFileName);
+                console.log($scope.galleryFileName);
                 $cordovaFile.copyFile(sourceDirectory, sourceFileName, cordova.file.dataDirectory, destinationTypeFileName).then(function(success) {
                     $scope.galleryFileName = cordova.file.dataDirectory + destinationTypeFileName;
                     console.log($scope.galleryFileName);
@@ -1763,7 +1764,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $rootScope.hideDbLoading();
         })
     }
- 
+
     console.log('entered table info ctrl')
     /* 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -2029,10 +2030,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             return false
         }
 
-        if (tableInfoObj.tableDescription == undefined || tableInfoObj.tableDescription == "") {
-            $rootScope.ShowToast("Please Enter table Description", false);
-            console.log('Please Enter table Description');
-            return false
+        if (tableInfoObj.tableDescription == undefined) {
+            $scope.tableInfoObj.tableDescription = "";
         }
 
         if (tableInfoObj.tableDescription.length > 25) {
@@ -2051,6 +2050,13 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             console.log('Invalid table capacity...');
             return false
         }
+
+        if (tableInfoObj.tableCapacity > 25) {
+            $rootScope.ShowToast("table capacity should be less than 25", false);
+            console.log('table capacity should be less than 25...');
+            return false
+        }
+
         if (typeof tableInfoObj.tableSectionName == undefined || tableInfoObj.tableSectionName == "") {
             $rootScope.ShowToast("Select table section name", false);
             console.log('select table section name...');
@@ -2151,6 +2157,21 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     }
 
     $scope.OnSave = function() {
+        if ($scope.tableInfoSection.sectionName == undefined || $scope.tableInfoSection.sectionName == "") {
+            $rootScope.ShowToast("Please enter section name", false);
+            console.log('Please enter section name');
+            return false
+        }
+
+        if ($scope.tableInfoSection.sectionDescription == undefined) {
+            $scope.tableInfoSection.sectionDescription = "";
+        }
+        if ($scope.tableInfoSection.sectionDescription.length > 25) {
+            $rootScope.ShowToast("Section description should be less than 25 characters", false);
+            console.log('Section description should be less than 25 characters');
+            return false
+        }
+
         if ($rootScope.CreateMode == 1)
             $scope.addNewSection();
         else
