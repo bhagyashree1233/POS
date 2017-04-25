@@ -386,9 +386,9 @@ input.printerSettingtext {
     white-space: nowrap;
 }
 
-.salesReport {
+.salesReport p{
     font-style: italic;
-    font-size: 3vh;
+    font-size: 2.3vh;
     font-weight: bold;
 }
 
@@ -1162,7 +1162,9 @@ table.tableInfolist tr td:first-child {
     font-size:3vmin;
 }
 
-#prinrSettings input {
+#prinrSettings input, #pwdChangeContent input {
     border:0px;
     margin-left:1vh;
 }
+
+
