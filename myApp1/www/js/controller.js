@@ -553,10 +553,16 @@ var productInstock=0;
             qty = typedCode;
         }
          console.log($scope.itemsInStockObj );
-          
-        if(!(angular.isDefined($scope.itemsInStockObj [product.productId]))){
+          console.log(parseFloat(qty));
+          console.log(parseFloat(product.inStock))
+          console.log(parseFloat(qty)<parseFloat(product.inStock))
+          console.log($scope.itemsInStockObj [product.productId])
+        if($scope.itemsInStockObj [product.productId]==undefined && parseFloat(qty)<parseFloat(product.inStock) ){
         $scope.itemsInStockObj[product.productId] = parseFloat(product.inStock) - parseFloat(qty);
         console.log( 'This is Item in stock obj'+$scope.itemsInStockObj[product.productId])
+        }else if(parseFloat(qty)>parseFloat(product.inStock)){
+            $rootScope.ShowToast("Insufficient Stock", false);
+            return false;
         }else if($scope.itemsInStockObj [product.productId] ==0){
              $rootScope.ShowToast("Out of Stock", false);
             return false;
