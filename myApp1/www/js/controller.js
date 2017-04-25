@@ -553,11 +553,12 @@ var productInstock=0;
             qty = typedCode;
         }
          console.log($scope.itemsInStockObj );
-          console.log(parseFloat(qty));
-          console.log(parseFloat(product.inStock))
+          console.log('quantity'+parseFloat(qty));
+          console.log('In Stock'+parseFloat(product.inStock))
           console.log(parseFloat(qty)<parseFloat(product.inStock))
-          console.log($scope.itemsInStockObj [product.productId])
-        if($scope.itemsInStockObj [product.productId]==undefined && parseFloat(qty)<parseFloat(product.inStock) ){
+          console.log('item in stock'+$scope.itemsInStockObj [product.productId])
+          console.log(parseFloat(product.inStock)-parseFloat(qty));
+        if($scope.itemsInStockObj [product.productId]==undefined && parseFloat(qty)<=parseFloat(product.inStock) ){
         $scope.itemsInStockObj[product.productId] = parseFloat(product.inStock) - parseFloat(qty);
         console.log( 'This is Item in stock obj'+$scope.itemsInStockObj[product.productId])
         }else if(parseFloat(qty)>parseFloat(product.inStock)){
@@ -830,7 +831,7 @@ var productInstock=0;
         $scope.totalChargeAmount = 0;
         //gau;;
         console.log('I am in  void'+productInstock);
-        $scope.itemsInStockObj[product.productId]=productInstock;
+       
         if ($rootScope.selTable.tableId != undefined) //table order;;
         {
             $rootScope.RemoveTable($rootScope.selTable);
@@ -862,7 +863,7 @@ var productInstock=0;
 
         $ionicPopup.show({
             title: 'Print Receipt',
-            subTitle: 'Print Receipt to Complete Transaction <br/><br/><b>Paid Amount : ' + $scope.typedAmount + ' (' + + ')</b><br/><b> Balance Amount : ' + $scope.Balance + ' (' + + ')</b>',
+            subTitle: 'Print Receipt to Complete Transaction <br/><br/><b>Paid Amount : ' + $scope.typedAmount + ' (' + $rootScope.PaymentSettings.CurrencyOptions.symbol + ')</b><br/><b> Balance Amount : ' + $scope.Balance + ' (' +$rootScope.PaymentSettings.CurrencyOptions.symbol + ')</b>',
             scope: $scope,
             buttons: [{
                 text: 'Close',
