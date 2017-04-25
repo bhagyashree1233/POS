@@ -407,11 +407,11 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
     }
 
-    $scope.onPressHold = function(index) {
+    $scope.onPressHold = function(index,product) {
         console.log('entered on hold delete item');
         $scope.showDelete = true;
         $scope.holdIndex = index;
-
+        $scope.holdProduct=product;
         var confirmPopup = $ionicPopup.confirm({
             title: 'Delete Item ',
             template: 'Do you want to delete selected item?'
@@ -419,7 +419,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         confirmPopup.then(function(res) {
             if (res) {
                 console.log('Delete item');
-                $scope.deleteItem($scope.holdIndex);
+                $scope.deleteItem($scope.holdIndex,$scope.holdProduct);
             } else {
                 console.log('dont delete item');
                 $scope.showDelete = false;
@@ -428,10 +428,13 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
     }
 
-    $scope.deleteItem = function(index) {
+    $scope.deleteItem = function(index,product) {
+     
+         $scope.itemsInStockObj[product.productId]=$scope.itemsInStockObj[product.productId]+product.quantity;
+        console.log( $scope.itemsInStockObj[product.productId])
         $scope.productArr.splice(index, 1);
         $scope.showDelete = false;
-        delete $scope.itemsInStockObj[product.productId];
+        //delete $scope.itemsInStockObj[product.productId];
         calculateProductCost();
 
         console.log("In delete Item");
@@ -527,11 +530,12 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     $scope.discountAmount = 0;
     $scope.totalChargeAmount = 0;
     //  $scope.quantity=0;
-
+var productInstock=0;
     $scope.save = function(product, typedCode) {
-
+      productInstock=product.tock;
         console.log(product);
         console.log(product.productId);
+        console.log(product.quantity)
         if ($scope.productArr != undefined && $scope.productArr.length < 1) {
             for (var i = 0; i < $scope.productArr.length; i++) {
                 if (product.productId == $scope.productArr[i].productId) {
@@ -548,9 +552,23 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         } else {
             qty = typedCode;
         }
+         console.log($scope.itemsInStockObj );
+          
+        if(!(angular.isDefined($scope.itemsInStockObj [product.productId]))){
         $scope.itemsInStockObj[product.productId] = parseFloat(product.inStock) - parseFloat(qty);
-        if ($scope.itemsInStockObj[product.productId] < 0)
-            $scope.itemsInStockObj[product.productId] = 0;
+        console.log( 'This is Item in stock obj'+$scope.itemsInStockObj[product.productId])
+        }else if($scope.itemsInStockObj [product.productId] ==0){
+             $rootScope.ShowToast("Out of Stock", false);
+            return false;
+        }
+        else if(parseFloat(qty)>$scope.itemsInStockObj[product.productId]){
+         $rootScope.ShowToast("In sufficient stock", false);
+         return false;
+        }
+        else{
+            $scope.itemsInStockObj[product.productId] =$scope.itemsInStockObj[product.productId] -parseFloat(qty);
+        console.log('This is Item in stock obj'+ $scope.itemsInStockObj[product.productId])
+        }       
 
         console.log($scope.itemsInStockObj);
         //  var qty =document.getElementById('quantity').value;
@@ -796,6 +814,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         })
     }
     $scope.void = function() {
+        $scope.itemsInStockObj={}
+        console.log($scope.productArr)
         $scope.productArr = [];
         $scope.typedAmount = null;
         $scope.Balance = null;
@@ -804,6 +824,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         $scope.discountAmount = 0;
         $scope.totalChargeAmount = 0;
         //gau;;
+        console.log('I am in  void'+productInstock);
+        $scope.itemsInStockObj[product.productId]=productInstock;
         if ($rootScope.selTable.tableId != undefined) //table order;;
         {
             $rootScope.RemoveTable($rootScope.selTable);
@@ -835,7 +857,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
         $ionicPopup.show({
             title: 'Print Receipt',
-            subTitle: 'Print Receipt to Complete Transaction <br/><br/><b>Paid Amount : ' + $scope.typedAmount + ' (' + $rootScope.PaymentSettings.CurrencyOptions.symbol + ')</b><br/><b> Balance Amount : ' + $scope.Balance + ' (' + $rootScope.PaymentSettings.CurrencyOptions.symbol + ')</b>',
+            subTitle: 'Print Receipt to Complete Transaction <br/><br/><b>Paid Amount : ' + $scope.typedAmount + ' (' + + ')</b><br/><b> Balance Amount : ' + $scope.Balance + ' (' + + ')</b>',
             scope: $scope,
             buttons: [{
                 text: 'Close',
@@ -904,7 +926,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     }
 
     $scope.showPaymentMode = function() {
-
+        console.log($scope.productArr);
+       
         if ($scope.productArr.length <= 0) {
             return;
         }
@@ -1279,6 +1302,10 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
         } else if (!pattern.test(discount)) {
             $rootScope.ShowToast("Invalid discount", false);
+            console.log('Invalid discount')
+            return false
+        }else if(discount>100){
+             $rootScope.ShowToast("Invalid discount", false);
             console.log('Invalid discount')
             return false
         }
