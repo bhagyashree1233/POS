@@ -34,7 +34,7 @@
                                 </th>
                                 </tr>
                             </thead>
-                            <tr ng-repeat="product in productArr" on-hold="onPressHold($index)">
+                            <tr ng-repeat="product in productArr" on-hold="onPressHold($index,product)">
                                 <td style="font-weight:bold;position:relative;">
                                     {{$index+1}}
                                     

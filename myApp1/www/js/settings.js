@@ -49,6 +49,10 @@ angular.module('starter.settingscontroller', [])
     }else if(!pattern.test(taxRate)){
         console.log('Invalid tax Rate')
         return false
+    }else if(taxRate>100){
+        console.log('Invalid Tax Rate')
+         $rootScope.ShowToast("Invalid Tax Rate", false);
+         return false
     }
 
         var d = new Date();
