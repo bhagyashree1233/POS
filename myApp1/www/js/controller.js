@@ -736,10 +736,9 @@ var productInstock=0;
             $scope.totalItems = $scope.productArr.length;
             //update inStock in product
             var promise2 = dbService.updateItemsInStock($scope.itemsInStockObj);
-            promise2.then(function(res){
+            promise2.then(function(res) {
                 $scope.OnCatClick($rootScope.SelCat);
-            },function(){
-                
+            }, function() {
             })
             SaveBillDetails();
         }, function(result) {
@@ -1413,16 +1412,18 @@ var productInstock=0;
         console.log('entered addNewProduct()..');
 
         if ($scope.newProduct.image == undefined || $scope.newProduct.image == "")
-            $scope.newProduct.image = "img/longImage.jpg";
+            $scope.newProduct.image = "img/sc1.jpg";
 
         console.log($scope.newProduct);
 
-        /* if (!(angular.isDefined($scope.newProduct.discount))) {
+        /* 
+          if (!(angular.isDefined($scope.newProduct.discount))) {
                     $scope.newProduct.discount = 0;
                 }
                  if (!(angular.isDefined($scope.newProduct.inStock))) {
                     $scope.newProduct.inStock = 1000000;
-                }*/
+                }
+         */
 
         console.log("Cat ID: ", $scope.newProduct.categoryId);
         console.log('validation success and entered if');
@@ -1435,8 +1436,8 @@ var productInstock=0;
             $rootScope.ShowToast("Product Added Sucessfully", false);
             //  $rootScope.Products.push($scope.newProduct);
             $scope.newProduct = {
-                unit: 'pieces',
-                image: "img/longImage.jpg",
+                unit: 'pieces', 
+                image: "img/sc1.jpg",
                 favourite: false
             };
             $rootScope.hideDbLoading();
@@ -1520,7 +1521,7 @@ var productInstock=0;
                     console.dir(error);
                 });
             }, function(err) {// error
-            });
+            }); 
         }, false);
     }
 
@@ -1529,6 +1530,8 @@ var productInstock=0;
         document.addEventListener("deviceready", function() {
             var options = {
                 quality: 50,
+                targetWidth: 1020,
+                targetHeight: 768,
                 destinationType: Camera.DestinationType.FILE_URI,
                 sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
                 allowEdit: true
@@ -1541,7 +1544,7 @@ var productInstock=0;
                 console.log("Copying from : " + sourceDirectory + sourceFileName);
                 console.log("Copying to : " + cordova.file.dataDirectory + destinationTypeFileName);
                 console.log(sourceFileName);
-                console.log($scope.galeryFileName);
+                console.log($scope.galleryFileName);
                 $cordovaFile.copyFile(sourceDirectory, sourceFileName, cordova.file.dataDirectory, destinationTypeFileName).then(function(success) {
                     $scope.galleryFileName = cordova.file.dataDirectory + destinationTypeFileName;
                     console.log($scope.galleryFileName);
@@ -1606,6 +1609,7 @@ var productInstock=0;
         name: "",
         description: ""
     };
+
     $scope.editCategory = function() {
         console.log('entered edit category');
         if ($scope.searchCategory.categoryId) {
@@ -1790,7 +1794,7 @@ var productInstock=0;
             $rootScope.hideDbLoading();
         })
     }
- 
+
     console.log('entered table info ctrl')
     /* 
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -2056,10 +2060,8 @@ var productInstock=0;
             return false
         }
 
-        if (tableInfoObj.tableDescription == undefined || tableInfoObj.tableDescription == "") {
-            $rootScope.ShowToast("Please Enter table Description", false);
-            console.log('Please Enter table Description');
-            return false
+        if (tableInfoObj.tableDescription == undefined) {
+            $scope.tableInfoObj.tableDescription = "";
         }
 
         if (tableInfoObj.tableDescription.length > 25) {
@@ -2068,16 +2070,32 @@ var productInstock=0;
             return false
         }
 
+        if (tableInfoObj.tableCharges == undefined || tableInfoObj.tableCharges == "") {
+            tableInfoObj.tableCharges = 0;
+        }
+
         if (typeof tableInfoObj.tableCharges !== 'number') {
             $rootScope.ShowToast("Invalid table charge", false);
             console.log('Invalid table charge...');
             return false
         }
+
         if ((typeof tableInfoObj.tableCapacity !== 'number') || (tableInfoObj.tableCapacity % 1 !== 0)) {
             $rootScope.ShowToast("Invalid table capacity", false);
             console.log('Invalid table capacity...');
             return false
         }
+
+        if (tableInfoObj.tableCapacity > 25 || tableInfoObj.tableCapacity < 0) {
+            $rootScope.ShowToast("table capacity should be atleast 1 and less than 25", false);
+            console.log('table capacity should be atleast 1 and less than 25...');
+            return false
+        }
+
+        if (tableInfoObj.tableCapacity == undefined) {
+            tableInfoObj.tableCapacity = null;
+        }
+
         if (typeof tableInfoObj.tableSectionName == undefined || tableInfoObj.tableSectionName == "") {
             $rootScope.ShowToast("Select table section name", false);
             console.log('select table section name...');
@@ -2086,18 +2104,19 @@ var productInstock=0;
 
         if ($rootScope.CreateMode == 0) {
             console.log("Edit Product");
-            editTable();
+            editTable(tableInfoObj);
         } else {
             console.log("Add Product");
-            addNewTable();
+            addNewTable(tableInfoObj);
         }
     }
 
-    function addNewTable() {
+
+    function addNewTable(tableInfoObj) {
         console.log('entered addNewTable()..');
 
         $rootScope.showDbLoading();
-        var promise = dbService.addNewTable($scope.tableInfoObj.tableNumber, $scope.tableInfoObj.tableDescription, $scope.tableInfoObj.tableSectionId, $scope.tableInfoObj.tableSectionName, $scope.tableInfoObj.tableCharges, $scope.tableInfoObj.tableCapacity);
+        var promise = dbService.addNewTable(tableInfoObj.tableNumber, tableInfoObj.tableDescription, tableInfoObj.tableSectionId, tableInfoObj.tableSectionName, tableInfoObj.tableCharges, tableInfoObj.tableCapacity);
         promise.then(function(result) {
             console.log(result);
             console.log("Table Added Sucessfully");
@@ -2130,9 +2149,9 @@ var productInstock=0;
 
     }
 
-    function editTable() {
+    function editTable(tableInfoObj) {
         $rootScope.showDbLoading();
-        var promise = dbService.editTable($scope.tableInfoObj.tableId, $scope.tableInfoObj.tableNumber, $scope.tableInfoObj.tableDescription, $scope.tableInfoObj.tableSectionId, $scope.tableInfoObj.tableSectionName, $scope.tableInfoObj.tableCharges, $scope.tableInfoObj.tableCapacity);
+        var promise = dbService.editTable(tableInfoObj.tableId, tableInfoObj.tableNumber, tableInfoObj.tableDescription, tableInfoObj.tableSectionId, tableInfoObj.tableSectionName, tableInfoObj.tableCharges, tableInfoObj.tableCapacity);
         promise.then(function(result) {
             console.log(result);
             console.log("Table Edited Sucessfully");
@@ -2178,6 +2197,21 @@ var productInstock=0;
     }
 
     $scope.OnSave = function() {
+        if ($scope.tableInfoSection.sectionName == undefined || $scope.tableInfoSection.sectionName == "") {
+            $rootScope.ShowToast("Please enter section name", false);
+            console.log('Please enter section name');
+            return false
+        }
+
+        if ($scope.tableInfoSection.sectionDescription == undefined) {
+            $scope.tableInfoSection.sectionDescription = "";
+        }
+        if ($scope.tableInfoSection.sectionDescription.length > 25) {
+            $rootScope.ShowToast("Section description should be less than 25 characters", false);
+            console.log('Section description should be less than 25 characters');
+            return false
+        }
+
         if ($rootScope.CreateMode == 1)
             $scope.addNewSection();
         else
