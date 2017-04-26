@@ -5,11 +5,11 @@
             <div class="list">
                 <label class="item item-input item-borderless">
                     <span class="input-label">Table Number :</span>
-                    <input type="text" ng-model="tableInfoObj.tableNumber">
+                    <input type="text" limit-char limit="10" ng-model="tableInfoObj.tableNumber">
                 </label>
                 <label class="item item-input item-borderless">
                     <span class="input-label">Table Description :</span>
-                    <input type="text" ng-model="tableInfoObj.tableDescription">
+                    <input type="text" limit-char limit="25" ng-model="tableInfoObj.tableDescription">
                 </label>
                 <label class="item item-input item-borderless">
                     <span class="input-label">Addtional Charges:</span>

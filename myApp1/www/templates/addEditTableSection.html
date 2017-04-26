@@ -5,11 +5,11 @@
             <div class="list">
                 <label class="item item-input item-borderless">
                     <span class="input-label">Section Name :</span>
-                    <input type="text" ng-model="tableInfoSection.sectionName">
+                    <input type="text" limit-char limit="15" ng-model="tableInfoSection.sectionName">
                 </label>
                 <label class="item item-input item-borderless">
                     <span class="input-label">Section Description :</span>
-                    <input type="text" ng-model="tableInfoSection.sectionDescription">
+                    <input type="text" limit-char limit="25" ng-model="tableInfoSection.sectionDescription">
                 </label>
             </div>
             <div style="text-align:center;margin-top:2vh;">

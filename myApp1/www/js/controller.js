@@ -407,11 +407,11 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
     }
 
-    $scope.onPressHold = function(index,product) {
+    $scope.onPressHold = function(index, product) {
         console.log('entered on hold delete item');
         $scope.showDelete = true;
         $scope.holdIndex = index;
-        $scope.holdProduct=product;
+        $scope.holdProduct = product;
         var confirmPopup = $ionicPopup.confirm({
             title: 'Delete Item ',
             template: 'Do you want to delete selected item?'
@@ -419,7 +419,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         confirmPopup.then(function(res) {
             if (res) {
                 console.log('Delete item');
-                $scope.deleteItem($scope.holdIndex,$scope.holdProduct);
+                $scope.deleteItem($scope.holdIndex, $scope.holdProduct);
             } else {
                 console.log('dont delete item');
                 $scope.showDelete = false;
@@ -428,10 +428,10 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
     }
 
-    $scope.deleteItem = function(index,product) {
-     
-         $scope.itemsInStockObj[product.productId]=$scope.itemsInStockObj[product.productId]+product.quantity;
-        console.log( $scope.itemsInStockObj[product.productId])
+    $scope.deleteItem = function(index, product) {
+
+        $scope.itemsInStockObj[product.productId] = $scope.itemsInStockObj[product.productId] + product.quantity;
+        console.log($scope.itemsInStockObj[product.productId])
         $scope.productArr.splice(index, 1);
         $scope.showDelete = false;
         //delete $scope.itemsInStockObj[product.productId];
@@ -530,9 +530,9 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     $scope.discountAmount = 0;
     $scope.totalChargeAmount = 0;
     //  $scope.quantity=0;
-var productInstock=0;
+    var productInstock = 0;
     $scope.save = function(product, typedCode) {
-      productInstock=product.tock;
+        productInstock = product.tock;
         console.log(product);
         console.log(product.productId);
         console.log(product.quantity)
@@ -552,29 +552,27 @@ var productInstock=0;
         } else {
             qty = typedCode;
         }
-         console.log($scope.itemsInStockObj );
-          console.log(parseFloat(qty));
-          console.log(parseFloat(product.inStock))
-          console.log(parseFloat(qty)<parseFloat(product.inStock))
-          console.log($scope.itemsInStockObj [product.productId])
-        if($scope.itemsInStockObj [product.productId]==undefined && parseFloat(qty)<parseFloat(product.inStock) ){
-        $scope.itemsInStockObj[product.productId] = parseFloat(product.inStock) - parseFloat(qty);
-        console.log( 'This is Item in stock obj'+$scope.itemsInStockObj[product.productId])
-        }else if(parseFloat(qty)>parseFloat(product.inStock)){
+        console.log($scope.itemsInStockObj);
+        console.log(parseFloat(qty));
+        console.log(parseFloat(product.inStock))
+        console.log(parseFloat(qty) < parseFloat(product.inStock))
+        console.log($scope.itemsInStockObj[product.productId])
+        if ($scope.itemsInStockObj[product.productId] == undefined && parseFloat(qty) < parseFloat(product.inStock)) {
+            $scope.itemsInStockObj[product.productId] = parseFloat(product.inStock) - parseFloat(qty);
+            console.log('This is Item in stock obj' + $scope.itemsInStockObj[product.productId])
+        } else if (parseFloat(qty) > parseFloat(product.inStock)) {
             $rootScope.ShowToast("Insufficient Stock", false);
             return false;
-        }else if($scope.itemsInStockObj [product.productId] ==0){
-             $rootScope.ShowToast("Out of Stock", false);
+        } else if ($scope.itemsInStockObj[product.productId] == 0) {
+            $rootScope.ShowToast("Out of Stock", false);
             return false;
+        } else if (parseFloat(qty) > $scope.itemsInStockObj[product.productId]) {
+            $rootScope.ShowToast("In sufficient stock", false);
+            return false;
+        } else {
+            $scope.itemsInStockObj[product.productId] = $scope.itemsInStockObj[product.productId] - parseFloat(qty);
+            console.log('This is Item in stock obj' + $scope.itemsInStockObj[product.productId])
         }
-        else if(parseFloat(qty)>$scope.itemsInStockObj[product.productId]){
-         $rootScope.ShowToast("In sufficient stock", false);
-         return false;
-        }
-        else{
-            $scope.itemsInStockObj[product.productId] =$scope.itemsInStockObj[product.productId] -parseFloat(qty);
-        console.log('This is Item in stock obj'+ $scope.itemsInStockObj[product.productId])
-        }       
 
         console.log($scope.itemsInStockObj);
         //  var qty =document.getElementById('quantity').value;
@@ -744,8 +742,7 @@ var productInstock=0;
             var promise2 = dbService.updateItemsInStock($scope.itemsInStockObj);
             promise2.then(function(res) {
                 $scope.OnCatClick($rootScope.SelCat);
-            }, function() {
-            })
+            }, function() {})
             SaveBillDetails();
         }, function(result) {
             console.log(result);
@@ -819,7 +816,7 @@ var productInstock=0;
         })
     }
     $scope.void = function() {
-        $scope.itemsInStockObj={}
+        $scope.itemsInStockObj = {}
         console.log($scope.productArr)
         $scope.productArr = [];
         $scope.typedAmount = null;
@@ -829,8 +826,8 @@ var productInstock=0;
         $scope.discountAmount = 0;
         $scope.totalChargeAmount = 0;
         //gau;;
-        console.log('I am in  void'+productInstock);
-        $scope.itemsInStockObj[product.productId]=productInstock;
+        console.log('I am in  void' + productInstock);
+        $scope.itemsInStockObj[product.productId] = productInstock;
         if ($rootScope.selTable.tableId != undefined) //table order;;
         {
             $rootScope.RemoveTable($rootScope.selTable);
@@ -862,7 +859,7 @@ var productInstock=0;
 
         $ionicPopup.show({
             title: 'Print Receipt',
-            subTitle: 'Print Receipt to Complete Transaction <br/><br/><b>Paid Amount : ' + $scope.typedAmount + ' (' + + ')</b><br/><b> Balance Amount : ' + $scope.Balance + ' (' + + ')</b>',
+            subTitle: 'Print Receipt to Complete Transaction <br/><br/><b>Paid Amount : ' + $scope.typedAmount + ' (' + +')</b><br/><b> Balance Amount : ' + $scope.Balance + ' (' + +')</b>',
             scope: $scope,
             buttons: [{
                 text: 'Close',
@@ -932,7 +929,7 @@ var productInstock=0;
 
     $scope.showPaymentMode = function() {
         console.log($scope.productArr);
-       
+
         if ($scope.productArr.length <= 0) {
             return;
         }
@@ -1309,8 +1306,8 @@ var productInstock=0;
             $rootScope.ShowToast("Invalid discount", false);
             console.log('Invalid discount')
             return false
-        }else if(discount>100){
-             $rootScope.ShowToast("Invalid discount", false);
+        } else if (discount > 100) {
+            $rootScope.ShowToast("Invalid discount", false);
             console.log('Invalid discount')
             return false
         }
@@ -1442,7 +1439,7 @@ var productInstock=0;
             $rootScope.ShowToast("Product Added Sucessfully", false);
             //  $rootScope.Products.push($scope.newProduct);
             $scope.newProduct = {
-                unit: 'pieces', 
+                unit: 'pieces',
                 image: "img/sc1.jpg",
                 favourite: false
             };
@@ -1527,19 +1524,21 @@ var productInstock=0;
                     console.dir(error);
                 });
             }, function(err) {// error
-            }); 
+            });
         }, false);
     }
 
     $scope.openGallery = function() {
+
         console.log('gallery opened..');
         document.addEventListener("deviceready", function() {
             var options = {
                 quality: 50,
-                targetWidth: 1020,
-                targetHeight: 768,
                 destinationType: Camera.DestinationType.FILE_URI,
                 sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                encodingType: Camera.EncodingType.JPEG,
+                // targetWidth: 1020,
+                // targetHeight: 768,
                 allowEdit: true
             };
             $cordovaCamera.getPicture(options).then(function(sourcePath) {
@@ -1548,11 +1547,16 @@ var productInstock=0;
                 var destinationTypeFileName = (new Date()).getTime() + '.jpg';
                 // $scope.cameraFileName = cordova.file.dataDirectory + sourceFileName;
                 console.log("Copying from : " + sourceDirectory + sourceFileName);
-                console.log("Copying to : " + cordova.file.dataDirectory + destinationTypeFileName);
+                console.log("Copying to : " + cordova.file.dataDirectory + sourceFileName);
+                // sourceFileName =  sourceFileName.substr(9)+".jpg";
+                console.log(sourceDirectory);
                 console.log(sourceFileName);
+                console.log(cordova.file.dataDirectory);
+                console.log(destinationTypeFileName);
                 console.log($scope.galleryFileName);
-                $cordovaFile.copyFile(sourceDirectory, sourceFileName, cordova.file.dataDirectory, destinationTypeFileName).then(function(success) {
-                    $scope.galleryFileName = cordova.file.dataDirectory + destinationTypeFileName;
+
+                $cordovaFile.copyFile(sourceDirectory, sourceFileName, cordova.file.dataDirectory, sourceFileName).then(function(success) {
+                    $scope.galleryFileName = cordova.file.dataDirectory + sourceFileName;
                     console.log($scope.galleryFileName);
                     $scope.newProduct.image = $scope.galleryFileName;
                 }, function(error) {
@@ -2117,7 +2121,6 @@ var productInstock=0;
         }
     }
 
-
     function addNewTable(tableInfoObj) {
         console.log('entered addNewTable()..');
 
@@ -2209,9 +2212,16 @@ var productInstock=0;
             return false
         }
 
+        if ($scope.tableInfoSection.sectionName.length > 15 ) {
+            $rootScope.ShowToast("section name should be less than 15 characters", false);
+            console.log('section name should be less than 15 characters');
+            return false
+        }
+
         if ($scope.tableInfoSection.sectionDescription == undefined) {
             $scope.tableInfoSection.sectionDescription = "";
         }
+        
         if ($scope.tableInfoSection.sectionDescription.length > 25) {
             $rootScope.ShowToast("Section description should be less than 25 characters", false);
             console.log('Section description should be less than 25 characters');
