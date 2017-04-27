@@ -1010,8 +1010,44 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
     }
 
+    $scope.addTotalDiscount = function() {
+        $rootScope.openNumericModal($scope, $scope.onDiscountOk, $scope.onQuantityCancel);
+    }
+
+    $scope.onDiscountOk = function(value) {
+        console.log("Entered Discount value: "+value);
+        console.log(typeof value);
+
+        if(value.indexOf('.') == 0) {
+            value = value.substr(1);
+            $rootScope.discType = '%';
+        } else {
+            $rootScope.discType = 'Rs';
+        }
+         value = Number(value);
+         console.log(typeof value);
+
+         if(($rootScope.discType == '%') && (value > 100)) {
+             console.log('Value cannot be greater than 100% discount');
+             $rootScope.ShowToast('Value cannot be greater than 100% discount', false);
+             return ( false );
+         }
+
+
+        $rootScope.totalAmountDiscount = value;
+
+        if($rootScope.discType == "%") {
+            console.log("Entered Discount is " + $rootScope.totalAmountDiscount +" %");
+        } else {
+            console.log("Entered Discount is " + $rootScope.totalAmountDiscount + " Rs");    
+        }
+        
+        return ( true );
+    }
+
     $scope.onQuantityOk = function(value) {
         console.log("On Quantity Ok: ", value);
+        console.log(typeof value);
         //checks here;;
         if (value <= 0) {
             console.log("Quantity cannot be zero");

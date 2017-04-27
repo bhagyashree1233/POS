@@ -34,6 +34,8 @@ angular.module('starter.globalcontroller', [])
     $rootScope.CreateMode = 0;
     $rootScope.PrevSelCat = '0';
     $rootScope.CurrentProduct = {};
+    $rootScope.totalAmountDiscount = 0;
+    $rootScope.discType = 'Rs';   
 
     $rootScope.password = "password123";
     $rootScope.masterPassword = "payupad123";
