@@ -1455,7 +1455,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         console.log('entered addNewProduct()..');
 
         if ($scope.newProduct.image == undefined || $scope.newProduct.image == "")
-            $scope.newProduct.image = "img/sc1.jpg";
+            $scope.newProduct.image = "img/longImage.jpg";
 
         console.log($scope.newProduct);
 
