@@ -305,7 +305,7 @@
     </ion-content>
     <!--<ion-floating-button ng-show="Mode == 1" click="OnEditCategory()" has-footer="false" button-color="#2AC9AA" icon="ion-edit" icon-color="#fff"></ion-floating-button>
     -->
-    <ion-side-tabs on-expand="tabExpand(index)" on-collapse="tabCollapse(index)" has-header='false'>
+    <ion-side-tabs on-expand="tabExpand(index);rest()" on-collapse="tabCollapse(index);resetSearch()" has-header='false'>
         <!--<ion-side-tab  tab.expand="tabs.tab1" style="border-radius: 10px; width:10vw;background-color:rgba(8,8,8,0.9);" >
  -->
         <ion-side-tab positive-bg style="border-radius: 10px;border-radius: 10px; width:10vw;background-color:rgba(8,8,8,0.9);" has-header='false' expand="tabs.tab3">
