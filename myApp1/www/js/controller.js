@@ -479,12 +479,15 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         console.log('clicked outside');
     }
     ;
+
 */
+
     function calculateProductCost() {
         $scope.totalPrice = 0;
         $scope.totalTaxAmount = 0;
         $scope.discountAmount = 0;
         $scope.totalChargeAmount = 0;
+
         for (var i = 0; i < $scope.productArr.length; i++) {
             var tempObj = $scope.productArr[i];
             $scope.totalPrice = $scope.totalPrice + tempObj.productTotalPrice;
@@ -492,8 +495,18 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $scope.discountAmount = parseFloat(($scope.discountAmount + tempObj.discountAmount).toFixed(2));
             $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount + tempObj.productTotalAmount).toFixed(2));
         }
+ 
+        if ($rootScope.totalAmountDiscount > $scope.totalChargeAmount) {
+            $rootScope.totalAmountDiscount = 0;
+        }
+        if ($rootScope.totalAmountDiscount != 0 && $rootScope.discType == 'Rs') {
+            $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount - $rootScope.totalAmountDiscount).toFixed(2));
+        } 
+        if ($rootScope.totalAmountDiscount != 0 && $rootScope.discType == '%') {
+            $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount - ($scope.totalChargeAmount * $rootScope.totalAmountDiscount / 100)).toFixed(2));
+        }
     }
-
+ 
     //$scope.OnCatClick("favourite");
 
     /*
@@ -532,7 +545,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     //  $scope.quantity=0;
     var productInstock = 0;
     $scope.save = function(product, typedCode) {
-        productInstock = product.tock;
+        productInstock = product.stock;
         console.log(product);
         console.log(product.productId);
         console.log(product.quantity)
@@ -553,16 +566,16 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             qty = typedCode;
         }
 
-         console.log($scope.itemsInStockObj );
-          console.log('quantity'+parseFloat(qty));
-          console.log('In Stock'+parseFloat(product.inStock))
-          console.log(parseFloat(qty)<parseFloat(product.inStock))
-          console.log('item in stock'+$scope.itemsInStockObj [product.productId])
-          console.log(parseFloat(product.inStock)-parseFloat(qty));
-        if($scope.itemsInStockObj [product.productId]==undefined && parseFloat(qty)<=parseFloat(product.inStock) ){
-        $scope.itemsInStockObj[product.productId] = parseFloat(product.inStock) - parseFloat(qty);
-        console.log( 'This is Item in stock obj'+$scope.itemsInStockObj[product.productId])
-        }else if(parseFloat(qty)>parseFloat(product.inStock)){
+        console.log($scope.itemsInStockObj);
+        console.log('quantity' + parseFloat(qty));
+        console.log('In Stock' + parseFloat(product.inStock))
+        console.log(parseFloat(qty) < parseFloat(product.inStock))
+        console.log('item in stock' + $scope.itemsInStockObj[product.productId])
+        console.log(parseFloat(product.inStock) - parseFloat(qty));
+        if ($scope.itemsInStockObj[product.productId] == undefined && parseFloat(qty) <= parseFloat(product.inStock)) {
+            $scope.itemsInStockObj[product.productId] = parseFloat(product.inStock) - parseFloat(qty);
+            console.log('This is Item in stock obj' + $scope.itemsInStockObj[product.productId])
+        } else if (parseFloat(qty) > parseFloat(product.inStock)) {
             $rootScope.ShowToast("Insufficient Stock", false);
             return false;
         } else if ($scope.itemsInStockObj[product.productId] == 0) {
@@ -615,9 +628,11 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             selected: false,
             status: status
         })
+
         //$scope.numericModal.hide();
         //$scope.newProduct = {};
         //$scope.typedCode = null;
+        $rootScope.totalAmountDiscount = 0;
         console.log($scope.productArr);
         $scope.totalPrice = $scope.totalPrice + productTotalPrice;
         $scope.totalTaxAmount = parseFloat(($scope.totalTaxAmount + productTotalTax).toFixed(2));
@@ -755,7 +770,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     //function to save bill details to database
     function SaveBillDetails() {
         //console.log("Save Bill date: ", $scope.transactionDate);
-        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.BillDate, $rootScope.VolatileData.CurrentBillNo);
+        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.BillDate, $rootScope.VolatileData.CurrentBillNo, $rootScope.totalAmountDiscount);
         promise.then(function(result) {
             console.log(result);
             //clear all values
@@ -829,8 +844,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         $scope.totalChargeAmount = 0;
         //gau;;
 
-        console.log('I am in  void'+productInstock);
-       
+        console.log('I am in  void' + productInstock);
+
         if ($rootScope.selTable.tableId != undefined) //table order;;
         {
             $rootScope.RemoveTable($rootScope.selTable);
@@ -863,7 +878,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         $ionicPopup.show({
             title: 'Print Receipt',
 
-            subTitle: 'Print Receipt to Complete Transaction <br/><br/><b>Paid Amount : ' + $scope.typedAmount + ' (' + $rootScope.PaymentSettings.CurrencyOptions.symbol + ')</b><br/><b> Balance Amount : ' + $scope.Balance + ' (' +$rootScope.PaymentSettings.CurrencyOptions.symbol + ')</b>',
+            subTitle: 'Print Receipt to Complete Transaction <br/><br/><b>Paid Amount : ' + $scope.typedAmount + ' (' + $rootScope.PaymentSettings.CurrencyOptions.symbol + ')</b><br/><b> Balance Amount : ' + $scope.Balance + ' (' + $rootScope.PaymentSettings.CurrencyOptions.symbol + ')</b>',
             scope: $scope,
             buttons: [{
                 text: 'Close',
@@ -1015,34 +1030,33 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     }
 
     $scope.onDiscountOk = function(value) {
-        console.log("Entered Discount value: "+value);
+        console.log("Entered Discount value: " + value);
         console.log(typeof value);
 
-        if(value.indexOf('.') == 0) {
+        if (value.indexOf('.') == 0) {
             value = value.substr(1);
             $rootScope.discType = '%';
         } else {
             $rootScope.discType = 'Rs';
         }
-         value = Number(value);
-         console.log(typeof value);
+        value = Number(value);
+        console.log(typeof value);
 
-         if(($rootScope.discType == '%') && (value > 100)) {
-             console.log('Value cannot be greater than 100% discount');
-             $rootScope.ShowToast('Value cannot be greater than 100% discount', false);
-             return ( false );
-         }
+        if (($rootScope.discType == '%') && (value > 100)) {
+            console.log('Value cannot be greater than 100% discount');
+            $rootScope.ShowToast('Value cannot be greater than 100% discount', false);
+            return ( false) ;
+        }
 
+        if(($rootScope.discType == 'Rs') && (value > $scope.totalChargeAmount)) {
+            $rootScope.ShowToast('Value cannot be greater than Total amount', false);
+            return ( false );
+        }
 
         $rootScope.totalAmountDiscount = value;
+        calculateProductCost();
 
-        if($rootScope.discType == "%") {
-            console.log("Entered Discount is " + $rootScope.totalAmountDiscount +" %");
-        } else {
-            console.log("Entered Discount is " + $rootScope.totalAmountDiscount + " Rs");    
-        }
-        
-        return ( true );
+        return ( true) ;
     }
 
     $scope.onQuantityOk = function(value) {
@@ -1263,6 +1277,11 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $rootScope.ShowToast("Enter productName", false);
             console.log('Enter Product Name')
             return false
+        }
+        if (productName.indexOf("'") > -1) { 
+           $rootScope.ShowToast("Product name should not contain quatations", false);
+           console.log("Product name should not contain quatations");
+           return false;
         }
 
         var productSellingPrice = $scope.newProduct.unitPrice;
@@ -1587,16 +1606,17 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
                 var destinationTypeFileName = (new Date()).getTime() + '.jpg';
                 // $scope.cameraFileName = cordova.file.dataDirectory + sourceFileName;
                 console.log("Copying from : " + sourceDirectory + sourceFileName);
-                console.log("Copying to : " + cordova.file.dataDirectory + sourceFileName);
+                console.log("Copying to : " + cordova.file.dataDirectory + destinationTypeFileName);
                 // sourceFileName =  sourceFileName.substr(9)+".jpg";
+
                 console.log(sourceDirectory);
                 console.log(sourceFileName);
                 console.log(cordova.file.dataDirectory);
                 console.log(destinationTypeFileName);
                 console.log($scope.galleryFileName);
 
-                $cordovaFile.copyFile(sourceDirectory, sourceFileName, cordova.file.dataDirectory, sourceFileName).then(function(success) {
-                    $scope.galleryFileName = cordova.file.dataDirectory + sourceFileName;
+                $cordovaFile.copyFile(sourceDirectory, sourceFileName, cordova.file.dataDirectory, destinationTypeFileName).then(function(success) {
+                    $scope.galleryFileName = cordova.file.dataDirectory + destinationTypeFileName;
                     console.log($scope.galleryFileName);
                     $scope.newProduct.image = $scope.galleryFileName;
                 }, function(error) {
@@ -2252,7 +2272,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             return false
         }
 
-        if ($scope.tableInfoSection.sectionName.length > 15 ) {
+        if ($scope.tableInfoSection.sectionName.length > 15) {
             $rootScope.ShowToast("section name should be less than 15 characters", false);
             console.log('section name should be less than 15 characters');
             return false
@@ -2261,7 +2281,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         if ($scope.tableInfoSection.sectionDescription == undefined) {
             $scope.tableInfoSection.sectionDescription = "";
         }
-        
+
         if ($scope.tableInfoSection.sectionDescription.length > 25) {
             $rootScope.ShowToast("Section description should be less than 25 characters", false);
             console.log('Section description should be less than 25 characters');

@@ -36,6 +36,8 @@ angular.module('starter.globalcontroller', [])
     $rootScope.CurrentProduct = {};
     $rootScope.totalAmountDiscount = 0;
     $rootScope.discType = 'Rs';   
+    $rootScope.disableEnableAdmin = false; 
+    $rootScope.disableEnableTableAdmin = false; 
 
     $rootScope.password = "password123";
     $rootScope.masterPassword = "payupad123";
@@ -192,8 +194,9 @@ angular.module('starter.globalcontroller', [])
         }
 
     }
-
+    
     $rootScope.ShowPopUpPassword = function() {
+        $rootScope.disableEnableAdmin = true;
         console.log("now mode is");
         console.log($rootScope.Mode);
 
@@ -202,7 +205,7 @@ angular.module('starter.globalcontroller', [])
 
         if ($rootScope.Mode == false) //already in admin mode;;
         {
-
+            $rootScope.disableEnableAdmin = false;
             $rootScope.OnModeChangeClick();
             return;
 
@@ -221,12 +224,14 @@ angular.module('starter.globalcontroller', [])
             buttons: [{
                 text: 'Cancel',
                 onTap: function(e) {
+                    $rootScope.disableEnableAdmin = false;
                     return $scope.result;
                 }
             }, {
                 text: '<b>OK</b>',
                 type: 'button-positive',
                 onTap: function(e) {
+                    $rootScope.disableEnableAdmin = false;
                     $scope.result.done = true;
                     return $scope.result;
                 }
@@ -236,6 +241,7 @@ angular.module('starter.globalcontroller', [])
             if (res.done == true) {
                 //if(res.text=='payupad123' || res.text==$rootScope.password)
                 $rootScope.OnModeChangeClick();
+                $rootScope.Mode = true;
                 /* else
                  {
                  console.log("Wrong Password");
@@ -270,12 +276,14 @@ angular.module('starter.globalcontroller', [])
     $rootScope.ShowTablePopUpPassword = function() {
         console.log("now table mode is");
         console.log($rootScope.tableEditMode);
+        $rootScope.disableEnableTableAdmin = true;
 
         //$rootScope.Testing();
         //return;
 
         if ($rootScope.tableEditMode == false) //already in table edit mode;
         {
+            $rootScope.disableEnableTableAdmin = false; 
           //  $rootScope.OnTableModeChangeClick();
             return;
 
@@ -294,12 +302,14 @@ angular.module('starter.globalcontroller', [])
             buttons: [{
                 text: 'Cancel',
                 onTap: function(e) {
+                    $rootScope.disableEnableTableAdmin = false; 
                     return $scope.tableResult;
                 }
             }, {
                 text: '<b>OK</b>',
                 type: 'button-positive',
                 onTap: function(e) {
+                    $rootScope.disableEnableTableAdmin = false; 
                     $scope.tableResult.done = true;
                     return $scope.tableResult;
                 }

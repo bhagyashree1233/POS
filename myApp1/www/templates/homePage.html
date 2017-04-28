@@ -132,7 +132,7 @@
                             </div>
                         </td>
                         <td>
-                            <div ng-class="{jiggle: Mode}" ng-if="Products[$index+1]!=undefined" style="position:relative;">
+                            <div ng-class="{jiggle: Mode}" ng-if="Products[$index+1]!=undefined" style="position:relative;height:inherit;">
                                 <div ng-show='Mode==true' style="position:absolute;z-index:1;font-size:7vmin;height:7vmin;width:5vmin;color:red;top:-10px;right:-4px;" class="icon-right ion-close-circled" ng-Click="deleteProduct(Products[$index+1].productId)"></div>
                                 <div ng-show='Mode==true' style="position:absolute;z-index:1;font-size:4vmin;line-height:7vmin;text-align:center;height:7vmin;width:7vmin;color:white;bottom:-10px;left:-4px;background:blue;border-radius:10px;" class="icon-left ion-edit" ng-Click="OnProductClick(Products[$index+1])"></div>
                                 <div style="width:15vw;max-height:25vh;" on-hold="productHold(); $event.stopPropagation()" ng-click="OnProductClick(Products[$index+1])">
@@ -340,7 +340,7 @@
             </ion-side-tab-handle>
             <div class="item" style="background-color:transparent;border:0px;width:60%;text-align:center;">
                 <div>
-                    <ion-toggle style="background-color:transparent;border:0px;color:white;" ng-model="$root.Mode" toggle-class="toggle-calm" ng-change="ShowPopUpPassword()">Enable Administrative rights to Add, Remove Products </ion-toggle>
+                    <ion-toggle ng-disabled="disableEnableAdmin" style="background-color:transparent;border:0px;color:white;" ng-model="$root.Mode" toggle-class="toggle-calm" ng-change="ShowPopUpPassword()">Enable Administrative rights to Add, Remove Products </ion-toggle>
                 </div>
             </div>
             <div style="position:relative;top:2vmin" ng-controller="MenuCtrl">
@@ -356,7 +356,7 @@
                                 </a>
                             </div>
                             <div style="position:relative;" class="col col-30 col-center">
-                                <a class="element" ng-if="rightItems[$index+1]!=undefined" ng-click="itemclick(rightItems[$index+1])" menu-close>
+                                <a class="element" ng-if="rightItems[$index+1]!=undefined" ng-   click="itemclick(rightItems[$index+1])" menu-close>
                                     <button style="box-shadow:2px 2px 4px rgba(0, 0, 0, 0.4);" class="button-circle" animate-ratio="fadeIn">
                                         <i class="{{rightItems[$index+1].icon}}" style="font-size:7vmin"></i>
                                     </button>
@@ -382,7 +382,7 @@
             </ion-side-tab-handle>
             <div class="item" style="background-color:transparent;border:0px;width:60%;text-align:center;">
                 <div>
-                    <ion-toggle style="background-color:transparent;border:0px;color:white;" ng-model="$root.tableEditMode" toggle-class="toggle-calm" ng-change="ShowTablePopUpPassword()">Enable Administrative rights to Add, Remove Products </ion-toggle>
+                    <ion-toggle ng-disabled="disableEnableTableAdmin" style="background-color:transparent;border:0px;color:white;" ng-model="$root.tableEditMode" toggle-class="toggle-calm" ng-change="ShowTablePopUpPassword()">Enable Administrative rights to Add, Remove Products </ion-toggle>
                 </div>
             </div>
             <div id="tableInfoView" ng-controller="tableInfoCtrl">
