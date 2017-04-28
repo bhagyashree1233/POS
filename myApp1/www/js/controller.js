@@ -23,7 +23,11 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     $scope.tabExpand = function(index) {
         console.log('Tab ' + index + ' expanded');
     }
-    ;
+    ; 
+    $scope.rest=function(){
+        $rootScope.searchObj={}
+        $rootScope.searchedResults=[];
+    }
 
     $scope.tabCollapse = function(index) {
         console.log('Tab ' + index + ' collapsed');
@@ -52,6 +56,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         loadCategory();
     });
 */
+
+   
 
     $scope.tableNumberSelected = -1;
 
@@ -1474,7 +1480,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         console.log('entered addNewProduct()..');
 
         if ($scope.newProduct.image == undefined || $scope.newProduct.image == "")
-            $scope.newProduct.image = "img/sc1.jpg";
+            $scope.newProduct.image = "img/longImage.jpg";
 
         console.log($scope.newProduct);
 
@@ -2383,14 +2389,14 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 }).controller('searchProductsCtrl', function($scope, dbService, $rootScope) {
 
     console.log('entered search Products Ctrl')
-    $scope.searchObj = {};
+    $rootScope.searchObj = {};
     $scope.searchChange = function() {
         console.log('entered searchChange function');
-        $scope.searchedResults = [];
-        if ($scope.searchObj.pattern) {
-            var promise = dbService.loadProductsForSearchPattern($scope.searchObj.pattern);
+        $rootScope.searchedResults = [];
+        if ($rootScope.searchObj.pattern) {
+            var promise = dbService.loadProductsForSearchPattern($rootScope.searchObj.pattern);
             promise.then(function(res) {
-                $scope.searchedResults = res;
+                $rootScope.searchedResults = res;
                 console.log(res);
             }, function() {
                 console.log('unable to search...')
@@ -2400,11 +2406,14 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     ;
 
     $scope.resetSearch = function() {
-        $scope.searchObj.pattern = "";
-        $scope.searchedResults = [];
+        console.log('I am in reset');
+        $rootScope.searchObj.pattern = "";
+        $rootScope.searchedResults = [];
     }
-
+    
+   
     $scope.onClickSearchProduct = function(product) {
+       
         $rootScope.$broadcast('OnClickSearchItem', {
             prod: product
         });
