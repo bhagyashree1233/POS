@@ -787,6 +787,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $scope.totalTaxAmount = 0;
             $scope.discountAmount = 0;
             $scope.totalChargeAmount = 0;
+            $rootScope.totalAmountDiscount = 0;
+            $rootScope.discType = 'Rs';
 
             if ($rootScope.selTable.tableId != undefined) {
                 console.log("TableId Found");
