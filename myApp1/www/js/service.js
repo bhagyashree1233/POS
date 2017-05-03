@@ -166,9 +166,12 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
     }
     function storeToBillDetails(totalPrice, discountAmount, totalTaxAmount, totalChargeAmount, paymentMethod, totalItems, d, BillNo, totalAmountDiscount ) {
         var deferred = $q.defer();
+        console.log(typeof discountAmount);
+        console.log(typeof totalAmountDiscount);
+        discountAmount = discountAmount + totalAmountDiscount;
         console.log("Inserting bill date: ", d);
-        var query = "INSERT INTO BillDetails (BillNo, TotalPrice, DiscountAmount, TaxAmount, TotalAmountDiscount, TotalAmount,  PaymentMethod, DateTime, TotalItems, BillStatus) VALUES (?,?,?,?,?,?,?,?,?,?)";
-        $cordovaSQLite.execute($rootScope.db, query, [BillNo, totalPrice, discountAmount, totalTaxAmount, totalAmountDiscount, totalChargeAmount, paymentMethod, d.toString(), totalItems, 'success']).then(function(res) {
+        var query = "INSERT INTO BillDetails (BillNo, TotalPrice, DiscountAmount, TaxAmount, TotalAmount,  PaymentMethod, DateTime, TotalItems, BillStatus) VALUES (?,?,?,?,?,?,?,?,?)";
+        $cordovaSQLite.execute($rootScope.db, query, [BillNo, totalPrice, discountAmount, totalTaxAmount, totalChargeAmount, paymentMethod, d.toString(), totalItems, 'success']).then(function(res) {
             console.log("INSERT ID -> " + res.insertId);
             deferred.resolve('success');
         }, function(err) {
@@ -189,7 +192,6 @@ angular.module('starter.services', []).factory("dbService", function($q, $cordov
                     TotalPrice: res.rows.item(i).TotalPrice,
                     DiscountAmount: res.rows.item(i).DiscountAmount,
                     TaxAmount: res.rows.item(i).TaxAmount,
-                    TotalAmountDiscount: res.rows.item(i).TotalAmountDiscount,
                     TotalAmount: res.rows.item(i).TotalAmount,
                     PaymentMethod: res.rows.item(i).PaymentMethod,
                     DateTime: res.rows.item(i).DateTime,

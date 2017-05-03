@@ -773,8 +773,18 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
     //function to save bill details to database
     function SaveBillDetails() {
+        var totDiscAmnt;
+        var totAmnt;
+        if ($rootScope.totalAmountDiscount != 0 && $rootScope.discType == '%') {
+            totAmnt = parseFloat(($scope.totalChargeAmount *  100 / $rootScope.totalAmountDiscount).toFixed(2));
+            console.log(totAmnt);
+            totDiscAmnt = parseFloat((totAmnt *  $rootScope.totalAmountDiscount / 100).toFixed(2));
+            console.log(totDiscAmnt);
+        } else {
+            totDiscAmnt = $rootScope.totalAmountDiscount;
+        }
         //console.log("Save Bill date: ", $scope.transactionDate);
-        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.BillDate, $rootScope.VolatileData.CurrentBillNo, $rootScope.totalAmountDiscount);
+        var promise = dbService.storeToBillDetails($scope.totalPrice, $scope.discountAmount, $scope.totalTaxAmount, $scope.totalChargeAmount, $scope.paymentMethod, $scope.totalItems, $scope.BillDate, $rootScope.VolatileData.CurrentBillNo, totDiscAmnt);
         promise.then(function(result) {
             console.log(result);
             //clear all values

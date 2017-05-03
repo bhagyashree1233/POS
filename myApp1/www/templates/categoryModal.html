@@ -7,7 +7,7 @@
                 </label>
                 <button class="button button-small" ng-click="addNewCategary(newCategaryName)">Add</button>
             </div>
-            <ion-item style="background-color:transparent;" ng-if="categoryObj.categoryName != 'All'" ng-click="onCategorySelect(categoryObj)" ng-repeat="categoryObj in categoryArr" style="background-color:transparent;">
+            <ion-item style="background-color:transparent;" ng-if="categoryObj.categoryName != 'Favourite'" ng-click="onCategorySelect(categoryObj)" ng-repeat="categoryObj in categoryArr" style="background-color:transparent;">
                     <span>{{categoryObj.categoryName}} </span>
                 </ion-item>
         </div>
