@@ -205,10 +205,10 @@ angular.module('starter.globalcontroller', [])
 
         if ($rootScope.Mode == false) //already in admin mode;;
         {
+            console.log('entered false ');
             $rootScope.disableEnableAdmin = false;
             $rootScope.OnModeChangeClick();
             return;
-
         }
         $scope.result = {};
         $scope.result.done = false;

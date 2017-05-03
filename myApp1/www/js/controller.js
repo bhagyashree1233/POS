@@ -23,10 +23,10 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     $scope.tabExpand = function(index) {
         console.log('Tab ' + index + ' expanded');
     }
-    ; 
-    $scope.rest=function(){
-        $rootScope.searchObj={}
-        $rootScope.searchedResults=[];
+    ;
+    $scope.rest = function() {
+        $rootScope.searchObj = {}
+        $rootScope.searchedResults = [];
     }
 
     $scope.tabCollapse = function(index) {
@@ -56,8 +56,6 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         loadCategory();
     });
 */
-
-   
 
     $scope.tableNumberSelected = -1;
 
@@ -501,18 +499,18 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             $scope.discountAmount = parseFloat(($scope.discountAmount + tempObj.discountAmount).toFixed(2));
             $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount + tempObj.productTotalAmount).toFixed(2));
         }
- 
+
         if ($rootScope.totalAmountDiscount > $scope.totalChargeAmount) {
             $rootScope.totalAmountDiscount = 0;
         }
         if ($rootScope.totalAmountDiscount != 0 && $rootScope.discType == 'Rs') {
             $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount - $rootScope.totalAmountDiscount).toFixed(2));
-        } 
+        }
         if ($rootScope.totalAmountDiscount != 0 && $rootScope.discType == '%') {
             $scope.totalChargeAmount = parseFloat(($scope.totalChargeAmount - ($scope.totalChargeAmount * $rootScope.totalAmountDiscount / 100)).toFixed(2));
         }
     }
- 
+
     //$scope.OnCatClick("favourite");
 
     /*
@@ -711,7 +709,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
                     SaveTransactionDetailstoDB();
                     $scope.billCopies = $rootScope.printFormatSettings.billCopies;
                 }
-
+ 
             });
 
         } else {
@@ -854,7 +852,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
         console.log('I am in  void' + productInstock);
 
-        if ($rootScope.selTable.tableId != undefined) //table order;;
+        if ($rootScope.selTable.tableId != undefined) //table order;
         {
             $rootScope.RemoveTable($rootScope.selTable);
             $scope.showPlaceButton = false;
@@ -865,9 +863,8 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
 
     $scope.onPaymentOk = function(value) {
         console.log("Payment Ok");
-
-        console.log('I am in Paid Function')
-        console.log(value)
+        console.log('I am in Paid Function');
+        console.log(value);
         var typedAmount = parseFloat(value);
 
         if (typedAmount < $scope.totalChargeAmount) {
@@ -950,7 +947,7 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
     }
 
     $scope.onPaymentCancel = function() {
-
+        
         console.log("Payment Cancel");
     }
 
@@ -1056,9 +1053,9 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             return ( false) ;
         }
 
-        if(($rootScope.discType == 'Rs') && (value > $scope.totalChargeAmount)) {
+        if (($rootScope.discType == 'Rs') && (value > $scope.totalChargeAmount)) {
             $rootScope.ShowToast('Value cannot be greater than Total amount', false);
-            return ( false );
+            return ( false) ;
         }
 
         $rootScope.totalAmountDiscount = value;
@@ -1286,10 +1283,10 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
             console.log('Enter Product Name')
             return false
         }
-        if (productName.indexOf("'") > -1) { 
-           $rootScope.ShowToast("Product name should not contain quatations", false);
-           console.log("Product name should not contain quatations");
-           return false;
+        if (productName.indexOf("'") > -1) {
+            $rootScope.ShowToast("Product name should not contain quatations", false);
+            console.log("Product name should not contain quatations");
+            return false;
         }
 
         var productSellingPrice = $scope.newProduct.unitPrice;
@@ -2412,10 +2409,9 @@ angular.module('starter.controller', []).controller('MyCtrl', function($scope, $
         $rootScope.searchObj.pattern = "";
         $rootScope.searchedResults = [];
     }
-    
-   
+
     $scope.onClickSearchProduct = function(product) {
-       
+
         $rootScope.$broadcast('OnClickSearchItem', {
             prod: product
         });

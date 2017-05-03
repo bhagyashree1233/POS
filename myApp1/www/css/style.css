@@ -185,6 +185,31 @@
     opacity: 0.7;
     line-height: 2.5vmin;
 }
+.proEdit {
+    position:absolute;
+    z-index:1;
+    font-size:4vmin;
+    line-height:7vmin;
+    text-align:center;
+    height:7vmin;
+    width:7vmin;
+    color:white;
+    bottom:-10px;
+    left:-4px;
+    background:blue;
+    border-radius:10px;
+}
+
+.proDelete {
+    position:absolute;
+    z-index:1;
+    font-size:7vmin;
+    height:7vmin;
+    width:5vmin;
+    color:red;
+    top:-10px;
+    right:-4px;
+}
 
 #product-stock {
     right: 0;
@@ -835,6 +860,9 @@ table.productlist {
     border-collapse: collapse;
     margin: 0 auto;
     background: rgba(255, 255, 255, 0.15);
+    font-size:2vmin;
+    font-weight:bold;
+    line-height:4.5vmin;
 }
 
 
